@@ -114,14 +114,14 @@ const Register = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="w-full"
+          className="w-full text-stone-950"
         >
           <Button
             type="button"
             className={`text-stone-950 text-sm flex justify-center rounded-none items-center space-x-2 px-5 py-[8.7px] w-full ${
               role === "buyer"
-                ? "bg-[#E2E4E8] font-bold text-[#333]"
-                : "bg-[#EEEFF2] font-normal text-[#666]"
+                ? "bg-[#E2E4E8] font-bold text-[#000]"
+                : "bg-[#EEEFF2] font-normal text-[#000]"
             }`}
             onClick={() => handleRoleChange("buyer")}
           >
@@ -134,14 +134,14 @@ const Register = () => {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="w-full"
+          className="w-full text-stone-950"
         >
           <Button
             type="button"
             className={`text-stone-950 text-sm flex justify-center items-center rounded-none space-x-2 px-5 py-[8.7px] w-full ${
               role === "agent"
-                ? "bg-[#E2E4E8] font-bold text-[#333]"
-                : "bg-[#EEEFF2] font-normal text-[#666]"
+                ? "bg-[#E2E4E8] font-bold text-[#000]"
+                : "bg-[#EEEFF2] font-normal text-[#000]"
             }`}
             onClick={() => handleRoleChange("agent")}
           >
