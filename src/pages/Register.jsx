@@ -1,257 +1,280 @@
-// src/pages/Register.jsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
-import DatePicker from "react-datepicker";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import "react-datepicker/dist/react-datepicker.css";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { notify } from "@components/Notification";
+import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link, useNavigate } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
+import { motion } from "framer-motion"; // Import framer-motion
+import Input from "../components/İnput";
+import Button from "../components/Button";
+import {
+  CheckSquare,
+  CheckSquareFull,
+  UserCircle,
+  Warning,
+} from "../assets/icons";
 
-const passwordStrength = (password) => {
-  const regexWeak = /^(?=.*[a-z]).{6,}$/;
-  const regexMedium = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
-  const regexStrong = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
-
-  if (regexStrong.test(password)) return "Strong";
-  if (regexMedium.test(password)) return "Medium";
-  if (regexWeak.test(password)) return "Weak";
-  return "Very Weak";
-};
+// Validation Schema
+const schema = yup.object({
+  role: yup.string().required("Role is required"),
+  email: yup
+    .string()
+    .email("Please enter a valid email address")
+    .required("Email is required"),
+  name: yup
+    .string()
+    .required("Full name is required")
+    .matches(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed"),
+  mobile: yup
+    .string()
+    .required("Mobile number is required")
+    .matches(
+      /^\+\d{5,}$/,
+      "Please enter a valid mobile number with country code"
+    ),
+  password: yup
+    .string()
+    .min(8, "Use 8 or more characters with a mix of letters, numbers & symbols")
+    .matches(/[A-Z]/, "Must contain an uppercase letter")
+    .matches(/[a-z]/, "Must contain a lowercase letter")
+    .matches(/[0-9]/, "Must contain a number")
+    .matches(/[@$!%*?&#]/, "Must contain a special character")
+    .required("Password is required"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Confirm Password is required"),
+  serialNumber: yup.string().when("role", {
+    is: "agent",
+    then: (schema) => schema.required("Serial number is required"),
+    otherwise: (schema) => schema.notRequired(),
+  }),
+});
 
 const Register = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-    gender: "",
-    birthDate: new Date(),
-    phoneNumber: "",
-  });
-  const [passwordStrengthLevel, setPasswordStrengthLevel] = useState("");
-  const [isPasswordMatch, setIsPasswordMatch] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
+  const { t } = useTranslation();
   const navigate = useNavigate();
+  const [role, setRole] = useState("buyer");
+  const [isHuman, setIsHuman] = useState(false); // State for checkbox
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: yupResolver(schema),
+    mode: "onChange",
+    defaultValues: {
+      role: "buyer",
+    },
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+  const onSubmit = useCallback(
+    (data) => {
+      if (!isHuman) {
+        notify("Please confirm you're not a robot");
+        return;
+      }
+      console.log("Form data:", data);
+      notify("Account created successfully!");
+      reset();
+      navigate("/login");
+    },
+    [reset, navigate, isHuman]
+  );
 
-    if (name === "password") {
-      setPasswordStrengthLevel(passwordStrength(value));
-    }
-
-    if (name === "confirmPassword") {
-      setIsPasswordMatch(value === formData.password);
-    }
+  const handleRoleChange = (selectedRole) => {
+    setRole(selectedRole);
+    setValue("role", selectedRole);
   };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isPasswordMatch) {
-      // Simulating a successful registration
-      setTimeout(() => {
-        navigate("/login"); // Redirect to login page
-      }, 1000);
-    } else {
-      alert("Passwords do not match");
-    }
+  const handleCancel = () => {
+    notify(t("Register Cancelled"));
+    reset();
+    navigate("/login");
   };
-
-  const getPasswordClasses = () => {
-    switch (passwordStrengthLevel) {
-      case "Strong":
-        return "border-green-500 bg-green-50";
-      case "Medium":
-        return "border-yellow-500 bg-yellow-50";
-      case "Weak":
-        return "border-red-500 bg-red-50";
-      default:
-        return "border-gray-300 bg-gray-50";
-    }
+  const handleCheckboxChange = () => {
+    setIsHuman((prev) => !prev);
   };
 
   return (
-    <div className="w-full max-w-md mx-auto mt-10 bg-white p-8 rounded-lg shadow-lg transition duration-500 transform hover:scale-105">
-      <h2 className="text-3xl font-bold text-center text-blue-500 mb-6 animate__animated animate__fadeIn">
-        Create Your Account
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <label
-            htmlFor="name"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Full Name
-          </label>
-          <input
-            id="name"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            className="mt-2 w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Email Address
-          </label>
-          <input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="mt-2 w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
-            required
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Password
-          </label>
-          <div className="relative">
-            <input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              value={formData.password}
-              onChange={handleChange}
-              className={`mt-2 w-full px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${getPasswordClasses()} transition duration-300 ease-in-out`}
-              required
-            />
-            <div
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <FaEyeSlash className="text-gray-500" />
-              ) : (
-                <FaEye className="text-gray-500" />
-              )}
-            </div>
-          </div>
-          <div
-            className={`mt-2 text-sm font-medium ${
-              passwordStrengthLevel === "Strong"
-                ? "text-green-500"
-                : passwordStrengthLevel === "Medium"
-                ? "text-yellow-500"
-                : "text-red-500"
-            }`}
-          >
-            {passwordStrengthLevel &&
-              `Password Strength: ${passwordStrengthLevel}`}
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="confirmPassword"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Confirm Password
-          </label>
-          <input
-            id="confirmPassword"
-            name="confirmPassword"
-            type="password"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className={`mt-2 w-full px-4 py-2 ${
-              !isPasswordMatch ? "border-red-500" : "border-gray-300"
-            } bg-gray-50 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300`}
-            required
-          />
-          {!isPasswordMatch && (
-            <p className="text-red-500 text-xs">Passwords do not match</p>
-          )}
-        </div>
-
-        <div>
-          <label
-            htmlFor="gender"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Gender
-          </label>
-          <div className="flex space-x-4">
-            <div>
-              <input
-                type="radio"
-                id="male"
-                name="gender"
-                value="male"
-                onChange={handleChange}
-                className="mr-2"
-              />
-              <label htmlFor="male">Male</label>
-            </div>
-            <div>
-              <input
-                type="radio"
-                id="female"
-                name="gender"
-                value="female"
-                onChange={handleChange}
-                className="mr-2"
-              />
-              <label htmlFor="female">Female</label>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <label
-            htmlFor="birthDate"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Birth Date
-          </label>
-          <DatePicker
-            selected={formData.birthDate}
-            onChange={(date) => setFormData({ ...formData, birthDate: date })}
-            className="mt-2 w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            dateFormat="MM/dd/yyyy"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="phoneNumber"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Phone Number
-          </label>
-          <PhoneInput
-            international
-            defaultCountry="US"
-            value={formData.phoneNumber}
-            onChange={(value) =>
-              setFormData({ ...formData, phoneNumber: value })
-            }
-            className="mt-2 w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full py-2 px-4 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-700 transition duration-300"
+    <motion.div
+      className="max-w-md p-8 mx-auto mt-2 border shadow-md rounded-[18px]"
+      initial={{ scale: 0.8 }}
+      animate={{ scale: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h1 className="mb-4 text-4xl font-semibold text-center text-gray-800">
+        {t("Select Your Role")}
+      </h1>
+      <div className="flex justify-center my-6">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="w-full"
         >
-          Sign Up
-        </button>
+          <Button
+            type="button"
+            className={`text-stone-950 text-sm flex justify-center rounded-none items-center space-x-2 px-5 py-[8.7px] w-full ${
+              role === "buyer"
+                ? "bg-[#E2E4E8] font-bold text-[#333]"
+                : "bg-[#EEEFF2] font-normal text-[#666]"
+            }`}
+            onClick={() => handleRoleChange("buyer")}
+          >
+            <UserCircle />
+            <span>{t("Buyer")}</span>
+          </Button>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="w-full"
+        >
+          <Button
+            type="button"
+            className={`text-stone-950 text-sm flex justify-center items-center rounded-none space-x-2 px-5 py-[8.7px] w-full ${
+              role === "agent"
+                ? "bg-[#E2E4E8] font-bold text-[#333]"
+                : "bg-[#EEEFF2] font-normal text-[#666]"
+            }`}
+            onClick={() => handleRoleChange("agent")}
+          >
+            <FaHome />
+            <span>{t("Agent")}</span>
+          </Button>
+        </motion.div>
+      </div>
+
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col space-y-4"
+      >
+        <Input
+          type="email"
+          error={errors.email}
+          {...register("email")}
+          placeholder={t("Email")}
+          className="w-full"
+        />
+        <Input
+          type="text"
+          error={errors.name}
+          {...register("name")}
+          placeholder={t("Name Surname")}
+          className="w-full"
+        />
+        <Input
+          type="text"
+          error={errors.mobile}
+          {...register("mobile")}
+          placeholder={t("Mobile number")}
+          className="w-full"
+        />
+        {role === "agent" && (
+          <Input
+            type="text"
+            error={errors.serialNumber}
+            {...register("serialNumber")}
+            placeholder={t("Enter Serial Number")}
+            className="w-full"
+          />
+        )}
+        <Input
+          type="password"
+          error={errors.password}
+          {...register("password")}
+          placeholder={t("Create a password")}
+          className="w-full"
+        />
+        <Input
+          type="password"
+          error={errors.confirmPassword}
+          {...register("confirmPassword")}
+          placeholder={t("Confirm password")}
+          className="w-full"
+        />
+        <p className="flex items-center text-[#525C76] text-[10px]">
+          <Warning />
+          {t(
+            "Use 8 or more characters with a mix of letters, numbers & symbols"
+          )}
+        </p>
+        {/* reCAPTCHA with framer-motion animation */}
+        <motion.div
+          className="flex items-center w-full p-2 py-5 space-x-2 border rounded-xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <motion.div
+            className="cursor-pointer"
+            onClick={handleCheckboxChange}
+            initial={{ scale: 0.8 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {isHuman ? <CheckSquareFull /> : <CheckSquare />}
+          </motion.div>
+          <span className="text-gray-600">{t("I am not a robot")}</span>
+        </motion.div>
+        {/* Terms agreement */}
+        <div className="flex items-center">
+          <span className="text-xs text-stone-500">
+            {t("By creating an account, you agree to our ")}
+            <Link to={""} className="text-stone-950 hover:text-[#8247E5]">
+              {t("Terms of use")}
+            </Link>{" "}
+            {t("and ")}
+            <Link to={""} className="text-stone-950 hover:text-[#8247E5]">
+              {t("Privacy Policy")}
+            </Link>
+          </span>
+        </div>
+
+        {/* Create account button */}
+        <Button
+          type="submit"
+          variant="primary"
+          isLoading={isSubmitting}
+          className="w-full mt-[39px!important] px-5 py-[8.7px]"
+        >
+          {t("Create account")}
+        </Button>
+
+        {/* Log in button */}
+        <p className="mt-1 text-xs">
+          <span className="text-stone-500">
+            {t("Already have an account? ")}
+          </span>
+          <Link to={"/login"} className="text-stone-950">
+            {t("Log in")}
+          </Link>
+        </p>
+
+        {/* Cancel button with framer-motion animation */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Button
+            type="button"
+            variant="cancel"
+            onClick={() => handleCancel()} // Calling the cancel function
+            className="w-full px-5 py-[8.7px] mt-4"
+          >
+            {t("Cancel")}
+          </Button>
+        </motion.div>
       </form>
-    </div>
+    </motion.div>
   );
 };
 
