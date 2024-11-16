@@ -14,10 +14,10 @@ const Button = ({
   ...props
 }) => {
   const variants = {
-    primary: "text-white bg-[#8247E5] hover:bg-[#A673EF] focus:bg-[#8247E5]",
+    primary: "bg-[#8247E5] hover:bg-[#A673EF] focus:bg-[#8247E5]",
     secondary:
       "text-[#8247E5] bg-white border border-[#8247E5] hover:bg-[#A673EF] hover:text-white",
-    cancel: "text-gray-700 bg-gray-100 hover:bg-gray-200",
+    cancel: "text-gray-700 bg-gray-100 hover:bg-gray-300",
   };
 
   return (

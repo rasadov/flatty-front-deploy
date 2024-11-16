@@ -5,13 +5,13 @@ import { notify } from "@components/Notification";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { FaHome } from "react-icons/fa";
 import { motion } from "framer-motion"; // Import framer-motion
 import Input from "../components/İnput";
 import Button from "../components/Button";
 import {
   CheckSquare,
   CheckSquareFull,
+  HouseIcon,
   UserCircle,
   Warning,
 } from "../assets/icons";
@@ -101,15 +101,15 @@ const Register = () => {
 
   return (
     <motion.div
-      className="max-w-md p-8 mx-auto mt-2 border shadow-md rounded-[18px]"
+      className="max-w-md sm:p-6 p-8 mx-auto mt-2 border shadow-md rounded-[18px] bg-white"
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="mb-4 text-4xl font-semibold text-center text-gray-800">
+      <h1 className=" text-3xl font-semibold  text-[#0F1D40]">
         {t("Select Your Role")}
       </h1>
-      <div className="flex justify-center my-6">
+      <div className="flex justify-center my-5">
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -118,9 +118,10 @@ const Register = () => {
         >
           <Button
             type="button"
-            className={`text-stone-950 text-sm flex justify-center rounded-none items-center space-x-2 px-5 py-[8.7px] w-full ${
+            variant="cancel"
+            className={`text-stone-950 text-sm flex justify-center rounded-l-[3px] items-center space-x-2 px-5 py-[11px] w-full ${
               role === "buyer"
-                ? "bg-[#E2E4E8] font-bold text-[#000]"
+                ? "bg-[#b9bbc1] font-bold text-[#000]"
                 : "bg-[#EEEFF2] font-normal text-[#000]"
             }`}
             onClick={() => handleRoleChange("buyer")}
@@ -138,14 +139,15 @@ const Register = () => {
         >
           <Button
             type="button"
-            className={`text-stone-950 text-sm flex justify-center items-center rounded-none space-x-2 px-5 py-[8.7px] w-full ${
+            variant="cancel"
+            className={`text-stone-950 text-sm flex justify-center items-center rounded-r-lg space-x-2 px-5 py-[11px] w-full ${
               role === "agent"
-                ? "bg-[#E2E4E8] font-bold text-[#000]"
+                ? "bg-[#b9bbc1] font-bold text-[#000]"
                 : "bg-[#EEEFF2] font-normal text-[#000]"
             }`}
             onClick={() => handleRoleChange("agent")}
           >
-            <FaHome />
+            <HouseIcon />
             <span>{t("Agent")}</span>
           </Button>
         </motion.div>
@@ -208,12 +210,12 @@ const Register = () => {
         </p>
         {/* reCAPTCHA with framer-motion animation */}
         <motion.div
-          className="flex items-center w-full p-2 py-5 space-x-2 border rounded-xl"
+          className="flex items-center w-full p-2 py-[21px] space-x-2 border rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <motion.div
+          <div
             className="cursor-pointer"
             onClick={handleCheckboxChange}
             initial={{ scale: 0.8 }}
@@ -221,12 +223,12 @@ const Register = () => {
             transition={{ duration: 0.3 }}
           >
             {isHuman ? <CheckSquareFull /> : <CheckSquare />}
-          </motion.div>
-          <span className="text-gray-600">{t("I am not a robot")}</span>
+          </div>
+          <span className="text-gray-600">{t("I'm not a robot")}</span>
         </motion.div>
         {/* Terms agreement */}
         <div className="flex items-center">
-          <span className="text-xs text-stone-500">
+          <span className="text-sm text-stone-500">
             {t("By creating an account, you agree to our ")}
             <Link to={""} className="text-stone-950 hover:text-[#8247E5]">
               {t("Terms of use")}
@@ -243,13 +245,13 @@ const Register = () => {
           type="submit"
           variant="primary"
           isLoading={isSubmitting}
-          className="w-full mt-[39px!important] px-5 py-[8.7px]"
+          className="w-full mt-[36px!important] px-5 py-[8.7px]"
         >
           {t("Create account")}
         </Button>
 
         {/* Log in button */}
-        <p className="mt-1 text-xs">
+        <p className="text-sm ">
           <span className="text-stone-500">
             {t("Already have an account? ")}
           </span>
@@ -268,7 +270,7 @@ const Register = () => {
             type="button"
             variant="cancel"
             onClick={() => handleCancel()} // Calling the cancel function
-            className="w-full px-5 py-[8.7px] mt-4"
+            className="w-full px-5 py-[8.7px]"
           >
             {t("Cancel")}
           </Button>

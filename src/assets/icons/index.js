@@ -3,6 +3,7 @@ export { CheckSquareFull } from "./CheckSquareFull";
 export { UserCircle } from "./UserCircle";
 export { CheckSquare } from "./CheckSquare";
 export { XCircle } from "./XCircle";
+export { HouseIcon } from "./HouseIcon";
 
 // export { CheckSquareFull } from "./CheckSquareFull";
 // export { Search } from "./Search";
@@ -22,7 +23,6 @@ export { XCircle } from "./XCircle";
 // export { PlusCircle } from "./PlusCircle";
 
 // export { Settings } from "./Settings";
-// export { Home } from "./Home";
 // export { Pencil } from "./Pencil";
 
 // export { Briefcase } from "./Briefcase";
