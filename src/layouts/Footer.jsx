@@ -5,8 +5,8 @@ import {
   TwitterIcon,
   LinkedinIcon,
   YoutubeIcon,
+  InstagramIcon,
 } from "../assets/icons";
-import { InstagramIcon } from "../assets/icons/instagramIcon";
 import { motion } from "framer-motion";
 
 export const Footer = () => {
