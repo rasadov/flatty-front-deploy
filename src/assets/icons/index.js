@@ -14,6 +14,7 @@ export { FacebookIcon } from "./FacebookIcon";
 export { TwitterIcon } from "./TwitterIcon";
 export { LinkedinIcon } from "./LinkedinIcon";
 export { YoutubeIcon } from "./YoutubeIcon";
+export { InstagramIcon } from "./InstagramIcon";
 // export { LogoMobile } from "./LogoMobile";
 
 // export { CheckSquareFull } from "./CheckSquareFull";

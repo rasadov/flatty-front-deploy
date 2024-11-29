@@ -155,7 +155,7 @@ export const Footer = () => {
         <p className="text-sm text-center text-gray-400 sm:text-left">
           Flatty &copy; 2024. All rights reserved.
         </p>
-        <div className="flex space-x-4">
+        <div className="flex space-x-12">
           {["Home", "Services", "Blog", "Help Center", "About"].map(
             (item, idx) => (
               <a
