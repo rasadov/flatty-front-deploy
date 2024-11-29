@@ -140,7 +140,7 @@ const Register = () => {
           <Button
             type="button"
             variant="cancel"
-            className={`text-stone-950 text-sm flex justify-center items-center rounded-r-lg space-x-2 px-5 py-[11px] w-full ${
+            className={`text-stone-950 text-sm flex justify-center items-center rounded-r-[3px] px-5 py-[11px] w-full ${
               role === "agent"
                 ? "bg-[#b9bbc1] font-bold text-[#000]"
                 : "bg-[#EEEFF2] font-normal text-[#000]"

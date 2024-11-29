@@ -1,4 +1,3 @@
-// Button.js
 import classNames from "classnames";
 
 const Button = ({
@@ -14,16 +13,16 @@ const Button = ({
   ...props
 }) => {
   const variants = {
-    primary: "bg-[#8247E5] hover:bg-[#A673EF] focus:bg-[#8247E5]",
+    primary: "bg-accent hover:bg-hoverPrimary focus:bg-accent text-white",
     secondary:
-      "text-[#8247E5] bg-white border border-[#8247E5] hover:bg-[#A673EF] hover:text-white",
-    cancel: "text-gray-700 bg-gray-100 hover:bg-gray-300",
+      "text-accent bg-white border border-accent hover:bg-hoverPrimary hover:text-white",
+    cancel: "text-darkText bg-gray-100 hover:bg-gray-300",
   };
 
   return (
     <button
       className={classNames(
-        "text-lg rounded-[3px] transition-colors duration-300 ease-in-out focus:outline-none disabled:opacity-50",
+        "flex items-center justify-center gap-2   transition-colors duration-300 ease-in-out focus:outline-none disabled:opacity-50",
         variants[variant],
         className
       )}
@@ -35,7 +34,11 @@ const Button = ({
       disabled={isLoading}
       {...props}
     >
-      {isLoading ? "Loading..." : children}
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <span className="flex items-center gap-2">{children}</span>
+      )}
     </button>
   );
 };

@@ -4,6 +4,17 @@ export { UserCircle } from "./UserCircle";
 export { CheckSquare } from "./CheckSquare";
 export { XCircle } from "./XCircle";
 export { HouseIcon } from "./HouseIcon";
+export { ArrowDown } from "./ArrowDown";
+export { Cancel } from "./Cancel";
+export { LogoDesktop } from "./LogoDesktop";
+export { MapPin } from "./MapPin";
+export { ShowMap } from "./ShowMap";
+export { SeeAll } from "./SeeAll";
+export { FacebookIcon } from "./FacebookIcon";
+export { TwitterIcon } from "./TwitterIcon";
+export { LinkedinIcon } from "./LinkedinIcon";
+export { YoutubeIcon } from "./YoutubeIcon";
+// export { LogoMobile } from "./LogoMobile";
 
 // export { CheckSquareFull } from "./CheckSquareFull";
 // export { Search } from "./Search";
