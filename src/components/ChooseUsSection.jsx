@@ -27,7 +27,7 @@ const WhyChooseUsSection = () => {
   ];
 
   return (
-    <section className="px-8 pt-8 pb-16 border rounded-lg bg-lightBg">
+    <section className="px-8 pt-8 pb-16 bg-white border rounded-lg">
       <div className="mb-8 text-left">
         <h2 className="mb-2 text-xl font-bold text-darkText">
           Why Choose Us for Your Real Estate Journey

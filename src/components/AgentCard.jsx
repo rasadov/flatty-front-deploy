@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import AgencyMiniCard from "./AgencyMiniCard";
 import Rating from "./Rating";
 import { ContactIcon } from "../assets/icons/ContactIcon";
+import apparment from "../assets/images/apparment.png";
 
 const AgentCard = () => {
   const [rating, setRating] = useState(4); // Example: set initial rating as 4 stars
@@ -30,7 +31,7 @@ const AgentCard = () => {
       {/* Agent Image and Details */}
       <Link to={""} className="flex justify-start gap-2">
         <motion.img
-          src="https://via.placeholder.com/78x78"
+          src={apparment}
           alt="Agent's Picture"
           className="object-cover w-[78px] h-[78px] rounded-full"
           whileHover={{
@@ -77,7 +78,7 @@ const AgentCard = () => {
       {/* Buttons */}
       <motion.div whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
         <Button
-          className="w-full text-white py-[5px] px-3 mt-3"
+          className="w-full text-white py-[5px] px-3 mt-3 rounded-sm"
           variant="primary"
         >
           <UserCircle color="white" />
@@ -86,7 +87,7 @@ const AgentCard = () => {
       </motion.div>
       <motion.div whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
         <Button
-          className="w-full py-[5px] px-3 my-2 text-[#8247E5]"
+          className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
         >
           <ContactIcon />
