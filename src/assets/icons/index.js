@@ -15,6 +15,9 @@ export { TwitterIcon } from "./TwitterIcon";
 export { LinkedinIcon } from "./LinkedinIcon";
 export { YoutubeIcon } from "./YoutubeIcon";
 export { InstagramIcon } from "./InstagramIcon";
+export { HeartFull } from "./HeartFull"; // Dolu ikon əlavə edin
+export { HeartEmpty } from "./HeartEmpty";
+
 // export { LogoMobile } from "./LogoMobile";
 
 // export { CheckSquareFull } from "./CheckSquareFull";

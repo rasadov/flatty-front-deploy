@@ -19,7 +19,7 @@ export const Footer = () => {
     <motion.div
       initial="hidden"
       whileInView="visible"
-      className="py-12 mx-auto bg-secondaryBg container-fluid"
+      className="container py-12 mx-auto bg-secondaryBg"
     >
       {/* Logo Section */}
       <motion.div
@@ -155,8 +155,8 @@ export const Footer = () => {
         <p className="text-sm text-center text-gray-400 sm:text-left">
           Flatty &copy; 2024. All rights reserved.
         </p>
-        <div className="flex space-x-12">
-          {["Home", "Services", "Blog", "Help Center", "About"].map(
+        <div className="flex flex-col items-end justify-center lg:space-x-12 sm:flex-row sm:space-x-2">
+          {["Home", "Agents", "Agencies", "About us", "Contact us"].map(
             (item, idx) => (
               <a
                 key={idx}

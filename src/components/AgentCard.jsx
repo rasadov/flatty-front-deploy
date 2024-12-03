@@ -40,8 +40,10 @@ const AgentCard = () => {
           }}
         />
         <div>
-          <div className="font-semibold text-gray-900 ">Name Surname</div>
-          <div className="text-sm text-gray-500">Senior Real Estate Agent </div>
+          <div className="font-semibold text-[#525C76] ">Name Surname</div>
+          <div className="text-sm text-[#525C76]">
+            Senior Real Estate Agent{" "}
+          </div>
           <Rating rating={rating} onRatingClick={handleRatingClick} />
         </div>
       </Link>
@@ -50,10 +52,10 @@ const AgentCard = () => {
 
       {/* Experience and Specializations */}
       <div>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-[#525C76]">
           Experience: <span className="text-sm text-slate-900 ">5+ Years</span>
         </p>
-        <p className="text-xs text-gray-500">Specializations:</p>
+        <p className="text-xs text-[#525C76]">Specializations:</p>
         <ul>
           <li className="text-sm text-slate-900">- Property Management</li>
           <li className="text-sm text-slate-900">- Real Estate Development</li>
@@ -76,7 +78,7 @@ const AgentCard = () => {
       </motion.div>
 
       {/* Buttons */}
-      <motion.div whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
+      <div>
         <Button
           className="w-full text-white py-[5px] px-3 mt-3 rounded-sm"
           variant="primary"
@@ -84,8 +86,8 @@ const AgentCard = () => {
           <UserCircle color="white" />
           View Profile
         </Button>
-      </motion.div>
-      <motion.div whileHover={{ scale: 1.05, transition: { duration: 0.3 } }}>
+      </div>
+      <div>
         <Button
           className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
@@ -93,7 +95,7 @@ const AgentCard = () => {
           <ContactIcon />
           <p className="text-[#8247E5]">Contact</p>
         </Button>
-      </motion.div>
+      </div>
     </motion.div>
   );
 };

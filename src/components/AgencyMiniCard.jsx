@@ -10,7 +10,7 @@ const AgencyMiniCard = ({ agencyName, agencyProfileLink }) => {
         alt="Agency Logo"
         className="object-cover w-[20px] h-[20px] rounded-full"
       />
-      <p className="text-xs font-semibold text-slate-900 "> {agencyName}</p>
+      <p className="text-xs font-semibold text-[#525C76]"> {agencyName}</p>
     </Link>
   );
 };

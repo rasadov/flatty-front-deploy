@@ -37,8 +37,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="bg-[#F9F8FF] border-b-2 px-8 py-[14.5px] container-fluid z-50 relative">
-      <nav className="flex items-center justify-between">
+    <header className="bg-[#F9F8FF] border-b-2 px-20 py-[14.5px] container-fluid z-50 relative ">
+      <nav className="container flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <LogoDesktop className="w-[120px] md:w-[180px]" />

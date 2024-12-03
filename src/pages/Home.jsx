@@ -54,12 +54,12 @@ const Home = () => {
     <div>
       <div>
         <div
-          className="relative w-full h-[751px]  bg-no-repeat bg-contain bg-center rounded-lg"
+          className="relative min-w-full h-[751px]   bg-no-repeat bg-cover bg-right rounded-lg w-[1440px]"
           style={{
             backgroundImage: ` url(${header_bg})`,
           }}
         >
-          <h1 className="absolute z-10 text-[56px]  font-bold w-[40%] text-slate-900 top-8 ">
+          <h1 className="absolute z-10 text-[56px]  font-bold w-[40%] text-slate-900 top-8 left-10 ">
             Unlocking Doors to Your Next Home
           </h1>
 

@@ -12,6 +12,9 @@ export default {
         accent: "#8247E5",
         borderGray: "#EEEFF2",
         cardText: "#525C76",
+        "primary-light": "#F4F2FF",
+        "background-main": "#F4F2FF", // You can change this if necessary
+        "footer-background": "#ECE8FF",
       },
       spacing: {
         3.75: "15px",
@@ -34,6 +37,9 @@ export default {
         lgCustom: "1131px", // Xüsusi lg
         78: "78px",
         20: "20px",
+      },
+      maxWidth: {
+        "screen-xl": "1440px",
       },
       height: {
         54: "54px",
