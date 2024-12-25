@@ -4,3 +4,42 @@
 body {
   background-color: #ece8ff;
 }
+
+@layer components {
+  /* Define a custom shadow class */
+  .shadow-card {
+    box-shadow: 0px 1px 1px 0px #703aca14; /* Adjust this to match your desired shadow */
+  }
+
+  .agent-card {
+    @apply px-4 py-6 bg-white border rounded-md shadow-card outline-[#EEEFF2];
+  }
+
+  .agent-image {
+    @apply object-cover w-[78px] h-[78px] rounded-full;
+  }
+
+  .agent-name {
+    @apply font-semibold text-cardText text-[16px] leading-[25.6px];
+  }
+
+  .agent-title {
+    @apply text-sm text-cardText font-medium;
+  }
+
+  .divider {
+    @apply my-4 border-t-2 border-gray-200;
+  }
+
+  .button-primary {
+    @apply w-full text-white py-[5px] px-3 mt-3 rounded-sm text-sm font-semibold leading-[22.4px] bg-accent;
+  }
+
+  .button-secondary {
+    @apply w-full py-[5px] px-3 my-2 text-accent rounded-sm;
+  }
+
+  .rating-text {
+    @apply text-sm text-cardText font-semibold leading-[22.4px];
+  }
+}

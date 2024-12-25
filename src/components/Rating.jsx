@@ -67,10 +67,10 @@ const Rating = ({ initialRating = 0, onRatingChange }) => {
             className="absolute top-0 left-0 w-full overflow-hidden"
             style={{ width: widthPercentage }}
           >
-            <span className="text-xl text-yellow-500">★</span>
+            <span className="text-[13px] text-yellow-500">★</span>
           </div>
           {/* Boz rəngdə default ulduz */}
-          <span className="text-xl text-gray-300">★</span>
+          <span className="text-[13px] text-gray-300">★</span>
         </div>
       );
     });
@@ -84,8 +84,8 @@ const Rating = ({ initialRating = 0, onRatingChange }) => {
   ]);
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="ml-2 text-sm font-medium text-gray-700">
+    <div className="flex gap-1  items-center w-[107px] h-[19px] justify-center my-auto">
+      <span className="mx-1 text-[16px] font-medium text-[#525C76] ">
         {(hoverRating ?? rating).toFixed(1)}
       </span>
       {renderStars}

@@ -3,7 +3,10 @@ import Button from "./Button";
 import { SeeAll } from "../assets/icons";
 const SectionArea = ({ children, sectionName }) => {
   return (
-    <div className="container p-8 m-auto my-20 bg-white rounded-2xl">
+    <div
+      className="w-full p-8 mx-auto my-20 bg-white rounded-2xl"
+      style={{ boxShadow: "0px 2px 3px 0px #703ACA14" }}
+    >
       <h1 className="text-[36px] my-6  font-semibold">{sectionName}</h1>
       {children}
       <div className="flex justify-end mt-8">

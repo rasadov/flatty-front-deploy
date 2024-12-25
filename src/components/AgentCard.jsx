@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion"; // Framer Motion importu
 import Button from "./Button";
-import { UserCircle } from "../assets/icons";
 import { Link } from "react-router-dom";
 import AgencyMiniCard from "./AgencyMiniCard";
 import Rating from "./Rating";
 import { ContactIcon } from "../assets/icons/ContactIcon";
 import apparment from "../assets/images/apparment.png";
+import { UserCircleFill } from "../assets/icons/UserCircleFill";
 
 const AgentCard = () => {
   const [rating, setRating] = useState(4); // Example: set initial rating as 4 stars
@@ -18,18 +18,16 @@ const AgentCard = () => {
 
   return (
     <motion.div
-      className="px-4 py-6 bg-white border rounded-md shadow-lg"
+      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
-      whileHover={{
-        scale: 1.03,
-        boxShadow: "0 8px 30px rgba(0, 0, 0, 0.15)",
-        transition: { duration: 0.3 },
+      style={{
+        boxShadow: "0px 1px 1px 0px #703ACA14",
       }}
     >
       {/* Agent Image and Details */}
-      <Link to={""} className="flex justify-start gap-2">
+      <Link to={"/agent"} className="flex justify-start gap-2">
         <motion.img
           src={apparment}
           alt="Agent's Picture"
@@ -40,8 +38,10 @@ const AgentCard = () => {
           }}
         />
         <div>
-          <div className="font-semibold text-[#525C76] ">Name Surname</div>
-          <div className="text-sm text-[#525C76]">
+          <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px] ">
+            Name Surname
+          </div>
+          <div className="text-sm text-[#525C76] font-medium">
             Senior Real Estate Agent{" "}
           </div>
           <Rating rating={rating} onRatingClick={handleRatingClick} />
@@ -52,48 +52,54 @@ const AgentCard = () => {
 
       {/* Experience and Specializations */}
       <div>
-        <p className="text-xs text-[#525C76]">
-          Experience: <span className="text-sm text-slate-900 ">5+ Years</span>
+        <p className="text-xs text-[#525C76]  leading-[19.2px] font-medium">
+          Experience:{" "}
+          <span className="text-sm text-[#525C76] font-semibold leading-[22.4px]">
+            5+ Years
+          </span>
         </p>
-        <p className="text-xs text-[#525C76]">Specializations:</p>
+        <p className="text-xs text-[#525C76] mb-[2px] leading-[19.2px] font-medium">
+          Specializations:
+        </p>
         <ul>
-          <li className="text-sm text-slate-900">- Property Management</li>
-          <li className="text-sm text-slate-900">- Real Estate Development</li>
+          <li className="text-sm text-[#525C76] font-semibold leading-[22.4px]">
+            - Property Management
+          </li>
+          <li className="text-sm text-[#525C76] font-semibold  leading-[22.4px]">
+            - Real Estate Development
+          </li>
         </ul>
       </div>
 
       <hr className="my-4 border-t-2 border-gray-200" />
 
       {/* Agency Card */}
-      <motion.div
-        whileHover={{
-          scale: 1.05,
-          transition: { duration: 0.3 },
-        }}
-      >
+      <motion.div>
         <AgencyMiniCard
           agencyName="Emtan Construction"
-          agencyProfileLink="/agency-profile"
+          agencyProfileLink="/complex"
         />
       </motion.div>
 
       {/* Buttons */}
-      <div>
+      <Link to={"/agent"}>
         <Button
-          className="w-full text-white py-[5px] px-3 mt-3 rounded-sm"
+          className="w-full text-white py-[5px] px-3 mt-3 rounded-sm text-sm font-semibold leading-[22.4px]"
           variant="primary"
         >
-          <UserCircle color="white" />
+          <UserCircleFill color="white" />
           View Profile
         </Button>
-      </div>
+      </Link>
       <div>
         <Button
           className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
         >
           <ContactIcon />
-          <p className="text-[#8247E5]">Contact</p>
+          <p className="text-[#8247E5] text-sm font-semibold leading-[22.4px]">
+            Contact
+          </p>
         </Button>
       </div>
     </motion.div>

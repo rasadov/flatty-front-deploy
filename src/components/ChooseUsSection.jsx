@@ -14,26 +14,26 @@ const WhyChooseUsSection = () => {
     },
     {
       imageSrc: img2,
-      title: "Explore Dream Properties",
+      title: "Discover Dream Homes",
       description:
-        "Browse through a wide range of properties that meet your needs and preferences, with detailed insights and photos.",
+        "Explore a curated selection of properties tailored to fit your lifestyle and preferences.",
     },
     {
       imageSrc: img3,
-      title: "Enjoy Stress-Free Real Estate Experience",
+      title: "Simple, Hassle-Free Transactions",
       description:
-        "We manage all aspects of your real estate journey, ensuring a smooth and stress-free process from start to finish.",
+        "Enjoy a seamless experience with clear steps and reliable support, making property buying and selling easy and efficient.",
     },
   ];
 
   return (
-    <section className="container px-8 pt-8 pb-16 m-auto bg-white border rounded-lg">
+    <section className="w-full px-8 pt-8 pb-16 m-auto bg-white border rounded-lg">
       <div className="mb-8 text-left">
-        <h2 className="mb-2 text-xl font-bold text-darkText">
+        <h2 className="mb-2 text-[28px] leading-[42px] font-semibold text-darkText">
           Why Choose Us for Your Real Estate Journey
         </h2>
         <div className="w-[55%]">
-          <p className="text-[18x] text-black  font-normal leading-6 mb-2">
+          <p className="text-[18x] text-black  font-normal leading-[28px] mb-2">
             Easily connect with trusted realtors, explore dream properties, and
             enjoy a smooth, stress-free real estate experience.
           </p>

@@ -17,10 +17,10 @@ const ChooseUsCard = ({ imageSrc, title, description }) => {
           className="object-cover w-[50px] h-[50px] sm:w-[65px] sm:h-[65px] mr-3 sm:mr-5"
         />
       </div>
-      <h3 className="mb-2 text-lg font-semibold sm:text-xl md:text-2xl text-darkText">
+      <h3 className="mb-2 text-[20px] font-semibold sm:text-xl text-darkText leading-[32px]">
         {title}
       </h3>
-      <p className="text-[16px] sm:text-[18px] md:text-base text-black sm:w-[250px] md:w-80 font-normal">
+      <p className="text-[18px]  text-black sm:w-[250px] md:w-80 font-normal leading-[28.8px]">
         {description}
       </p>
     </motion.div>

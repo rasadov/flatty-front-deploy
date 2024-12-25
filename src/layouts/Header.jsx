@@ -37,8 +37,8 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="bg-[#F9F8FF] border-b-2 px-20 py-[14.5px] container-fluid z-50 relative ">
-      <nav className="container flex items-center justify-between">
+    <header className="bg-[#F9F8FF] min-w-full    border-b-2 px-20 py-[14.5px] z-50 relative ">
+      <nav className="flex items-center justify-between w-full min-w-full mx-auto ">
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <LogoDesktop className="w-[120px] md:w-[180px]" />
@@ -75,7 +75,7 @@ const Header = () => {
         </button>
 
         {/* Navbar Links (Desktop) */}
-        <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[16px]">
+        <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[18px] leading-[28.8px] font-medium">
           {renderNavLinks()}
         </div>
 
@@ -85,7 +85,7 @@ const Header = () => {
             type="button"
             variant="secondary"
             onClick={() => handleNavigation("/login")}
-            className="px-[18.6px] py-[9.5px] transition-all duration-300 hover:bg-[#A673EF] hover:text-white border rounded-sm"
+            className="px-[18.6px] py-[9.5px] w-[96px] h-[45px] transition-all duration-300 hover:bg-[#A673EF] hover:text-white border rounded-sm text-[18px] leading-[28.8px] font-semibold"
           >
             Log in
           </Button>
@@ -93,7 +93,7 @@ const Header = () => {
             type="submit"
             variant="primary"
             onClick={() => handleNavigation("/register")}
-            className="px-[14.2px] py-[10.5px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm"
+            className="px-[14.2px] py-[10.5px] w-[96px] h-[45px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm text-[18px] leading-[28.8px] font-semibold"
           >
             Sign up
           </Button>

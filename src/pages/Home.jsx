@@ -6,95 +6,51 @@ import WhyChooseUsSection from "../components/ChooseUsSection";
 import TestimonialSection from "../components/TestimonialSection";
 import header_bg from "../assets/images/header_bg.png";
 import key_img from "../assets/images/key_img.png";
-import apparment1 from "../assets/images/apparment1.png";
-import apartment2 from "../assets/images/apparment2.png";
-import apartment3 from "../assets/images/apparment3.png";
-import apartment4 from "../assets/images/apparment4.png";
-const items = [
-  {
-    img: apparment1,
-    price: "250 000",
-    room: 3,
-    area: 150,
-    currFloor: "10",
-    building: "15",
-    location: "New York City, NY",
-  },
-  {
-    img: apartment2,
-    price: "300 000",
-    room: 4,
-    area: 180,
-    currFloor: "10",
-    building: "15",
-    location: "Los Angeles, CA",
-  },
-  {
-    img: apartment3,
-    price: "400 000",
-    room: 5,
-    area: 200,
-    currFloor: "10",
-    building: "15",
-    location: "Miami, FL",
-  },
-  {
-    img: apartment4,
-    price: "500 000",
-    room: 6,
-    area: 250,
-    currFloor: "10",
-    building: "15",
-    location: "San Francisco, CA",
-  },
-];
-
+import { data } from "../data.js";
 const Home = () => {
   return (
     <div>
-      <div>
-        <div
-          className="relative min-w-full h-[751px]   bg-no-repeat bg-cover bg-right rounded-lg w-[1440px]"
-          style={{
-            backgroundImage: ` url(${header_bg})`,
-          }}
-        >
-          <h1 className="absolute z-10 text-[56px]  font-bold w-[40%] text-slate-900 top-8 left-10 ">
-            Unlocking Doors to Your Next Home
-          </h1>
+      <div
+        className="relative min-w-full h-[751px]   bg-no-repeat bg-cover bg-right rounded-lg w-[1440px]"
+        style={{
+          backgroundImage: ` url(${header_bg})`,
+        }}
+      >
+        <h1 className="absolute z-10 text-[56px]  font-bold w-[40%] text-slate-900 top-8 left-10 ">
+          Unlocking Doors to Your Next Home
+        </h1>
 
-          <div className="absolute z-20 transform -translate-y-1/2 bottom-[42%] left-[3%]">
-            <Searchbar />
-          </div>
-
-          <img
-            src={key_img}
-            alt="Overlay Image"
-            className="absolute z-20 top-[72%] left-[50%] transform -translate-x-1/2 w-[200px] opacity-90"
-          />
+        <div className="absolute z-20 transform -translate-y-1/2 bottom-[42%] left-[3%] w-[1131px]">
+          <Searchbar />
         </div>
 
-        <div className="relative z-10 -mt-40">
-          <CardList sectionName="Featured">
-            {items.map((item) => (
-              <HouseItem key={item.img} {...item} />
-            ))}
-          </CardList>
-        </div>
-        <CardList sectionName={"Popular"}>
-          {items.map((item) => (
+        <img
+          src={key_img}
+          alt="Overlay Image"
+          className="absolute z-20 top-[72%] left-[50%] transform -translate-x-1/2 w-[200px] opacity-90"
+        />
+      </div>
+
+      <div className="relative z-10 -mt-40">
+        <CardList sectionName="Featured">
+          {data.slice(0, 4).map((item) => (
             <HouseItem key={item.img} {...item} />
           ))}
         </CardList>
-        <CardList sectionName={"Agents"}>
-          {items.map((item) => (
-            <AgentCard key={item.img} {...item} />
-          ))}
-        </CardList>
-
-        <WhyChooseUsSection />
-        <TestimonialSection />
       </div>
+      <CardList sectionName={"Popular"}>
+        {data.slice(0, 4).map((item) => (
+          <HouseItem key={item.img} {...item} />
+        ))}
+      </CardList>
+      <CardList sectionName={"Agents"}>
+        {data.slice(0, 4).map((item) => (
+          <AgentCard key={item.img} {...item} />
+        ))}
+      </CardList>
+
+      <WhyChooseUsSection />
+      <TestimonialSection sectionName={"Testimonials"} />
     </div>
   );
 };

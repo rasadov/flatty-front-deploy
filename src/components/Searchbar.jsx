@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, Cancel, MapPin, ShowMap } from "../assets/icons";
+import { ArrowDown, MapPin, ShowMap } from "../assets/icons";
+import { useNavigate } from "react-router-dom";
+import { LocationCancel } from "../assets/icons/LocationCancel";
 
 const Searchbar = () => {
   const [dropdownStates, setDropdownStates] = useState({
@@ -10,11 +12,12 @@ const Searchbar = () => {
     location: null,
   });
   const [dropdownOpen, setDropdownOpen] = useState(null);
-
+  const navigate = useNavigate();
   const handleSearch = () => {
     const { min, max } = dropdownStates.priceRange;
     console.log(`Searching with price range: $${min} - $${max}`);
     // You can implement the logic to filter/search based on the price range here
+    navigate("/search");
   };
 
   const handleShowOnMap = () => {
@@ -143,20 +146,23 @@ const Searchbar = () => {
 
   return (
     <motion.div
-      className="max-w-full w-full sm:w-[320px] md:w-[768px] xl:w-[1131px] h-[54px] mx-auto bg-white rounded-lg shadow-lg"
+      className="max-w-full w-full h-[54px] mx-auto bg-white rounded-l-sm rounded-r-sm  shadow-lg  flex flex-col  sm:flex-grow sm:flex-row"
+      style={{
+        boxShadow: "0px 1px 1px 0px #703ACA14",
+      }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <div
-        className="grid items-center w-full h-full grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-6"
+        className="grid items-center w-full h-full grid-cols-1 sm:grid-cols-1 md:grid-cols-4 lg:grid-cols-4"
         style={{ height: "54px" }}
       >
         {/* Category Dropdown */}
         <div className="relative">
           <button
             onClick={() => handleDropdownToggle("category")}
-            className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
+            className="flex items-center justify-between w-full px-4 py-2 ml-1 text-left bg-white"
           >
             <span className="text-[#525C76]  text-sm font-semibold">
               {dropdownStates.category || "Category"}
@@ -199,7 +205,7 @@ const Searchbar = () => {
           </button>
           {dropdownOpen === "roomNumber" && (
             <motion.div
-              className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg"
+              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -230,7 +236,7 @@ const Searchbar = () => {
           </button>
           {dropdownOpen === "price" && (
             <motion.div
-              className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg"
+              className="absolute left-0 right-0 z-10 mt-2  w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -248,19 +254,19 @@ const Searchbar = () => {
             className="flex items-center justify-between w-full px-4 bg-white border-l-2"
           >
             <MapPin />
-            <span className="text-[#525C76]  text-sm font-semibold">
+            <span className="text-[#525C76]  text-sm font-semibold mr-10">
               {dropdownStates.location || "Location"}
             </span>
             <motion.div
               animate={{ rotate: dropdownOpen === "location" ? 180 : 0 }}
               transition={{ duration: 0.3 }}
             >
-              <Cancel />
+              <LocationCancel />
             </motion.div>
           </button>
           {dropdownOpen === "location" && (
             <motion.div
-              className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg"
+              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -270,10 +276,11 @@ const Searchbar = () => {
             </motion.div>
           )}
         </div>
-
+      </div>
+      <div className="flex items-center justify-center">
         <button
           onClick={handleShowOnMap}
-          className="flex items-center justify-center px-4 py-4 text-xl text-[#8247E5] bg-white border-2 border-[#8247E5] h-[54px] font-semibold"
+          className="flex items-center justify-center px-4 py-4 text-xl w-[188px] text-[#8247E5] bg-white border-2 border-[#8247E5] h-[54px] font-semibold"
         >
           <ShowMap />
           <span className="ml-2">Show on Map</span>
@@ -281,7 +288,7 @@ const Searchbar = () => {
 
         <motion.button
           onClick={handleSearch}
-          className="bg-[#8247E5] hover:bg-[#A673EF] text-xl text-white col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1 transition-colors duration-300 h-full rounded-r-md font-semibold"
+          className="bg-[#8247E5] hover:bg-[#A673EF] text-xl w-[100px] text-white col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1 transition-colors duration-300 h-full rounded-r-md font-semibold"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.5 }}

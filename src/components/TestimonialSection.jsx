@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TestimonialCard from "./TestimonialCard";
 
-const TestimonialSection = () => {
+const TestimonialSection = ({ sectionName }) => {
   const testimonials = [
     {
       imageSrc: "https://via.placeholder.com/50x50",
@@ -36,15 +36,15 @@ const TestimonialSection = () => {
     {
       imageSrc: "https://via.placeholder.com/50x50",
       rating: 4,
-      text: "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi.",
+      text: "Ut enim ad minima veniam,  quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi.",
       name: "Name Surname 6",
     },
   ];
 
   return (
-    <section className="container py-12 mx-auto mt-20 mb-40 bg-white rounded-lg">
+    <section className="w-full py-12 mx-auto mt-20 mb-40 bg-white rounded-lg">
       <h2 className="px-8 mb-6 text-4xl font-semibold text-left ">
-        Testimonials
+        {sectionName}{" "}
       </h2>
       <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((testimonial, index) => (
