@@ -128,10 +128,10 @@ const Map = () => {
                 click: () => setSelectedLocation(location),
               }}
             >
-              <Popup>
+              {/* <Popup>
                 <h3 className="font-semibold">{location.name}</h3>
                 {location.description && <p>{location.description}</p>}
-              </Popup>
+              </Popup> */}
             </Marker>
           ))}
 
