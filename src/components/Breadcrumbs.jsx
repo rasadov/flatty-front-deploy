@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowRight } from "../assets/icons";
 
-const Breadcrumbs = () => {
+export const Breadcrumbs = () => {
   const location = useLocation();
 
   // Memoize pathnames calculation to improve performance

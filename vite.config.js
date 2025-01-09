@@ -22,4 +22,7 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  optimizeDeps: {
+    include: ["axios", "swiper/react"], // Explicitly include dependencies if needed
+  },
 });

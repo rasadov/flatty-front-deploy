@@ -1,7 +1,7 @@
 import React from "react";
 import Input from "./İnput";
 
-const RangeInput = ({
+export const RangeInput = ({
   label,
   from,
   to,

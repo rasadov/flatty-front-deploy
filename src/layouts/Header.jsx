@@ -1,19 +1,64 @@
-import React, { useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useCallback, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import Button from "../components/Button";
-import { LogoDesktop } from "../assets/icons";
+import {
+  HeartEmpty,
+  HeartFull,
+  LogoDesktop,
+  NotificationTrue,
+  Wishlist,
+} from "../assets/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logout, setUser } from "../store/slices/authSlice";
+import { IoNotificationsCircleOutline } from "react-icons/io5";
+import { AiOutlineProfile } from "react-icons/ai";
+import NotificationsModal from "../components/NotificationsModal";
+import { SelectedWishlist } from "../assets/icons/SelectedWishlist";
+
+const initialNotifications = [
+  {
+    id: 1,
+    message: "Notification 1",
+    title: "Notification title",
+    read: false,
+  },
+  {
+    id: 2,
+    message: "Notification 2",
+    title: "Notification title",
+    read: false,
+  },
+  {
+    id: 3,
+    message: "Notification 3",
+    title: "Notification title",
+    read: false,
+  },
+  // Add more notifications as needed
+];
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [notifications, setNotifications] = useState(initialNotifications);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const location = useLocation(); // useLocation istifadə edirik
+  const user = useSelector((state) => state.auth.user);
 
-  // Optimizing the toggle function by memoizing it using useCallback
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (token && storedUser) {
+      dispatch(setUser(storedUser));
+    }
+  }, [dispatch]);
+
   const toggleMenu = useCallback(() => {
     setMenuOpen((prevState) => !prevState);
   }, []);
 
-  // Function to navigate to a different page
   const handleNavigation = useCallback(
     (path) => {
       navigate(path);
@@ -21,9 +66,36 @@ const Header = () => {
     [navigate]
   );
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
+  const handleClearAll = () => {
+    setNotifications([]);
+  };
+
+  const handleMarkAllRead = () => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification) => ({
+        ...notification,
+        read: true,
+      }))
+    );
+  };
+
+  // const handleMarkSelectedRead = (selectedNotifications) => {
+  //   setNotifications((prevNotifications) =>
+  //     prevNotifications.map((notification) =>
+  //       selectedNotifications.includes(notification.id)
+  //         ? { ...notification, read: true }
+  //         : notification
+  //     )
+  //   );
+  // };
+
   const navLinks = [
     { to: "/agents", label: "Agents" },
-    { to: "/agencies", label: "Agencies" },
     { to: "/about", label: "About us" },
     { to: "/contacts", label: "Contacts" },
   ];
@@ -36,15 +108,71 @@ const Header = () => {
     ));
   }, []);
 
+  const renderAuthButtons = () => {
+    if (user) {
+      return (
+        <div className="w-[120px] h-[34px] flex justify-center gap-2 items-center ">
+          <div
+            onClick={() => handleNavigation("/wishlist")}
+            className=" cursor text-[#A673EF]  w-[34px] h-[34px] flex justify-center items-center"
+          >
+            {location.pathname === "/wishlist" ? (
+              <SelectedWishlist />
+            ) : (
+              <Wishlist />
+            )}
+          </div>
+          <div
+            onClick={() => setNotificationsOpen(true)}
+            className=" cursor w-[34px] h-[34px] flex justify-center items-center"
+          >
+            <NotificationTrue />
+          </div>
+          <div
+            onClick={() => handleNavigation("/profile")}
+            className=" cursor  w-[34px] h-[34px] rounded-full border border-[#A673EF]"
+          ></div>
+          {/* <Button
+            type="button"
+            variant="secondary"
+            onClick={handleLogout}
+            className="px-[18.6px] py-[9.5px] cursor border rounded-md"
+          >
+            Log out
+          </Button> */}
+        </div>
+      );
+    } else {
+      return (
+        <div className="w-[154px] h-[34px] flex justify-center gap-4 items-center ">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => handleNavigation("/login")}
+            className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-[#A673EF] hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
+          >
+            Log in
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
+            onClick={() => handleNavigation("/register")}
+            className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
+          >
+            Sign up
+          </Button>
+        </div>
+      );
+    }
+  };
+
   return (
-    <header className="bg-[#F9F8FF] min-w-full    border-b-2 px-20 py-[14.5px] z-50 relative ">
-      <nav className="flex items-center justify-between w-full min-w-full mx-auto ">
-        {/* Logo */}
+    <header className="bg-[#F9F8FF] min-w-full border-b-2 px-4 md:px-20 py-[14.5px] z-50 relative">
+      <nav className="flex items-center justify-between w-full min-w-full mx-auto">
         <Link to="/" className="flex items-center">
           <LogoDesktop className="w-[120px] md:w-[180px]" />
         </Link>
 
-        {/* Hamburger Menu */}
         <button
           onClick={toggleMenu}
           className="block md:hidden p-2 rounded-full bg-[#F9F8FF] shadow-md focus:outline-none transition-all duration-300 transform hover:scale-110"
@@ -74,33 +202,15 @@ const Header = () => {
           </motion.div>
         </button>
 
-        {/* Navbar Links (Desktop) */}
         <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[18px] leading-[28.8px] font-medium">
           {renderNavLinks()}
         </div>
 
-        {/* Button Section (Desktop) */}
         <div className="items-center hidden gap-6 md:flex">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => handleNavigation("/login")}
-            className="px-[18.6px] py-[9.5px] w-[96px] h-[45px] transition-all duration-300 hover:bg-[#A673EF] hover:text-white border rounded-sm text-[18px] leading-[28.8px] font-semibold"
-          >
-            Log in
-          </Button>
-          <Button
-            type="submit"
-            variant="primary"
-            onClick={() => handleNavigation("/register")}
-            className="px-[14.2px] py-[10.5px] w-[96px] h-[45px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm text-[18px] leading-[28.8px] font-semibold"
-          >
-            Sign up
-          </Button>
+          {renderAuthButtons()}
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <motion.div
         className={`${
           menuOpen ? "flex" : "hidden"
@@ -109,12 +219,10 @@ const Header = () => {
         animate={{ opacity: menuOpen ? 1 : 0 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Logo in Mobile Menu */}
         <Link to="/" className="flex items-center mb-8">
           <LogoDesktop className="w-[120px] md:w-[180px]" />
         </Link>
 
-        {/* Close Button */}
         <motion.button
           onClick={toggleMenu}
           className="absolute text-3xl text-black transition-all duration-300 transform top-4 right-4 hover:scale-110"
@@ -124,7 +232,6 @@ const Header = () => {
           &times;
         </motion.button>
 
-        {/* Mobile Navbar Links */}
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -135,36 +242,17 @@ const Header = () => {
         </motion.div>
 
         <div className="flex items-center justify-center gap-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => navigate("/login")}
-              className="px-[18.6px] py-[9.5px] cursor border rounded-md"
-            >
-              Log in
-            </Button>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            <Button
-              type="submit"
-              variant="primary"
-              onClick={() => navigate("/register")}
-              className="px-[14.2px] py-[10.5px] cursor border rounded-md"
-            >
-              Sign up
-            </Button>
-          </motion.div>
+          {renderAuthButtons()}
         </div>
       </motion.div>
+
+      <NotificationsModal
+        isOpen={notificationsOpen}
+        onClose={() => setNotificationsOpen(false)}
+        notifications={notifications}
+        onClearAll={handleClearAll}
+        onMarkAllRead={handleMarkAllRead}
+      />
     </header>
   );
 };

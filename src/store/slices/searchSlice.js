@@ -5,7 +5,8 @@ export const loadSearchResults = createAsyncThunk(
   "search/loadResults",
   async (filters, { rejectWithValue }) => {
     try {
-      return await fetchSearchResults(filters);
+      const results = await fetchSearchResults(filters);
+      return results;
     } catch (error) {
       return rejectWithValue(error.message);
     }

@@ -1,13 +1,11 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { notify } from "@components/Notification";
+import { notify } from "../components/Notification";
 import { useCallback, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion"; // Import framer-motion
-import Input from "../components/İnput";
-import Button from "../components/Button";
+import { motion } from "framer-motion";
+
 import {
   CheckSquare,
   CheckSquareFull,
@@ -15,8 +13,11 @@ import {
   UserCircle,
   Warning,
 } from "../assets/icons";
+import { useDispatch } from "react-redux";
+import { registerUser } from "../store/slices/authSlice";
+import Button from "../components/Button";
+import Input from "../components/İnput";
 
-// Validation Schema
 const schema = yup.object({
   role: yup.string().required("Role is required"),
   email: yup
@@ -54,47 +55,47 @@ const schema = yup.object({
 });
 
 const Register = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const [role, setRole] = useState("buyer");
-  const [isHuman, setIsHuman] = useState(false); // State for checkbox
+  const dispatch = useDispatch();
+  const [isHuman, setIsHuman] = useState(false);
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
-    defaultValues: {
-      role: "buyer",
-    },
   });
 
   const onSubmit = useCallback(
-    (data) => {
-      if (!isHuman) {
-        notify("Please confirm you're not a robot");
-        return;
+    async (data) => {
+      if (!isHuman) return notify("Please confirm you're not a robot");
+      try {
+        await dispatch(registerUser({ ...data, role })).unwrap();
+        notify("Account created successfully!");
+        reset(); // Clear the form
+        navigate("/login"); // Redirect to login page
+      } catch (error) {
+        notify(error.message || "Registration failed");
       }
-      console.log("Form data:", data);
-      notify("Account created successfully!");
-      reset();
-      navigate("/login");
     },
-    [reset, navigate, isHuman]
+    [dispatch, isHuman, navigate, reset, role]
   );
 
   const handleRoleChange = (selectedRole) => {
     setRole(selectedRole);
     setValue("role", selectedRole);
   };
+
   const handleCancel = () => {
     notify(t("Register Cancelled"));
     reset();
     navigate("/login");
   };
+
   const handleCheckboxChange = () => {
     setIsHuman((prev) => !prev);
   };
@@ -106,8 +107,8 @@ const Register = () => {
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className=" text-3xl font-semibold  text-[#0F1D40]">
-        {t("Select Your Role")}
+      <h1 className="text-3xl font-semibold text-[#0F1D40]">
+        Select Your Role
       </h1>
       <div className="flex justify-center my-5">
         <motion.div
@@ -127,7 +128,7 @@ const Register = () => {
             onClick={() => handleRoleChange("buyer")}
           >
             <UserCircle />
-            <span>{t("Buyer")}</span>
+            <span>Buyer</span>
           </Button>
         </motion.div>
 
@@ -148,12 +149,11 @@ const Register = () => {
             onClick={() => handleRoleChange("agent")}
           >
             <HouseIcon />
-            <span>{t("Agent")}</span>
+            <span>Agent</span>
           </Button>
         </motion.div>
       </div>
 
-      {/* Form */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col space-y-4"
@@ -162,21 +162,21 @@ const Register = () => {
           type="email"
           error={errors.email}
           {...register("email")}
-          placeholder={t("Email")}
+          placeholder="Email"
           className="w-full"
         />
         <Input
           type="text"
           error={errors.name}
           {...register("name")}
-          placeholder={t("Name Surname")}
+          placeholder="Name Surname"
           className="w-full"
         />
         <Input
           type="text"
           error={errors.mobile}
           {...register("mobile")}
-          placeholder={t("Mobile number")}
+          placeholder="Mobile number"
           className="w-full"
         />
         {role === "agent" && (
@@ -184,7 +184,7 @@ const Register = () => {
             type="text"
             error={errors.serialNumber}
             {...register("serialNumber")}
-            placeholder={t("Enter Serial Number")}
+            placeholder="Enter Serial Number"
             className="w-full"
           />
         )}
@@ -192,23 +192,20 @@ const Register = () => {
           type="password"
           error={errors.password}
           {...register("password")}
-          placeholder={t("Create a password")}
+          placeholder="Create a password"
           className="w-full"
         />
         <Input
           type="password"
           error={errors.confirmPassword}
           {...register("confirmPassword")}
-          placeholder={t("Confirm password")}
+          placeholder="Confirm password"
           className="w-full"
         />
         <p className="flex items-center text-[#525C76] text-[10px]">
           <Warning />
-          {t(
-            "Use 8 or more characters with a mix of letters, numbers & symbols"
-          )}
+          Use 8 or more characters with a mix of letters, numbers & symbols
         </p>
-        {/* reCAPTCHA with framer-motion animation */}
         <motion.div
           className="flex items-center w-full p-2 py-[21px] space-x-2 border rounded-xl"
           initial={{ opacity: 0 }}
@@ -224,43 +221,37 @@ const Register = () => {
           >
             {isHuman ? <CheckSquareFull /> : <CheckSquare />}
           </div>
-          <span className="text-gray-600">{t("I'm not a robot")}</span>
+          <span className="text-gray-600">I'm not a robot</span>
         </motion.div>
-        {/* Terms agreement */}
         <div className="flex items-center">
           <span className="text-sm text-stone-500">
-            {t("By creating an account, you agree to our ")}
+            By creating an account, you agree to our{" "}
             <Link to={""} className="text-stone-950 hover:text-[#8247E5]">
-              {t("Terms of use")}
+              Terms of use
             </Link>{" "}
-            {t("and ")}
+            and{" "}
             <Link to={""} className="text-stone-950 hover:text-[#8247E5]">
-              {t("Privacy Policy")}
+              Privacy Policy
             </Link>
           </span>
         </div>
 
-        {/* Create account button */}
         <Button
           type="submit"
           variant="primary"
           isLoading={isSubmitting}
           className="w-full mt-[36px!important] px-5 py-[8.7px]"
         >
-          {t("Create account")}
+          Create account
         </Button>
 
-        {/* Log in button */}
         <p className="text-sm ">
-          <span className="text-stone-500">
-            {t("Already have an account? ")}
-          </span>
+          <span className="text-stone-500">Already have an account? </span>
           <Link to={"/login"} className="text-stone-950">
-            {t("Log in")}
+            Log in
           </Link>
         </p>
 
-        {/* Cancel button with framer-motion animation */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -269,10 +260,10 @@ const Register = () => {
           <Button
             type="button"
             variant="cancel"
-            onClick={() => handleCancel()} // Calling the cancel function
+            onClick={() => handleCancel()}
             className="w-full px-5 py-[8.7px]"
           >
-            {t("Cancel")}
+            Cancel
           </Button>
         </motion.div>
       </form>

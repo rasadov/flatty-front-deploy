@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const ChooseUsCard = ({ imageSrc, title, description }) => {
+export const ChooseUsCard = ({ imageSrc, title, description }) => {
   return (
     <motion.div
       className="p-4 transition-all rounded-md"

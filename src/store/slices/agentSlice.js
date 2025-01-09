@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchAgents } from "../services/agentService";
+import { fetchAgents, fetchAgent } from "../services/agentService";
 
 // Thunk to load all agents
 export const loadAgents = createAsyncThunk(
@@ -8,7 +8,10 @@ export const loadAgents = createAsyncThunk(
     try {
       return await fetchAgents();
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue({
+        message: error.message,
+        status: error.response?.status,
+      });
     }
   }
 );
@@ -16,34 +19,31 @@ export const loadAgents = createAsyncThunk(
 // Thunk to load a single agent by ID
 export const loadAgentById = createAsyncThunk(
   "agent/loadAgentById",
-  async (id, { getState, rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const agents = getState().agent.agents;
-      console.log("Agents in state:", agents); // Check if the agents are correctly populated
-      const agent = agents.find((agent) => agent.id === id);
-      if (!agent) {
-        return rejectWithValue("Agent not found");
-      }
-      return agent;
+      return await fetchAgent(id);
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue({
+        message: error.message,
+        status: error.response?.status,
+      });
     }
   }
 );
 
+const initialState = {
+  agents: {}, // Normalized data structure
+  allIds: [],
+  currentAgent: null,
+  loading: false,
+  error: null,
+};
+
 const agentSlice = createSlice({
   name: "agent",
-  initialState: {
-    agents: [],
-    currentAgent: null,
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
-    clearAgents: (state) => {
-      state.agents = [];
-      state.currentAgent = null;
-    },
+    clearAgents: () => initialState,
   },
   extraReducers: (builder) => {
     builder
@@ -52,7 +52,11 @@ const agentSlice = createSlice({
         state.error = null;
       })
       .addCase(loadAgents.fulfilled, (state, action) => {
-        state.agents = action.payload;
+        state.allIds = action.payload.map((agent) => agent.id);
+        state.agents = action.payload.reduce((acc, agent) => {
+          acc[agent.id] = agent;
+          return acc;
+        }, {});
         state.loading = false;
       })
       .addCase(loadAgents.rejected, (state, action) => {

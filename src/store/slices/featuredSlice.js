@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-// import { fetchFeaturedProperties } from '../services/featuredService';
+import { fetchFeaturedProperties } from "../services/featuredService";
 
 export const loadFeaturedProperties = createAsyncThunk(
   "featured/loadProperties",

@@ -8,7 +8,7 @@ import { ContactIcon } from "../assets/icons/ContactIcon";
 import apparment from "../assets/images/apparment.png";
 import { UserCircleFill } from "../assets/icons/UserCircleFill";
 
-const AgentCard = () => {
+export const AgentCard = () => {
   const [rating, setRating] = useState(4); // Example: set initial rating as 4 stars
 
   // Function to handle star rating click

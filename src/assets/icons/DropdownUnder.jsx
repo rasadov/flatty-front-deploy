@@ -12,9 +12,9 @@ export const DropdownUnder = () => {
       <path
         d="M13 6L8 11L3 6"
         stroke="#49536E"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

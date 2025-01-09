@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Share } from "../assets/icons/Share";
-import { Edit } from "../assets/icons/Edit";
-import { Download } from "../assets/icons/Download";
-import { Print } from "../assets/icons/Print";
-import { NoViews } from "../assets/icons/NoViews";
-import { Report } from "../assets/icons/Report";
-import { ShowOnMap } from "../assets/icons/ShowOnMap";
-import { PostView } from "../assets/icons/PostView";
-import apparment1 from "../assets/images/apparment1.png";
-import apartment2 from "../assets/images/apparment2.png";
-import apartment3 from "../assets/images/apparment3.png";
-import apartment4 from "../assets/images/apparment4.png";
+import { Share } from "../../assets/icons/Share";
+import { Edit } from "../../assets/icons/Edit";
+import { Download } from "../../assets/icons/Download";
+import { Print } from "../../assets/icons/Print";
+import { NoViews } from "../../assets/icons/NoViews";
+import { Report } from "../../assets/icons/Report";
+import { ShowOnMap } from "../../assets/icons/ShowOnMap";
+import { PostView } from "../../assets/icons/PostView";
+import apparment1 from "../../assets/images/apparment1.png";
+import apartment2 from "../../assets/images/apparment2.png";
+import apartment3 from "../../assets/images/apparment3.png";
+import apartment4 from "../../assets/images/apparment4.png";
 // Button Component
 const ActionButton = ({ label, onClick }) => (
   <button onClick={onClick}>{label}</button>

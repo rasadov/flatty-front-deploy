@@ -1,6 +1,10 @@
 import React from "react";
 
-export const ArrowRight = ({ size = 24, className = "" }) => {
+export const ArrowRight = ({
+  size = "24",
+  className = "",
+  color = "black",
+}) => {
   return (
     <svg
       width={size}
@@ -13,7 +17,7 @@ export const ArrowRight = ({ size = 24, className = "" }) => {
       <g clipPath="url(#clip0_36163_1447)">
         <path
           d="M8.59 16.59L13.17 12L8.59 7.41L10 6L16 12L10 18L8.59 16.59Z"
-          fill="currentColor"
+          fill={color}
         />
       </g>
       <defs>

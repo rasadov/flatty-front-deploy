@@ -1,16 +1,46 @@
 import React from "react";
 import Rating from "../components/Rating";
 import AgencyMiniCard from "../components/AgencyMiniCard";
-import CardList from "../components/CardList";
+import CardList from "../components/sections/CardList";
 import { data } from "../data.js";
-import TestimonialSection from "../components/TestimonialSection.jsx";
+import TestimonialSection from "../components/sections/TestimonialSection.jsx";
 import HouseItem from "../components/HouseItem.jsx";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
-import Button from "../components/Button.jsx";
-import { Contact } from "../assets/icons/Contact.jsx";
-import { Chat } from "../assets/icons/Chat.jsx";
 import apparment from "../assets/images/apparment.png";
-import { Link } from "react-router-dom";
+import agent_back from "../assets/images/agent_back.png";
+import ComplexCard from "../components/ComplexCard.jsx";
+import { Certified } from "../assets/icons/Certified.jsx";
+import { FaEllipsisH } from "react-icons/fa";
+const complexData = [
+  {
+    id: 1,
+    img: "https://via.placeholder.com/300x173?text=Apartment+1",
+    title: "Modern Apartment",
+    roomCount: 3,
+    location: "Baku, Azerbaijan",
+  },
+  {
+    id: 2,
+    img: "https://via.placeholder.com/300x173?text=Apartment+2",
+    title: "Luxury Penthouse with Sea View",
+    roomCount: 5,
+    location: "Istanbul, Turkey",
+  },
+  {
+    id: 3,
+    img: "https://via.placeholder.com/300x173?text=Apartment+3",
+    title: "Cozy Flat Near Park",
+    roomCount: 2,
+    location: "Tbilisi, Georgia",
+  },
+  {
+    id: 4,
+    img: "https://via.placeholder.com/300x173?text=Apartment+4",
+    title: "Spacious Villa with Pool",
+    roomCount: 6,
+    location: "Antalya, Turkey",
+  },
+];
 
 export const Agent = () => {
   return (
@@ -18,25 +48,32 @@ export const Agent = () => {
       <Breadcrumbs title="Apartment" />
       <div className="flex flex-col items-start gap-6 mt-8 lg:flex-row">
         {/* Agent Info */}
-        <div className=" p-6 bg-white rounded-lg w-[578px] h-[341px]">
-          <div className="flex items-center gap-4 mb-6">
+        <div className=" p-6 bg-white rounded-lg w-[578px] min-h-[272px]">
+          <div className="flex items-center justify-start gap-4 mb-6">
             <img
               src={apparment}
               className="rounded-full w-[120px] h-[120px] object-cover"
               alt="Agent"
             />
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold">Name Surname</h2>
-              <div className="flex items-center gap-1 text-sm text-[#525C76]">
-                <span>Certified</span>
-              </div>
-              <AgencyMiniCard
-                agencyName="Emtan Construction"
-                agencyProfileLink="/complex"
-              />
-              <div className="flex items-center justify-start gap-4">
-                <Rating rating="4" />
-                <p className="text-sm text-[#525C76]">133 Votes</p>
+            <div className="inline-block w-full">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">Name Surname</h2>
+                  <FaEllipsisH />
+                </div>
+
+                <div className="flex items-center gap-1 text-sm text-[#525C76]">
+                  <Certified />
+                  <span>Certified</span>
+                </div>
+                <AgencyMiniCard
+                  agencyName="Emtan Construction"
+                  agencyProfileLink="/complex"
+                />
+                <div className="flex items-center justify-start gap-4">
+                  <Rating rating="4" />
+                  <p className="text-sm text-[#525C76]">133 Votes</p>
+                </div>
               </div>
             </div>
           </div>
@@ -53,43 +90,32 @@ export const Agent = () => {
               )
             )}
           </div>
-          {/* Buttons */}
-          <div className="flex justify-center gap-4 mt-4">
-            <Button
-              className="w-full py-2 text-sm h-[45px] font-semibold text-white rounded-sm leading-[28px] text-[18px]"
-              variant="primary"
-            >
-              <Contact />
-              Contact
-            </Button>
-            <Button
-              className="w-full py-2 h-[45px] text-[#8247E5] bg-transparent border  leading-[28px] border-[#8247E5] rounded-sm text-[18px] font-semibold"
-              variant="cancel"
-            >
-              <Chat />
-              Chat
-            </Button>
-          </div>
         </div>
 
         {/* Agent Image */}
         <div className="w-[683px] h-[345px] relative">
           <img
-            src="https://via.placeholder.com/1920x1080"
-            className="absolute w-full h-auto rounded-lg bottom-4"
+            src={agent_back}
+            className="absolute w-full h-auto rounded-lg bottom-10"
             alt="Agent"
             loading="lazy"
           />
         </div>
       </div>
-
       {/* Active Posts Section */}
-      <CardList sectionName="Active posts">
+      <CardList sectionName="Active posts" seeAll={false}>
         {data.slice(0, 4).map((item) => (
           <HouseItem key={item.img} {...item} />
         ))}
       </CardList>
-
+      <CardList sectionName={"Complexes"}>
+        {complexData.slice(0, 4).map((item, index) => (
+          // <Link to={`/agent/${item.id}`} key={index}>
+          //   <ComplexCard {...item} />
+          // </Link>
+          <ComplexCard key={index} {...item} />
+        ))}
+      </CardList>
       {/* Reviews Section */}
       <TestimonialSection sectionName="Reviews" />
     </div>

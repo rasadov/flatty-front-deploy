@@ -23,6 +23,23 @@ export { FilterButton } from "./FilterButton";
 export { DropdownUnder } from "./DropdownUnder";
 export { CheckboxSquare } from "./CheckboxSquare";
 export { CheckboxFill } from "./CheckboxFill";
+export { Euro } from "./Euro";
+export { Certified } from "./Certified";
+export { Location } from "./Location";
+export { MarkRead } from "./MarkRead";
+export { NotificationTrue } from "./NotificationTrue";
+export { Wishlist } from "./Wishlist";
+export { DeleteNotification } from "./DeleteNotification";
+export { DotsThreeOutline } from "./DotsThreeOutline";
+export { Trash } from "./Trash";
+export { EditPencil } from "./EditPencil";
+export { EditPost } from "./EditPost";
+export { NewPost } from "./NewPost";
+export { SelectedWishlist } from "./SelectedWishlist";
+export { Add } from "./Add";
+export { Subtract } from "./Subtract";
+
+// export {} from "./";
 
 // export { LogoMobile } from "./LogoMobile";
 

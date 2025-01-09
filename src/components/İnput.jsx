@@ -3,7 +3,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import classNames from "classnames";
 import { XCircle } from "../assets/icons";
 
-const Input = forwardRef(
+export const Input = forwardRef(
   (
     {
       label,

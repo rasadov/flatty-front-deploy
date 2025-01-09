@@ -2,7 +2,7 @@ import React from "react";
 import { ArrowLeft, ArrowRight } from "../assets/icons";
 import { Link } from "react-router-dom";
 
-const Pagination = ({ currentPage, totalPages, onPageChange }) => {
+export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   // Function to handle page click
   const handlePageClick = (page) => {
     if (page !== currentPage) {

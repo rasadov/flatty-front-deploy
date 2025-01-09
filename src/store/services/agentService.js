@@ -5,15 +5,14 @@
 //   return response.data;
 // };
 
-import { agentData } from "../../agentData";
+import axios from "axios";
 
-// Fetch all agents
-export const fetchAgents = () => {
-  console.log(agentData);
-  return agentData;
+export const fetchAgents = async () => {
+  const response = await axios.get("http://localhost:5050/agents");
+  return response.data;
 };
 
-// Fetch a single agent by ID
-export const fetchAgent = (id) => {
-  return agentData.find((agent) => agent.id === id); // Find the agent by ID
+export const fetchAgent = async (id) => {
+  const response = await axios.get(`http://localhost:5050/agents/${id}`);
+  return response.data;
 };

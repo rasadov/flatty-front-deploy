@@ -1,13 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchApartmentDetails } from "../services/apartmentService";
-
-export const loadApartmentDetails = createAsyncThunk(
-  "apartment/loadDetails",
+import axios from "axios";
+export const fetchApartmentDetails = createAsyncThunk(
+  "apartment/fetchDetails",
   async (apartmentId, { rejectWithValue }) => {
+    console.log("Fetching apartment with ID:", apartmentId);
     try {
-      return await fetchApartmentDetails(apartmentId);
+      const response = await axios.get(
+        `http://localhost:5050/apartments/${apartmentId}`
+      );
+      return response.data;
     } catch (error) {
-      return rejectWithValue(error.message);
+      console.error("Fetch error:", error);
+      return rejectWithValue({
+        message: error.message,
+        status: error.response?.status,
+      });
     }
   }
 );
@@ -15,8 +22,22 @@ export const loadApartmentDetails = createAsyncThunk(
 const initialState = {
   id: null,
   title: "",
-  propertyDetails: {},
+  propertyDetails: {
+    rooms: 0, // Default values for properties that might not come from the API
+    area: 0,
+    livingArea: 0,
+    kitchenArea: 0,
+    currFloor: 0,
+    building: 0,
+    yearBuilt: "",
+  },
   description: "",
+  price: "",
+  images: [],
+  location: {
+    latitude: null,
+    longitude: null,
+  },
   loading: false,
   error: null,
 };
@@ -29,16 +50,26 @@ const apartmentSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(loadApartmentDetails.pending, (state) => {
+      .addCase(fetchApartmentDetails.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(loadApartmentDetails.fulfilled, (state, action) => {
-        return { ...state, ...action.payload, loading: false };
+      .addCase(fetchApartmentDetails.fulfilled, (state, action) => {
+        // Merge the new data with existing state to preserve defaults for missing properties
+        return {
+          ...state,
+          ...action.payload,
+          propertyDetails: {
+            ...state.propertyDetails,
+            ...action.payload.propertyDetails,
+          },
+          loading: false,
+        };
       })
-      .addCase(loadApartmentDetails.rejected, (state, action) => {
+      .addCase(fetchApartmentDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        // Optionally, you could reset to initial state or keep the last known good state
       });
   },
 });

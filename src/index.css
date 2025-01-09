@@ -24,7 +24,7 @@ body {
   }
 
   .agent-title {
-    @apply text-sm text-cardText font-medium;
+    @apply text-sm font-medium text-cardText;
   }
 
   .divider {
@@ -42,4 +42,44 @@ body {
   .rating-text {
     @apply text-sm text-cardText font-semibold leading-[22.4px];
   }
+}
+
+.custom-swiper-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 6.5px;
+  height: 10.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.custom-swiper-button:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.custom-swiper-button {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  margin: auto 0;
+}
+
+.swiper-btn-prev {
+  left: 10px;
+}
+
+.swiper-btn-next {
+  right: 10px;
 }

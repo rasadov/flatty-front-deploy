@@ -1,6 +1,6 @@
 import classNames from "classnames";
 
-const Button = ({
+export const Button = ({
   children,
   variant = "primary",
   isLoading = false,

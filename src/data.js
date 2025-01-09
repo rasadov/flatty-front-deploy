@@ -1,11 +1,13 @@
 // Sample data for items
-import apparment1 from "./assets/images/apparment1.png";
+import apartment1 from "./assets/images/apparment1.png";
 import apartment2 from "./assets/images/apparment2.png";
 import apartment3 from "./assets/images/apparment3.png";
 import apartment4 from "./assets/images/apparment4.png";
+
 export const data = [
   {
-    img: apparment1,
+    id: 1,
+    images: [apartment1, apartment2, apartment3, apartment1, apartment4],
     price: "250 000",
     room: 3,
     area: 150,
@@ -15,7 +17,8 @@ export const data = [
     type: "Apartment",
   },
   {
-    img: apartment2,
+    id: 2,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "300 000",
     room: 4,
     area: 180,
@@ -25,7 +28,8 @@ export const data = [
     type: "House",
   },
   {
-    img: apartment3,
+    id: 3,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "400 000",
     room: 5,
     area: 200,
@@ -35,7 +39,8 @@ export const data = [
     type: "Villa",
   },
   {
-    img: apartment4,
+    id: 4,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "500 000",
     room: 6,
     area: 250,
@@ -45,7 +50,8 @@ export const data = [
     type: "Commercial",
   },
   {
-    img: apparment1,
+    id: 5,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "250 000",
     room: 3,
     area: 150,
@@ -55,7 +61,8 @@ export const data = [
     type: "Apartment",
   },
   {
-    img: apartment2,
+    id: 6,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "300 000",
     room: 4,
     area: 180,
@@ -65,7 +72,8 @@ export const data = [
     type: "House",
   },
   {
-    img: apartment3,
+    id: 7,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "400 000",
     room: 5,
     area: 200,
@@ -75,7 +83,8 @@ export const data = [
     type: "Villa",
   },
   {
-    img: apartment4,
+    id: 8,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "500 000",
     room: 6,
     area: 250,
@@ -85,7 +94,8 @@ export const data = [
     type: "Commercial",
   },
   {
-    img: apparment1,
+    id: 9,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "250 000",
     room: 3,
     area: 150,
@@ -95,7 +105,8 @@ export const data = [
     type: "Apartment",
   },
   {
-    img: apartment2,
+    id: 10,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "300 000",
     room: 4,
     area: 180,
@@ -105,7 +116,8 @@ export const data = [
     type: "House",
   },
   {
-    img: apartment3,
+    id: 11,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "400 000",
     room: 5,
     area: 200,
@@ -115,7 +127,8 @@ export const data = [
     type: "Villa",
   },
   {
-    img: apartment4,
+    id: 12,
+    images: [apartment1, apartment2, apartment3, apartment1],
     price: "500 000",
     room: 6,
     area: 250,

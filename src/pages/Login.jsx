@@ -3,12 +3,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { notify } from "../components/Notification";
 import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import Input from "../components/İnput";
-import Button from "../components/Button";
+
+import { useDispatch } from "react-redux";
+import { loginUser } from "../store/slices/authSlice";
+import { addToWishlist } from "../store/slices/wishlistSlice";
+import { Button, Input } from "../components";
 
 const schema = yup.object({
   email: yup
@@ -22,8 +23,9 @@ const schema = yup.object({
 });
 
 const Login = () => {
-  const { t } = useTranslation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -36,19 +38,30 @@ const Login = () => {
   });
 
   const onSubmit = useCallback(
-    (data) => {
-      console.log(data);
-      notify(t("Sign in Success"));
-      navigate("/home");
-      reset();
+    async (data) => {
+      try {
+        await dispatch(loginUser(data)).unwrap();
+        notify("Sign in Success");
+        const { from, item } = location.state || { from: { pathname: "/" } };
+        if (item) {
+          dispatch(addToWishlist(item));
+          notify("Item added to wishlist");
+        }
+        navigate(from);
+        reset();
+      } catch (error) {
+        notify(error.message || "Login failed");
+      }
     },
-    [navigate, reset, t]
+    [dispatch, navigate, reset, location]
   );
-  const HandleCancel = () => {
-    notify(t("Sign in cancelled"));
+
+  const handleCancel = () => {
+    notify("Sign in cancelled");
     reset();
     navigate("/");
   };
+
   return (
     <motion.div
       className="max-w-md p-8 mx-auto mt-8 bg-white border shadow-md rounded-[18px]"
@@ -57,7 +70,7 @@ const Login = () => {
       transition={{ duration: 0.6 }}
     >
       <h1 className="mb-6 text-4xl font-semibold text-center text-gray-800">
-        {t("Sign in")}
+        Sign in
       </h1>
       <motion.form
         onSubmit={handleSubmit(onSubmit)}
@@ -105,7 +118,7 @@ const Login = () => {
             isLoading={isSubmitting}
             className="w-full mt-[39px!important] px-5 py-[8.7px]"
           >
-            {t("Sign in")}
+            Sign in
           </Button>
         </motion.div>
 
@@ -120,7 +133,7 @@ const Login = () => {
             onClick={() => navigate("/register")}
             className="w-full px-5 py-[8.7px]"
           >
-            {t("Sign up")}
+            Sign up
           </Button>
         </motion.div>
 
@@ -132,10 +145,10 @@ const Login = () => {
           <Button
             type="button"
             variant="cancel"
-            onClick={() => HandleCancel()}
+            onClick={handleCancel}
             className="w-full px-5 py-[8.7px]"
           >
-            {t("Cancel")}
+            Cancel
           </Button>
         </motion.div>
       </motion.form>

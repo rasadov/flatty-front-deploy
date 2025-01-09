@@ -10,6 +10,8 @@ import Search from "./pages/Search";
 import Appartment from "./pages/Appartment";
 import { Agent } from "./pages/Agent";
 import { Complex } from "./pages/Complex";
+import ListingsPage from "./components/sections/ListingsPage";
+import Wishlist from "./pages/Wishlist";
 
 function App() {
   return (
@@ -21,12 +23,13 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/appartment" element={<Appartment />} />
+          <Route path="/appartment/:id" element={<Appartment />} />
           <Route path="/agent" element={<Agent />} />
-
+          <Route path="/listingspage" element={<ListingsPage />} />
+          <Route path="/wishlist" element={<Wishlist />} />
           <Route path="*" element={<NotFound />} />
         </Route>
-        <Route path="/complex" element={<Complex />} />
+        <Route path="/complex/:id" element={<Complex />} />{" "}
       </Routes>
     </Router>
   );

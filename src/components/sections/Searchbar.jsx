@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, MapPin, ShowMap } from "../assets/icons";
+import { ArrowDown, MapPin, ShowMap } from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
-import { LocationCancel } from "../assets/icons/LocationCancel";
+import { LocationCancel } from "../../assets/icons/LocationCancel";
 
-const Searchbar = () => {
+export const Searchbar = () => {
   const [dropdownStates, setDropdownStates] = useState({
     category: null,
     roomNumber: null,

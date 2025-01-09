@@ -1,10 +1,10 @@
-import ChooseUsCard from "./ChooseUsCard";
-import img2 from "../assets/images/ChooseUsHome.png";
-import img1 from "../assets/images/ChooseUsCircle.png";
-import img3 from "../assets/images/ChooseUsCard.png";
+import ChooseUsCard from "../ChooseUsCard";
+import img2 from "../../assets/images/ChooseUsHome.png";
+import img1 from "../../assets/images/ChooseUsCircle.png";
+import img3 from "../../assets/images/ChooseUsCard.png";
 
 // Main Section Component
-const WhyChooseUsSection = () => {
+export const ChooseUsSection = () => {
   const cardsData = [
     {
       imageSrc: img1,
@@ -54,4 +54,4 @@ const WhyChooseUsSection = () => {
   );
 };
 
-export default WhyChooseUsSection;
+export default ChooseUsSection;

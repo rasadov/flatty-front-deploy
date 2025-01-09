@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Rating from "./Rating";
 import apparment from "../assets/images/apparment.png";
 
-const TestimonialCard = ({ imageSrc, rating, text, name }) => {
+export const TestimonialCard = ({ imageSrc, rating, text, name }) => {
   const [setRating] = useState(4);
 
   // Function to handle star rating click
@@ -11,7 +11,7 @@ const TestimonialCard = ({ imageSrc, rating, text, name }) => {
   };
 
   return (
-    <div className="p-4 transition-all bg-white border rounded-md  border-borderGray hover:shadow-xl">
+    <div className="p-4 transition-all bg-white border rounded-md border-borderGray hover:shadow-xl">
       {/* Rating Component */}
       <Rating rating={rating} onRatingClick={handleRatingClick} />
       {/* Testimonial Text */}

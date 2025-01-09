@@ -3,58 +3,39 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import "leaflet-fullscreen";
-import { FaExpand } from "react-icons/fa"; // FontAwesome icon
+import { FaExpand } from "react-icons/fa";
 import { AiOutlineZoomIn, AiOutlineZoomOut } from "react-icons/ai";
+import locationIcon from "../../assets/images/location.png"; // Update with your actual icon path
 
-// Custom SVG marker icon with color update
-const createCustomIcon = (color) => {
-  return new L.Icon({
-    iconUrl: `data:image/svg+xml;base64,${btoa(`
-      <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
-        <circle cx="20" cy="20" r="15" fill="${color}" stroke="white" stroke-width="2"/>
-      </svg>`)}`,
-    iconSize: [40, 40], // Adjust the size for better visibility
-    iconAnchor: [20, 40], // Ensure the icon is anchored correctly
-    popupAnchor: [0, -40], // Position the popup properly
-    className: "custom-icon",
-  });
-};
+// Define the custom icon
+const customIcon = new L.Icon({
+  iconUrl: locationIcon,
+  iconSize: [47, 65], // Adjust the size according to your requirements
+  iconAnchor: [12, 41], // Anchor point of the icon
+  popupAnchor: [1, -34], // Point from which the popup should open
+  shadowSize: [41, 41], // Size of the shadow
+});
 
-const Map = () => {
+export const Map = ({ latitude, longitude }) => {
   const [locations, setLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const mapRef = useRef();
 
   // Fake data for locations (mocking the backend response)
   const fakeLocations = [
-    {
-      id: 1,
-      latitude: 45.19,
-      longitude: 0.73,
-      name: "House Location",
-      description: "This is the house location.",
-    },
-    {
-      id: 2,
-      latitude: 45.2,
-      longitude: 0.74,
-      name: "Office Location",
-      description: "This is the office location.",
-    },
-    {
-      id: 3,
-      latitude: 45.21,
-      longitude: 0.75,
-      name: "Park Location",
-      description: "This is the park location.",
-    },
+    { id: 1, latitude: 45.19, longitude: 0.73 },
+    { id: 2, latitude: 45.2, longitude: 0.74 },
+    { id: 3, latitude: 45.21, longitude: 0.75 },
   ];
 
   useEffect(() => {
     setLocations(fakeLocations);
+    if (mapRef.current) {
+      const map = mapRef.current.leafletElement;
+      map.addControl(new L.Control.Fullscreen());
+    }
   }, []);
 
-  // Custom Zoom Controls
   const CustomZoomControls = () => {
     const map = useMap();
     const zoomIn = () => map.zoomIn();
@@ -65,12 +46,14 @@ const Map = () => {
         <button
           className="flex items-center justify-center w-8 h-8 text-lg font-bold bg-white rounded-full shadow-md"
           onClick={zoomOut}
+          aria-label="Zoom Out"
         >
           <AiOutlineZoomOut />
         </button>
         <button
           className="flex items-center justify-center w-8 h-8 text-lg font-bold bg-white rounded-full shadow-md"
           onClick={zoomIn}
+          aria-label="Zoom In"
         >
           <AiOutlineZoomIn />
         </button>
@@ -78,7 +61,6 @@ const Map = () => {
     );
   };
 
-  // Fullscreen Control
   const toggleFullscreen = () => {
     const mapElement = mapRef.current?.container;
     if (mapElement) {
@@ -94,47 +76,49 @@ const Map = () => {
     }
   };
 
+  if (!latitude || !longitude) {
+    return <div>Location data not available</div>;
+  }
+
   return (
-    <div className="relative w-full h-[500px] rounded-lg shadow-lg overflow-hidden bg-gray-100">
+    <div className="relative w-full h-[500px] md:h-[600px] lg:h-[700px] rounded-lg shadow-lg overflow-hidden bg-gray-100">
       <div className="absolute top-2 right-2 z-[1000]">
         <button
           className="px-4 py-2 text-black bg-white rounded-lg shadow-md"
           onClick={toggleFullscreen}
+          aria-label="Toggle Fullscreen"
         >
-          <FaExpand /> {/* Full Screen Icon */}
+          <FaExpand />
         </button>
       </div>
       <div className="flex flex-col h-full">
         <MapContainer
-          center={[45.1848, 0.7214]} // Default center
+          center={[latitude, longitude]}
           className="h-full"
           ref={mapRef}
-          zoom={5} // Set initial zoom level
-          scrollWheelZoom={true} // Enable zoom by scrolling
-          zoomControl={false} // Disable the default zoom controls
+          zoom={13}
+          scrollWheelZoom={true}
+          zoomControl={false}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution='© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           />
+          <Marker position={[latitude, longitude]} icon={customIcon}></Marker>
           {locations.map((location) => (
             <Marker
               key={location.id}
               position={[location.latitude, location.longitude]}
-              icon={createCustomIcon(
-                selectedLocation?.id === location.id ? "#220D6D" : "#00A3E0"
-              )} // Dynamic color change
+              icon={customIcon}
               eventHandlers={{
                 click: () => setSelectedLocation(location),
               }}
             >
-              {/* <Popup>
-                <h3 className="font-semibold">{location.name}</h3>
-                {location.description && <p>{location.description}</p>}
-              </Popup> */}
+              <Popup>
+                <h3 className="font-semibold">Location {location.id}</h3>
+              </Popup>
             </Marker>
           ))}
-
           <CustomZoomControls />
         </MapContainer>
       </div>

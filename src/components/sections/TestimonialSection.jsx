@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import TestimonialCard from "./TestimonialCard";
+import TestimonialCard from "../TestimonialCard";
 
-const TestimonialSection = ({ sectionName }) => {
+export const TestimonialSection = ({ sectionName }) => {
   const testimonials = [
     {
       imageSrc: "https://via.placeholder.com/50x50",
