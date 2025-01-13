@@ -118,10 +118,12 @@ const PropertyShowcase = ({ length }) => {
           <div className="mb-4 text-[16px] text-[#525C76] font-normal">
             {property.address}
           </div>
+          <a href="/map">
           <div className="mb-4 text-[16px] text-[#8247E5] font-normal flex ">
             <ShowOnMap />
             Show on map
           </div>
+          </a>
         </div>
       </div>
       {/* Button Group */}

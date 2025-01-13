@@ -13,9 +13,9 @@ export const MarkRead = ({ className }) => {
       <path
         d="M13.5 5L6.5 12L3 8.5"
         stroke="#49536E"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );

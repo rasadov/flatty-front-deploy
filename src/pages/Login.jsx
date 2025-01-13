@@ -40,7 +40,9 @@ const Login = () => {
   const onSubmit = useCallback(
     async (data) => {
       try {
+        console.log("Login started");
         await dispatch(loginUser(data)).unwrap();
+        console.log("Login successful");
         notify("Sign in Success");
         const { from, item } = location.state || { from: { pathname: "/" } };
         if (item) {
@@ -48,6 +50,8 @@ const Login = () => {
           notify("Item added to wishlist");
         }
         navigate(from);
+        console.log("Login successful");
+        console.log(from);
         reset();
       } catch (error) {
         notify(error.message || "Login failed");

@@ -56,7 +56,7 @@ const NotificationsModal = ({
       transition={{ duration: 0.3 }}
       style={{
         width: "407px",
-        height: "496px",
+        height: "auto",
         boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
       }}
     >
@@ -92,10 +92,10 @@ const NotificationsModal = ({
       </div>
 
       <div
-        className="py-2 overflow-y-auto "
+        className="py-2 overflow-y-auto"
         style={{ height: "calc(100% - 128px)" }}
       >
-        {notifications.map((notification) => (
+        {notifications && notifications.length !== 0 ? notifications.map((notification) => (
           <div
             key={notification.id}
             onClick={() => handleSelectNotification(notification.id)}
@@ -123,7 +123,24 @@ const NotificationsModal = ({
               </div>
             </div>
           </div>
-        ))}
+        )) : // No notifications below
+        <div
+        className={`mb-4 py-4 flex justify-center items-center cursor-pointer`}
+        style={{
+          color: "#0F1D40",
+          fontFamily: "General Sans",
+          fontWeight: 500,
+          fontSize: "16px",
+          lineHeight: "25.6px",
+        }}
+      >
+        <div>
+          <div className="my-1 text-[#0F1D40] font-semibold text-[16px] leading-[25.6px]">
+            No notifications
+          </div>
+        </div>
+      </div>
+      }
       </div>
     </motion.div>
   );

@@ -72,9 +72,11 @@ const Register = () => {
 
   const onSubmit = useCallback(
     async (data) => {
-      if (!isHuman) return notify("Please confirm you're not a robot");
+      // if (!isHuman) return notify("Please confirm you're not a robot");
       try {
+        console.log("data", data);
         await dispatch(registerUser({ ...data, role })).unwrap();
+        console.log("data", data);
         notify("Account created successfully!");
         reset(); // Clear the form
         navigate("/login"); // Redirect to login page

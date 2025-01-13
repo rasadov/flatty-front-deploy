@@ -102,6 +102,11 @@ export const HouseItem = React.memo(
           });
         } else {
           // Toggle like status
+          fetch("http://localhost:5001/like", {
+            method: "POST",
+            body: JSON.stringify({ property_id: propertyId }),
+            credentials: "include",
+          });
           if (!liked) {
             dispatch(
               addToWishlist({

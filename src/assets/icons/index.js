@@ -38,6 +38,9 @@ export { NewPost } from "./NewPost";
 export { SelectedWishlist } from "./SelectedWishlist";
 export { Add } from "./Add";
 export { Subtract } from "./Subtract";
+export { Active } from "./Active";
+export { Inactive } from "./Inactive";
+export { SearchIcon } from "./Search";
 
 // export {} from "./";
 

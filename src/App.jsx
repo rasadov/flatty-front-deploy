@@ -12,6 +12,7 @@ import { Agent } from "./pages/Agent";
 import { Complex } from "./pages/Complex";
 import ListingsPage from "./components/sections/ListingsPage";
 import Wishlist from "./pages/Wishlist";
+import MapView from "./pages/MapView";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="/map" element={<MapView />} />
         <Route path="/complex/:id" element={<Complex />} />{" "}
       </Routes>
     </Router>

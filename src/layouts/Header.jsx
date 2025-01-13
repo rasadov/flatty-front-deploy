@@ -17,24 +17,24 @@ import NotificationsModal from "../components/NotificationsModal";
 import { SelectedWishlist } from "../assets/icons/SelectedWishlist";
 
 const initialNotifications = [
-  {
-    id: 1,
-    message: "Notification 1",
-    title: "Notification title",
-    read: false,
-  },
-  {
-    id: 2,
-    message: "Notification 2",
-    title: "Notification title",
-    read: false,
-  },
-  {
-    id: 3,
-    message: "Notification 3",
-    title: "Notification title",
-    read: false,
-  },
+  // {
+  //   id: 1,
+  //   message: "No notifications currently",
+  //   title: "No notifications currently",
+  //   read: false,
+  // },
+  // {
+  //   id: 2,
+  //   message: "Notification 2",
+  //   title: "Notification title",
+  //   read: false,
+  // },
+  // {
+  //   id: 3,
+  //   message: "Notification 3",
+  //   title: "Notification title",
+  //   read: false,
+  // },
   // Add more notifications as needed
 ];
 
@@ -45,12 +45,12 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation(); // useLocation istifadə edirik
-  const user = useSelector((state) => state.auth.user);
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    if (token && storedUser) {
+    const level = localStorage.getItem("level");
+    const storedUser = localStorage.getItem("user_id") in ["null", "undefined", null, undefined] ? null : localStorage.getItem("user_id");
+    if (level && storedUser) {
       dispatch(setUser(storedUser));
     }
   }, [dispatch]);
@@ -95,9 +95,9 @@ const Header = () => {
   // };
 
   const navLinks = [
-    { to: "/agents", label: "Agents" },
-    { to: "/about", label: "About us" },
-    { to: "/contacts", label: "Contacts" },
+    // { to: "/agents", label: "Agents" },
+    // { to: "/about", label: "About us" },
+    // { to: "/contacts", label: "Contacts" },
   ];
 
   const renderNavLinks = useCallback(() => {
@@ -108,8 +108,28 @@ const Header = () => {
     ));
   }, []);
 
+  fetch("http://localhost:5001/api/v1/auth/refresh", {
+    method: "POST",
+    credentials: "include",
+  })
+  .then((res) => {
+    if (res.status === 401) {
+      window.location.href = "/login";
+      localStorage.removeItem("user");
+    }
+    return res.json()
+  })
+  .then((data) => {
+    if (data && data.user) {
+      dispatch(setUser(data.user));
+    }
+  })
+  .catch((error) => {
+    localStorage.removeItem("user");
+  });
+
   const renderAuthButtons = () => {
-    if (user) {
+    if (user && user !== 'undefined') {
       return (
         <div className="w-[120px] h-[34px] flex justify-center gap-2 items-center ">
           <div
@@ -131,7 +151,9 @@ const Header = () => {
           <div
             onClick={() => handleNavigation("/profile")}
             className=" cursor  w-[34px] h-[34px] rounded-full border border-[#A673EF]"
-          ></div>
+          >
+            <img src={user.image_url} alt="Profile" className="w-full h-full rounded-full" />
+          </div>
           {/* <Button
             type="button"
             variant="secondary"

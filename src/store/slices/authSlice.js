@@ -4,17 +4,22 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5050/users", {
+      const response = await fetch("http://localhost:5001/api/v1/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(userData),
+        credentials: "include",
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || "Registration failed");
-      localStorage.setItem("token", data.token); // Storing JWT
-      localStorage.setItem("user", JSON.stringify(data.user)); // Storing user data
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.user.image_url === null) {
+        localStorage.setItem("image_url", "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg");
+      }
+      // localStorage.setItem("token", data.token); // Storing JWT
+      // localStorage.setItem("user", JSON.stringify(data.user)); // Storing user data
       return data.user; // Return user data
     } catch (error) {
       return rejectWithValue(error.message);
@@ -25,22 +30,29 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, { rejectWithValue }) => {
+    console.log(userData);
+    const response = await fetch("http://localhost:5001/api/v1/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+      credentials: "include",
+    });
+    console.log(response);
     try {
-      const response = await fetch("http://localhost:5050/users", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const users = await response.json();
-      const user = users.find(
-        (u) => u.email === userData.email && u.password === userData.password
-      );
-      if (!user) throw new Error("Invalid email or password");
-      localStorage.setItem("token", user.token); // Storing JWT
-      localStorage.setItem("user", JSON.stringify(user)); // Storing user data
-      return user; // Return user data
+      const data = await response.json();
+      // const user = users.find(
+      //   (u) => u.email === userData.email && u.password === userData.password
+      // );
+      if (!data) throw new Error("Invalid email or password");
+      localStorage.setItem("user", JSON.stringify(data.user));
+      if (data.user.image_url === null) {
+        localStorage.setItem("image_url", "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg");
+      }
+      return data;
     } catch (error) {
+      console.log(error);
       return rejectWithValue(error.message);
     }
   }
@@ -49,14 +61,13 @@ export const loginUser = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: JSON.parse(localStorage.getItem("user")) || null,
-    isAuthenticated: !!localStorage.getItem("token"),
+    user: localStorage.getItem("user") || null,
+    isAuthenticated: !!localStorage.getItem("user"),
     loading: false,
     error: null,
   },
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("token");
       localStorage.removeItem("user");
       state.user = null;
       state.isAuthenticated = false;

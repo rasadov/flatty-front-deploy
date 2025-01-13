@@ -8,11 +8,11 @@
 import axios from "axios";
 
 export const fetchAgents = async () => {
-  const response = await axios.get("http://localhost:5050/agents");
+  const response = await axios.get("http://localhost:5001/agents");
   return response.data;
 };
 
 export const fetchAgent = async (id) => {
-  const response = await axios.get(`http://localhost:5050/agents/${id}`);
+  const response = await axios.get(`http://localhost:5001/agents/${id}`);
   return response.data;
 };

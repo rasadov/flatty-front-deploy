@@ -278,15 +278,17 @@ export const Searchbar = () => {
         </div>
       </div>
       <div className="flex items-center justify-center">
+        <a href="/map">
         <button
           onClick={handleShowOnMap}
           className="flex items-center justify-center px-4 py-4 text-xl w-[188px] text-[#8247E5] bg-white border-2 border-[#8247E5] h-[54px] font-semibold"
-        >
+          >
           <ShowMap />
           <span className="ml-1 text-[18px] w-[127px] h-[32px]">
             Show on Map
           </span>
         </button>
+        </a>
 
         <motion.button
           onClick={handleSearch}

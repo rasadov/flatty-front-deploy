@@ -6,8 +6,12 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
   return response.data;
 });
 
-export const addPost = createAsyncThunk("posts/addPost", async (newPost) => {
-  const response = await postService.addPost(newPost);
+export const addPost = createAsyncThunk("posts/addPost", async (formDataToSend) => {
+  const response = await fetch('http://localhost:5001/api/v1/property/create', {
+    method: 'POST',
+    body: formDataToSend,
+    credentials: 'include',
+  });
   return response.data;
 });
 

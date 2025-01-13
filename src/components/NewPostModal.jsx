@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { addPost, fetchPosts } from "../store/slices/agentPostSlice";
-import { Add, Subtract } from "../assets/icons";
+import { Add, Subtract, Active, Inactive } from "../assets/icons";
 
 const categories = ["Apartment", "Other"];
 const conditions = [
@@ -65,14 +65,24 @@ const NewPostModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     if (images.length > 0) {
-      const newPost = {
-        id: Date.now(),
-        ...formData,
-        images: images.map((file) => URL.createObjectURL(file)), // For preview, real upload would be different
-      };
-      await dispatch(addPost(newPost));
-      await dispatch(fetchPosts());
-      onClose();
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      images.forEach((file, index) => {
+        formDataToSend.append(`files[${index}]`, file);
+      });
+
+      for (var pair of formDataToSend.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      try {
+        await dispatch(addPost(formDataToSend));
+        dispatch(fetchPosts());
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
     }
   };
 
@@ -95,7 +105,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-[628px] h-[806px] p-6 bg-white rounded-lg overflow-y-auto"
+        className="w-[628px] h-[506px] p-6 bg-white rounded-lg overflow-y-auto"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -154,7 +164,19 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   name="floor"
-                  type="text"
+                  type="number"
+                  className="w-[106px] h-[52px] p-2 border rounded-md"
+                  value={formData.floor}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Floors in Building
+                </label>
+                <input
+                  name="floors"
+                  type="number"
                   className="w-[106px] h-[52px] p-2 border rounded-md"
                   value={formData.floor}
                   onChange={handleInputChange}
@@ -166,7 +188,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   name="totalArea"
-                  type="text"
+                  type="number"
                   className="w-[106px] h-[52px] p-2 border rounded-md"
                   value={formData.totalArea}
                   onChange={handleInputChange}
@@ -178,7 +200,19 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   name="livingArea"
-                  type="text"
+                  type="number"
+                  className="w-[106px] h-[52px] p-2 border rounded-md"
+                  value={formData.livingArea}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Price ($)
+                </label>
+                <input
+                  name="price"
+                  type="number"
                   className="w-[106px] h-[52px] p-2 border rounded-md"
                   value={formData.livingArea}
                   onChange={handleInputChange}
@@ -202,7 +236,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 (field, index) => (
                   <div key={index} className="flex items-center gap-1">
                     <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                      {field}
+                      {field == "livingRooms" ? "Living rooms" : field}
                     </label>
                     <div className="flex items-center">
                       <button
@@ -234,7 +268,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
               <button
                 onClick={() => handleNumberChange("balconies", "subtract")}
               >
-                <SubtractIcon />
+                <Subtract />
               </button>
               <input
                 name="balconies"
@@ -246,7 +280,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 readOnly
               />
               <button onClick={() => handleNumberChange("balconies", "add")}>
-                <AddIcon />
+                <Add />
               </button>
             </div>
             <div className="flex items-center gap-2 mt-2">
@@ -254,7 +288,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 Parking slot
               </label>
               <button onClick={handleParkingToggle}>
-                {formData.parkingSlots ? <ActiveIcon /> : <ReactiveIcon />}
+                {formData.parkingSlots ? <Active /> : <Inactive />}
               </button>
             </div>
             <div className="grid grid-cols-2 gap-4 mt-4">
@@ -329,7 +363,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
             <div className="flex justify-between mt-4">
               <button
                 className="px-4 py-2 text-white bg-gray-500 rounded-md"
-                onClick={() => setStep(0)} // Assuming 0 would close or go back to the previous step outside this component
+                // onClick={() => setStep(0)} // Assuming 0 would close or go back to the previous step outside this component
               >
                 Previous
               </button>
