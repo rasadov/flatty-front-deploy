@@ -21,7 +21,7 @@ const renovations = [
 ];
 
 const getAddressFromLatLng = async (lat, lng) => {
-  const apiKey = 'GOOGLE_API'; // Replace with your Google Maps API key
+  const apiKey = 'GoogleAPI'; // Replace with your Google Maps API key
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
 
   try {
@@ -39,25 +39,27 @@ const getAddressFromLatLng = async (lat, lng) => {
   }
 };
 
-const NewPostModal = ({ isOpen, onClose }) => {
+const NewComplexModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     category: "",
     residentialComplex: "",
-    floor: "",
-    totalArea: "",
-    livingArea: "",
     description: "",
-    rooms: 0,
-    bathrooms: 0,
-    livingRooms: 0,
-    bedrooms: 0,
-    balconies: 0,
-    parkingSlots: false,
-    bathroom1: "",
-    bathroom2: "",
-    condition: conditions[0],
-    renovation: renovations[0],
+    
+    buildingArea: 0,
+    livingArea: 0,
+    objects: 0,
+    year: 0,
+    buildingFloors: 0,    
+
+    parkingSlot: false,
+    installment: false,
+    swimmingPool: false,
+    elevator: false,
+    latitude: 0,
+    longitude: 0,
+    address: "",
+
   });
   const [images, setImages] = useState([]);
   const dispatch = useDispatch();
@@ -68,25 +70,13 @@ const NewPostModal = ({ isOpen, onClose }) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleNumberChange = (name, operation) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        operation === "add" ? prev[name] + 1 : Math.max(0, prev[name] - 1),
-    }));
-  };
-
-  const handleParkingToggle = () => {
-    setFormData((prev) => ({ ...prev, parkingSlots: !prev.parkingSlots }));
-  };
-
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "GOOGLE_API", // Replace with your key
+    googleMapsApiKey: "GoogleAPI", // Replace with your key
     libraries: ["places"],
   });
 
@@ -130,15 +120,8 @@ const NewPostModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const getButtonStyle = (category, value) => {
-    const isSelected = Array.isArray(formData[category])
-      ? formData[category].includes(value)
-      : formData[category] === value;
-    return `px-4 py-2 text-xs font-semibold border text-[#525C76] h-[35px] rounded-sm transition-all duration-300 ease-in-out transform ${
-      isSelected
-        ? " border-[#8247E5] outline outline-2 outline-[#DCD4FF] scale-105"
-        : "border-[#E2E4E8] hover:border-[#8247E5] hover:bg-[#F0F0F5]"
-    }`;
+  const handleCustomToggle = (field) => {
+    setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   if (!isOpen) return null;
@@ -156,7 +139,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">New Post</h2>
+          <h2 className="text-xl font-semibold">New Complex</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
@@ -168,13 +151,25 @@ const NewPostModal = ({ isOpen, onClose }) => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Fill Info</h3>
             <div className="grid grid-cols-2 gap-4">
+                <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Name of residential complex
+                </label>
+                <input
+                    name="residentialComplex"
+                    type="text"
+                    className="w-[277px] h-[52px] p-2 border rounded-md"
+                    value={formData.residentialComplex}
+                    onChange={handleInputChange}
+                />
+              </div>
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Category
                 </label>
                 <select
                   name="category"
-                  className="w-[277px] h-[52px] p-2 border rounded-md"
+                  className="w-[277px] h-[52px] p-2 border rounded-md bg-gray-100"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -186,82 +181,94 @@ const NewPostModal = ({ isOpen, onClose }) => {
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Name of residential complex
-                </label>
-                <select
-                  name="residentialComplex"
-                  className="w-[277px] h-[52px] p-2 border rounded-md"
-                  value={formData.residentialComplex}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  {/* Add options dynamically or statically */}
-                </select>
-              </div>
             </div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div>
+            {/* Row snippet: Building area, Living area, Objects, Floors, Year */}
+            <div className="flex gap-4 items-center justify-between">
+            {/* Building Area */}
+            <div className="w-[100%]">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Floor
+                Building area
+                </label>
+                <div className="relative">
+                <input
+                    type="number"
+                    className="w-[100%] p-2 border rounded-md"
+                    placeholder="45"
+                />
+                <span className="absolute right-3 top-2 text-gray-500">m²</span>
+                </div>
+            </div>
+
+            {/* Living Area */}
+            <div className="w-[100%]">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                Living area
+                </label>
+                <div className="relative">
+                <input
+                    type="number"
+                    className="w-[100%] p-2 border rounded-md"
+                    placeholder="38"
+                />
+                <span className="absolute right-3 top-2 text-gray-500">m²</span>
+                </div>
+            </div>
+
+            {/* Objects */}
+            <div className="w-[100%]">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                Objects
                 </label>
                 <input
-                  name="floor"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.floor}
-                  onChange={handleInputChange}
+                type="number"
+                className="w-[100%] p-2 border rounded-md"
+                placeholder="38"
                 />
-              </div>
-              <div>
+            </div>
+
+            {/* Floors */}
+            <div className="w-[40%]">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Floors in Building
+                Floors
                 </label>
                 <input
-                  name="floors"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.floor}
-                  onChange={handleInputChange}
+                type="number"
+                className="w-[100%] p-2 border rounded-md"
+                placeholder="16"
                 />
-              </div>
-              <div>
+            </div>
+
+            {/* Year */}
+            <div className="w-[60%]">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Total area (m²)
+                Year
                 </label>
                 <input
-                  name="totalArea"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.totalArea}
-                  onChange={handleInputChange}
+                type="number"
+                className="w-[100%] p-2 border rounded-md"
+                placeholder="2020"
                 />
-              </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Living area (m²)
-                </label>
-                <input
-                  name="livingArea"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.livingArea}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Price ($)
-                </label>
-                <input
-                  name="price"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.livingArea}
-                  onChange={handleInputChange}
-                />
-              </div>
+            </div>
+            </div>
+
+            <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
+            {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
+              (field, index) => (
+                <div key={index} className="flex items-center gap-1 mx-auto my-3">
+                  <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                    {field === "parkingSlot" ? "Parking slot" :
+                    field === "installment" ? "Installment" :
+                    field === "swimmingPool" ? "Swimming pool" :
+                    field === "elevator" ? "Elevator" : field}
+                  </label>
+                  <div className="flex items-center">
+                    <button onClick={() => handleCustomToggle(field)}>
+                      {formData[field] ? <Active /> : <Inactive />}
+                    </button>
+                  </div>
+                </div>
+              )
+            )}
             </div>
             <div>
               <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -275,142 +282,13 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="flex flex-wrap gap-2">
-              {["rooms", "bathrooms", "livingRooms", "bedrooms"].map(
-                (field, index) => (
-                  <div key={index} className="flex items-center gap-1">
-                    <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                      {field == "livingRooms" ? "Living rooms" : field}
-                    </label>
-                    <div className="flex items-center">
-                      <button
-                        onClick={() => handleNumberChange(field, "subtract")}
-                      >
-                        <Subtract />
-                      </button>
-                      <input
-                        name={field}
-                        type="number"
-                        className="w-[52px] h-[32px] p-2 border rounded-md text-center"
-                        value={formData[field]}
-                        onChange={handleInputChange}
-                        min="0"
-                        readOnly
-                      />
-                      <button onClick={() => handleNumberChange(field, "add")}>
-                        <Add />
-                      </button>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Balcony
-              </label>
-              <button
-                onClick={() => handleNumberChange("balconies", "subtract")}
-              >
-                <Subtract />
-              </button>
-              <input
-                name="balconies"
-                type="number"
-                className="w-[52px] h-[32px] p-2 border rounded-md text-center"
-                value={formData.balconies}
-                onChange={handleInputChange}
-                min="0"
-                readOnly
-              />
-              <button onClick={() => handleNumberChange("balconies", "add")}>
-                <Add />
-              </button>
-            </div>
-            <div className="flex items-center gap-2 mt-2">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Parking slot
-              </label>
-              <button onClick={handleParkingToggle}>
-                {formData.parkingSlots ? <Active /> : <Inactive />}
-              </button>
-            </div>
-            <div className="grid grid-cols-2 gap-4 mt-4">
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Bathroom 1
-                </label>
-                <select
-                  name="bathroom1"
-                  className="w-[277px] h-[52px] p-2 border rounded-md"
-                  value={formData.bathroom1}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  {/* Add options dynamically or statically */}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Bathroom 2
-                </label>
-                <select
-                  name="bathroom2"
-                  className="w-[277px] h-[52px] p-2 border rounded-md"
-                  value={formData.bathroom2}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  {/* Add options dynamically or statically */}
-                </select>
-              </div>
-            </div>
-            <div className="mt-4">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Condition
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {conditions.map((condition, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      setFormData((prev) => ({ ...prev, condition: condition }))
-                    }
-                    className={getButtonStyle("condition", condition)}
-                  >
-                    {condition}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="mt-4">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Renovation
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {renovations.map((renovation, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        renovation: renovation,
-                      }))
-                    }
-                    className={getButtonStyle("renovation", renovation)}
-                  >
-                    {renovation}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-between mt-4">
-              <button
+            <div className="flex justify-end mt-4">
+              {/* <button
                 className="px-4 py-2 text-white bg-gray-500 rounded-md"
                 // onClick={() => setStep(0)} // Assuming 0 would close or go back to the previous step outside this component
               >
                 Previous
-              </button>
+              </button> */}
               <button
                 className="px-4 py-2 text-white bg-blue-500 rounded-md"
                 onClick={() => setStep(2)}
@@ -419,6 +297,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
               </button>
             </div>
           </div>
+          
         )}
         {step === 2 && (
           // Image upload step (as previously defined)
@@ -499,4 +378,4 @@ const NewPostModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default NewPostModal;
+export default NewComplexModal;

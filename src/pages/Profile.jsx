@@ -13,11 +13,13 @@ import { EditPost } from "../assets/icons/EditPost.jsx";
 import { DotsThreeOutline } from "../assets/icons/DotsThreeOutline.jsx";
 import AgentPost from "../components/AgentPost.jsx";
 import NewPostModal from "../components/NewPostModal.jsx"; // Import the modal component
+import NewComplexModal from "../components/NewComplexModal.jsx";
 import { fetchPosts } from "../store/slices/agentPostSlice";
 import { NewComplex } from "../assets/icons/NewComplex.jsx";
 
 export const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isComplexModalOpen, setIsComplexModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state) => state.posts);
 
@@ -83,6 +85,14 @@ export const Profile = () => {
     setIsModalOpen(false);
   };
 
+  const handleOpenComplexModal = () => {
+    setIsComplexModalOpen(true);
+  };
+
+  const handleCloseComplexModal = () => {
+    setIsComplexModalOpen(false);
+  };
+
   return (
     <div className="w-full py-3 mx-auto mt-8">
       <Breadcrumbs title="Apartment" />
@@ -99,7 +109,7 @@ export const Profile = () => {
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold">{agent.user ? agent.user.name : ""}</h2>
-                  <DotsThreeOutline />
+                  {/* <DotsThreeOutline /> */}
                 </div>
 
                 {/* <div className="flex items-center gap-1 text-sm text-[#525C76]">
@@ -145,18 +155,18 @@ export const Profile = () => {
             <Button
             className="w-full py-2 text-sm h-[45px] font-semibold text-[#8247E5] bg-white border border-[#8247E5] rounded-sm leading-[28px] text-[18px]"
             variant="outline"
-            onClick={handleOpenModal}
+            onClick={handleOpenComplexModal}
           >
             <NewComplex />
             New Complex
           </Button>
-            <Button
-              className="w-full py-2 h-[45px] text-[#8247E5] bg-transparent border  leading-[28px] border-[#8247E5] rounded-sm text-[18px] font-semibold"
-              variant="cancel"
-            >
-              <EditPost />
-              Edit
-            </Button>
+          {/* <Button
+            className="w-full py-2 h-[45px] text-[#8247E5] bg-transparent border  leading-[28px] border-[#8247E5] rounded-sm text-[18px] font-semibold"
+            variant="cancel"
+          >
+            <EditPost />
+            Edit
+          </Button> */}
           </div>
         </div>
 
@@ -187,6 +197,7 @@ export const Profile = () => {
         )) : <p>No posts found</p>}
       </CardList>
       <NewPostModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <NewComplexModal isOpen={isComplexModalOpen} onClose={handleCloseComplexModal} />
     </div>
   );
 };
