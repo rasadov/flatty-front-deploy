@@ -9,7 +9,7 @@ import {
 
 export default function Map({ onMarkerClick }) {
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: ''
+    googleMapsApiKey: 'GOOGLE_API'
   });
 
   if (loadError) return <div>Map cannot be loaded right now...</div>;

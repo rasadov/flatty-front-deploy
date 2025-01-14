@@ -15,10 +15,14 @@ import TestimonialSection from "../components/sections/TestimonialSection";
 // Images
 import header_bg from "../assets/images/header_bg.png";
 import key_img from "../assets/images/key_img.png";
+import Header from "../layouts/Header";
+import { Footer } from "../layouts/Footer";
 // css
 
 
 const Home = () => {
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
   const dispatch = useDispatch();
 
   const {
@@ -77,33 +81,6 @@ const Home = () => {
   // DESKTOP HEADER (hidden on small screens)
   // ——————————————————————
   const DesktopHeader = () => (
-  //   <div
-  //   className="hidden md:block relative h-[751px] sm:h-[600px] right-[4%]  w-full md:h-[700px] top-5 lg:h-[751px] overflow-hidden bg-no-repeat bg-cover bg-right "
-  //   style={{
-  //     backgroundImage: `url(${header_bg})`,
-  //     backgroundSize: "contain",
-  //     backgroundPosition: "center",
-  //     maxWidth: "100vw",
-  //   }}
-  // >
-  //   <h1 className="absolute z-10 text-[36px] sm:text-[48px] md:text-[56px] font-bold w-full sm:w-[60%] md:w-[50%] lg:w-[40%] text-slate-900 top-8 left-4 sm:left-10">
-  //     Unlocking Doors to Your Next Home
-  //   </h1>
-  
-  //   <div className="absolute z-20 transform -translate-y-1/2 bottom-[42%] left-[3%] w-full max-w-[1131px] px-4 sm:px-0">
-  //     <Searchbar />
-  //   </div>
-  
-  //   <img
-  //     src={key_img}
-  //     alt="Overlay Image"
-  //     style={{
-  //       zIndex: -1
-  //     }}
-  //     className="absolute z-20 top-[72%] left-[50%] transform -translate-x-1/2 w-[150px] sm:w-[200px] opacity-90"
-  //   />
-  // </div>
-
   <div
   className="hidden md:block relative h-[700px] w-full overflow-hidden bg-no-repeat bg-cover"
   style={{
@@ -134,60 +111,70 @@ const Home = () => {
 
 
   return (
-    <div>
+    <div className="flex flex-col min-h-screen ">
+    <main className="flex-grow  bg-[#F4F2FF] ">
+      <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
+      <div >
+      <div>
       {/* Mobile header */}
       <MobileHeader />
 
       {/* Desktop header */}
       <DesktopHeader />
 
-    <div className="home-content-wrapper">
-      {/* “Featured” section */}
-      <div className="relative z-10 md:-mt-40">
-        <CardList sectionName="Featured" seeAll={true}>
-          {featuredProperties.properties &&
-            featuredProperties.properties.slice(0, 4).map((item) => (
+      <div className="home-content-wrapper">
+        {/* “Featured” section */}
+        <div className="relative z-10 md:-mt-40">
+          <CardList sectionName="Featured" seeAll={true}>
+            {featuredProperties.properties &&
+              featuredProperties.properties.slice(0, 4).map((item) => (
+                <HouseItem key={item.id} {...item} />
+              ))}
+          </CardList>
+        </div>
+
+        {/* “Popular” section */}
+        <CardList sectionName="Popular" seeAll={true}>
+          {popularProperties.properties &&
+            popularProperties.properties.slice(0, 4).map((item) => (
               <HouseItem key={item.id} {...item} />
             ))}
         </CardList>
-      </div>
 
-      {/* “Popular” section */}
-      <CardList sectionName="Popular" seeAll={true}>
-        {popularProperties.properties &&
-          popularProperties.properties.slice(0, 4).map((item) => (
-            <HouseItem key={item.id} {...item} />
-          ))}
-      </CardList>
-
-      {/* “Complexes” section */}
-      <CardList sectionName="Complexes" seeAll={true}>
-        {complexDetails.listings &&
-          complexDetails.listings.slice(0, 4).map((item) => (
-            <ComplexCard
-            key={item.id}
-              id={item.id}
-              img={item.images[0]}
-              title={item.propertyDetails.category}
-              roomCount={item.propertyDetails.objects}
-              address={item.propertyDetails.address}
-              />
-            ))}
-      </CardList>
-
-      {/* Agents (if you want to show them) */}
-      {/* 
-      <CardList sectionName="Agents" seeAll={true}>
-      {agents.slice(0, 4).map((agent) => (
-        <AgentCard key={agent.id} {...agent} />
-        ))}
+        {/* “Complexes” section */}
+        <CardList sectionName="Complexes" seeAll={true}>
+          {complexDetails.listings &&
+            complexDetails.listings.slice(0, 4).map((item) => (
+              <ComplexCard
+              key={item.id}
+                id={item.id}
+                img={item.images[0]}
+                title={item.propertyDetails.category}
+                roomCount={item.propertyDetails.objects}
+                address={item.propertyDetails.address}
+                />
+              ))}
         </CardList>
-        */}
 
-      <WhyChooseUsSection />
-      <TestimonialSection sectionName="Testimonials" />
+        {/* Agents (if you want to show them) */}
+        {/* 
+        <CardList sectionName="Agents" seeAll={true}>
+        {agents.slice(0, 4).map((agent) => (
+          <AgentCard key={agent.id} {...agent} />
+          ))}
+          </CardList>
+          */}
+
+        <WhyChooseUsSection />
+        <TestimonialSection sectionName="Testimonials" />
+        </div>
       </div>
-    </div>
+      </div>
+      <div className="px-6  mx-auto  bg-[#ECE8FF]">
+        <Footer />
+      </div>
+    </main>
+  </div>
   );
 };
 

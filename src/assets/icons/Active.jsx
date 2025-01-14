@@ -8,8 +8,8 @@ export const Active = () => {
         <rect x="19" y="3" width="14" height="14" rx="7" fill="#F9F8FF"/>
         </g>
         <defs>
-        <filter id="filter0_d_1204_13683" x="15" y="3" width="22" height="22" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-        <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+        <filter id="filter0_d_1204_13683" x="15" y="3" width="22" height="22" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
+        <feFlood floodOpacity="0" result="BackgroundImageFix"/>
         <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
         <feMorphology radius="1" operator="erode" in="SourceAlpha" result="effect1_dropShadow_1204_13683"/>
         <feOffset dy="4"/>

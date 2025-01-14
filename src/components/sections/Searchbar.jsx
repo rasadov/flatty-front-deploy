@@ -14,11 +14,20 @@ export const Searchbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
   const handleSearch = () => {
-    const { min, max } = dropdownStates.priceRange;
-    console.log(`Searching with price range: $${min} - $${max}`);
-    // You can implement the logic to filter/search based on the price range here
-    navigate("/search");
+    const { category, roomNumber, priceRange, location } = dropdownStates;
+  
+    // Construct query parameters
+    const queryParams = new URLSearchParams();
+    if (category) queryParams.append("category", category);
+    if (roomNumber) queryParams.append("roomNumber", roomNumber);
+    if (priceRange.min) queryParams.append("minPrice", priceRange.min);
+    if (priceRange.max) queryParams.append("maxPrice", priceRange.max);
+    if (location) queryParams.append("location", location);
+  
+    // Navigate to the search page with query parameters
+    navigate(`/search?${queryParams.toString()}`);
   };
+  
 
   const handleShowOnMap = () => {
     console.log("Showing location on map...");

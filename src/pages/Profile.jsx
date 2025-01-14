@@ -14,6 +14,7 @@ import { DotsThreeOutline } from "../assets/icons/DotsThreeOutline.jsx";
 import AgentPost from "../components/AgentPost.jsx";
 import NewPostModal from "../components/NewPostModal.jsx"; // Import the modal component
 import { fetchPosts } from "../store/slices/agentPostSlice";
+import { NewComplex } from "../assets/icons/NewComplex.jsx";
 
 export const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -139,8 +140,16 @@ export const Profile = () => {
               onClick={handleOpenModal}
             >
               <NewPost />
-              New Post
+              New Object
             </Button>
+            <Button
+            className="w-full py-2 text-sm h-[45px] font-semibold text-[#8247E5] bg-white border border-[#8247E5] rounded-sm leading-[28px] text-[18px]"
+            variant="outline"
+            onClick={handleOpenModal}
+          >
+            <NewComplex />
+            New Complex
+          </Button>
             <Button
               className="w-full py-2 h-[45px] text-[#8247E5] bg-transparent border  leading-[28px] border-[#8247E5] rounded-sm text-[18px] font-semibold"
               variant="cancel"

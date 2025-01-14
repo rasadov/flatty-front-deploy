@@ -19,7 +19,6 @@ function App() {
     <Router>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -30,6 +29,7 @@ function App() {
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+        <Route path="/" element={<Home />} />
         <Route path="/map" element={<MapView />} />
         <Route path="/complex/:id" element={<Complex />} />{" "}
       </Routes>
