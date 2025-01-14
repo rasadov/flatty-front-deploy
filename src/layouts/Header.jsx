@@ -48,7 +48,7 @@ const Header = () => {
   const location = useLocation(); // useLocation istifadə edirik
   const user = JSON.parse(localStorage.getItem("user"));
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState("£"); 
+  const [selectedCurrency, setSelectedCurrency] = useState("£");
   const currencies = ["£", "$", "€", "₺"]; // add any symbols you need
   // const currentCurrency = localStorage.getItem("currency") || "£";
   // setSelectedCurrency(currentCurrency);
@@ -61,7 +61,10 @@ const Header = () => {
 
   useEffect(() => {
     const level = localStorage.getItem("level");
-    const storedUser = localStorage.getItem("user_id") in ["null", "undefined", null, undefined] ? null : localStorage.getItem("user_id");
+    const storedUser =
+      localStorage.getItem("user_id") in ["null", "undefined", null, undefined]
+        ? null
+        : localStorage.getItem("user_id");
     if (level && storedUser) {
       dispatch(setUser(storedUser));
     }
@@ -124,75 +127,77 @@ const Header = () => {
     method: "POST",
     credentials: "include",
   })
-  .then((res) => {
-    if (res.status === 401) {
-      // if (window.location.pathname !== "/login" && window.location.pathname !== "/register") {
-      // window.location.href = "/login";
-      //       }
-    localStorage.removeItem("user");
-    }
-    return res.json()
-  })
-  .then((data) => {
-    if (data && data.user) {
-      dispatch(setUser(data.user));
-    }
-  })
-  .catch((error) => {
-    localStorage.removeItem("user");
-  });
+    .then((res) => {
+      if (res.status === 401) {
+        window.location.href = "/login";
+        localStorage.removeItem("user");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      if (data && data.user) {
+        dispatch(setUser(data.user));
+      }
+    })
+    .catch((error) => {
+      localStorage.removeItem("user");
+    });
 
   const renderAuthButtons = () => {
-    if (user && user !== 'undefined') {
+    if (user && user !== "undefined") {
       return (
         <>
-        <div className="relative">
-        <button
-          className="flex items-center gap-1 px-3 py-2 bg-gray-100 border border-transparent rounded-md hover:border-gray-300"
-          onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
-        >
-          {selectedCurrency}
-          <span className="transform rotate-0">▼</span>
-        </button>
-
-        {currencyDropdownOpen && (
-          <div className="absolute top-full left-0 mt-1 bg-white border rounded-md shadow-lg w-100">
-            {currencies.map((curr) => (
-              <button
-              key={curr}
-                onClick={() => handleCurrencyChange(curr)}
-                className="block w-full px-3 py-2 text-left hover:bg-gray-100"
-              >
-                {curr}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-        <div className="w-[120px] h-[34px] flex justify-center gap-2 items-center ">
-          <div
-            onClick={() => handleNavigation("/wishlist")}
-            className=" cursor text-[#A673EF]  w-[34px] h-[34px] flex justify-center items-center"
+          <div className="relative">
+            <button
+              className="flex items-center gap-1 px-3 py-2 bg-gray-100 border border-transparent rounded-md hover:border-gray-300"
+              onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
             >
-            {location.pathname === "/wishlist" ? (
-              <SelectedWishlist />
-            ) : (
-              <Wishlist />
+              {selectedCurrency}
+              <span className="transform rotate-0">▼</span>
+            </button>
+
+            {currencyDropdownOpen && (
+              <div className="absolute left-0 mt-1 bg-white border rounded-md shadow-lg top-full w-100">
+                {currencies.map((curr) => (
+                  <button
+                    key={curr}
+                    onClick={() => handleCurrencyChange(curr)}
+                    className="block w-full px-3 py-2 text-left hover:bg-gray-100"
+                  >
+                    {curr}
+                  </button>
+                ))}
+              </div>
             )}
           </div>
-          <div
-            onClick={() => setNotificationsOpen(true)}
-            className=" cursor w-[34px] h-[34px] flex justify-center items-center"
+          <div className="w-[120px] h-[34px] flex justify-center gap-2 items-center ">
+            <div
+              onClick={() => handleNavigation("/wishlist")}
+              className=" cursor text-[#A673EF]  w-[34px] h-[34px] flex justify-center items-center"
             >
-            <NotificationTrue />
-          </div>
-          <div
-            onClick={() => handleNavigation("/profile")}
-            className=" cursor  w-[34px] h-[34px] rounded-full border border-[#A673EF]"
-          >
-            <img src={user.image_url} alt="Profile" className="w-full h-full rounded-full" />
-          </div>
-          {/* <Button
+              {location.pathname === "/wishlist" ? (
+                <SelectedWishlist />
+              ) : (
+                <Wishlist />
+              )}
+            </div>
+            <div
+              onClick={() => setNotificationsOpen(true)}
+              className=" cursor w-[34px] h-[34px] flex justify-center items-center"
+            >
+              <NotificationTrue />
+            </div>
+            <div
+              onClick={() => handleNavigation("/profile")}
+              className=" cursor  w-[34px] h-[34px] rounded-full border border-[#A673EF]"
+            >
+              <img
+                src={user.image_url}
+                alt="Profile"
+                className="w-full h-full rounded-full"
+              />
+            </div>
+            {/* <Button
             type="button"
             variant="secondary"
             onClick={handleLogout}
@@ -200,60 +205,60 @@ const Header = () => {
             >
             Log out
             </Button> */}
-        </div>
-      </>
+          </div>
+        </>
       );
     } else {
       return (
         <>
-        <div className="relative">
-          <button
-            className="flex items-center gap-1 px-3 py-2 bg-gray-100 border border-transparent rounded-md hover:border-gray-300"
-            onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
-          >
-            {selectedCurrency}
-            <span className="transform rotate-0">▼</span>
-          </button>
+          <div className="relative">
+            <button
+              className="flex items-center gap-1 px-3 py-2 bg-gray-100 border border-transparent rounded-md hover:border-gray-300"
+              onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
+            >
+              {selectedCurrency}
+              <span className="transform rotate-0">▼</span>
+            </button>
 
-          {currencyDropdownOpen && (
-            <div className="absolute top-full left-0 mt-1 bg-white border rounded-md shadow-lg w-100">
-              {currencies.map((curr) => (
-                <button
-                  key={curr}
-                  onClick={() => handleCurrencyChange(curr)}
-                  className="block w-full px-3 py-2 text-left hover:bg-gray-100"
-                >
-                  {curr}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="w-[154px] h-[34px] flex justify-center gap-4 items-center ">
-          <Button
-            type="button"
-            variant="secondary"
-            onClick={() => handleNavigation("/login")}
-            className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-[#A673EF] hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
+            {currencyDropdownOpen && (
+              <div className="absolute left-0 mt-1 bg-white border rounded-md shadow-lg top-full w-100">
+                {currencies.map((curr) => (
+                  <button
+                    key={curr}
+                    onClick={() => handleCurrencyChange(curr)}
+                    className="block w-full px-3 py-2 text-left hover:bg-gray-100"
+                  >
+                    {curr}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="w-[154px] h-[34px] flex justify-center gap-4 items-center ">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={() => handleNavigation("/login")}
+              className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-[#A673EF] hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
             >
-            Log in
-          </Button>
-          <Button
-            type="submit"
-            variant="primary"
-            onClick={() => handleNavigation("/register")}
-            className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
+              Log in
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
+              onClick={() => handleNavigation("/register")}
+              className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
             >
-            Sign up
-          </Button>
-        </div>
+              Sign up
+            </Button>
+          </div>
         </>
       );
     }
   };
 
   return (
-    <header className="bg-[#F9F8FF] min-w-full border-b-2 px-4 md:px-20 py-[14.5px] z-50 relative">
+    <header className="bg-[#F9F8FF] min-w-full border-b-2 px-16.26 py-[14.5px] z-50 relative">
       <nav className="flex items-center justify-between w-full min-w-full mx-auto">
         <Link to="/" className="flex items-center">
           <LogoDesktop className="w-[120px] md:w-[180px]" />

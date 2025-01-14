@@ -1,38 +1,44 @@
 // src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Profile from "./pages/Profile";
+import { Suspense, lazy } from "react";
 import Layout from "./layouts/Layout";
 import NotFound from "./pages/NotFound";
-import Search from "./pages/Search";
-import Appartment from "./pages/Appartment";
-import { Agent } from "./pages/Agent";
-import { Complex } from "./pages/Complex";
-import ListingsPage from "./components/sections/ListingsPage";
-import Wishlist from "./pages/Wishlist";
-import MapView from "./pages/MapView";
+import Loading from "./components/Loading";
+
+// Lazy load components
+const Home = lazy(() => import("./pages/Home"));
+const Login = lazy(() => import("./pages/Login"));
+const Register = lazy(() => import("./pages/Register"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Search = lazy(() => import("./pages/Search.jsx"));
+const Appartment = lazy(() => import("./pages/Appartment"));
+const Agent = lazy(() => import("./pages/Agent"));
+const Complex = lazy(() => import("./pages/Complex"));
+const ListingsPage = lazy(() => import("./components/sections/ListingsPage"));
+const Wishlist = lazy(() => import("./pages/Wishlist"));
+// const MapView = lazy(() => import("./pages/MapView"));
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route element={<Layout />}>
+      <Suspense fallback={<Loading />}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/appartment/:id" element={<Appartment />} />
+            <Route path="/agent" element={<Agent />} />
+            <Route path="/listingspage" element={<ListingsPage />} />
+            <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/map" element={<MapView />} /> */}
+          <Route path="/complex/:id" element={<Complex />} />
           <Route path="/search" element={<Search />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/appartment/:id" element={<Appartment />} />
-          <Route path="/agent" element={<Agent />} />
-          <Route path="/listingspage" element={<ListingsPage />} />
-          <Route path="/wishlist" element={<Wishlist />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-        <Route path="/" element={<Home />} />
-        <Route path="/map" element={<MapView />} />
-        <Route path="/complex/:id" element={<Complex />} />{" "}
-      </Routes>
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

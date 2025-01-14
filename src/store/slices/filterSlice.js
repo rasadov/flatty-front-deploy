@@ -1,19 +1,25 @@
 import { createSlice, createAction } from "@reduxjs/toolkit";
 
-// Create generic actions for setting and clearing values
-export const setValue = createAction("SET_VALUE", (path, value) => ({
+// Generic actions for filter manipulation
+export const setValue = createAction("filter/SET_VALUE", (path, value) => ({
   payload: { path, value },
 }));
-export const toggleValue = createAction("TOGGLE_VALUE", (path) => ({
+export const toggleValue = createAction("filter/TOGGLE_VALUE", (path) => ({
   payload: { path },
 }));
-export const incrementValue = createAction("INCREMENT_VALUE", (path) => ({
-  payload: { path },
-}));
-export const decrementValue = createAction("DECREMENT_VALUE", (path) => ({
-  payload: { path },
-}));
-export const clearAllFilters = createAction("CLEAR_ALL_FILTERS");
+export const incrementValue = createAction(
+  "filter/INCREMENT_VALUE",
+  (path) => ({
+    payload: { path },
+  })
+);
+export const decrementValue = createAction(
+  "filter/DECREMENT_VALUE",
+  (path) => ({
+    payload: { path },
+  })
+);
+export const clearAllFilters = createAction("filter/CLEAR_ALL_FILTERS");
 
 const initialState = {
   category: "",
@@ -39,55 +45,46 @@ const filterSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(setValue, (state, { payload: { path, value } }) => {
+    builder.addMatcher(
+      (action) => action.type.startsWith("filter/"),
+      (state, action) => {
+        const { path, value } = action.payload;
         const parts = path.split(".");
-        let obj = state;
+        let current = state;
         for (let i = 0; i < parts.length - 1; i++) {
-          obj = obj[parts[i]];
+          current = current[parts[i]];
         }
-        obj[parts[parts.length - 1]] = value;
-      })
-      .addCase(toggleValue, (state, { payload: { path } }) => {
-        const parts = path.split(".");
-        let obj = state;
-        for (let i = 0; i < parts.length - 1; i++) {
-          obj = obj[parts[i]];
+        const lastKey = parts[parts.length - 1];
+
+        switch (action.type) {
+          case setValue.type:
+            current[lastKey] = value;
+            break;
+          case toggleValue.type:
+            current[lastKey] = !current[lastKey];
+            break;
+          case incrementValue.type:
+            current[lastKey] = Math.max(0, current[lastKey] + 1);
+            break;
+          case decrementValue.type:
+            current[lastKey] = Math.max(0, current[lastKey] - 1);
+            break;
+          case clearAllFilters.type:
+            return initialState;
         }
-        obj[parts[parts.length - 1]] = !obj[parts[parts.length - 1]];
-      })
-      .addCase(incrementValue, (state, { payload: { path } }) => {
-        const parts = path.split(".");
-        let obj = state;
-        for (let i = 0; i < parts.length - 1; i++) {
-          obj = obj[parts[i]];
-        }
-        obj[parts[parts.length - 1]] = Math.max(
-          0,
-          obj[parts[parts.length - 1]] + 1
-        );
-      })
-      .addCase(decrementValue, (state, { payload: { path } }) => {
-        const parts = path.split(".");
-        let obj = state;
-        for (let i = 0; i < parts.length - 1; i++) {
-          obj = obj[parts[i]];
-        }
-        obj[parts[parts.length - 1]] = Math.max(
-          0,
-          obj[parts[parts.length - 1]] - 1
-        );
-      })
-      .addCase(clearAllFilters, () => initialState);
+      }
+    );
   },
 });
 
-export const { actions } = filterSlice;
 export default filterSlice.reducer;
 
-// Helper functions for dispatching actions
-export const setFilter = (path, value) => dispatch(setValue(path, value));
-export const toggleFilter = (path) => dispatch(toggleValue(path));
-export const incrementFilter = (path) => dispatch(incrementValue(path));
-export const decrementFilter = (path) => dispatch(decrementValue(path));
-export const clearFilters = () => dispatch(clearAllFilters());
+// Helper functions for dispatching actions (Assuming you're using these in your components)
+export const setFilter = (dispatch) => (path, value) =>
+  dispatch(setValue(path, value));
+export const toggleFilter = (dispatch) => (path) => dispatch(toggleValue(path));
+export const incrementFilter = (dispatch) => (path) =>
+  dispatch(incrementValue(path));
+export const decrementFilter = (dispatch) => (path) =>
+  dispatch(decrementValue(path));
+export const clearFilters = (dispatch) => () => dispatch(clearAllFilters());

@@ -6,18 +6,18 @@ const handleSelect = (
   option,
   isSingleSelect
 ) => {
-  const currentCategory = selectedFilters[category] || [];
+  console.log("Handling select for:", category, option);
   if (isSingleSelect) {
     setSelectedFilters({
       ...selectedFilters,
-      [category]: option === currentCategory ? null : option,
+      [category]: option,
     });
-    setFilter(category, option === currentCategory ? null : option);
+    setFilter(category, option);
   } else {
-    const newCategoryValue = Array.isArray(currentCategory)
-      ? currentCategory.includes(option)
-        ? currentCategory.filter((item) => item !== option)
-        : [...currentCategory, option]
+    const newCategoryValue = Array.isArray(selectedFilters[category])
+      ? selectedFilters[category].includes(option)
+        ? selectedFilters[category].filter((item) => item !== option)
+        : [...selectedFilters[category], option]
       : [option];
     setSelectedFilters({
       ...selectedFilters,
@@ -40,12 +40,14 @@ const handleNumericChange = (
     const newValue = Math.max(minValue, (prev || 0) + change);
     setSelectedFilters({
       ...selectedFilters,
-      [`${category}.${key}`]: newValue,
+      [category]: {
+        ...(selectedFilters[category] || {}),
+        [key]: newValue,
+      },
     });
     return newValue;
   });
 };
-
 const handleToggle = (
   toggleFilter,
   selectedFilters,
@@ -56,15 +58,18 @@ const handleToggle = (
   setSelectedFilters({ ...selectedFilters, [key]: !selectedFilters[key] });
 };
 
-const isSelected = (filters, category, value) => {
-  const currentValue = filters[category];
+const isSelected = (filters, category, value, subKey = null) => {
+  const currentValue = subKey ? filters[category]?.[subKey] : filters[category];
   if (Array.isArray(currentValue)) {
     return currentValue.includes(value);
   }
   return currentValue === value;
 };
-const getButtonStyle = (selectedFilters, category, value) => {
-  const currentCategory = selectedFilters[category] || [];
+
+const getButtonStyle = (selectedFilters, category, value, subKey = null) => {
+  const currentCategory = subKey
+    ? selectedFilters[category]?.[subKey] || []
+    : selectedFilters[category] || [];
   const isSelected = Array.isArray(currentCategory)
     ? currentCategory.includes(value)
     : currentCategory === value;
@@ -75,17 +80,20 @@ const getButtonStyle = (selectedFilters, category, value) => {
   }`;
 };
 const isApplyDisabled = (filters) => {
-  if (!filters) return true;
+  const isEmpty = (value) =>
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "string" && value === "") ||
+    (typeof value === "number" && value === 0) ||
+    (typeof value === "object" && Object.keys(value).length === 0) ||
+    (typeof value === "boolean" && !value);
 
-  return !Object.values(filters).some(
-    (value) =>
-      (Array.isArray(value) && value.length > 0) ||
-      (typeof value === "string" && value !== "") ||
-      (typeof value === "number" && value !== 0) ||
-      (typeof value === "boolean" && value)
-  );
+  for (let key in filters) {
+    if (!isEmpty(filters[key])) {
+      return false;
+    }
+  }
+  return true;
 };
-
 export {
   handleSelect,
   handleNumericChange,

@@ -14,6 +14,7 @@ const FilterSelect = ({
   value,
   options,
   setFilter,
+
   setSelectedFilters,
   selectedFilters = {},
 }) => (
@@ -111,6 +112,25 @@ const FilterNumberRange = ({
       "p-2 border border-[#E2E4E8] bg-[#F5F6F7] rounded-sm w-[146px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-center",
   });
 
+  const handleOptionClick = (option) => {
+    const currentOptions = (selectedFilters[category]?.options || []).filter(
+      (opt) => opt !== option
+    );
+    const newOptions = currentOptions.includes(option)
+      ? currentOptions
+      : [...currentOptions, option];
+
+    setSelectedFilters({
+      ...selectedFilters,
+      [category]: {
+        ...(selectedFilters[category] || {}),
+        options: newOptions,
+      },
+    });
+    // Assume `setFilter` can handle nested paths like this
+    setFilter(`${category}.options`, newOptions);
+  };
+
   return (
     <div className="flex items-center justify-between mb-3">
       <label className="block text-[12px] font-medium text-[#0F1D40]">
@@ -137,19 +157,19 @@ const FilterNumberRange = ({
           {additionalOptions.map((option) => (
             <button
               key={option}
-              onClick={() =>
-                handleSelect(
-                  setFilter,
-                  selectedFilters,
-                  setSelectedFilters,
-                  category,
-                  option,
-                  false
-                )
-              }
-              className={getButtonStyle(selectedFilters, category, option)}
+              onClick={() => handleOptionClick(option)}
+              className={getButtonStyle(
+                selectedFilters,
+                category,
+                option,
+                "options"
+              )}
             >
-              {option}
+              {isSelected(selectedFilters, category, option, "options") ? (
+                <span className="font-bold">{option}</span>
+              ) : (
+                option
+              )}
             </button>
           ))}
         </div>
@@ -157,16 +177,15 @@ const FilterNumberRange = ({
     </div>
   );
 };
-
 const FilterToggle = ({
   label,
-  key,
+  keyName, // Changed prop name to avoid React warning
   filters = {},
   toggleFilter,
   selectedFilters = {},
   setSelectedFilters,
 }) => {
-  const isToggled = filters[key];
+  const isToggled = selectedFilters[keyName] || false;
 
   return (
     <div className="flex items-center justify-center gap-2 mb-2">
@@ -174,9 +193,13 @@ const FilterToggle = ({
         {label}
       </label>
       <button
-        onClick={() =>
-          handleToggle(toggleFilter, selectedFilters, setSelectedFilters, key)
-        }
+        onClick={() => {
+          toggleFilter(keyName);
+          setSelectedFilters((prev) => ({
+            ...prev,
+            [keyName]: !prev[keyName],
+          }));
+        }}
       >
         {isToggled ? <ToggleTrue /> : <ToggleFalse />}
       </button>

@@ -10,7 +10,6 @@ import {
 export const useFilters = () => {
   const dispatch = useDispatch();
   const filters = useSelector((state) => state.filters);
-
   const setFilter = (path, value) => dispatch(setValue(path, value));
   const toggleFilter = (path) => dispatch(toggleValue(path));
   const incrementFilter = (path) => dispatch(incrementValue(path));

@@ -1,138 +1,110 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { IoCloseCircle } from "react-icons/io5";
-import { useFilters } from "../../hooks/useFilters";
+import { updateFilters } from "../../store/slices/searchSlice";
+import { motion, AnimatePresence } from "framer-motion";
 
 const filterConfig = [
-  { key: "category" },
-  { key: "complex" },
-  { key: "area.from" },
-  { key: "area.to" },
-  { key: "renovation", isArray: true },
-  { key: "floor.from" },
-  { key: "floor.to" },
-  { key: "ceilingHeight" },
-  { key: "bathroom", isArray: true },
-  { key: "furniture", isArray: true },
-  { key: "rooms.rooms" },
-  { key: "rooms.livingRoom" },
-  { key: "rooms.bedroom" },
-  { key: "rooms.balcony" },
-  { key: "parkingSlot" },
-  { key: "swimmingPool" },
+  { key: "category", label: "Category" },
+  { key: "complex", label: "Complex" },
+  { key: "area.from", label: "Area From" },
+  { key: "area.to", label: "Area To" },
+  { key: "renovation", label: "Renovation", isArray: true },
+  { key: "floor.from", label: "Floor From" },
+  { key: "floor.to", label: "Floor To" },
+  { key: "ceilingHeight", label: "Ceiling Height" },
+  { key: "bathroom", label: "Bathroom", isArray: true },
+  { key: "furniture", label: "Furniture", isArray: true },
+  { key: "rooms.rooms", label: "Rooms" },
+  { key: "rooms.livingRoom", label: "Living Room" },
+  { key: "rooms.bedroom", label: "Bedroom" },
+  { key: "rooms.balcony", label: "Balcony" },
+  { key: "parkingSlot", label: "Parking Slot" },
+  { key: "swimmingPool", label: "Swimming Pool" },
 ];
 
 export const SelectedFilters = () => {
-  const { filters, setFilter, toggleFilter, clearFilters } = useFilters();
+  const { filters } = useSelector((state) => state.search);
   const dispatch = useDispatch();
-  const [selectedFilters, setSelectedFilters] = useState({
-    category: "",
-    complex: "",
-    areaFrom: "",
-    areaTo: "",
-    renovation: [],
-    floorFrom: "",
-    floorTo: "",
-    ceilingHeight: "",
-    bathroom: [],
-    furniture: [],
-    roomsRooms: "",
-    roomsLivingRoom: "",
-    roomsBedroom: "",
-    roomsBalcony: "",
-    parkingSlot: "",
-    swimmingPool: "",
-  });
 
   if (!filters) return null;
 
-  // Filterləri silmək üçün məntiq
   const handleRemoveFilter = (category, value) => {
-    const path = category.split(".");
-    if (path.length > 1) {
-      const [mainCategory, subCategory] = path;
-      if (Array.isArray(filters[mainCategory][subCategory])) {
-        dispatch(
-          setFilter(
-            category,
-            filters[mainCategory][subCategory].filter((item) => item !== value)
-          )
-        );
-      } else {
-        dispatch(setFilter(category, ""));
-      }
+    let updatedFilters = { ...filters };
+    if (Array.isArray(updatedFilters[category])) {
+      updatedFilters[category] = updatedFilters[category].filter(
+        (item) => item !== value
+      );
     } else {
-      if (Array.isArray(filters[category])) {
-        dispatch(
-          setFilter(
-            category,
-            filters[category].filter((item) => item !== value)
-          )
-        );
+      const path = category.split(".");
+      if (path.length > 1) {
+        updatedFilters[path[0]] = {
+          ...updatedFilters[path[0]],
+          [path[1]]: null,
+        };
       } else {
-        dispatch(setFilter(category, ""));
+        updatedFilters[category] = null; // Reset to null when removing
       }
     }
+    dispatch(updateFilters(updatedFilters));
   };
 
-  const renderFilterList = ({ key, isArray = false }) => {
+  const renderFilterList = ({ key, label, isArray = false }) => {
     const path = key.split(".");
-    const values =
-      path.length > 1 ? filters[path[0]][path[1]] : filters[path[0]];
+    const value = path.length > 1 ? filters[path[0]]?.[path[1]] : filters[key];
 
     if (
-      values &&
-      ((isArray && Array.isArray(values) && values.length > 0) ||
-        (!isArray && values !== ""))
+      value &&
+      ((isArray && Array.isArray(value) && value.length > 0) ||
+        (!isArray && value !== "" && value !== null))
     ) {
       return (
-        <div key={key} className="mb-2 mr-2">
+        <motion.div
+          key={key}
+          className="mb-2 mr-2"
+          initial={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
+        >
           <div className="flex flex-wrap items-center justify-start gap-2">
             {isArray ? (
-              (Array.isArray(values) ? values : [values]).flatMap(
-                (value, index) =>
-                  Array.isArray(value)
-                    ? value.map(
-                        (subValue, subIndex) =>
-                          subValue && (
-                            <button
-                              key={`${key}-${index}-${subIndex}`}
-                              className="min-w-[104px] h-[26px] flex items-center justify-between gap-1 px-[4px] py-[2px] text-xs text-[#8247E5] transition-all duration-300 border border-[#8247E5] rounded-sm hover:bg-gray-200"
-                              onClick={() => handleRemoveFilter(key, subValue)}
-                            >
-                              <span className="text-[#8247E5] font-semibold text-[14px] leading-5">
-                                {subValue}
-                              </span>
-                              <IoCloseCircle size={16} color="#8247E5" />
-                            </button>
-                          )
-                      )
-                    : value && (
-                        <button
-                          key={`${key}-${index}`}
-                          className="min-w-[104px] h-[26px] flex items-center justify-between gap-1 px-[4px] py-[2px] text-xs text-[#8247E5] transition-all duration-300 border border-[#8247E5] rounded-sm hover:bg-gray-200"
-                          onClick={() => handleRemoveFilter(key, value)}
-                        >
-                          <span className="text-[#8247E5] font-semibold text-[14px] leading-5">
-                            {value}
-                          </span>
-                          <IoCloseCircle size={16} color="#8247E5" />
-                        </button>
-                      )
+              (Array.isArray(value) ? value : [value]).map(
+                (item, index) =>
+                  item && (
+                    <motion.button
+                      key={`${key}-${index}`}
+                      className="min-w-[104px] h-[26px] flex items-center justify-between gap-1 px-[4px] py-[2px] text-xs text-[#8247E5] transition-all duration-300 border border-[#8247E5] rounded-sm hover:bg-gray-200"
+                      onClick={() => handleRemoveFilter(key, item)}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      exit={{
+                        opacity: 0,
+                        scale: 0.8,
+                        transition: { duration: 0.3 },
+                      }}
+                    >
+                      <span className="text-[#8247E5] font-semibold text-[14px] leading-5">
+                        {item}
+                      </span>
+                      <IoCloseCircle size={16} color="#8247E5" />
+                    </motion.button>
+                  )
               )
             ) : (
-              <button
+              <motion.button
                 className="min-w-[104px] h-[26px] flex justify-between items-center gap-1 px-[4px] py-[2px] text-xs text-[#8247E5] transition-all duration-300 border border-[#8247E5] rounded-sm hover:bg-gray-200"
-                onClick={() => handleRemoveFilter(key, values)}
+                onClick={() => handleRemoveFilter(key, value)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.3 } }}
               >
                 <span className="text-[#8247E5] font-semibold text-[14px] leading-5">
-                  {values}
+                  {label}: {value}
                 </span>
                 <IoCloseCircle size={16} color="#8247E5" />
-              </button>
+              </motion.button>
             )}
           </div>
-        </div>
+        </motion.div>
       );
     }
     return null;
@@ -140,71 +112,14 @@ export const SelectedFilters = () => {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center justify-start gap-2">
-        {filterConfig.map(renderFilterList)}
-      </div>
-      <div className="mt-4">
-        <input
-          type="text"
-          placeholder="from"
-          value={selectedFilters?.floorFrom || ""}
-          onChange={(e) =>
-            setSelectedFilters({
-              ...selectedFilters,
-              floorFrom: parseInt(e.target.value) || "",
-            })
-          }
-          className="flex-1 p-2 border border-gray-300 bg-white rounded-md w-[85px] h-[35px]"
-        />
-        <input
-          type="text"
-          placeholder="to"
-          value={selectedFilters?.floorTo || ""}
-          onChange={(e) =>
-            setSelectedFilters({
-              ...selectedFilters,
-              floorTo: parseInt(e.target.value) || "",
-            })
-          }
-          className="flex-1 p-2 border border-gray-300 bg-white rounded-md w-[85px] h-[35px]"
-        />
-      </div>
-      <div className="flex flex-col justify-between gap-2 mt-2 md:flex-row">
-        <div className="relative">
-          <input
-            type="number"
-            placeholder="from"
-            value={selectedFilters?.areaFrom || ""}
-            onChange={(e) =>
-              setSelectedFilters({
-                ...selectedFilters,
-                areaFrom: parseInt(e.target.value) || "",
-              })
-            }
-            className="flex-1 p-2 border border-gray-300 bg-white rounded-md w-[146px] h-[35px]"
-          />
-          <span className="absolute text-xs text-gray-400 right-3 top-2">
-            м²
-          </span>
-        </div>
-        <div className="relative">
-          <input
-            type="number"
-            placeholder="to"
-            value={selectedFilters?.areaTo || ""}
-            onChange={(e) =>
-              setSelectedFilters({
-                ...selectedFilters,
-                areaTo: parseInt(e.target.value) || "",
-              })
-            }
-            className="flex-1 p-2 border border-gray-300 bg-white rounded-md w-[146px] h-[35px]"
-          />
-          <span className="absolute text-xs text-gray-400 right-3 top-2">
-            м²
-          </span>
-        </div>
-      </div>
+      <AnimatePresence>
+        <motion.div
+          className="flex flex-wrap items-center justify-start gap-2"
+          layout
+        >
+          {filterConfig.map(renderFilterList)}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 };

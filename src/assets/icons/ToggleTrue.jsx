@@ -3,16 +3,58 @@ import React from "react";
 export const ToggleTrue = () => {
   return (
     <svg
-      width="30"
-      height="18"
-      viewBox="0 0 30 18"
+      width="37"
+      height="25"
+      viewBox="0 0 37 25"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path
-        d="M21 0H9C6.61305 0 4.32387 0.948211 2.63604 2.63604C0.948212 4.32387 0 6.61305 0 9C0 11.3869 0.948212 13.6761 2.63604 15.364C4.32387 17.0518 6.61305 18 9 18H21C23.3869 18 25.6761 17.0518 27.364 15.364C29.0518 13.6761 30 11.3869 30 9C30 6.61305 29.0518 4.32387 27.364 2.63604C25.6761 0.948211 23.3869 0 21 0ZM21 14C20.0111 14 19.0444 13.7068 18.2221 13.1573C17.3999 12.6079 16.759 11.827 16.3806 10.9134C16.0022 9.99979 15.9031 8.99445 16.0961 8.02455C16.289 7.05464 16.7652 6.16373 17.4645 5.46447C18.1637 4.7652 19.0546 4.289 20.0245 4.09607C20.9945 3.90315 21.9998 4.00216 22.9134 4.3806C23.827 4.75904 24.6079 5.3999 25.1573 6.22215C25.7068 7.04439 26 8.01109 26 9C26 10.3261 25.4732 11.5979 24.5355 12.5355C23.5979 13.4732 22.3261 14 21 14Z"
-        fill="#49536E"
-      />
+      <rect width="36" height="20" rx="10" fill="#8247E5" />
+      <g filter="url(#filter0_d_1204_13683)">
+        <rect x="19" y="3" width="14" height="14" rx="7" fill="#F9F8FF" />
+      </g>
+      <defs>
+        <filter
+          id="filter0_d_1204_13683"
+          x="15"
+          y="3"
+          width="22"
+          height="22"
+          filterUnits="userSpaceOnUse"
+          color-interpolation-filters="sRGB"
+        >
+          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feColorMatrix
+            in="SourceAlpha"
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+            result="hardAlpha"
+          />
+          <feMorphology
+            radius="1"
+            operator="erode"
+            in="SourceAlpha"
+            result="effect1_dropShadow_1204_13683"
+          />
+          <feOffset dy="4" />
+          <feGaussianBlur stdDeviation="2.5" />
+          <feColorMatrix
+            type="matrix"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.08 0"
+          />
+          <feBlend
+            mode="normal"
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_1204_13683"
+          />
+          <feBlend
+            mode="normal"
+            in="SourceGraphic"
+            in2="effect1_dropShadow_1204_13683"
+            result="shape"
+          />
+        </filter>
+      </defs>
     </svg>
   );
 };

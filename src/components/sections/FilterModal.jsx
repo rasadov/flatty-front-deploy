@@ -2,13 +2,9 @@ import React, { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import Button from "../Button";
 import { useFilters } from "../../hooks/useFilters";
-import {
-  handleSelect,
-  getButtonStyle,
-  handleNumericChange,
-  handleToggle,
-  isApplyDisabled,
-} from "../../utils/filterUtils";
+import { updateFilters } from "../../store/slices/searchSlice";
+import { useDispatch } from "react-redux";
+import { isApplyDisabled } from "../../utils/filterUtils";
 import {
   FilterSelect,
   FilterButtonGroup,
@@ -25,11 +21,11 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
     incrementFilter,
     decrementFilter,
     clearFilters,
-    updateFilters,
   } = useFilters();
 
   // Local state for UI interactions
   const [selectedFilters, setSelectedFilters] = useState(filters);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Sync selectedFilters with filters when modal opens or filters change externally
@@ -37,11 +33,37 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
   }, []);
 
   const handleApply = () => {
-    updateFilters(selectedFilters);
-    onApply(selectedFilters); // If onApply needs to do something with the filters
-    onClose();
-  };
+    const queryParams = new URLSearchParams();
+    Object.entries(selectedFilters).forEach(([key, value]) => {
+      if (value !== null && value !== undefined && value !== "") {
+        if (typeof value === "object" && !Array.isArray(value)) {
+          // For nested objects like 'rooms'
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            if (subValue !== 0 && subValue !== "") {
+              if (subKey === "options" && Array.isArray(subValue)) {
+                subValue.forEach((option) =>
+                  queryParams.append(`${key}.${subKey}`, option)
+                );
+              } else {
+                queryParams.append(`${key}.${subKey}`, subValue);
+              }
+            }
+          });
+        } else if (Array.isArray(value)) {
+          // For arrays like 'renovation', 'furniture'
+          value.forEach((item) => queryParams.append(key, item));
+        } else {
+          queryParams.append(key, value);
+        }
+      }
+    });
 
+    // Dispatch the filters to Redux store
+    dispatch(updateFilters(selectedFilters));
+    // Send filters to parent component with query parameters
+    onApply(selectedFilters, queryParams.toString());
+    onClose(); // Close modal
+  };
   const handleCancel = () => {
     clearFilters();
     onClose();
@@ -78,12 +100,15 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
           {/* Filter Components */}
           <FilterSelect
             label="Category"
-            value={filters?.category || ""}
-            onChange={(e) => setFilter("category", e.target.value)}
+            category="category"
+            value={filters.category}
             options={[
               { value: "", label: "Choose Category" },
               { value: "Residence Complex", label: "Residence Complex" },
             ]}
+            setFilter={setFilter}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
           />
 
           <FilterSelect
@@ -105,9 +130,8 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             setFilter={setFilter}
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
-            unit="м²"
+            unit="m²"
           />
-
           <FilterButtonGroup
             label="Renovation"
             options={[
@@ -116,9 +140,10 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
               "European style",
               "Needs renovation",
             ]}
-            filters={filters}
             category="renovation"
             setFilter={setFilter}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
           />
 
           <FilterNumberRange
@@ -131,13 +156,16 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
             additionalOptions={["Not first", "Not last", "Last"]}
+            unit=""
           />
 
           <FilterButtonGroup
             label="Ceiling Height"
             options={["From 2.5m", "From 2.7m", "From 3m"]}
-            filters={filters}
+            filters={selectedFilters}
             category="ceilingHeight"
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
             setFilter={setFilter}
           />
 
@@ -146,7 +174,8 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             options={["Combined", "Separate", "Several"]}
             filters={filters}
             category="bathroom"
-            setFilter={setFilter}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
           />
 
           <FilterButtonGroup
@@ -158,10 +187,9 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             ]}
             filters={filters}
             category="furniture"
-            setFilter={setFilter}
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
           />
-
-          {/* Rooms */}
           <div className="flex flex-wrap items-center justify-start gap-3 mb-4 space-y-2">
             {["rooms", "bathroom", "livingRoom", "bedroom", "balcony"].map(
               (type) => (
@@ -170,43 +198,68 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
                     {type}
                   </label>
                   <div className="flex items-center gap-1">
-                    <button onClick={() => decrementFilter(`rooms.${type}`)}>
+                    <button
+                      onClick={() => {
+                        decrementFilter(`rooms.${type}`);
+                        setSelectedFilters((prev) => ({
+                          ...prev,
+                          rooms: {
+                            ...prev.rooms,
+                            [type]: Math.max((prev.rooms?.[type] || 0) - 1, 0),
+                          },
+                        }));
+                      }}
+                    >
                       <Subtract />
                     </button>
                     <span className="text-[14px] align-middle font-semibold leading-[22.4px]">
-                      {filters.rooms?.[type] || 0}
+                      {selectedFilters.rooms?.[type] || 0}
                     </span>
-                    <button onClick={() => incrementFilter(`rooms.${type}`)}>
+                    <button
+                      onClick={() => {
+                        incrementFilter(`rooms.${type}`);
+                        setSelectedFilters((prev) => ({
+                          ...prev,
+                          rooms: {
+                            ...prev.rooms,
+                            [type]: (prev.rooms?.[type] || 0) + 1,
+                          },
+                        }));
+                      }}
+                    >
                       <Add />
                     </button>
                   </div>
                 </div>
               )
             )}
-            {["parkingSlot", "swimmingPool"].map((key) => (
-              <FilterToggle
-                key={key}
-                label={key
-                  .replace(/([A-Z])/g, " $1")
-                  .replace(/^./, (str) => str.toUpperCase())}
-                filters={filters}
-                toggleFilter={toggleFilter}
-              />
-            ))}
+            <div className="flex flex-wrap items-center justify-start gap-3 mb-4">
+              {["parkingSlot", "swimmingPool"].map((key) => (
+                <FilterToggle
+                  key={key}
+                  label={
+                    key === "parkingSlot" ? "Parking Slot" : "Swimming Pool"
+                  }
+                  keyName={key} // Using 'keyName' instead of 'key' to avoid React warning about using 'key' as prop name
+                  filters={selectedFilters}
+                  toggleFilter={toggleFilter}
+                  selectedFilters={selectedFilters}
+                  setSelectedFilters={setSelectedFilters}
+                />
+              ))}
+            </div>
           </div>
-
           {/* Toggles */}
           <div className="flex justify-start gap-6 mb-4"></div>
 
           {/* Apply and Cancel buttons */}
           <div className="flex justify-end gap-4">
             <Button
-              onClick={() => {
-                handleApply();
-                onClose();
-              }}
+              onClick={handleApply}
               className={`bg-[#8247E5] text-white px-4 py-2 rounded ${
-                isApplyDisabled(filters) ? "opacity-50 cursor-not-allowed" : ""
+                isApplyDisabled(selectedFilters)
+                  ? "opacity-50 cursor-not-allowed"
+                  : ""
               }`}
               disabled={isApplyDisabled(selectedFilters)}
             >

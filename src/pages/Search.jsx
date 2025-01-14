@@ -21,10 +21,14 @@ import {
   DropdownUnder,
   FilterButton,
 } from "../assets/icons";
-import SearchbarDropdown from "../components/dropdowns/SearchbarDropdown.jsx";
+import MapView from "./MapView.jsx";
+import { Footer } from "../layouts/Footer.jsx";
+import Header from "../layouts/Header.jsx";
 
 export const Search = () => {
   const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.auth);
+
   const {
     results: searchResults,
     filters,
@@ -36,18 +40,18 @@ export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
-  const [selectedTypes, setSelectedTypes] = useState([]);
-  const [selectedRoom, setSelectedRoom] = useState("");
-  const [priceRange, setPriceRange] = useState({ from: "", to: "" });
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  // const [selectedTypes, setSelectedTypes] = useState([]);
+  // const [selectedRoom, setSelectedRoom] = useState("");
+  // const [priceRange, setPriceRange] = useState({ from: "", to: "" });
+  // const [selectedCurrency, setSelectedCurrency] = useState("USD");
 
-  const handlePriceRangeChange = useCallback((field, value) => {
-    setPriceRange((prev) => ({ ...prev, [field]: value }));
-  }, []);
+  // const handlePriceRangeChange = useCallback((field, value) => {
+  //   setPriceRange((prev) => ({ ...prev, [field]: value }));
+  // }, []);
 
-  const handleCurrencyChange = useCallback((currency) => {
-    setSelectedCurrency(currency);
-  }, []);
+  // const handleCurrencyChange = useCallback((currency) => {
+  //   setSelectedCurrency(currency);
+  // }, []);
   useEffect(() => {
     dispatch(loadSearchResults(filters));
   }, [dispatch, filters]);
@@ -132,9 +136,11 @@ export const Search = () => {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full mx-auto ">
+      <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
+
       {/* Searchbar and Filter Button */}
-      <div className="flex items-center justify-center w-full gap-4 mt-36">
+      <div className="flex items-center justify-center w-full gap-4 mt-36  px-16.26">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => dispatch(loadSearchResults(filters))}
@@ -150,25 +156,24 @@ export const Search = () => {
       </div>
 
       {showMap ? (
-        <MapView filteredItems={filteredItems} />
+        <>
+          <div className="px-16.26 flex justify-start items-center my-2">
+            <SelectedFilters />
+          </div>
+          <MapView filteredItems={filteredItems} />
+        </>
       ) : (
-        <ResultView
-          filteredItems={filteredItems}
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-          setFilter={(path, value) =>
-            dispatch(updateFilters({ [path]: value }))
-          }
-          selectedTypes={selectedTypes}
-          setSelectedTypes={setSelectedTypes}
-          selectedRoom={selectedRoom}
-          setSelectedRoom={setSelectedRoom}
-          priceRange={priceRange}
-          handlePriceRangeChange={handlePriceRangeChange}
-          selectedCurrency={selectedCurrency}
-          handleCurrencyChange={handleCurrencyChange}
-        />
+        <div className=" px-16.26">
+          <ResultView
+            filteredItems={filteredItems}
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+            setFilter={(path, value) =>
+              dispatch(updateFilters({ [path]: value }))
+            }
+          />
+        </div>
       )}
 
       {/* Filter Modal */}
@@ -180,6 +185,9 @@ export const Search = () => {
           setIsModalOpen(false);
         }}
       />
+      <div className="px-6  mx-auto  bg-[#ECE8FF]">
+        <Footer />
+      </div>
     </div>
   );
 };
@@ -187,41 +195,6 @@ export const Search = () => {
 export default Search;
 
 // MapView component
-const MapView = ({ filteredItems }) => {
-  const defaultCenter = [34.6809, 33.0382]; // Cyprus as default center
-
-  return (
-    <div className="w-full h-[821px] mt-6 flex">
-      <div className="w-1/3 p-4 overflow-y-auto">
-        {filteredItems.map((item) => (
-          <Link to={`/apartment/${item.id}`} key={`${item.id}-${item.name}`}>
-            <HouseItem {...item} />
-          </Link>
-        ))}
-      </div>
-      <div className="w-2/3 h-full">
-        <MapContainer
-          center={
-            filteredItems[0]
-              ? [filteredItems[0].lat, filteredItems[0].lng]
-              : defaultCenter
-          }
-          zoom={filteredItems.length > 0 ? 14 : 13}
-          style={{ width: "100%", height: "100%" }}
-        >
-          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-          {filteredItems.map((item) => (
-            <Marker key={item.id} position={[item.lat, item.lng]}>
-              <Popup>
-                <HouseItem {...item} />
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </div>
-    </div>
-  );
-};
 
 // ResultView component
 const ResultView = ({
@@ -229,148 +202,10 @@ const ResultView = ({
   currentPage,
   totalPages,
   onPageChange,
-  setFilter,
-  selectedTypes,
-  setSelectedTypes,
-  selectedRoom,
-  setSelectedRoom,
-  priceRange,
-  handlePriceRangeChange,
-  selectedCurrency,
-  handleCurrencyChange,
 }) => {
-  const types = ["Apartment", "House", "Villa", "Land", "Garage", "Commercial"];
-  const roomNumbers = ["Studio", "1", "2", "3", "4", "5"];
-  const currencies = ["USD", "EUR", "AZN"];
-
-  // State management for filters (these should come from Redux if possible)
-  const [dropdownState, setDropdownState] = useState({
-    typeOpen: false,
-    roomOpen: false,
-    priceOpen: false,
-  });
-
-  const toggleDropdown = useCallback((dropdownKey) => {
-    setDropdownState((prevState) => ({
-      ...Object.fromEntries(
-        Object.entries(prevState).map(([key]) => [key, false])
-      ),
-      [dropdownKey]: !prevState[dropdownKey],
-    }));
-  }, []);
-
   return (
     <>
       {/* Filter Dropdowns */}
-      <div className="flex flex-wrap w-full gap-4 mt-6">
-        {/* Type Filter Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleDropdown("typeOpen")}
-            className="flex items-center justify-between gap-1 px-2 py-2 w-[133px] h-[32px] bg-white rounded-md shadow-sm focus:border-[#8247E5] focus:outline-none"
-            style={{
-              boxShadow: "0px 1px 1px 0px #703ACA14",
-            }}
-          >
-            <span className="text-xs font-semibold text-[#525C76]">Type</span>
-            <DropdownUnder />
-          </button>
-          {dropdownState.typeOpen && (
-            <div className="absolute z-10 mt-2 w-[130px] h-[200px] bg-white mx-auto rounded-md shadow-lg overflow-y-auto">
-              {types.map((type) => (
-                <button
-                  key={type}
-                  onClick={() =>
-                    setSelectedTypes((prev) =>
-                      prev.includes(type)
-                        ? prev.filter((item) => item !== type)
-                        : [...prev, type]
-                    )
-                  }
-                  className="flex items-center px-2 py-4 w-[114px] h-[24px] text-sm cursor-pointer gap-2 mx-auto"
-                  style={{ fontSize: "12px" }}
-                >
-                  <div className="flex items-center gap-2">
-                    {/* Checkbox Icon Switch with Animation */}
-                    {selectedTypes.includes(type) ? (
-                      <CheckboxFill />
-                    ) : (
-                      <CheckboxSquare />
-                    )}
-                    <span className="text-[#8C93A3]">{type}</span>
-                  </div>
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Room Number Filter Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleDropdown("roomOpen")}
-            className="flex items-center justify-between gap-1 px-2 py-2 w-[133px] h-[32px] bg-white rounded-md shadow-sm focus:border-[#8247E5] focus:outline-none"
-            style={{
-              boxShadow: "0px 1px 1px 0px #703ACA14",
-            }}
-          >
-            <span className="text-xs font-semibold text-[#525C76]">
-              Room Number
-            </span>
-            <DropdownUnder />
-          </button>
-          {dropdownState.roomOpen && (
-            <div className="absolute z-10 mt-2 p-2 w-[242px] m-auto h-[94px] grid grid-cols-3 bg-white border mx-auto border-gray-300 rounded-md shadow-lg">
-              {roomNumbers.map((room) => (
-                <label
-                  key={room}
-                  className="flex items-center w-[70px] min-h-[35px] gap-2 py-4 mx-auto text-sm cursor-pointer"
-                >
-                  <button
-                    onClick={() => setSelectedRoom(room)}
-                    className="text-center text-sm text-[#0F1D40] border border-[#6433C4] rounded-[8px]"
-                    style={{
-                      fontSize: "12px",
-                      width: "70px",
-                      height: "35px",
-                    }}
-                  >
-                    {room}
-                  </button>
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* Price Range Filter Dropdown */}
-        <div className="relative">
-          <button
-            onClick={() => toggleDropdown("priceOpen")}
-            className="flex items-center justify-between gap-1 px-2 py-2 w-[133px] h-[32px] bg-white rounded-md shadow-sm focus:border-[#8247E5] focus:outline-none"
-            style={{
-              boxShadow: "0px 1px 1px 0px #703ACA14",
-            }}
-          >
-            <span className="text-xs font-semibold text-[#525C76]">Price</span>
-            <DropdownUnder />
-          </button>
-          {dropdownState.priceOpen && (
-            <div className="absolute z-10 mt-2 w-[392px] h-[86px] bg-white border mx-auto border-gray-300 rounded-md shadow-lg overflow-y-auto flex justify-center items-center">
-              <RangeInput
-                label="Price Range"
-                from={priceRange.from}
-                to={priceRange.to}
-                onFromChange={(value) => handlePriceRangeChange("from", value)}
-                onToChange={(value) => handlePriceRangeChange("to", value)}
-                selectedCurrency={selectedCurrency}
-                onCurrencyChange={handleCurrencyChange}
-                currencies={currencies}
-              />
-            </div>
-          )}
-        </div>
-      </div>
 
       {/* Filtered Results */}
       <div className="w-full p-8 my-6 bg-white rounded-2xl">

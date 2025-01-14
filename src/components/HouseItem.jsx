@@ -104,27 +104,37 @@ export const HouseItem = React.memo(
           // Toggle like status
           fetch("http://localhost:5001/like", {
             method: "POST",
-            body: JSON.stringify({ property_id: propertyId }),
+            body: JSON.stringify({ property_id: id }),
             credentials: "include",
-          });
-          if (!liked) {
-            dispatch(
-              addToWishlist({
-                id,
-                images,
-                price,
-                location,
-                rooms,
-                area,
-                currFloor,
-                building,
-              })
-            );
-            notify("Item added to wishlist");
-          } else {
-            dispatch(removeFromWishlist({ id }));
-            notify("Item removed from wishlist");
-          }
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                if (!liked) {
+                  dispatch(
+                    addToWishlist({
+                      id,
+                      images,
+                      price,
+                      location,
+                      rooms,
+                      area,
+                      currFloor,
+                      building,
+                    })
+                  );
+                  notify("Item added to wishlist");
+                } else {
+                  dispatch(removeFromWishlist({ id }));
+                  notify("Item removed from wishlist");
+                }
+              } else {
+                console.error("Failed to update wishlist:", data.error);
+              }
+            })
+            .catch((error) => {
+              console.error("Error updating wishlist:", error);
+            });
         }
       },
       [
@@ -143,6 +153,8 @@ export const HouseItem = React.memo(
       ]
     );
 
+    console.log("Images prop:", images);
+
     return (
       <div
         className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2]"
@@ -152,44 +164,48 @@ export const HouseItem = React.memo(
       >
         {/* Image Section with Slider */}
         <div className="relative w-full h-[173px] rounded-[6px] overflow-hidden">
-          <Swiper
-            loop={true}
-            onSwiper={(swiper) => {
-              swiperRef.current = swiper;
-            }}
-            navigation={{
-              prevEl: prevRef.current,
-              nextEl: nextRef.current,
-            }}
-            speed={800} // Adjust the speed of slide transition
-            breakpoints={{
-              640: {
-                slidesPerView: 1,
-                spaceBetween: 10,
-              },
-              768: {
-                slidesPerView: 1,
-                spaceBetween: 20,
-              },
-              1024: {
-                slidesPerView: 1,
-                spaceBetween: 30,
-              },
-            }}
-            className="swiper-container"
-          >
-            {images.map((img, index) => (
-              <SwiperSlide key={index}>
-                <Link to={`/appartment/${id}`}>
-                  <img
-                    src={img}
-                    alt={`Slide ${index + 1}`}
-                    className="object-cover w-full h-[173px]"
-                  />
-                </Link>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          {images && Array.isArray(images) && images.length > 0 ? (
+            <Swiper
+              loop={true}
+              onSwiper={(swiper) => {
+                swiperRef.current = swiper;
+              }}
+              navigation={{
+                prevEl: prevRef.current,
+                nextEl: nextRef.current,
+              }}
+              speed={800} // Adjust the speed of slide transition
+              breakpoints={{
+                640: {
+                  slidesPerView: 1,
+                  spaceBetween: 10,
+                },
+                768: {
+                  slidesPerView: 1,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  slidesPerView: 1,
+                  spaceBetween: 30,
+                },
+              }}
+              className="swiper-container"
+            >
+              {images.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <Link to={`/appartment/${id}`}>
+                    <img
+                      src={img}
+                      alt={`Slide ${index + 1}`}
+                      className="object-cover w-full h-[173px]"
+                    />
+                  </Link>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <div>No images available</div>
+          )}
 
           {/* Previous Button */}
           <div

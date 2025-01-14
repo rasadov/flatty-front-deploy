@@ -1,0 +1,23 @@
+.px-16 {
+  padding-left: 0rem !important;
+  padding-right: 0rem !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin-top: 30px;
+}
+
+.home-content-wrapper {
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+@media (max-width: 800px) {
+  .px-16 {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
+  .home-content-wrapper {
+    padding-left: 4rem;
+    padding-right: 4rem;
+  }
+}

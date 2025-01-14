@@ -1,36 +1,57 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, MapPin, ShowMap } from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
 import { LocationCancel } from "../../assets/icons/LocationCancel";
+import { useDispatch } from "react-redux";
+import { loadSearchResults } from "../../store/slices/searchSlice";
 
-export const Searchbar = () => {
+export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
   const [dropdownStates, setDropdownStates] = useState({
     category: null,
     roomNumber: null,
     priceRange: { min: "", max: "" },
-    location: null,
+    location: value || "",
   });
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  // Sync the location with the prop 'value'
+  useEffect(() => {
+    setDropdownStates((prevState) => ({
+      ...prevState,
+      location: value || "",
+    }));
+  }, [value]);
+
   const handleSearch = () => {
     const { category, roomNumber, priceRange, location } = dropdownStates;
-  
-    // Construct query parameters
+    const filters = {
+      category,
+      roomNumber,
+      minPrice: priceRange.min,
+      maxPrice: priceRange.max,
+      location,
+    };
+
+    // Execute the onSearch prop with dispatch
+    onSearch(() => dispatch(loadSearchResults(filters)));
+
     const queryParams = new URLSearchParams();
+    // Add all selected filters to query parameters
     if (category) queryParams.append("category", category);
     if (roomNumber) queryParams.append("roomNumber", roomNumber);
     if (priceRange.min) queryParams.append("minPrice", priceRange.min);
     if (priceRange.max) queryParams.append("maxPrice", priceRange.max);
     if (location) queryParams.append("location", location);
-  
-    // Navigate to the search page with query parameters
+
+    // Navigate with all selected filters in the URL
     navigate(`/search?${queryParams.toString()}`);
   };
-  
 
   const handleShowOnMap = () => {
-    console.log("Showing location on map...");
+    onShowMap(dropdownStates.location); // Use the prop to show on map
   };
 
   const handleDropdownToggle = (type) => {
@@ -42,7 +63,7 @@ export const Searchbar = () => {
       ...prevState,
       [type]: value,
     }));
-    setDropdownOpen(null); // Close the dropdown after selecting
+    if (type !== "location") setDropdownOpen(null);
   };
 
   const handlePriceChange = (e, type) => {
@@ -56,6 +77,23 @@ export const Searchbar = () => {
     }));
   };
 
+  const handleLocationChange = (e) => {
+    const value = e.target.value;
+    setDropdownStates((prevState) => ({
+      ...prevState,
+      location: value,
+    }));
+    onChange(value); // Notify parent about the change in location
+  };
+
+  const clearLocation = () => {
+    setDropdownStates((prevState) => ({
+      ...prevState,
+      location: "",
+    }));
+    onChange(""); // Notify parent that location is cleared
+  };
+
   const renderDropdownContent = (type) => {
     switch (type) {
       case "category":
@@ -63,19 +101,19 @@ export const Searchbar = () => {
           <div className="p-4">
             <p
               onClick={() => handleSelectOption(type, "Option 1")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
+              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               Option 1
             </p>
             <p
               onClick={() => handleSelectOption(type, "Option 2")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
+              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               Option 2
             </p>
             <p
               onClick={() => handleSelectOption(type, "Option 3")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
+              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               Option 3
             </p>
@@ -86,19 +124,19 @@ export const Searchbar = () => {
           <div className="p-4">
             <p
               onClick={() => handleSelectOption(type, "1 Room")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
+              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               1 Room
             </p>
             <p
               onClick={() => handleSelectOption(type, "2 Rooms")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
+              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               2 Rooms
             </p>
             <p
               onClick={() => handleSelectOption(type, "3 Rooms")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
+              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               3 Rooms
             </p>
@@ -113,39 +151,16 @@ export const Searchbar = () => {
                 placeholder="Min"
                 value={dropdownStates.priceRange.min}
                 onChange={(e) => handlePriceChange(e, "min")}
-                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76]  text-sm"
+                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
               />
               <input
                 type="number"
                 placeholder="Max"
                 value={dropdownStates.priceRange.max}
                 onChange={(e) => handlePriceChange(e, "max")}
-                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76]  text-sm"
+                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
               />
             </div>
-          </div>
-        );
-      case "location":
-        return (
-          <div className="p-4">
-            <p
-              onClick={() => handleSelectOption(type, "Location 1")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm "
-            >
-              Location 1
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "Location 2")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
-            >
-              Location 2
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "Location 3")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76]  text-sm"
-            >
-              Location 3
-            </p>
           </div>
         );
       default:
@@ -155,7 +170,7 @@ export const Searchbar = () => {
 
   return (
     <motion.div
-      className="max-w-full w-full h-[54px] mx-auto bg-white rounded-l-sm rounded-r-sm  shadow-lg  flex flex-col  sm:flex-grow sm:flex-row"
+      className="max-w-full w-full h-[54px] mx-auto bg-white rounded-l-sm rounded-r-sm shadow-lg flex flex-col sm:flex-row"
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
       }}
@@ -173,7 +188,7 @@ export const Searchbar = () => {
             onClick={() => handleDropdownToggle("category")}
             className="flex items-center justify-between w-full px-4 py-2 ml-1 text-left bg-white"
           >
-            <span className="text-[#525C76]  text-sm font-semibold">
+            <span className="text-[#525C76] text-sm font-semibold">
               {dropdownStates.category || "Category"}
             </span>
             <motion.div
@@ -202,7 +217,7 @@ export const Searchbar = () => {
             onClick={() => handleDropdownToggle("roomNumber")}
             className="flex items-center justify-between w-full px-4 bg-white border-l-2"
           >
-            <span className="text-[#525C76]  text-sm font-semibold">
+            <span className="text-[#525C76] text-sm font-semibold">
               {dropdownStates.roomNumber || "Room Numbers"}
             </span>
             <motion.div
@@ -231,7 +246,7 @@ export const Searchbar = () => {
             onClick={() => handleDropdownToggle("price")}
             className="flex items-center justify-between w-full px-4 bg-white border-l-2"
           >
-            <span className="text-[#525C76]  text-sm font-semibold">
+            <span className="text-[#525C76] text-sm font-semibold">
               {dropdownStates.priceRange.min || dropdownStates.priceRange.max
                 ? `$${dropdownStates.priceRange.min} - $${dropdownStates.priceRange.max}`
                 : "Price"}
@@ -245,7 +260,7 @@ export const Searchbar = () => {
           </button>
           {dropdownOpen === "price" && (
             <motion.div
-              className="absolute left-0 right-0 z-10 mt-2  w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
+              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -256,48 +271,50 @@ export const Searchbar = () => {
           )}
         </div>
 
-        {/* Location Dropdown */}
+        {/* Location Input */}
         <div className="relative">
-          <button
-            onClick={() => handleDropdownToggle("location")}
-            className="flex items-center justify-between w-full px-4 bg-white border-l-2"
-          >
-            <MapPin />
-            <span className="text-[#525C76]  text-sm font-semibold mr-10">
-              {dropdownStates.location || "Location"}
-            </span>
-            <motion.div
-              animate={{ rotate: dropdownOpen === "location" ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <LocationCancel />
-            </motion.div>
-          </button>
-          {dropdownOpen === "location" && (
-            <motion.div
-              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-            >
-              {renderDropdownContent("location")}
-            </motion.div>
-          )}
+          <div className="flex items-center justify-between w-full px-4 bg-white border-l-2 h-[20px]">
+            <div className="relative flex items-center gap-[8px] w-full ">
+              <MapPin />
+              <input
+                type="text"
+                placeholder="Location"
+                value={dropdownStates.location}
+                onChange={handleLocationChange}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+                className="w-full border-none pl-1 py-2 text-[#525C76] text-sm font-semibold bg-transparent pr-10 focus:outline-none focus:border-2 focus:border-[#8247E5]"
+                style={{ height: "36px", lineHeight: "36px" }} // Fixed height and line-height
+              />
+              <motion.button
+                onClick={clearLocation}
+                className="absolute right-2 top-[9px] cursor-pointer z-10" // Adjusted top positioning to match input height
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {dropdownStates.location ? (
+                  <LocationCancel />
+                ) : (
+                  <LocationCancel className="opacity-50" />
+                )}
+              </motion.button>
+            </div>
+          </div>
         </div>
       </div>
       <div className="flex items-center justify-center">
-        <a href="/map">
         <button
           onClick={handleShowOnMap}
           className="flex items-center justify-center px-4 py-4 text-xl w-[188px] text-[#8247E5] bg-white border-2 border-[#8247E5] h-[54px] font-semibold"
-          >
+        >
           <ShowMap />
           <span className="ml-1 text-[18px] w-[127px] h-[32px]">
             Show on Map
           </span>
         </button>
-        </a>
 
         <motion.button
           onClick={handleSearch}
