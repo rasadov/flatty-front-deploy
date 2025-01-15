@@ -42,6 +42,7 @@ export { Subtract } from "./Subtract";
 export { Active } from "./Active";
 export { Inactive } from "./Inactive";
 export { SearchIcon } from "./Search";
+export { Close } from "./Close.jsx";
 
 // export {} from "./";
 

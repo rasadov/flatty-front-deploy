@@ -25,11 +25,11 @@ const About = () => {
          <span className="text-2xl font-semibold leading-9 text-[#4A23A4] ">
           Flatty: Building the future of real estate together.
         </span>
-       </div>
+      </div>
       <div className="mt-6 text-right sm:text-center">
         <Button
           variant="primary"
-          className="w-[365px] h-[52px]  px-4 py-3 rounded-tl-none rounded-br-none flex items-center justify-center lg:justify-start gap-2 text-white bg-[#8247E5] hover:bg-[#6A3D9A] transition-colors duration-300"
+          className="w-[365px] h-[52px]  px-4 py-3 rounded-tl-none rounded-br-none flex items-center justify-center  gap-2 text-white bg-[#8247E5] hover:bg-[#6A3D9A] transition-colors duration-300"
         >
           <Contact />
           Contact Us
@@ -38,5 +38,3 @@ const About = () => {
     </div>
   );
 };
-
-export default About;

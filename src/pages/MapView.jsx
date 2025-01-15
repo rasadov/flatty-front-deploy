@@ -14,6 +14,8 @@ import { FilterButton } from "../assets/icons";
 
 export default function MapView() {
   // Instead of a single selected property, we use an array
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  
   const [selectedProperties, setSelectedProperties] = useState([]);
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [resProperties, setMockProperties] = useState([]);
