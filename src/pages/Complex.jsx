@@ -11,7 +11,7 @@ import Pagination from "../components/Pagination.jsx";
 import { loadComplexById } from "../store/slices/complexSlice";
 import { loadPopularProperties } from "../store/slices/popularSlice.js";
 
-export const Complex = () => {
+const Complex = () => {
   const dispatch = useDispatch();
   const { id } = useRouterParams();
   const { currentComplex, loading, error } = useSelector(
@@ -114,3 +114,4 @@ export const Complex = () => {
     </div>
   );
 };
+export default Complex;

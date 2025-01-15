@@ -17,8 +17,6 @@ const Complex = lazy(() => import("./pages/Complex"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const About = lazy(() => import("./pages/About"));
 
-const MapView = lazy(() => import("./pages/MapView"));
-
 function App() {
   return (
     <Router>
@@ -36,7 +34,6 @@ function App() {
           </Route>
           <Route path="/" element={<Home />} />
           {/* <Route path="/map" element={<MapView />} /> */}
-          <Route path="/map" element={<MapView />} />
           <Route path="/complex/:id" element={<Complex />} />
           <Route path="/search" element={<Search />} />
         </Routes>

@@ -2,7 +2,7 @@ import React from "react";
 import { Contact } from "../assets/icons/Contact";
 import { Button } from "../components";
 
-export const About = () => {
+const About = () => {
   return (
     <div className="container px-4 py-8 mx-auto">
       <h1 className="mb-4 text-3xl font-bold">About</h1>
@@ -26,10 +26,10 @@ export const About = () => {
           Flatty: Building the future of real estate together.
         </span>
       </div>
-      <div className="mt-6 text-right sm:text-center">
+      <div className="flex justify-end mt-6 sm:text-center">
         <Button
           variant="primary"
-          className="w-[365px] h-[52px]  px-4 py-3 rounded-tl-none rounded-br-none flex items-center justify-center lg:justify-start gap-2 text-white bg-[#8247E5] hover:bg-[#6A3D9A] transition-colors duration-300"
+          className="w-[365px] h-[52px]  px-4 py-3 rounded-tl-none rounded-br-none flex items-center justify-center  gap-2 text-white bg-[#8247E5] hover:bg-[#6A3D9A] transition-colors duration-300"
         >
           <Contact />
           Contact Us
@@ -38,3 +38,4 @@ export const About = () => {
     </div>
   );
 };
+export default About;
