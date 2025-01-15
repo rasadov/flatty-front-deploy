@@ -155,22 +155,28 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
         return (
           <div className="p-4">
             <p
-              onClick={() => handleSelectOption(type, "Option 1")}
+              onClick={() => handleSelectOption(type, "Appartment")}
               className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
-              Option 1
+              Appartment
             </p>
             <p
-              onClick={() => handleSelectOption(type, "Option 2")}
+              onClick={() => handleSelectOption(type, "Villa")}
               className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
-              Option 2
+              Villa
             </p>
             <p
-              onClick={() => handleSelectOption(type, "Option 3")}
+              onClick={() => handleSelectOption(type, "Penthouse")}
               className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
-              Option 3
+              Penthouse
+            </p>
+            <p
+              onClick={() => handleSelectOption(type, "Cottages")}
+              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
+            >
+              Cottages
             </p>
           </div>
         );
