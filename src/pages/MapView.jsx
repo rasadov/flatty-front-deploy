@@ -1,16 +1,25 @@
 // src/pages/MapView.jsx
 import { useEffect, useState } from 'react';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Map from '../components/Map';
 import MapPropertyDetails from '../components/MapPropertyDetails';
 import Header from "../layouts/Header";
 import { Footer } from "../layouts/Footer";
+import {
+  FilterModal,
+  Searchbar,
+  SelectedFilters,
+} from "../components/sections/index.js";
+import { FilterButton } from "../assets/icons";
 
 export default function MapView() {
   // Instead of a single selected property, we use an array
   const [selectedProperties, setSelectedProperties] = useState([]);
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const [mockProperties, setMockProperties] = useState([]);
+  const [resProperties, setMockProperties] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useDispatch();
+
   // Fetch mock properties from the server
   useEffect(() => {
     fetch("http://localhost:5001/api/v1/property/map")
@@ -21,10 +30,88 @@ export default function MapView() {
       });
   }, []);
 
-  console.log("MOCK", mockProperties);
+  console.log("MOCK", resProperties); 
 
   const handleCloseDetails = () => {
     setSelectedProperties([]);
+  };
+
+  const handleShowMap = () => {
+    setSelectedProperties([]);
+  }
+
+  const handleSearchQueryChange = (query) => {
+    setSearchQuery(query);
+  };
+
+
+  const handleSearch = () => {
+    // 1) Merge FilterModal filters (props.filters) + local dropdownStates
+    //    - If you want the local dropdownStates to override
+    //      any same-key from FilterModal, spread them last:
+
+    const filters = JSON.parse(localStorage.getItem("filters"));
+    const combinedFilters = {
+      ...filters,        // from Redux/FilterModal
+      ...dropdownStates, // from local dropdown
+    };  
+    // 2) Build query parameters from the merged object
+    const queryParams = new URLSearchParams();
+  
+    Object.entries(combinedFilters).forEach(([key, value]) => {
+      // Skip null, undefined, empty, or 0
+      if (value !== null && value !== undefined && value !== "" && value !== 0) {
+        // If it's a nested object like { rooms: { bathroom: 2, bedroom: 1 } }
+        if (typeof value === "object" && !Array.isArray(value)) {
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            if (
+              subValue !== null &&
+              subValue !== undefined &&
+              subValue !== "" &&
+              subValue !== 0
+            ) {
+              if (key === "priceRange") {
+                queryParams.append(`${key}${subKey}`, subValue / currencies_to_dollar[selectedCurrency]);
+              } else {
+                queryParams.append(`${key}${subKey}`, subValue);
+              }
+            }
+          });
+        }
+        // If it's an array (e.g., for renovation, furniture, etc.)
+        else if (Array.isArray(value)) {
+          value.forEach((item) => {
+            if (
+              item !== null &&
+              item !== undefined &&
+              item !== "" &&
+              item !== 0
+            ) {
+              queryParams.append(key, item);
+            }
+          });
+        }
+        // Otherwise, just append it directly
+        else {
+          queryParams.append(key, value);
+        }
+      }
+    });
+    
+    // 4) Navigate with all selected filters in the URL
+    const queryString = queryParams.toString();
+
+    response = fetch(`http://localhost:5001/api/v1/property/map?${queryString}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("DATA", data);
+        setMockProperties(data);
+      })
   };
 
   const handleMarkerClick = async (propertiesAtLocation) => {
@@ -48,8 +135,25 @@ export default function MapView() {
   return (
     <main className="flex-grow bg-[#F4F2FF]">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
+      <div className="flex items-center justify-center w-full gap-4 my-12  px-16.26">
+        <Searchbar
+          onShowMap={handleShowMap}
+          onSearch={() => {}}
+          value={searchQuery}
+          onChange={handleSearchQueryChange}
+          API_URL="http://localhost:5001/api/v1/property/map"
+          setData={setMockProperties}
+        />
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="flex justify-center items-center w-[54px] h-[54px] bg-white border border-[#A673EF] rounded-md"
+        >
+          <FilterButton />
+        </button>
+      </div>
       <div className="flex h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
   {/* Left side: property details */}
+
   {selectedProperties.length > 0 ? (
     <div
       className="w-1/4 border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500"
@@ -62,7 +166,7 @@ export default function MapView() {
   {/* Right side: Google Map */}
   <div className="flex-1">
     {/* Map now calls onMarkerClick with an array of properties */}
-    <Map properties={mockProperties} onMarkerClick={handleMarkerClick} />
+    <Map properties={resProperties} onMarkerClick={handleMarkerClick} />
   </div>
 </div>
       <div className="px-6 mx-auto bg-[#ECE8FF]">

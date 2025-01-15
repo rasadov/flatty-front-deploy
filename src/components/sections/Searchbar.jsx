@@ -6,7 +6,7 @@ import { LocationCancel } from "../../assets/icons/LocationCancel";
 import { useDispatch } from "react-redux";
 import { loadSearchResults } from "../../store/slices/searchSlice";
 
-export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters }) => {
+export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_URL, setData }) => {
   const [dropdownStates, setDropdownStates] = useState({
     category: null,
     roomNumber: null,
@@ -90,7 +90,7 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters }) => 
     // 4) Navigate with all selected filters in the URL
     const queryString = queryParams.toString();
 
-    response = fetch(`http://localhost:5001/api/v1/property?${queryString}`, {
+    const response = fetch(`${API_URL}?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -99,6 +99,7 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters }) => 
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        setData(data);
       })
     // navigate(`/search?${queryString}`);
     // window.location = `/search?${queryString}`;

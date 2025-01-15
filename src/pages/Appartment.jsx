@@ -20,6 +20,7 @@ const Appartment = memo(() => {
   const { id } = useParams();
   const [apartmentData, setApartmentData] = useState(null);
   const [rating, setRating] = useState(4);
+  const currency = localStorage.getItem("currency") || "$";
 
   useEffect(() => {
     const fetchApartmentData = async () => {
@@ -27,34 +28,12 @@ const Appartment = memo(() => {
         const response = await fetch(`http://localhost:5001/api/v1/property/record/${id}`);
         const data = await response.json();
 
-        // Map the API data to the required format
-        const mappedData = {
-          id: data.id,
-          price: data.price,
-          currency: data.currency,
-          description: data.description,
-          updated: new Date(data.created_at).toLocaleDateString(),
-          agentName: data?.owner?.user?.name,
-          agentTitle: "Real Estate Agent",
-          agentImage: data.images?.[0]?.image_url || "",
-          area: data.info?.total_area,
-          rooms: data.info?.bedrooms,
-          currFloor: data.info?.floor,
-          totalFloorsInBuilding: data.info?.floors,
-          building: data.info?.apartment_stories,
-          map: {
-            latitude: data.location.latitude,
-            longitude: data.location.longitude,
-          },
-          location: data.location.address,
-          images: data.images.map((img) => ({
-            src: img.image_url,
-            alt: `Image for Apartment ${data.id}`,
-          })),
-        };
+        setApartmentData(data);
 
-        setApartmentData(mappedData);
-      } catch (error) {
+        await fetch(`http://localhost:5001/api/v1/property/view/${id}`, {
+          method: "POST",
+        });
+        } catch (error) {
         console.error("Error fetching apartment data:", error);
       }
     };
@@ -80,20 +59,23 @@ const Appartment = memo(() => {
 
   if (!apartmentData) return <div>Loading...</div>;
 
+  console.log("Apartment Data:", apartmentData);
+  console.log("Number: ", apartmentData.owner?.user?.phone.slice(1))
+
   return (
     <div className="w-full py-3 mx-auto">
       <div className="flex flex-col lg:flex-row lg:justify-between">
         {/* Left Section */}
         <div className="lg:w-[65%]">
           <Breadcrumbs title="Apartment" />
-          <PropertyShowcase images={renderImages(apartmentData.images)} />
+          <PropertyShowcase property={apartmentData} />
 
           <div className="my-12">
             <PropertyDetailsGrid
               details={[
-                { title: "Rooms", value: `${apartmentData.rooms} Rooms` },
-                { title: "Apartment area", value: `${apartmentData.area} m2` },
-                { title: "Floor", value: `${apartmentData.currFloor || " "}${"/"+apartmentData.totalFloorsInBuilding || " "}` },
+                { title: "Rooms", value: `${apartmentData.info.bedrooms} Rooms` },
+                { title: "Apartment area", value: `${apartmentData.info.total_area } m2` },
+                { title: "Floor", value: `${apartmentData.info.floor || " "}${"/"+apartmentData.info.floors || " "}` },
               ]}
             />
           </div>
@@ -106,7 +88,6 @@ const Appartment = memo(() => {
             <p className="text-[#0F1D40] font-normal text-[18px] leading-[28.8px] md:text-[16px] md:leading-[24px]">
               {apartmentData.description}
             </p>
-            <span>Updated {apartmentData.updated}</span>
             <hr className="my-8 border-t-2 border-[#EEEFF2]" />
           </div>
 
@@ -115,7 +96,8 @@ const Appartment = memo(() => {
             <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px] md:text-[24px] md:leading-[36px]">
               Map
             </h2>
-            <PropertyMap latitude={apartmentData.map.latitude} longitude={apartmentData.map.longitude} />
+            <PropertyMap
+              location={apartmentData.location} />
           </div>
         </div>
 
@@ -131,13 +113,13 @@ const Appartment = memo(() => {
               {apartmentData.price} <Euro size={28} />
             </div>
             <div className="flex justify-start items-center gap-2 mb-2 text-[#525C76] font-medium text-[12px]">
-              <div>{apartmentData.rooms} Room Apartment</div>
-              <div>{apartmentData.area} m2</div>
+              <div>{apartmentData.info.bedrooms} Room {apartmentData.info.category}</div>
+              <div>{apartmentData.info.total_area} m2</div>
             </div>
             <hr className="my-4 border-t-2 border-[#EEEFF2]" />
             <div className="flex items-center justify-start gap-4">
               <motion.img
-                src={apartmentData.agentImage}
+                src="https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
                 alt="Agent"
                 className="object-cover w-[47px] h-[47px] rounded-full"
               />
@@ -146,13 +128,28 @@ const Appartment = memo(() => {
                   to={"/agent"}
                   className="font-semibold text-[#525C76] text-[16px]"
                 >
-                  {apartmentData.agentName}
+                  {apartmentData.owner?.user?.name}
                 </Link>
                 <div className="text-sm text-[#525C76] font-medium">
-                  {apartmentData.agentTitle}
+                  {/* {apartmentData.agentTitle} */}
+                  Real Estate Agent
                 </div>
-                <Rating rating={rating} onRatingClick={handleRatingClick} />
+                {/* <Rating rating={rating} onRatingClick={handleRatingClick} /> */}
               </div>
+            </div>
+              <div className="flex flex-col gap-2 mt-3"
+              onClick={() => {
+                const phoneNumber = apartmentData.owner?.user?.phone.slice(1);
+                const whatsappUrl = `https://wa.me/${phoneNumber}`;
+                window.location.href = whatsappUrl;
+              }}>
+              <Button
+                className="w-full text-white py-[5px] px-3 mt-3 h-[52px] rounded-sm text-[20px] font-semibold leading-[22.4px]"
+                variant="primary"
+              >
+                <Contact />
+                Contact
+              </Button>
             </div>
           </motion.div>
         </div>

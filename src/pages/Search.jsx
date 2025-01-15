@@ -40,6 +40,9 @@ export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
+
+  const [responseData, setResponseData] = useState([]);
+  // const [res]
   // const [selectedTypes, setSelectedTypes] = useState([]);
   // const [selectedRoom, setSelectedRoom] = useState("");
   // const [priceRange, setPriceRange] = useState({ from: "", to: "" });
@@ -146,6 +149,8 @@ export const Search = () => {
           onSearch={() => dispatch(loadSearchResults(filters))}
           value={searchQuery}
           onChange={handleSearchQueryChange}
+          API_URL="http://localhost:5001/api/v1/property"
+          setData={setResponseData}
         />
         <button
           onClick={() => setIsModalOpen(true)}

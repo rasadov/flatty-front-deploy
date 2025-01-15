@@ -6,12 +6,13 @@ const mapContainerStyle = {
   height: '400px',
 };
 
-const PropertyMap = () => {
+const PropertyMap = (location) => {
+  console.log("Location", location);
     const center = {
-        lat: 40.748817,
-        lng: -73.985428,
+        lat: location.location.latitude,
+        lng: location.location.longitude,
       };
-
+    console.log("Center", center);
   return (
     <LoadScript googleMapsApiKey="AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM">
       <GoogleMap

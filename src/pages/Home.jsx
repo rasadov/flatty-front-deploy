@@ -114,7 +114,9 @@ const Home = () => {
       value={searchQuery}
       onChange={handleSearchQueryChange}
       onShowMap={() => window.location.href = "/map"}
-      onSearch={() => dispatch(loadSearchResults(filters))}
+      onSearch={() => {
+        window.location.href = `/search?query=${encodeURIComponent(searchQuery)}`;
+      }}
       filters={{}}
     />
   </div>

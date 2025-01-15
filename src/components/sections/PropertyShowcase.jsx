@@ -44,55 +44,49 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => (
 );
 
 // Main PropertyShowcase Component
-const PropertyShowcase = ({ length }) => {
+const PropertyShowcase = ({ length, property }) => {
   // State for property data
-  const [property, setProperty] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch property data dynamically (mocked API call)
-  useEffect(() => {
-    const fetchPropertyData = async () => {
-      try {
-        setIsLoading(true);
-        // Mocked API data for testing
-        const data = {
-          title: "Selling 3 Room Apartment",
-          views: { total: 1500, today: 35 },
-          address: "3 Zinonos Kitieos, Flat 18 2064 Strovolos",
-          mainImage: apparment1,
-          thumbnails: [
-            apartment2,
-            apartment4,
-            apparment1,
-            apartment4,
-            apartment3,
-            apartment4,
-            apartment4,
-          ],
-          buttons: [
-            { label: <Share />, onClick: () => alert("Share clicked") },
-            { label: <Edit />, onClick: () => alert("Edit clicked") },
-            { label: <Download />, onClick: () => alert("Edit clicked") },
-            { label: <Print />, onClick: () => alert("Edit clicked") },
-            { label: <NoViews />, onClick: () => alert("Edit clicked") },
-            { label: <Report />, onClick: () => alert("Edit clicked") },
-          ],
-        };
-        setProperty(data);
-      } catch (error) {
-        setError("Failed to load property data.");
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchPropertyData = async () => {
+  //     try {
+  //       setIsLoading(true);
+  //       // Mocked API data for testing
+  //       const data = {
+  //         title: "Selling 3 Room Apartment",
+  //         views: { total: 1500, today: 35 },
+  //         address: "3 Zinonos Kitieos, Flat 18 2064 Strovolos",
+  //         mainImage: apparment1,
+  //         thumbnails: [
+  //           apartment2,
+  //           apartment4,
+  //           apparment1,
+  //           apartment4,
+  //           apartment3,
+  //           apartment4,
+  //           apartment4,
+  //         ],
+  //         buttons: [
+  //           { label: <Share />, onClick: () => alert("Share clicked") },
+  //           { label: <Edit />, onClick: () => alert("Edit clicked") },
+  //           { label: <Download />, onClick: () => alert("Edit clicked") },
+  //           { label: <Print />, onClick: () => alert("Edit clicked") },
+  //           { label: <NoViews />, onClick: () => alert("Edit clicked") },
+  //           { label: <Report />, onClick: () => alert("Edit clicked") },
+  //         ],
+  //       };
+  //       setProperty(data);
+  //     } catch (error) {
+  //       setError("Failed to load property data.");
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
 
-    fetchPropertyData();
-  }, []);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  //   fetchPropertyData();
+  // }, []);
 
   if (error) {
     return <div>{error}</div>;
@@ -101,6 +95,14 @@ const PropertyShowcase = ({ length }) => {
   if (!property) {
     return <div>No property found.</div>;
   }
+
+  console.log(property);
+
+  const handleShowOnMapClick = () => {
+    const { latitude, longitude } = property.location;
+    const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
+    window.open(googleMapsUrl, '_blank');
+  };
 
   return (
     <div className="w-full mx-auto min-w-5xl">
@@ -111,15 +113,16 @@ const PropertyShowcase = ({ length }) => {
         </h1>
         <div className="mb-4 text-[16px] text-[#8C93A3] font-normal flex justify-start gap-1 items-center">
           <PostView size={20} color={"#8C93A3"} />
-          <span>{property.views.total} views</span>,{" "}
-          <span>{property.views.today} today</span>
+          <span>{property.views} views</span>
         </div>
         <div className="flex justify-start gap-4">
           <div className="mb-4 text-[16px] text-[#525C76] font-normal">
-            {property.address}
+            {property.location.address}
           </div>
           <a href="/map">
-          <div className="mb-4 text-[16px] text-[#8247E5] font-normal flex ">
+          <div 
+          className="mb-4 text-[16px] text-[#8247E5] font-normal flex "
+          onClick={handleShowOnMapClick}>
             <ShowOnMap />
             Show on map
           </div>
@@ -128,20 +131,20 @@ const PropertyShowcase = ({ length }) => {
       </div>
       {/* Button Group */}
       <div className="flex gap-2 mb-4">
-        {property.buttons.map((button, index) => (
+        {/* {property.map((button, index) => (
           <ActionButton
             key={index}
             label={button.label}
             onClick={() => alert(`${button.label} clicked`)}
           />
-        ))}
+        ))} */}
       </div>
 
       {/* Image Gallery */}
       <ImageGallery
-        mainImage={property.mainImage}
-        thumbnails={property.thumbnails}
-        length={length}
+        mainImage={property.images[0].image_url}
+        thumbnails={property.images}
+        length={property.images.length}
       />
     </div>
   );
