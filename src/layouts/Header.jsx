@@ -109,8 +109,8 @@ const Header = () => {
   // };
 
   const navLinks = [
-    { to: "/agents", label: "Agents" },
-    { to: "/about", label: "About us" },
+    // { to: "/agents", label: "Agents" },
+    // { to: "/about", label: "About us" },
     // { to: "/contacts", label: "Contacts" },
   ];
 

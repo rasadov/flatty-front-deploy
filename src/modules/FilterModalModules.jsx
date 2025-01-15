@@ -71,7 +71,7 @@ const FilterButtonGroup = ({
               false
             )
           }
-          className={getButtonStyle(selectedFilters, category, option)}
+          className={getButtonStyle(selectedFilters, category, option) + "  bg-gray-200"}
         >
           {isSelected(selectedFilters, category, option) ? (
             <span className="font-bold">{option}</span>
@@ -109,7 +109,7 @@ const FilterNumberRange = ({
       setFilter(`${category}.${key}`, value);
     },
     className:
-      "p-2 border border-[#E2E4E8] bg-[#F5F6F7] rounded-sm w-[146px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-center",
+      "p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left",
   });
 
   const handleOptionClick = (option) => {
@@ -163,7 +163,7 @@ const FilterNumberRange = ({
                 category,
                 option,
                 "options"
-              )}
+              ) + " bg-gray-200"}
             >
               {isSelected(selectedFilters, category, option, "options") ? (
                 <span className="font-bold">{option}</span>

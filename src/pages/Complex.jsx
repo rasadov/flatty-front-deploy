@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams as useRouterParams } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
@@ -11,23 +11,23 @@ import Pagination from "../components/Pagination.jsx";
 import { loadComplexById } from "../store/slices/complexSlice";
 import { loadPopularProperties } from "../store/slices/popularSlice.js";
 
-export const Complex = () => {
+const Complex = () => {
   const dispatch = useDispatch();
-  const { id } = useRouterParams();
-  const { currentComplex, loading, error } = useSelector(
-    (state) => state.complex
-  );
-  const { properties: popularProperties } = useSelector(
-    (state) => state.popular
-  );
+  const id = window.location.pathname.split("/").pop();
+  const [listing, setListing] = useState([]);
+
   useEffect(() => {
-    dispatch(loadComplexById(id));
-    dispatch(loadPopularProperties());
-  }, [dispatch, id]);
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!currentComplex) return <div>No complex details available</div>;
-  const { propertyDetails, images, location } = currentComplex;
+    fetch(`http://localhost:5001/api/v1/listing/record/${id}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setListing(data);
+      });
+  }, [id]);
+  console.log(listing);
+  // if (loading) return <div>Loading...</div>;
+  // if (error) return <div>Error: {error}</div>;
+  if (!listing) return <div>No complex details available</div>;
+  const { propertyDetails, images, location } = listing;
   return (
     <div className="flex flex-col min-h-screen ">
       <main className="flex-grow bg-[#F4F2FF] ">
@@ -114,3 +114,5 @@ export const Complex = () => {
     </div>
   );
 };
+
+export default Complex;

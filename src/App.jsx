@@ -29,8 +29,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/appartment/:id" element={<Appartment />} />
-            <Route path="/agent" element={<Agent />} />
             <Route path="/about" element={<About />} />
+            <Route path="/agent" element={<Agent />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
           </Route>
