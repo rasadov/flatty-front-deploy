@@ -166,7 +166,7 @@ export const HouseItem = React.memo(
 
     return (
       <div
-        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2]"
+        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full sm:p-1 outline-[#EEEFF2]"
         style={{
           boxShadow: "0px 1px 1px 0px #703ACA14",
         }}

@@ -14,8 +14,9 @@ const Search = lazy(() => import("./pages/Search.jsx"));
 const Appartment = lazy(() => import("./pages/Appartment"));
 const Agent = lazy(() => import("./pages/Agent"));
 const Complex = lazy(() => import("./pages/Complex"));
-const ListingsPage = lazy(() => import("./components/sections/ListingsPage"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
+const About = lazy(() => import("./pages/About"));
+
 const MapView = lazy(() => import("./pages/MapView"));
 
 function App() {
@@ -29,7 +30,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/appartment/:id" element={<Appartment />} />
             <Route path="/agent" element={<Agent />} />
-            <Route path="/listingspage" element={<ListingsPage />} />
+            <Route path="/about" element={<About />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
           </Route>

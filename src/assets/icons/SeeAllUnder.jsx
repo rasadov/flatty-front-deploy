@@ -1,6 +1,6 @@
 import React from "react";
 
-export const SeeAll = () => {
+export const SeeAllUnder = () => {
   return (
     <svg
       width="18"

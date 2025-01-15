@@ -109,8 +109,8 @@ const Header = () => {
   // };
 
   const navLinks = [
-    // { to: "/agents", label: "Agents" },
-    // { to: "/about", label: "About us" },
+    { to: "/agents", label: "Agents" },
+    { to: "/about", label: "About us" },
     // { to: "/contacts", label: "Contacts" },
   ];
 
@@ -292,7 +292,7 @@ const Header = () => {
           </motion.div>
         </button>
 
-        <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[18px] leading-[28.8px] font-medium">
+        <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[16px] leading-[28.8px] font-medium">
           {renderNavLinks()}
         </div>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import Button from "../Button";
-import { SeeAll } from "../../assets/icons";
+import { SeeAllUnder, SeeAllRight } from "../../assets/icons";
+
 export const SectionArea = ({ children, sectionName, seeAll = true }) => {
   return (
     <div
@@ -16,7 +17,7 @@ export const SectionArea = ({ children, sectionName, seeAll = true }) => {
             className="flex items-center justify-center gap-1 bg-transparent hover:bg-transparent"
           >
             <p className="text-purple-600"> See all</p>
-            <SeeAll />
+            <SeeAllUnder />
           </Button>
         </div>
       )}
