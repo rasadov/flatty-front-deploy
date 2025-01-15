@@ -6,7 +6,7 @@ export const fetchApartmentDetails = createAsyncThunk(
     console.log("Fetching apartment with ID:", apartmentId);
     try {
       const response = await axios.get(
-        `http://localhost:5050/apartments/${apartmentId}`
+        `http://localhost:5001/api/v1/property/record/${apartmentId}`
       );
       return response.data;
     } catch (error) {

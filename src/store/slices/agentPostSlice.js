@@ -7,12 +7,30 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 });
 
 export const addPost = createAsyncThunk("posts/addPost", async (formDataToSend) => {
-  const response = await fetch('http://localhost:5001/api/v1/property/create', {
-    method: 'POST',
+  const response = await fetch("http://localhost:5001/api/v1/property/create", {
+    method: "POST",
     body: formDataToSend,
-    credentials: 'include',
+    credentials: "include", // if your server sets/needs cookies
+    headers: {
+      // Let the browser set 'Content-Type' for multipart
+      Accept: "application/json",
+
+      // If your backend requires a Bearer token:
+      "Authorization": `Bearer }`,
+    },
   });
-  return response.data;
+  if (!response.ok) {
+    // Attempt to parse error message
+    const errorData = await response.json().catch(() => ({}));
+    return rejectWithValue({
+      status: response.status,
+      message: errorData.detail || "Failed to create property.",
+    });
+  }
+
+  // Parse JSON if backend returns JSON
+  const data = await response.json();
+  return data;
 });
 
 const agentPostSlice = createSlice({

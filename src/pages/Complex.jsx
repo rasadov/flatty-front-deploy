@@ -4,7 +4,7 @@ import { useParams as useRouterParams } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import HouseItem from "../components/HouseItem";
 import PropertyShowcase from "../components/sections/PropertyShowcase.jsx";
-import Map from "../components/sections/Map.jsx";
+import PropertyMap from "../components/PropertyMap.jsx";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
 import Pagination from "../components/Pagination.jsx";
@@ -100,7 +100,7 @@ export const Complex = () => {
               <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px]">
                 Location
               </h2>
-              <Map
+              <PropertyMap
                 latitude={location.latitude}
                 longitude={location.longitude}
               />

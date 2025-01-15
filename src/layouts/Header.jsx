@@ -48,15 +48,14 @@ const Header = () => {
   const location = useLocation(); // useLocation istifadə edirik
   const user = JSON.parse(localStorage.getItem("user"));
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
-  const [selectedCurrency, setSelectedCurrency] = useState("£");
+  const [selectedCurrency, setSelectedCurrency] = useState(localStorage.getItem("currency") === null ? "£" : localStorage.getItem("currency"));
   const currencies = ["£", "$", "€", "₺"]; // add any symbols you need
-  // const currentCurrency = localStorage.getItem("currency") || "£";
-  // setSelectedCurrency(currentCurrency);
 
   const handleCurrencyChange = (curr) => {
     localStorage.setItem("currency", curr);
     setSelectedCurrency(curr);
     setCurrencyDropdownOpen(false);
+    window.location.reload();
   };
 
   useEffect(() => {

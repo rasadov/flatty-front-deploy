@@ -6,7 +6,11 @@ import { addPost, fetchPosts } from "../store/slices/agentPostSlice";
 import { Add, Subtract, Active, Inactive } from "../assets/icons";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 
-const categories = ["Apartment", "Other"];
+const categories = [
+  "Penthouse",
+  "Villa",
+  "Cottages"
+];
 const conditions = [
   "Without finishing",
   "Pre-finish",
@@ -25,7 +29,7 @@ const renovations = [
 ];
 
 const getAddressFromLatLng = async (lat, lng) => {
-  const apiKey = 'GoogleAPI'; // Replace with your Google Maps API key
+  const apiKey = 'AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM'; // Replace with your Google Maps API key
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
 
   try {
@@ -43,12 +47,11 @@ const getAddressFromLatLng = async (lat, lng) => {
   }
 };
 
-const NewPostModal = ({ isOpen, onClose }) => {
+const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    category: "",
+    category: "Appartment",
     residentialComplex: "",
-    floor: "",
     totalArea: 0,
     livingArea: 0,
     description: "",
@@ -61,7 +64,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
     installment: false,
     swimmingPool: false,
     elevator: false,
-    appartmentStories: 0,
+    apartmentStories: 0,
     floor: 0,
     year: 0,
     buildingFloors: 0,    
@@ -97,7 +100,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "GoogleAPI", // Replace with your key
+    googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM", // Replace with your key
     libraries: ["places"],
   });
 
@@ -121,8 +124,8 @@ const NewPostModal = ({ isOpen, onClose }) => {
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
-      images.forEach((file, index) => {
-        formDataToSend.append(`files[${index}]`, file);
+      images.forEach((file) => {
+        formDataToSend.append('files', file);
       });
 
       console.log("Form data to send:");
@@ -156,31 +159,42 @@ const NewPostModal = ({ isOpen, onClose }) => {
     setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
+  const clearLocation = () => {
+    setFormData((prev) => ({
+      ...prev,
+      address: "",
+      latitude: null,
+      longitude: null,
+    }));
+  };
+  
+
   if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-      onClick={onClose}
+    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+    onClick={onClose}
+  >
+    <motion.div
+      className="w-[690px] h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={(e) => e.stopPropagation()}
     >
-      <motion.div
-        className="w-[690px] h-[506px] p-6 bg-white rounded-lg overflow-y-auto"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold">New Post</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            ×
-          </button>
-        </div>
+      {/* Modal Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b">
+        <h2 className="text-xl font-semibold">New Post</h2>
+        <button
+          onClick={onClose}
+          className="text-gray-500 hover:text-gray-700"
+        >
+          ×
+        </button>
+      </div>
         {step === 1 && (
-          <div className="space-y-4">
+          <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
             <h3 className="text-lg font-semibold">Fill Info</h3>
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -193,7 +207,7 @@ const NewPostModal = ({ isOpen, onClose }) => {
                   value={formData.category}
                   onChange={handleInputChange}
                 >
-                  <option value="">Select</option>
+                  <option value="Appartment">Appartment</option>
                   {categories.map((category, index) => (
                     <option key={index} value={category}>
                       {category}
@@ -212,7 +226,11 @@ const NewPostModal = ({ isOpen, onClose }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
-                  {/* Add options dynamically or statically */}
+                  {complexes?  complexes.map((complex, index) => (
+                    <option key={index} value={complex.name}>
+                      {complex.name}
+                    </option>
+                  )) : ""}
                 </select>
               </div>
             </div>
@@ -243,13 +261,13 @@ const NewPostModal = ({ isOpen, onClose }) => {
               </div>
             </div>
             <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
-              {["floor", "appartmentStories", "buildingFloors", "livingRoom", "bedroom", "bathroom", "balcony"].map(
+              {["floor", "apartmentStories", "buildingFloors", "livingRoom", "bedroom", "bathroom", "balcony"].map(
                 (field, index) => (
                   <div key={index} className="flex items-center gap-1 mx-auto my-3">
                     <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
                       {field == "livingRooms" ? "Living rooms":
                        field == "buildingFloors" ? "Building floors":
-                       field == "appartmentStories" ? "Appartment stories": field}
+                       field == "apartmentStories" ? "Appartment stories": field}
                     </label>
                     <div className="flex items-center">
                       <button
@@ -374,96 +392,162 @@ const NewPostModal = ({ isOpen, onClose }) => {
                 onChange={handleInputChange}
               />
             </div>
-            <div className="flex justify-between mt-4">
-              <button
-                className="px-4 py-2 text-white bg-gray-500 rounded-md"
-                // onClick={() => setStep(0)} // Assuming 0 would close or go back to the previous step outside this component
+            <div className="flex justify-center items-center">
+            <div className="flex space-x-2">
+              <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+              <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+              <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+            </div>
+            </div>
+            <div className="flex justify-center mt-4 gap-4">
+            <button
+              className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+              onClick={() => onClose()}
               >
-                Previous
-              </button>
-              <button
-                className="px-4 py-2 text-white bg-blue-500 rounded-md"
-                onClick={() => setStep(2)}
+              Previous
+            </button>
+            <button
+              className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+              onClick={() => setStep(2)}
               >
-                Next
-              </button>
+              Next
+            </button>
             </div>
           </div>
         )}
         {step === 2 && (
-          // Image upload step (as previously defined)
-          <div className="space-y-4">
-            <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Upload Images
-              </label>
-              <input
-                type="file"
-                multiple
-                accept="image/*,video/*"
-                onChange={handleImageUpload}
-                className="w-full p-2 border rounded-md"
+          <div className="flex flex-col justify-between h-full gap-4">
+          <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
+          {/* Modal Header for Step 2 */}
+          <div className="text-center mb-4">
+            <h3 className="text-lg font-semibold">Upload photos</h3>
+          </div>
+
+          {/* Drag and Drop Area */}
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+            <p className="text-sm text-gray-600 mb-4">
+              Drag photos here to start uploading
+            </p>
+            <button
+            className="px-4 py-2 bg-purple-600 text-white rounded-md"
+            onClick={() => document.querySelector('input[type="file"]').click()}>
+              Browse Files
+            </button>
+            <input
+              type="file"
+              multiple
+              accept="image/*,video/*"
+              onChange={handleImageUpload}
+              className="hidden"
               />
+          </div>
+
+          </div>
+        {/* Pagination and Navigation */}
+        <div className="py-4">
+
+          <div className="flex justify-center items-center">
+              <div className="flex space-x-2">
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+              </div>
             </div>
-            <div className="flex justify-between">
-              <button
-                className="px-4 py-2 text-white bg-gray-500 rounded-md"
-                onClick={() => setStep(1)}
+            <div className="flex justify-center mt-4 gap-4">
+            <button
+              className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+              onClick={() => setStep(1)}
               >
-                Previous
-              </button>
-              <button
-                className="px-4 py-2 text-white bg-blue-500 rounded-md"
-                onClick={() => setStep(3)}
+              Previous
+            </button>
+            <button
+              className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+              onClick={() => setStep(3)}
               >
-                Next
-              </button>
+              Next
+            </button>
             </div>
           </div>
+        </div>
+      )}
+{step === 3 && (
+  <div className="flex-1 overflow-y-auto px-6 py-4">
+    {/* Header */}
+    <div className="flex items-center justify-between mb-4">
+      <h3 className="text-lg font-semibold">Choose location</h3>
+      {/* <button
+        onClick={clearLocation} // Optional clear button
+        className="text-purple-600 hover:text-purple-800"
+      >
+        ×
+      </button> */}
+    </div>
+
+    {/* Map and Address */}
+    <div className="space-y-4">
+      {/* Address */}
+      <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
+        <p className="text-sm text-gray-700">
+          {formData.address || "Select a location on the map"}
+        </p>
+        {formData.address && (
+          <button
+            onClick={clearLocation}
+            className="text-purple-600 hover:text-purple-800"
+          >
+            ×
+          </button>
         )}
-        {step === 3 && (
-        <div>
-          <h2>Select Location</h2>
-          {isLoaded && (
-            <GoogleMap
-            mapContainerStyle={{ width: "100%", height: "400px" }}
+      </div>
+
+      {/* Map */}
+      {isLoaded && (
+        <div className="w-full h-[300px] rounded-lg overflow-hidden border">
+          <GoogleMap
+            mapContainerStyle={{ width: "100%", height: "100%" }}
             center={{ lat: 35.198284, lng: 33.355869 }} // North Cyprus coordinates
             zoom={12}
             onClick={handleMapClick}
             ref={mapRef}
-            >
-              {formData.latitude && formData.longitude && (
-                <Marker
-                  position={{
-                    lat: formData.latitude,
-                    lng: formData.longitude,
-                  }}
-                />
-              )}
-            </GoogleMap>
-          )}
-          <div>
-            <p>Address: {formData.address}</p>
-            <p>Latitude: {formData.latitude}</p>
-            <p>Longitude: {formData.longitude}</p>
-          </div>
-          <div className="flex justify-between">
-
-          <button
-            className="px-4 py-2 text-white bg-gray-500 rounded-md"
-            onClick={() => setStep(2)}
           >
-            Previous
-          </button>
-          <button
-            className="px-4 py-2 text-white bg-blue-500 rounded-md"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-          </div>
+            {formData.latitude && formData.longitude && (
+              <Marker
+                position={{
+                  lat: formData.latitude,
+                  lng: formData.longitude,
+                }}
+              />
+            )}
+          </GoogleMap>
         </div>
       )}
+    </div>
+
+    {/* Pagination and Buttons */}
+    <div className="flex justify-center items-center mt-4">
+        <div className="flex space-x-2">
+          <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+          <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+          <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+        </div>
+      </div>
+      <div className="flex justify-center mt-4 gap-4">
+      <button
+        className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+        onClick={() => setStep(2)}
+        >
+        Previous
+      </button>
+      <button
+        className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+        onClick={() => handleSubmit()}
+        >
+        Next
+      </button>
+    </div>
+  </div>
+)}
+
       </motion.div>
     </div>
   );

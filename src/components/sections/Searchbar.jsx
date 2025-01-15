@@ -6,7 +6,7 @@ import { LocationCancel } from "../../assets/icons/LocationCancel";
 import { useDispatch } from "react-redux";
 import { loadSearchResults } from "../../store/slices/searchSlice";
 
-export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
+export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters }) => {
   const [dropdownStates, setDropdownStates] = useState({
     category: null,
     roomNumber: null,
@@ -16,7 +16,13 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [selectedCurrency, setSelectedCurrency] = useState(localStorage.getItem("currency") === null ? "£" : localStorage.getItem("currency"));
+  const currencies_to_dollar = {
+    "€": 1.03,
+    "£": 1.22,
+    "$": 1,
+    "₺": 0.028,
+  };
   // Sync the location with the prop 'value'
   useEffect(() => {
     setDropdownStates((prevState) => ({
@@ -26,33 +32,82 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
   }, [value]);
 
   const handleSearch = () => {
-    const { category, roomNumber, priceRange, location } = dropdownStates;
-    const filters = {
-      category,
-      roomNumber,
-      minPrice: priceRange.min,
-      maxPrice: priceRange.max,
-      location,
-    };
+    // 1) Merge FilterModal filters (props.filters) + local dropdownStates
+    //    - If you want the local dropdownStates to override
+    //      any same-key from FilterModal, spread them last:
 
-    // Execute the onSearch prop with dispatch
-    onSearch(() => dispatch(loadSearchResults(filters)));
-
+    const filters = JSON.parse(localStorage.getItem("filters"));
+    const combinedFilters = {
+      ...filters,        // from Redux/FilterModal
+      ...dropdownStates, // from local dropdown
+    };  
+    // 2) Build query parameters from the merged object
     const queryParams = new URLSearchParams();
-    // Add all selected filters to query parameters
-    if (category) queryParams.append("category", category);
-    if (roomNumber) queryParams.append("roomNumber", roomNumber);
-    if (priceRange.min) queryParams.append("minPrice", priceRange.min);
-    if (priceRange.max) queryParams.append("maxPrice", priceRange.max);
-    if (location) queryParams.append("location", location);
+  
+    Object.entries(combinedFilters).forEach(([key, value]) => {
+      // Skip null, undefined, empty, or 0
+      if (value !== null && value !== undefined && value !== "" && value !== 0) {
+        // If it's a nested object like { rooms: { bathroom: 2, bedroom: 1 } }
+        if (typeof value === "object" && !Array.isArray(value)) {
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            if (
+              subValue !== null &&
+              subValue !== undefined &&
+              subValue !== "" &&
+              subValue !== 0
+            ) {
+              if (key === "priceRange") {
+                queryParams.append(`${key}${subKey}`, subValue / currencies_to_dollar[selectedCurrency]);
+              } else {
+                queryParams.append(`${key}${subKey}`, subValue);
+              }
+            }
+          });
+        }
+        // If it's an array (e.g., for renovation, furniture, etc.)
+        else if (Array.isArray(value)) {
+          value.forEach((item) => {
+            if (
+              item !== null &&
+              item !== undefined &&
+              item !== "" &&
+              item !== 0
+            ) {
+              queryParams.append(key, item);
+            }
+          });
+        }
+        // Otherwise, just append it directly
+        else {
+          queryParams.append(key, value);
+        }
+      }
+    });
+  
+    // 3) Optional: run your Redux logic, e.g. loadSearchResults with merged filters
+    onSearch(() => dispatch(loadSearchResults(combinedFilters)));
+  
+    // 4) Navigate with all selected filters in the URL
+    const queryString = queryParams.toString();
 
-    // Navigate with all selected filters in the URL
-    navigate(`/search?${queryParams.toString()}`);
+    response = fetch(`http://localhost:5001/api/v1/property?${queryString}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+    // navigate(`/search?${queryString}`);
+    // window.location = `/search?${queryString}`;
   };
 
   const handleShowOnMap = () => {
-    onShowMap(dropdownStates.location); // Use the prop to show on map
-  };
+    // onShowMap(dropdownStates.location); // Use the prop to show on map
+    window.location = "/map"; 
+    };
 
   const handleDropdownToggle = (type) => {
     setDropdownOpen((prev) => (prev === type ? null : type));
@@ -83,7 +138,6 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
       ...prevState,
       location: value,
     }));
-    onChange(value); // Notify parent about the change in location
   };
 
   const clearLocation = () => {
@@ -123,19 +177,19 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
         return (
           <div className="p-4">
             <p
-              onClick={() => handleSelectOption(type, "1 Room")}
+              onClick={() => handleSelectOption(type, "1")}
               className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               1 Room
             </p>
             <p
-              onClick={() => handleSelectOption(type, "2 Rooms")}
+              onClick={() => handleSelectOption(type, "2")}
               className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               2 Rooms
             </p>
             <p
-              onClick={() => handleSelectOption(type, "3 Rooms")}
+              onClick={() => handleSelectOption(type, "3")}
               className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
             >
               3 Rooms
@@ -281,11 +335,6 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange }) => {
                 placeholder="Location"
                 value={dropdownStates.location}
                 onChange={handleLocationChange}
-                onKeyPress={(e) => {
-                  if (e.key === "Enter") {
-                    handleSearch();
-                  }
-                }}
                 className="w-full border-none pl-1 py-2 text-[#525C76] text-sm font-semibold bg-transparent pr-10 focus:outline-none focus:border-2 focus:border-[#8247E5]"
                 style={{ height: "36px", lineHeight: "36px" }} // Fixed height and line-height
               />

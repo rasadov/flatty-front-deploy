@@ -30,9 +30,9 @@ export const HeartButton = React.memo(({ liked, onClick }) => (
   </motion.div>
 ));
 
-const PriceSection = React.memo(({ price }) => (
+const PriceSection = React.memo(({ price, currency }) => (
   <div className="flex items-center justify-start gap-2 mb-2 text-lg font-semibold text-[#525C76]">
-    {price} <Euro size={20} />
+    {price} {currency}
   </div>
 ));
 
@@ -79,6 +79,15 @@ export const HouseItem = React.memo(
     const swiperRef = useRef(null);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
+    console.log("Images prop:", images);
+    const currency = localStorage.getItem("currency") || "£";
+
+    const currencies_to_dollar = {
+      "€": 1.03,
+      "£": 1.22,
+      "$": 1,
+      "₺": 0.028,
+    };
 
     const handleLikeClick = useCallback(
       (e) => {
@@ -102,7 +111,7 @@ export const HouseItem = React.memo(
           });
         } else {
           // Toggle like status
-          fetch("http://localhost:5001/like", {
+          fetch("http://localhost:5001/api/v1/property/like/" + id, {
             method: "POST",
             body: JSON.stringify({ property_id: id }),
             credentials: "include",
@@ -142,7 +151,7 @@ export const HouseItem = React.memo(
         liked,
         id,
         images,
-        price,
+        price * currencies_to_dollar[currency],
         location,
         rooms,
         area,
@@ -195,7 +204,7 @@ export const HouseItem = React.memo(
                 <SwiperSlide key={index}>
                   <Link to={`/appartment/${id}`}>
                     <img
-                      src={img}
+                      src={img.image_url}
                       alt={`Slide ${index + 1}`}
                       className="object-cover w-full h-[173px]"
                     />
@@ -230,8 +239,8 @@ export const HouseItem = React.memo(
 
         {/* Information Section */}
         <Link to={`/appartment/${id}`} className="py-2">
-          <PriceSection price={price} />
-          <RoomAreaFloorSection
+        <PriceSection price={Math.round(price / currencies_to_dollar[currency])} currency={currency}/>
+        <RoomAreaFloorSection
             room={rooms}
             area={area}
             currFloor={currFloor}

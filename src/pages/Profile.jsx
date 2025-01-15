@@ -26,6 +26,9 @@ export const Profile = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const [agent, setAgent] = useState([]);
   const [properties, setAgentProperties] = useState([]);
+  const [complexes, setComplexes] = useState([]);
+  const [resultCount, setResultCount] = useState(0);
+  const namesOfComplexes = []
 
   useEffect(() => {
   const fetchProfile = async () => {
@@ -67,8 +70,22 @@ export const Profile = () => {
       credentials: 'include',
       })
       const data2 = await response2.json();
-      setAgentProperties(data2);
+      setAgentProperties(data2.properties);
+      setResultCount(data2.results);
       console.log(data2);
+
+      const response3 = await fetch("http://localhost:5001/api/v1/listing/me", {
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      credentials: 'include',
+      })
+      const data3 = await response3.json();
+      setComplexes(data3);
+      for (let i = 0; i < data3.length; i++) {
+        namesOfComplexes.push(data3[i].name);
+      }
+      console.log("COMPLEX ", data3);
   }
   fetchProfile();
   }, []);
@@ -136,7 +153,7 @@ export const Profile = () => {
                   <p className="font-medium text-lg text-[#0F1D40]">
                     {index === 0 ? agent.experience ? agent.experience + " years" : "Unknown" :
                     index === 1 ? agent.sales ? agent.sales : "Unknown":
-                    properties.results}
+                    index === 2 ? resultCount ? resultCount : "Unknown" : ""}
                   </p>
                 </div>
               )
@@ -177,26 +194,32 @@ export const Profile = () => {
             className="absolute w-full h-auto rounded-lg bottom-10"
             alt="Agent"
             loading="lazy"
-          />
+          />          
         </div>
       </div>
       {/* Active Posts Section */}
       <CardList sectionName="My posts" seeAll={false}>
         {loading && <p>Loading...</p>}
         {error && <p>Error: {error}</p>}
-        {posts.properties ? posts.properties.slice(0, 4).map((item) => (
-          <AgentPost
-            key={item.id}
-            img={item.images[0]}
-            price={item.price}
-            location={item.location}
-            rooms={item.room}
-            currFloor={item.currFloor}
-            building={item.building}
-          />
-        )) : <p>No posts found</p>}
+        {Array.isArray(properties) && properties.length > 0 ? (
+          properties.slice(0, 4).map((item) => (
+            <AgentPost
+              key={item.id}
+              img={item.images[0]?.image_url} // Access the image URL safely
+              price={item.price}
+              location={item.location?.address || `${item.location?.latitude}, ${item.location?.longitude}`} // Format location as a string
+              area={item?.info?.total_area} // Access the area safely
+              rooms={item.info?.bedrooms} // Access the number of rooms safely
+              currFloor={item.info?.floor} // Access the current floor safely
+              building={item.info?.apartment_stories} // Access the building info safely
+              id={item.id}
+            />
+          ))
+        ) : (
+          <p>No posts found</p>
+        )}
       </CardList>
-      <NewPostModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <NewPostModal isOpen={isModalOpen} onClose={handleCloseModal} complexes={complexes} />
       <NewComplexModal isOpen={isComplexModalOpen} onClose={handleCloseComplexModal} />
     </div>
   );

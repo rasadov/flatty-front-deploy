@@ -58,6 +58,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
       }
     });
 
+    localStorage.setItem('filters', JSON.stringify(selectedFilters));
     // Dispatch the filters to Redux store
     dispatch(updateFilters(selectedFilters));
     // Send filters to parent component with query parameters
@@ -82,7 +83,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
     >
       <div className="fixed z-50 flex items-center justify-center inset-1">
         <motion.div
-          className="bg-white rounded-lg w-full max-w-[638px] h-[676px] overflow-auto p-6 relative"
+          className="bg-white rounded-lg w-full max-w-[638px] h-[376px] overflow-auto p-6 relative"
           animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 50, rotate: 10 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -98,29 +99,6 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
           <h3 className="text-[28px] font-semibold text-left mb-2">Filter</h3>
 
           {/* Filter Components */}
-          <FilterSelect
-            label="Category"
-            category="category"
-            value={filters.category}
-            options={[
-              { value: "", label: "Choose Category" },
-              { value: "Residence Complex", label: "Residence Complex" },
-            ]}
-            setFilter={setFilter}
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          />
-
-          <FilterSelect
-            label="Complex"
-            value={filters?.complex || ""}
-            onChange={(e) => setFilter("complex", e.target.value)}
-            options={[
-              { value: "", label: "Choose Complex" },
-              // Add your complex options here
-            ]}
-          />
-
           <FilterNumberRange
             label="Area (m²)"
             category="area"
@@ -159,39 +137,8 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             unit=""
           />
 
-          <FilterButtonGroup
-            label="Ceiling Height"
-            options={["From 2.5m", "From 2.7m", "From 3m"]}
-            filters={selectedFilters}
-            category="ceilingHeight"
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-            setFilter={setFilter}
-          />
-
-          <FilterButtonGroup
-            label="Bathroom"
-            options={["Combined", "Separate", "Several"]}
-            filters={filters}
-            category="bathroom"
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          />
-
-          <FilterButtonGroup
-            label="Furniture"
-            options={[
-              "Without furniture",
-              "With furniture",
-              "Kitchen furniture",
-            ]}
-            filters={filters}
-            category="furniture"
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          />
           <div className="flex flex-wrap items-center justify-start gap-3 mb-4 space-y-2">
-            {["rooms", "bathroom", "livingRoom", "bedroom", "balcony"].map(
+            {["bathroom", "livingRoom", "bedroom", "balcony"].map(
               (type) => (
                 <div key={type} className="flex flex-wrap items-center gap-4">
                   <label className="block text-[10px] font-semibold capitalize text-[#525C76] leading-[16px]">
@@ -233,21 +180,6 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
                 </div>
               )
             )}
-            <div className="flex flex-wrap items-center justify-start gap-3 mb-4">
-              {["parkingSlot", "swimmingPool"].map((key) => (
-                <FilterToggle
-                  key={key}
-                  label={
-                    key === "parkingSlot" ? "Parking Slot" : "Swimming Pool"
-                  }
-                  keyName={key} // Using 'keyName' instead of 'key' to avoid React warning about using 'key' as prop name
-                  filters={selectedFilters}
-                  toggleFilter={toggleFilter}
-                  selectedFilters={selectedFilters}
-                  setSelectedFilters={setSelectedFilters}
-                />
-              ))}
-            </div>
           </div>
           {/* Toggles */}
           <div className="flex justify-start gap-6 mb-4"></div>

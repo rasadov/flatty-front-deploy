@@ -39,6 +39,19 @@ const LocationSection = React.memo(({ location }) => (
   </div>
 ));
 
+const handleDeletePost = (id) => {
+  if (window.confirm("Are you sure you want to delete this property?")) {
+    fetch(`http://localhost:5001/api/v1/property/record/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      credentials: "include",
+    });
+    window.location.reload();
+  }
+};
+
 export const AgentPost = React.memo(
   ({ id, img, price, location, rooms, area, currFloor, building }) => {
     return (
@@ -57,12 +70,14 @@ export const AgentPost = React.memo(
           />
           {/* Trash and EditPencil Icons */}
           <div className="absolute flex gap-2 bottom-2 right-2">
-            <div className="w-[33px] h-[33px] flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer ">
-              <Trash color="black" size="20" />
+            <div className="w-[33px] h-[33px] flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer "
+              onClick={() => handleDeletePost(id)}
+            >
+              <Trash color="black" size="20"/>
             </div>
-            <div className="w-[33px] h-[33px]  flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer ">
+            {/* <div className="w-[33px] h-[33px]  flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer ">
               <EditPencil color="black" size="20" />
-            </div>
+            </div> */}
           </div>
         </div>
 
