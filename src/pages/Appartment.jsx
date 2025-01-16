@@ -70,6 +70,14 @@ const Appartment = memo(() => {
     phoneNumber = "0000000000"
   }
 
+  var floors
+
+  if (apartmentData.category === "Villa") {
+    floors = { title: "Floors", value: `${apartmentData.info.floors || " "}` }
+  } else {
+    floors = { title: "Floor", value: `${apartmentData.info.floor || " "}${"/"+apartmentData.info.floors || " "}` }
+  }
+
   return (
     <div className="w-full py-3 mx-auto">
       <div className="flex flex-col lg:flex-row lg:justify-between">

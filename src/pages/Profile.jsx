@@ -200,7 +200,7 @@ export const Profile = () => {
       {/* Active Posts Section */}
       <CardList sectionName="My posts" seeAll={false}>
         {loading && <p>Loading...</p>}
-        {error && <p>Error: {error}</p>}
+        {/* {error && <p>Error: {error}</p>} */}
         {Array.isArray(properties) && properties.length > 0 ? (
           properties.slice(0, 4).map((item) => (
             <a href={"/appartment/" + item.id}>
