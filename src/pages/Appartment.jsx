@@ -91,7 +91,7 @@ const Appartment = memo(() => {
               details={[
                 { title: "Rooms", value: `${apartmentData.info.bedrooms} Rooms` },
                 { title: "Apartment area", value: `${apartmentData.info.total_area } m2` },
-                { title: "Floor", value: `${apartmentData.info.floor || " "}${"/"+apartmentData.info.floors || " "}` },
+                floors,
               ]}
             />
           </div>

@@ -15,7 +15,7 @@ const RoomAreaFloorSection = React.memo(
       <div className="text-sm text-[#525C76] font-medium">{room} Rooms</div>
       <div className="text-sm text-[#525C76] font-medium">{area} sq.m</div>
       <div className="text-sm text-[#525C76] font-medium">
-        {currFloor} / {building} Floor
+        {currFloor} Floor
       </div>
     </div>
   )
