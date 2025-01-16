@@ -139,7 +139,7 @@ const Header = () => {
   })
     .then((res) => {
       if (res.status === 401) {
-        window.location.href = "/login";
+        // window.location.href = "/login";
         localStorage.removeItem("user");
       }
       return res.json();
