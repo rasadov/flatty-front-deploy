@@ -79,7 +79,7 @@ const Register = () => {
         console.log("data", data);
         notify("Account created successfully!");
         reset(); // Clear the form
-        navigate("/login"); // Redirect to login page
+        navigate("/"); // Redirect to login page
       } catch (error) {
         notify(error.message || "Registration failed");
       }
