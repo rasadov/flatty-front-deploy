@@ -139,8 +139,8 @@ const Header = () => {
   })
     .then((res) => {
       if (res.status === 401) {
-        // window.location.href = "/login";
         localStorage.removeItem("user");
+        console.log("User not found");
       }
       return res.json();
     })
