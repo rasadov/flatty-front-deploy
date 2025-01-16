@@ -403,9 +403,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                       onChange={handleInputChange}
                       />
                     <select
-                      name="category"
+                      name="currency"
                       className="h-[52px] p-2 border rounded-md bg-gray-100"
-                      value={formData.category}
+                      value={formData.currency}
                       onChange={handleInputChange}
                       >
                       <option value="$">$</option>
