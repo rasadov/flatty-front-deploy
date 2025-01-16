@@ -97,6 +97,7 @@ const PropertyShowcase = ({ length, property }) => {
   }
 
   console.log(property);
+  var propertyImages = property.images.map((image) => image.image_url);
 
   const handleShowOnMapClick = () => {
     const { latitude, longitude } = property.location;
@@ -143,7 +144,7 @@ const PropertyShowcase = ({ length, property }) => {
       {/* Image Gallery */}
       <ImageGallery
         mainImage={property.images[0].image_url}
-        thumbnails={property.images}
+        thumbnails={propertyImages}
         length={property.images.length}
       />
     </div>
