@@ -45,9 +45,10 @@ export const registerUser = createAsyncThunk(
     });
     const data = await response.json();
     localStorage.setItem("user", data);
+    window.location.href = "/";
     if (response.ok) {
-      dispatch(setUser(data));
-      return data;
+      // dispatch(setUser(data));
+      // return data;
     } else {
       throw new Error(data.message || "Registration failed");
     }
