@@ -54,6 +54,14 @@ const handleDeletePost = (id) => {
 
 export const AgentPost = React.memo(
   ({ id, img, price, location, rooms, area, currFloor, building }) => {
+    const currency = localStorage.getItem("currency") || "£";
+
+    const currencies_to_dollar = {
+      "€": 1.03,
+      "£": 1.22,
+      "$": 1,
+      "₺": 0.028,
+    };
     return (
       <div
         className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2]"
@@ -83,7 +91,7 @@ export const AgentPost = React.memo(
 
         {/* Information Section */}
         <div className="py-2">
-          <PriceSection price={price} />
+          <PriceSection price={price / currencies_to_dollar[currency]} />
           <RoomAreaFloorSection
             room={rooms}
             area={area}

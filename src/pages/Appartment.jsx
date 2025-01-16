@@ -20,7 +20,14 @@ const Appartment = memo(() => {
   const { id } = useParams();
   const [apartmentData, setApartmentData] = useState(null);
   const [rating, setRating] = useState(4);
-  const currency = localStorage.getItem("currency") || "$";
+  const currency = localStorage.getItem("currency") || "£";
+
+  const currencies_to_dollar = {
+    "€": 1.03,
+    "£": 1.22,
+    "$": 1,
+    "₺": 0.028,
+  };
 
   useEffect(() => {
     const fetchApartmentData = async () => {
@@ -72,7 +79,7 @@ const Appartment = memo(() => {
 
   var floors
 
-  if (apartmentData.category === "Villa") {
+  if (apartmentData?.info?.category === "Villa") {
     floors = { title: "Floors", value: `${apartmentData.info.floors || " "}` }
   } else {
     floors = { title: "Floor", value: `${apartmentData.info.floor || " "}${"/"+apartmentData.info.floors || " "}` }
@@ -126,7 +133,7 @@ const Appartment = memo(() => {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center justify-start gap-2 mb-2 text-[28px] font-semibold text-[#525C76]">
-              {apartmentData.price} <Euro size={28} />
+              {apartmentData.price * currencies_to_dollar[currency]} {currency}
             </div>
             <div className="flex justify-start items-center gap-2 mb-2 text-[#525C76] font-medium text-[12px]">
               <div>{apartmentData.info.bedrooms} Room {apartmentData.info.category}</div>
