@@ -60,7 +60,15 @@ const Appartment = memo(() => {
   if (!apartmentData) return <div>Loading...</div>;
 
   console.log("Apartment Data:", apartmentData);
-  console.log("Number: ", apartmentData.owner?.user?.phone.slice(1))
+  // console.log("Number: ", apartmentData.owner?.user?.phone.slice(1))
+  var phoneNumber
+  try {
+
+    phoneNumber = apartmentData.owner?.user?.phone.slice(1);
+  } catch (error) {
+    console.log("Error: ", error)
+    phoneNumber = "0000000000"
+  }
 
   return (
     <div className="w-full py-3 mx-auto">
@@ -139,7 +147,7 @@ const Appartment = memo(() => {
             </div>
               <div className="flex flex-col gap-2 mt-3"
               onClick={() => {
-                const phoneNumber = apartmentData.owner?.user?.phone.slice(1);
+                const phoneNumber = phoneNumber;
                 const whatsappUrl = `https://wa.me/${phoneNumber}`;
                 window.location.href = whatsappUrl;
               }}>
