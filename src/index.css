@@ -8,6 +8,12 @@ input[type="number"]::-webkit-inner-spin-button {
   margin: 0;
 }
 
+@media (min-width: 1560px) {
+  .max-w-1560 {
+    max-width: 1560px !important;
+  }
+}
+
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }

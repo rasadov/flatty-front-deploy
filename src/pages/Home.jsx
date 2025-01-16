@@ -123,7 +123,7 @@ const Home = () => {
         Unlocking Doors to Your Next Home
       </h1>
 
-      <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4">
+      <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1300px]">
         <Searchbar
           value={searchQuery}
           onChange={handleSearchQueryChange}
@@ -173,7 +173,7 @@ const Home = () => {
             {/* Desktop header */}
             <DesktopHeader />
 
-            <div className="px-16 mx-auto max-w-[1440px]">
+            <div className="px-16 mx-auto ">
               {/* “Featured” section */}
               <div className="relative z-10 md:-mt-40">
                 <CardList sectionName="Featured" seeAll={true}>
