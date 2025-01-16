@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Share } from "../../assets/icons/Share";
 import { Edit } from "../../assets/icons/Edit";
 import { Download } from "../../assets/icons/Download";
@@ -7,90 +7,50 @@ import { NoViews } from "../../assets/icons/NoViews";
 import { Report } from "../../assets/icons/Report";
 import { ShowOnMap } from "../../assets/icons/ShowOnMap";
 import { PostView } from "../../assets/icons/PostView";
-import apparment1 from "../../assets/images/apparment1.png";
-import apartment2 from "../../assets/images/apparment2.png";
-import apartment3 from "../../assets/images/apparment3.png";
-import apartment4 from "../../assets/images/apparment4.png";
 // Button Component
 const ActionButton = ({ label, onClick }) => (
   <button onClick={onClick}>{label}</button>
 );
 
-// Image Gallery Component
-const ImageGallery = ({ mainImage, thumbnails, length }) => (
-  <div>
-    <img
-      src={mainImage}
-      alt="Property"
-      className=" mb-3 rounded-md shadow-lg w-full h-[538.99px]"
-      loading="lazy"
-    />
-    <div className="flex gap-[24px]">
-      {thumbnails.slice(0, length).map((thumbnail, index) => (
-        <div
-          key={index}
-          className="w-full min-h-[95.76px] bg-gray-200 rounded-md shadow-sm opacity-90  "
-        >
-          <img
-            src={thumbnail}
-            alt={`Thumbnail ${index}`}
-            className="object-cover rounded-md w-full h-[95.76px]"
-            loading="lazy"
-          />
-        </div>
-      ))}
+const ImageGallery = ({ mainImage, thumbnails, length }) => {
+  const [currentImage, setCurrentImage] = useState(mainImage);
+
+  return (
+    <div>
+      {/* Main Image */}
+      <img
+        src={currentImage}
+        alt="Property"
+        className="mb-3 rounded-md shadow-lg w-full h-[538.99px]"
+        loading="lazy"
+      />
+
+      {/* Thumbnail Gallery */}
+      <div className="flex gap-[24px]">
+        {thumbnails.slice(0, length).map((thumbnail, index) => (
+          <div
+            key={index}
+            className={`w-full min-h-[95.76px] bg-gray-200 rounded-md shadow-sm opacity-90 cursor-pointer ${
+              currentImage === thumbnail ? "ring-2 ring-blue-500" : ""
+            }`}
+            onClick={() => setCurrentImage(thumbnail)} // Update main image on click
+          >
+            <img
+              src={thumbnail}
+              alt={`Thumbnail ${index}`}
+              className="object-cover rounded-md w-full h-[95.76px]"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 // Main PropertyShowcase Component
 const PropertyShowcase = ({ length, property }) => {
   // State for property data
-  const [error, setError] = useState(null);
-
-  // Fetch property data dynamically (mocked API call)
-  // useEffect(() => {
-  //   const fetchPropertyData = async () => {
-  //     try {
-  //       setIsLoading(true);
-  //       // Mocked API data for testing
-  //       const data = {
-  //         title: "Selling 3 Room Apartment",
-  //         views: { total: 1500, today: 35 },
-  //         address: "3 Zinonos Kitieos, Flat 18 2064 Strovolos",
-  //         mainImage: apparment1,
-  //         thumbnails: [
-  //           apartment2,
-  //           apartment4,
-  //           apparment1,
-  //           apartment4,
-  //           apartment3,
-  //           apartment4,
-  //           apartment4,
-  //         ],
-  //         buttons: [
-  //           { label: <Share />, onClick: () => alert("Share clicked") },
-  //           { label: <Edit />, onClick: () => alert("Edit clicked") },
-  //           { label: <Download />, onClick: () => alert("Edit clicked") },
-  //           { label: <Print />, onClick: () => alert("Edit clicked") },
-  //           { label: <NoViews />, onClick: () => alert("Edit clicked") },
-  //           { label: <Report />, onClick: () => alert("Edit clicked") },
-  //         ],
-  //       };
-  //       setProperty(data);
-  //     } catch (error) {
-  //       setError("Failed to load property data.");
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   fetchPropertyData();
-  // }, []);
-
-  if (error) {
-    return <div>{error}</div>;
-  }
 
   if (!property) {
     return <div>No property found.</div>;
