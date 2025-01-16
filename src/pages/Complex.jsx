@@ -22,7 +22,7 @@ const Complex = () => {
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5001/api/v1/listing/record/${id}`)
+    fetch(`https://api.flatty.ai/api/v1/listing/record/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setListing(data);

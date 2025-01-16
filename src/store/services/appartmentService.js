@@ -18,7 +18,7 @@ import axios from "axios";
 
 export const fetchApartmentDetails = async (apartmentId) => {
   const response = await axios.get(
-    `http://localhost:5001/api/v1/property/record/${apartmentId}`
+    `https://api.flatty.ai/api/v1/property/record/${apartmentId}`
   );
   return response.data;
 };

@@ -4,7 +4,7 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (userData, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:5001/api/v1/auth/register", {
+      const response = await fetch("https://api.flatty.ai/api/v1/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, { rejectWithValue }) => {
     console.log(userData);
-    const response = await fetch("http://localhost:5001/api/v1/auth/login", {
+    const response = await fetch("https://api.flatty.ai/api/v1/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

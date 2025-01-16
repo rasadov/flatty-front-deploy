@@ -6,7 +6,7 @@ import { setUser } from "./authSlice";
 export const loginUser = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { dispatch }) => {
-    const response = await fetch("http://localhost:5001/api/v1/auth/login", {
+    const response = await fetch("https://api.flatty.ai/api/v1/auth/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -35,7 +35,7 @@ export const registerUser = createAsyncThunk(
   "auth/register",
   async (userData, { dispatch }) => {
     console.log("userData", userData);
-    const response = await fetch("http://localhost:5001/api/v1/auth/register", {
+    const response = await fetch("https://api.flatty.ai/api/v1/auth/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

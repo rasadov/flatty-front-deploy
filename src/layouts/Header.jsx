@@ -133,7 +133,7 @@ const Header = () => {
     ));
   }, []);
 
-  fetch("http://localhost:5001/api/v1/auth/refresh", {
+  fetch("https://api.flatty.ai/api/v1/auth/refresh", {
     method: "POST",
     credentials: "include",
   })

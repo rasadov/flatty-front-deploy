@@ -32,7 +32,7 @@ export const Profile = () => {
 
   useEffect(() => {
   const fetchProfile = async () => {
-      fetch("http://localhost:5001/api/v1/auth/refresh", {
+      fetch("https://api.flatty.ai/api/v1/auth/refresh", {
         method: "POST",
         credentials: "include",
       })
@@ -53,7 +53,7 @@ export const Profile = () => {
         window.location.href = "/login";
         localStorage.removeItem("user");
       });
-      const response = await fetch("http://localhost:5001/api/v1/user/me/agent", {
+      const response = await fetch("https://api.flatty.ai/api/v1/user/me/agent", {
       headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -63,7 +63,7 @@ export const Profile = () => {
       console.log(data);
       setAgent(data);
       
-      const response2 = await fetch("http://localhost:5001/api/v1/property/agent/" + data.id + "/page", {
+      const response2 = await fetch("https://api.flatty.ai/api/v1/property/agent/" + data.id + "/page", {
       headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -74,7 +74,7 @@ export const Profile = () => {
       setResultCount(data2.results);
       console.log(data2);
 
-      const response3 = await fetch("http://localhost:5001/api/v1/listing/me", {
+      const response3 = await fetch("https://api.flatty.ai/api/v1/listing/me", {
       headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
