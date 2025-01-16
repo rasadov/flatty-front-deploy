@@ -13,34 +13,44 @@ import { loadPopularProperties } from "../store/slices/popularSlice.js";
 
 const Complex = () => {
   const dispatch = useDispatch();
-  const id = window.location.pathname.split("/").pop();
-  const [listing, setListing] = useState([]);
+  // const { id } = useRouterParams();
+  const url = window.location.href;
+  const id = url.split("/")[4];
+  console.log("ID", id);
+  console.log("URL", url);
+  const [listing, setListing] = useState();
+  const [properties, setProperties] = useState([]);
 
   useEffect(() => {
     fetch(`http://localhost:5001/api/v1/listing/record/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setListing(data);
+        console.log("DATA LISTING", data);
+        setProperties(data.properties);
       });
   }, [id]);
-  console.log(listing);
+  console.log("LISTING", listing);
   // if (loading) return <div>Loading...</div>;
   // if (error) return <div>Error: {error}</div>;
   if (!listing) return <div>No complex details available</div>;
-  const { propertyDetails, images, location } = listing;
+  console.log("PROPERTY DETAILS", properties);
   return (
     <div className="flex flex-col min-h-screen ">
       <main className="flex-grow bg-[#F4F2FF] ">
         <Header />
+        {properties ? (
+
         <div className="px-16 mx-auto max-w-[1440px] bg-white">
           <div className="w-full py-3 mx-auto bg-white">
             <div className="flex flex-col ">
               <div className="w-full">
-                <Breadcrumbs title={propertyDetails.id} />
-                <PropertyShowcase length={images.length} images={images} />
+
+                  <Breadcrumbs title={listing.id} />
+                <PropertyShowcase length={listing.images.length} images={listing.images} />
                 {/* grid area */}
                 <div className="grid grid-cols-1 gap-6 my-12 md:grid-cols-4 lg:grid-cols-6">
-                  {Object.entries(propertyDetails)
+                  {Object.entries(properties)
                     .filter(([key]) =>
                       [
                         "category",
@@ -74,14 +84,15 @@ const Complex = () => {
                     Description
                   </h1>
                   <p className="text-[#0F1D40] font-normal text-[18px] leading-[28.8px]">
-                    {propertyDetails.description}
+                    {listing.description}
                   </p>
-                  <span>{propertyDetails.updated}</span>
+                  {/* <span>{properties.updated}</span> */}
                   <hr className="my-8 border-t-2 border-[#EEEFF2]" />
                 </div>
+
               </div>
             </div>
-            <div className="w-[96%] mx-auto my-20">
+            {/* <div className="w-[96%] mx-auto my-20">
               {popularProperties ? (
                 <div className="grid grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-4">
                   {popularProperties.map((item) => (
@@ -94,19 +105,23 @@ const Complex = () => {
                 </p>
               )}
               <Pagination />
-            </div>
+            </div> */}
             {/* location */}
             <div className="w-full border-t-2 py-14">
               <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px]">
                 Location
               </h2>
               <PropertyMap
-                latitude={location.latitude}
-                longitude={location.longitude}
-              />
+              location={{
+                "latitude": listing.latitude,
+                "longitude": listing.longitude,
+              }}
+                />
             </div>
           </div>
         </div>
+        ) : ("No complex details available")}
+
         <div className="px-6 mx-auto bg-[#ECE8FF]">
           <Footer />
         </div>

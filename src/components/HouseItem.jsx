@@ -80,6 +80,7 @@ export const HouseItem = React.memo(
     const prevRef = useRef(null);
     const nextRef = useRef(null);
     console.log("Images prop:", images);
+    console.log("Price prop:", price);
     const currency = localStorage.getItem("currency") || "£";
 
     const currencies_to_dollar = {
@@ -201,6 +202,8 @@ export const HouseItem = React.memo(
               className="swiper-container"
             >
               {images.map((img, index) => (
+                console.log("Image URL:", img.image_url),
+                console.log("Index:", img),
                 <SwiperSlide key={index}>
                   <Link to={`/appartment/${id}`}>
                     <img

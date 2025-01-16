@@ -153,7 +153,7 @@ export const Profile = () => {
                   <p className="font-medium text-lg text-[#0F1D40]">
                     {index === 0 ? agent.experience ? agent.experience + " years" : "Unknown" :
                     index === 1 ? agent.sales ? agent.sales : "Unknown":
-                    index === 2 ? resultCount ? resultCount : "Unknown" : ""}
+                    index === 2 ? properties.length ? properties.length : "Unknown" : ""}
                   </p>
                 </div>
               )
@@ -203,6 +203,7 @@ export const Profile = () => {
         {error && <p>Error: {error}</p>}
         {Array.isArray(properties) && properties.length > 0 ? (
           properties.slice(0, 4).map((item) => (
+            <a href={"/appartment/" + item.id}>
             <AgentPost
               key={item.id}
               img={item.images[0]?.image_url} // Access the image URL safely
@@ -213,7 +214,8 @@ export const Profile = () => {
               currFloor={item.info?.floor} // Access the current floor safely
               building={item.info?.apartment_stories} // Access the building info safely
               id={item.id}
-            />
+              />
+            </a>
           ))
         ) : (
           <p>No posts found</p>

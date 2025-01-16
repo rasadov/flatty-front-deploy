@@ -9,7 +9,7 @@ import { loadSearchResults } from "../../store/slices/searchSlice";
 export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_URL, setData }) => {
   const [dropdownStates, setDropdownStates] = useState({
     category: null,
-    roomNumber: null,
+    roomNumbers: [],
     priceRange: { min: "", max: "" },
     location: value || "",
   });
@@ -105,6 +105,22 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
     // window.location = `/search?${queryString}`;
   };
 
+  const handleRoomSelect = (room) => {
+    setDropdownStates((prevState) => {
+      if (prevState.roomNumbers.includes(room)) {
+        return {
+          ...prevState,
+          roomNumbers: prevState.roomNumbers.filter((r) => r !== room),
+        };
+      } else {
+        return {
+          ...prevState,
+          roomNumbers: [...prevState.roomNumbers, room],
+        };
+      }
+    });
+  };
+
   const handleShowOnMap = () => {
     // onShowMap(dropdownStates.location); // Use the prop to show on map
     window.location = "/map"; 
@@ -182,25 +198,22 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
         );
       case "roomNumber":
         return (
-          <div className="p-4">
-            <p
-              onClick={() => handleSelectOption(type, "1")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              1 Room
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "2")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              2 Rooms
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "3")}
-              className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              3 Rooms
-            </p>
+          <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
+            <div className="grid grid-cols-3 gap-2 p-4">
+              {["Studio", "2", "3", "4", "5", "6+"].map((room, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleRoomSelect(room)}
+                  className={`flex items-center justify-center px-4 py-2 border rounded-md text-gray-700 focus:outline-none ${
+                    dropdownStates.roomNumbers.includes(room)
+                      ? "border-purple-500 bg-white text-black" // Primary color styles when selected
+                      : "bg-gray-200" // Default hover styles
+                  }`}
+                >
+                  {room}
+                </button>
+              ))}
+            </div>
           </div>
         );
       case "price":
@@ -387,3 +400,31 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
 };
 
 export default Searchbar;
+
+// const RoomsDropdown = () => {
+//   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+//   const [selectedRoom, setSelectedRoom] = useState("Room Number");
+
+//   const handleRoomSelect = (room) => {
+//     setSelectedRoom(room);
+//     setIsDropdownOpen(false);
+//   };
+
+//   return (
+//     <div className="relative inline-block text-left">
+//       {/* Dropdown Trigger */}
+//       <button
+//         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+//         className="w-[200px] h-[46px] flex items-center justify-between px-4 py-2 border rounded-md bg-gray-100 text-gray-700 focus:outline-none"
+//       >
+//         {selectedRoom}
+//         <span className="ml-2">&#9660;</span> {/* Dropdown arrow */}
+//       </button>
+
+//       {/* Dropdown Content */}
+//       {/* {isDropdownOpen && (
+
+//       )} */}
+//     </div>
+//   );
+// };

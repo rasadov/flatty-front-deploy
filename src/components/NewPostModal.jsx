@@ -211,7 +211,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     onClick={onClose}
   >
     <motion.div
-      className="w-[750px] h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+      className="w-[800px] h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -294,12 +294,14 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
             </div>
-            <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
+            {/* <div className="flex flex-wrap gap-2 justify-between mt-4"> */}
+            <div className="grid grid-cols-4 gap-6">
               {["floor", "apartmentStories", "buildingFloors", "livingRoom", "bedroom", "bathroom", "balcony"].map(
                 (field, index) => (
-                  <div key={index} className="flex items-center gap-1 mx-auto my-3">
-                    <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                      {field == "livingRooms" ? "Living rooms":
+                  <div key={index} className="flex items-center justify-between my-3">
+                    <label className="block mb-1 text-sm font-medium text-gray-700 capitalize"
+                    >
+                      {field == "livingRoom" ? "Living rooms":
                        field == "buildingFloors" ? "Building floors":
                        field == "apartmentStories" ? "Appartment stories": field}
                     </label>
@@ -312,7 +314,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                       <input
                         name={field}
                         type="number"
-                        className="w-[36px] h-[32px] border rounded-md text-center"
+                        className="w-[36px] h-[32px] text-center"
                         value={formData[field]}
                         onChange={handleInputChange}
                         min="0"
@@ -322,7 +324,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                         <Add />
                       </button>
                     </div>
-                  </div>
+                  </div> 
                 )
               )}
             </div>

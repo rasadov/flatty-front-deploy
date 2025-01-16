@@ -40,6 +40,7 @@ export const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
+  const [filteredItems, setFilteredItems] = useState([]);
 
   const [responseData, setResponseData] = useState([]);
   // const [res]
@@ -56,7 +57,15 @@ export const Search = () => {
   //   setSelectedCurrency(currency);
   // }, []);
   useEffect(() => {
-    dispatch(loadSearchResults(filters));
+    fetch("http://localhost:5001/api/v1/property" + searchQuery)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("DATA", data);
+        setTotalPages(data.results / 10);
+        setResponseData(data);
+        setFilteredItems(data.properties);
+        
+      });
   }, [dispatch, filters]);
 
   // Memoized filtering function
@@ -114,9 +123,9 @@ export const Search = () => {
   );
 
   // Memoized filtered items
-  const filteredItems = useMemo(() => {
-    return searchResults.filter((item) => filterItem(item, filters));
-  }, [searchResults, filters, filterItem]);
+  // const filteredItems = useMemo(() => {
+  //   return searchResults.filter((item) => filterItem(item, filters));
+  // }, [searchResults, filters, filterItem]);
 
   // Event handlers
   const handleShowMap = useCallback(() => setShowMap(!showMap), [showMap]);
@@ -137,6 +146,10 @@ export const Search = () => {
   );
 
   if (loading) return <div>Loading...</div>;
+
+  console.log("Filtered Items", filteredItems);
+
+  console.log("Response Data", responseData);
 
   return (
     <div className="w-full mx-auto ">
@@ -160,26 +173,17 @@ export const Search = () => {
         </button>
       </div>
 
-      {showMap ? (
-        <>
-          <div className="px-16.26 flex justify-start items-center my-2">
-            <SelectedFilters />
-          </div>
-          <MapView filteredItems={filteredItems} />
-        </>
-      ) : (
-        <div className=" px-16.26">
-          <ResultView
-            filteredItems={filteredItems}
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-            setFilter={(path, value) =>
-              dispatch(updateFilters({ [path]: value }))
-            }
-          />
-        </div>
-      )}
+      <div className=" px-16.26">
+        <ResultView
+          filteredItems={filteredItems}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          setFilter={(path, value) =>
+            dispatch(updateFilters({ [path]: value }))
+          }
+        />
+      </div>
 
       {/* Filter Modal */}
       <FilterModal
@@ -201,6 +205,12 @@ export default Search;
 
 // MapView component
 
+const getImages = ({images}) => {
+  console.log ("WE ARE HERE ", images);
+  if (!images) return [];
+  return images.map((image) => image.image_url);
+}
+
 // ResultView component
 const ResultView = ({
   filteredItems,
@@ -208,6 +218,7 @@ const ResultView = ({
   totalPages,
   onPageChange,
 }) => {
+  console.log("Filtered3424 Items", filteredItems);
   return (
     <>
       {/* Filter Dropdowns */}
@@ -222,9 +233,21 @@ const ResultView = ({
         </div>
         <div className="grid gap-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
           {filteredItems.map((item) => (
-            <Link to={`/apartment/${item.id}`} key={item.id}>
-              <HouseItem {...item} />
-            </Link>
+            console.log("ITEM", item),
+            // <Link to={`/apartment/${item.id}`} key={item.id}>
+              <HouseItem
+                key={item.id}
+                id={item.id}
+                images={item.images}
+                title={item.title}
+                price={item.price}
+                area={item.total_area}
+                rooms={item.bedroom}
+                location={item.location.address}
+                currFloor={item.floor}
+                building={item.floors}
+              />
+            // </Link>
           ))}
         </div>
         {/* Pagination */}

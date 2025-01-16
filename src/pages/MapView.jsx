@@ -14,7 +14,7 @@ import { FilterButton } from "../assets/icons";
 
 export default function MapView() {
   // Instead of a single selected property, we use an array
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const [selectedProperties, setSelectedProperties] = useState([]);
   const { isLoggedIn } = useSelector((state) => state.auth);
@@ -164,6 +164,16 @@ export default function MapView() {
       <MapPropertyDetails properties={selectedProperties} />
     </div>
   ) : null}
+
+        {/* Filter Modal */}
+        <FilterModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onApply={(newFilters) => {
+            dispatch(updateFilters(newFilters));
+            setIsModalOpen(false);
+          }}
+        />
 
   {/* Right side: Google Map */}
   <div className="flex-1">

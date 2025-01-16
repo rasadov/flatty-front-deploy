@@ -11,7 +11,7 @@ import {
   FilterNumberRange,
   FilterToggle,
 } from "../../modules/FilterModalModules";
-import { Add, Subtract, Close } from "../../assets/icons";
+import { Add, Subtract } from "../../assets/icons";
 
 export const FilterModal = ({ isOpen, onClose, onApply }) => {
   const {
@@ -58,7 +58,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
       }
     });
 
-    localStorage.setItem("filters", JSON.stringify(selectedFilters));
+    localStorage.setItem('filters', JSON.stringify(selectedFilters));
     // Dispatch the filters to Redux store
     dispatch(updateFilters(selectedFilters));
     // Send filters to parent component with query parameters
@@ -94,7 +94,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             className="absolute text-xl text-gray-500 top-4 right-4"
             onClick={onClose}
           >
-            <Close />
+            {/* Close icon */}
           </button>
           <h3 className="text-[28px] font-semibold text-left mb-2">Filter</h3>
 
@@ -137,7 +137,6 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             unit=""
           />
 
-<<<<<<< HEAD
           <div className="flex flex-wrap justify-between gap-3 my-4">
             {["bathroom", "livingRoom", "bedroom", "balcony"].map(
               (type) => (
@@ -178,49 +177,9 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
                       <Add />
                     </button>
                   </div>
-=======
-          <div className="flex flex-wrap items-center justify-start gap-3 mb-4 space-y-2">
-            {["bathroom", "livingRoom", "bedroom", "balcony"].map((type) => (
-              <div key={type} className="flex flex-wrap items-center gap-4">
-                <label className="block text-[10px] font-semibold capitalize text-[#525C76] leading-[16px]">
-                  {type}
-                </label>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => {
-                      decrementFilter(`rooms.${type}`);
-                      setSelectedFilters((prev) => ({
-                        ...prev,
-                        rooms: {
-                          ...prev.rooms,
-                          [type]: Math.max((prev.rooms?.[type] || 0) - 1, 0),
-                        },
-                      }));
-                    }}
-                  >
-                    <Subtract />
-                  </button>
-                  <span className="text-[14px] align-middle font-semibold leading-[22.4px]">
-                    {selectedFilters.rooms?.[type] || 0}
-                  </span>
-                  <button
-                    onClick={() => {
-                      incrementFilter(`rooms.${type}`);
-                      setSelectedFilters((prev) => ({
-                        ...prev,
-                        rooms: {
-                          ...prev.rooms,
-                          [type]: (prev.rooms?.[type] || 0) + 1,
-                        },
-                      }));
-                    }}
-                  >
-                    <Add />
-                  </button>
->>>>>>> 6735d111983001cf931691bddcfced3256612053
                 </div>
-              </div>
-            ))}
+              )
+            )}
           </div>
           {/* Toggles */}
           <div className="flex justify-start gap-6 mb-4"></div>
