@@ -219,7 +219,7 @@ const Home = () => {
                     <HouseItem
                       key={item.id}
                       images={item.images} // Access the image URL safely
-                      price={formatNumber(item.price / currencies_to_dollar[currency])}
+                      price={item.price}
                       location={
                         item.location?.address ||
                         `${item.location?.latitude}, ${item.location?.longitude}`
