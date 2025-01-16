@@ -208,7 +208,7 @@ const Register = () => {
           <Warning />
           Use 8 or more characters with a mix of letters, numbers & symbols
         </p>
-        <motion.div
+        {/* <motion.div
           className="flex items-center w-full p-2 py-[21px] space-x-2 border rounded-xl"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -224,7 +224,7 @@ const Register = () => {
             {isHuman ? <CheckSquareFull /> : <CheckSquare />}
           </div>
           <span className="text-gray-600">I'm not a robot</span>
-        </motion.div>
+        </motion.div> */}
         <div className="flex items-center">
           <span className="text-sm text-stone-500">
             By creating an account, you agree to our{" "}
