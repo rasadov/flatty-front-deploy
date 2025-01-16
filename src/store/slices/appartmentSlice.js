@@ -6,7 +6,7 @@ export const fetchApartmentDetails = createAsyncThunk(
     console.log("Fetching apartment with ID:", apartmentId);
     try {
       const response = await axios.get(
-        `https://api.flatty.ai/api/v1/property/record/${apartmentId}`
+        `https://flatty.abyssara.tech/api/v1/property/record/${apartmentId}`
       );
       return response.data;
     } catch (error) {

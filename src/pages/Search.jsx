@@ -57,7 +57,7 @@ export const Search = () => {
   //   setSelectedCurrency(currency);
   // }, []);
   useEffect(() => {
-    fetch("https://api.flatty.ai/api/v1/property" + searchQuery)
+    fetch("https://flatty.abyssara.tech/api/v1/property" + searchQuery)
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA", data);
@@ -162,7 +162,7 @@ export const Search = () => {
           onSearch={() => dispatch(loadSearchResults(filters))}
           value={searchQuery}
           onChange={handleSearchQueryChange}
-          API_URL="https://api.flatty.ai/api/v1/property"
+          API_URL="https://flatty.abyssara.tech/api/v1/property"
           setData={setResponseData}
         />
         <button

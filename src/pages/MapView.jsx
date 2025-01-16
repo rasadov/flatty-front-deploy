@@ -24,7 +24,7 @@ export default function MapView() {
 
   // Fetch mock properties from the server
   useEffect(() => {
-    fetch("https://api.flatty.ai/api/v1/property/map")
+    fetch("https://flatty.abyssara.tech/api/v1/property/map")
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA", data);
@@ -103,7 +103,7 @@ export default function MapView() {
     // 4) Navigate with all selected filters in the URL
     const queryString = queryParams.toString();
 
-    response = fetch(`https://api.flatty.ai/api/v1/property/map?${queryString}`, {
+    response = fetch(`https://flatty.abyssara.tech/api/v1/property/map?${queryString}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export default function MapView() {
         const results = await Promise.all(
           propertiesAtLocation.map(async (p) => {
             const response = await fetch(
-              `https://api.flatty.ai/api/v1/property/record/${p.property_id}`
+              `https://flatty.abyssara.tech/api/v1/property/record/${p.property_id}`
             );
             return await response.json();
           })
@@ -143,7 +143,7 @@ export default function MapView() {
           onSearch={() => {}}
           value={searchQuery}
           onChange={handleSearchQueryChange}
-          API_URL="https://api.flatty.ai/api/v1/property/map"
+          API_URL="https://flatty.abyssara.tech/api/v1/property/map"
           setData={setMockProperties}
         />
         <button

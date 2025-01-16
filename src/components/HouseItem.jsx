@@ -112,7 +112,7 @@ export const HouseItem = React.memo(
           });
         } else {
           // Toggle like status
-          fetch("https://api.flatty.ai/api/v1/property/like/" + id, {
+          fetch("https://flatty.abyssara.tech/api/v1/property/like/" + id, {
             method: "POST",
             body: JSON.stringify({ property_id: id }),
             credentials: "include",

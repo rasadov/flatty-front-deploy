@@ -8,11 +8,11 @@
 import axios from "axios";
 
 export const fetchAgents = async () => {
-  const response = await axios.get("https://api.flatty.ai/agents");
+  const response = await axios.get("https://flatty.abyssara.tech/agents");
   return response.data;
 };
 
 export const fetchAgent = async (id) => {
-  const response = await axios.get(`https://api.flatty.ai/agents/${id}`);
+  const response = await axios.get(`https://flatty.abyssara.tech/agents/${id}`);
   return response.data;
 };

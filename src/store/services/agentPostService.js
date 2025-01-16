@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const API_URL = "https://api.flatty.ai/api/v1/property";
-const CREATE_URL = "https://api.flatty.ai/api/v1/property/create";
+const API_URL = "https://flatty.abyssara.tech/api/v1/property";
+const CREATE_URL = "https://flatty.abyssara.tech/api/v1/property/create";
 
 const getPosts = async () => {
   const response = await axios.get(API_URL);

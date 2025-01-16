@@ -10,7 +10,7 @@ const Wishlist = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const response = await fetch('https://api.flatty.ai/api/v1/property/fav', {
+        const response = await fetch('https://flatty.abyssara.tech/api/v1/property/fav', {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
