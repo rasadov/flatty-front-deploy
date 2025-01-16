@@ -18,6 +18,7 @@ import {
 } from "../store/slices/wishlistSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { notify } from "../components/Notification";
+import { formatNumber } from "../components/numberFormater.jsx";
 
 export const HeartButton = React.memo(({ liked, onClick }) => (
   <motion.div
@@ -249,7 +250,7 @@ export const HouseItem = React.memo(
         {/* Information Section */}
         <Link to={`/appartment/${id}`} className="py-4 block">
           <PriceSection
-            price={Math.round(price / currencies_to_dollar[currency])}
+            price={formatNumber(price / currencies_to_dollar[currency])}
             currency={currency}
           />
           <RoomAreaFloorSection

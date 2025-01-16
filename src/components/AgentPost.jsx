@@ -2,6 +2,7 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { Euro, MapPin, Trash, EditPencil } from "../assets/icons";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
+import { formatNumber } from './numberFormater'; 
 
 const PriceSection = React.memo(({ price }) => (
   <div className="flex items-center justify-start gap-2 mb-2 text-lg font-semibold text-[#525C76]">
@@ -91,7 +92,7 @@ export const AgentPost = React.memo(
 
         {/* Information Section */}
         <div className="py-2">
-          <PriceSection price={price / currencies_to_dollar[currency]} />
+          <PriceSection price={formatNumber(price / currencies_to_dollar[currency])} />
           <RoomAreaFloorSection
             room={rooms}
             area={area}

@@ -14,6 +14,7 @@ import HouseItem from "../components/HouseItem";
 import ComplexCard from "../components/ComplexCard.jsx";
 import WhyChooseUsSection from "../components/sections/ChooseUsSection";
 import TestimonialSection from "../components/sections/TestimonialSection";
+import { formatNumber } from "../components/numberFormater";
 // Images
 import header_bg from "../assets/images/header_bg.png";
 import key_img from "../assets/images/key_img.png";
@@ -25,6 +26,15 @@ const Home = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  const currency = localStorage.getItem("currency") || "£";
+
+  const currencies_to_dollar = {
+    "€": 1.03,
+    "£": 1.22,
+    "$": 1,
+    "₺": 0.028,
+  };
 
   const {
     results: searchResults,
@@ -209,7 +219,7 @@ const Home = () => {
                     <HouseItem
                       key={item.id}
                       images={item.images} // Access the image URL safely
-                      price={item.price}
+                      price={formatNumber(item.price / currencies_to_dollar[currency])}
                       location={
                         item.location?.address ||
                         `${item.location?.latitude}, ${item.location?.longitude}`

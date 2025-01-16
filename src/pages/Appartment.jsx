@@ -14,6 +14,7 @@ import { Chat } from "../assets/icons/Chat";
 import { Contact } from "../assets/icons/Contact";
 import PropertyMap from "../components/PropertyMap.jsx";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import { formatNumber } from "../components/numberFormater.jsx";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const Appartment = memo(() => {
@@ -133,7 +134,7 @@ const Appartment = memo(() => {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center justify-start gap-2 mb-2 text-[28px] font-semibold text-[#525C76]">
-              {apartmentData.price * currencies_to_dollar[currency]} {currency}
+              {formatNumber(apartmentData.price / currencies_to_dollar[currency])} {currency}
             </div>
             <div className="flex justify-start items-center gap-2 mb-2 text-[#525C76] font-medium text-[12px]">
               <div>{apartmentData.info.bedrooms} Room {apartmentData.info.category}</div>
