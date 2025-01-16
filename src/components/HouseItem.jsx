@@ -167,7 +167,7 @@ export const HouseItem = React.memo(
 
     return (
       <div
-        className="block border rounded-[6px] border-[#EEEFF2] p-4 relative sm:w-full sm:p-2 outline-[#EEEFF2]"
+        className="block border rounded-[6px] border-[#EEEFF2] p-4 relative sm:w-full sm:p-2 outline-[#EEEFF2] transform transition-transform duration-300 hover:scale-105 hover:shadow-[0px_4px_20px_#8247E5]"
         style={{
           boxShadow: "0px 1px 1px 0px #703ACA14",
         }}
@@ -262,7 +262,7 @@ export const HouseItem = React.memo(
         </Link>
       </div>
     );
-    
+        
   }
 );
 

@@ -31,7 +31,7 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
           <div
             key={index}
             className={`w-full min-h-[95.76px] bg-gray-200 rounded-md shadow-sm opacity-90 cursor-pointer ${
-              currentImage === thumbnail ? "ring-2 ring-blue-500" : ""
+              currentImage === thumbnail ? "ring-2 ring-[#8247E5]" : ""
             }`}
             onClick={() => setCurrentImage(thumbnail)} // Update main image on click
           >
