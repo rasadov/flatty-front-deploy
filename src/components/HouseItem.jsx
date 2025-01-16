@@ -112,7 +112,7 @@ export const HouseItem = React.memo(
           });
         } else {
           // Toggle like status
-          fetch("https://flatty.abyssara.tech/api/v1/property/like/" + id, {
+          fetch("https://api.flatty.ai/api/v1/property/like/" + id, {
             method: "POST",
             body: JSON.stringify({ property_id: id }),
             credentials: "include",
@@ -167,13 +167,19 @@ export const HouseItem = React.memo(
 
     return (
       <div
-        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full sm:p-1 outline-[#EEEFF2]"
+        className="block border rounded-[6px] border-[#EEEFF2] p-4 relative sm:w-full sm:p-2 outline-[#EEEFF2]"
         style={{
           boxShadow: "0px 1px 1px 0px #703ACA14",
         }}
       >
         {/* Image Section with Slider */}
-        <div className="relative w-full h-[173px] rounded-[6px] overflow-hidden">
+        <div
+          className="relative w-full rounded-[6px] overflow-hidden"
+          style={{
+            height: "calc(100vw * 0.1)", // Adjust height dynamically based on width
+            maxHeight: "300px", // Set a max height if needed
+          }}
+        >
           {images && Array.isArray(images) && images.length > 0 ? (
             <Swiper
               loop={true}
@@ -209,7 +215,7 @@ export const HouseItem = React.memo(
                     <img
                       src={img.image_url}
                       alt={`Slide ${index + 1}`}
-                      className="object-cover w-full h-[173px]"
+                      className="object-cover w-full h-full"
                     />
                   </Link>
                 </SwiperSlide>
@@ -218,7 +224,7 @@ export const HouseItem = React.memo(
           ) : (
             <div>No images available</div>
           )}
-
+    
           {/* Previous Button */}
           <div
             ref={prevRef}
@@ -227,7 +233,7 @@ export const HouseItem = React.memo(
           >
             <ArrowLeft color="white" size="30" />
           </div>
-
+    
           {/* Next Button */}
           <div
             ref={nextRef}
@@ -236,14 +242,17 @@ export const HouseItem = React.memo(
           >
             <ArrowRight color="white" />
           </div>
-
+    
           <HeartButton liked={liked} onClick={handleLikeClick} />
         </div>
-
+    
         {/* Information Section */}
-        <Link to={`/appartment/${id}`} className="py-2">
-        <PriceSection price={Math.round(price / currencies_to_dollar[currency])} currency={currency}/>
-        <RoomAreaFloorSection
+        <Link to={`/appartment/${id}`} className="py-4 block">
+          <PriceSection
+            price={Math.round(price / currencies_to_dollar[currency])}
+            currency={currency}
+          />
+          <RoomAreaFloorSection
             room={rooms}
             area={area}
             currFloor={currFloor}
@@ -253,6 +262,7 @@ export const HouseItem = React.memo(
         </Link>
       </div>
     );
+    
   }
 );
 

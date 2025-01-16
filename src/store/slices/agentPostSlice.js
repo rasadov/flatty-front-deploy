@@ -7,7 +7,7 @@ export const fetchPosts = createAsyncThunk("posts/fetchPosts", async () => {
 });
 
 export const addPost = createAsyncThunk("posts/addPost", async (formDataToSend) => {
-  const response = await fetch("https://flatty.abyssara.tech/api/v1/property/create", {
+  const response = await fetch("https://api.flatty.ai/api/v1/property/create", {
     method: "POST",
     body: formDataToSend,
     credentials: "include", // if your server sets/needs cookies

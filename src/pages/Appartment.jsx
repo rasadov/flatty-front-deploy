@@ -32,12 +32,12 @@ const Appartment = memo(() => {
   useEffect(() => {
     const fetchApartmentData = async () => {
       try {
-        const response = await fetch(`https://flatty.abyssara.tech/api/v1/property/record/${id}`);
+        const response = await fetch(`https://api.flatty.ai/api/v1/property/record/${id}`);
         const data = await response.json();
 
         setApartmentData(data);
 
-        await fetch(`https://flatty.abyssara.tech/api/v1/property/view/${id}`, {
+        await fetch(`https://api.flatty.ai/api/v1/property/view/${id}`, {
           method: "POST",
         });
         } catch (error) {

@@ -136,7 +136,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       }
       try {
         const response = await axios.post(
-          "https://flatty.abyssara.tech/api/v1/listing",
+          "https://api.flatty.ai/api/v1/listing",
           formDataToSend,
           {
             headers: {
