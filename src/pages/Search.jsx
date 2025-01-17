@@ -57,7 +57,7 @@ export const Search = () => {
   //   setSelectedCurrency(currency);
   // }, []);
   useEffect(() => {
-    fetch("https://api.flatty.ai/api/v1/property" + searchQuery)
+    fetch("https://api.flatty.ai/api/v1/property/" + searchQuery)
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA", data);

@@ -6,7 +6,7 @@ import { formatNumber } from './numberFormater';
 
 const PriceSection = React.memo(({ price }) => (
   <div className="flex items-center justify-start gap-2 mb-2 text-lg font-semibold text-[#525C76]">
-    {price} <Euro size={20} />
+    {price} {localStorage.getItem("currency") || "£"}
   </div>
 ));
 
