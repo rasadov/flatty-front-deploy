@@ -46,7 +46,7 @@ export const Search = () => {
 
   const [responseData, setResponseData] = useState([]);
   useEffect(() => {
-    params = new URLSearchParams({
+    const params = new URLSearchParams({
       page: page,
       elements: elements,
     })
