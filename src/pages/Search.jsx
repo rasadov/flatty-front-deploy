@@ -43,21 +43,8 @@ export const Search = () => {
   const [filteredItems, setFilteredItems] = useState([]);
 
   const [responseData, setResponseData] = useState([]);
-  // const [res]
-  // const [selectedTypes, setSelectedTypes] = useState([]);
-  // const [selectedRoom, setSelectedRoom] = useState("");
-  // const [priceRange, setPriceRange] = useState({ from: "", to: "" });
-  // const [selectedCurrency, setSelectedCurrency] = useState("USD");
-
-  // const handlePriceRangeChange = useCallback((field, value) => {
-  //   setPriceRange((prev) => ({ ...prev, [field]: value }));
-  // }, []);
-
-  // const handleCurrencyChange = useCallback((currency) => {
-  //   setSelectedCurrency(currency);
-  // }, []);
   useEffect(() => {
-    fetch("https://api.flatty.ai/api/v1/property/" + searchQuery)
+    fetch("https://api.flatty.ai/api/v1/property/?page=1&elements=50")
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA", data);

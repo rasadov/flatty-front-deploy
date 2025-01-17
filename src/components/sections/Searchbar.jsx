@@ -322,7 +322,7 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
           >
             <span className="text-[#525C76] text-sm font-semibold">
               {dropdownStates.priceRange.min || dropdownStates.priceRange.max
-                ? `$${dropdownStates.priceRange.min} - $${dropdownStates.priceRange.max}`
+                ? `${selectedCurrency}${dropdownStates.priceRange.min} - ${selectedCurrency}${dropdownStates.priceRange.max}`
                 : "Price"}
             </span>
             <motion.div
