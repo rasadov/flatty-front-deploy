@@ -136,11 +136,10 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       }
       try {
         const response = await axios.post(
-          "https://api.flatty.ai/api/v1/listing",
+          "https://api.flatty.ai/api/v1/listing/",
           formDataToSend,
           {
             headers: {
-              "Authorization": `Bearer ${localStorage.getItem("token")}`,
               "Accept": "application/json",
             },
             withCredentials: true,
