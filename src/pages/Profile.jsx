@@ -153,7 +153,7 @@ export const Profile = () => {
                   <p className="font-medium text-lg text-[#0F1D40]">
                     {index === 0 ? agent.experience ? agent.experience + " years" : "Unknown" :
                     index === 1 ? agent.sales ? agent.sales : "Unknown":
-                    index === 2 ? properties.length ? properties.length : "Unknown" : ""}
+                    index === 2 ? properties.length ? properties.length : 0 : ""}
                   </p>
                 </div>
               )
