@@ -41,14 +41,20 @@ export const Search = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   const [filteredItems, setFilteredItems] = useState([]);
+  const page = filters.page || 1;
+  const elements = 50;
 
   const [responseData, setResponseData] = useState([]);
   useEffect(() => {
-    fetch("https://api.flatty.ai/api/v1/property/?page=1&elements=50")
+    params = new URLSearchParams({
+      page: page,
+      elements: elements,
+    })
+    fetch(`https://api.flatty.ai/api/v1/property/?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA", data);
-        setTotalPages(data.results / 10);
+        setTotalPages(data.results / elements + (data.results % elements ? 1 : 0));
         setResponseData(data);
         setFilteredItems(data.properties);
         
