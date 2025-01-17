@@ -202,7 +202,7 @@ export const Profile = () => {
         {loading && <p>Loading...</p>}
         {/* {error && <p>Error: {error}</p>} */}
         {Array.isArray(properties) && properties.length > 0 ? (
-          properties.slice(0, 4).map((item) => (
+          properties.map((item) => (
             <a href={"/appartment/" + item.id}>
             <AgentPost
               key={item.id}
