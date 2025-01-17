@@ -235,10 +235,10 @@ const ResultView = ({
                 title={item.title}
                 price={item.price}
                 area={item.total_area}
-                rooms={item.bedroom}
+                rooms={item.info.bedroom}
                 location={item.location.address}
-                currFloor={item.floor}
-                building={item.floors}
+                currFloor={item.info.floor}
+                building={item.info.floors}
               />
             // </Link>
           ))}

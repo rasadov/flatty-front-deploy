@@ -18,32 +18,10 @@ import NotificationsModal from "../components/NotificationsModal";
 import { SelectedWishlist } from "../assets/icons/SelectedWishlist";
 import { set } from "react-hook-form";
 
-const initialNotifications = [
-  // {
-  //   id: 1,
-  //   message: "No notifications currently",
-  //   title: "No notifications currently",
-  //   read: false,
-  // },
-  // {
-  //   id: 2,
-  //   message: "Notification 2",
-  //   title: "Notification title",
-  //   read: false,
-  // },
-  // {
-  //   id: 3,
-  //   message: "Notification 3",
-  //   title: "Notification title",
-  //   read: false,
-  // },
-  // Add more notifications as needed
-];
-
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
-  const [notifications, setNotifications] = useState(initialNotifications);
+  const [notifications, setNotifications] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation(); // useLocation istifadə edirik
