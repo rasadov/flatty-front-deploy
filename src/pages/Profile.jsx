@@ -53,26 +53,32 @@ export const Profile = () => {
         window.location.href = "/login";
         localStorage.removeItem("user");
       });
-      const response = await fetch("https://api.flatty.ai/api/v1/user/me/agent", {
+      const userResponse = await fetch("https://api.flatty.ai/api/v1/user/me/agent", {
       headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       credentials: 'include',
       });
-      const data = await response.json();
-      console.log(data);
-      setAgent(data);
+      const userProfileData = await userResponse.json();
+      console.log(userProfileData);
+      setAgent(userProfileData);
       
-      const response2 = await fetch("https://api.flatty.ai/api/v1/property/agent/" + data.id + "/page", {
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      credentials: 'include',
+      const agentPropertiesParams = new URLSearchParams({
+        page: 1,
+        elements: 50,
       })
-      const data2 = await response2.json();
-      setAgentProperties(data2.properties);
-      setResultCount(data2.results);
-      console.log(data2);
+
+      const agentPropertiesResponse = await fetch(
+        `https://api.flatty.ai/api/v1/property/agent/${userProfileData.id}/page?${agentPropertiesParams.toString()}`, {
+        headers: {
+          Accept: 'application/json',
+        },
+        credentials: 'include',
+      })
+      const agentPropertiesData = await agentPropertiesResponse.json();
+      setAgentProperties(agentPropertiesData.properties);
+      setResultCount(agentPropertiesData.results);
+      console.log(agentPropertiesData);
 
       const response3 = await fetch("https://api.flatty.ai/api/v1/listing/me", {
       headers: {

@@ -49,7 +49,7 @@ const handleDeletePost = (id) => {
       },
       credentials: "include",
     });
-    window.location.reload();
+    window.location.href = "/profile";
   }
 };
 

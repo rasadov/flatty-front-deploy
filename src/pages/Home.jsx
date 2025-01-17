@@ -237,7 +237,7 @@ const Home = () => {
               </CardList>
 
               {/* “Complexes” section */}
-              <CardList sectionName="Complexes" seeAll={true}>
+              {/* <CardList sectionName="Complexes" seeAll={true}>
                 {complexDetails.listings &&
                   complexDetails.listings
                     .slice(0, 4)
@@ -251,7 +251,7 @@ const Home = () => {
                         address={item.address}
                       />
                     ))}
-              </CardList>
+              </CardList> */}
 
               {/* Agents (if you want to show them) */}
               {/* 
