@@ -57,7 +57,7 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
               subValue !== 0
             ) {
               if (key === "priceRange") {
-                queryParams.append(`${key}${subKey}`, subValue / currencies_to_dollar[selectedCurrency]);
+                queryParams.append(`${key}${subKey}`, Math.round(subValue * currencies_to_dollar[selectedCurrency]));
               } else {
                 queryParams.append(`${key}${subKey}`, subValue);
               }

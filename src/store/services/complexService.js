@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const fetchComplexDetails = async () => {
-  const response = await axios.get(`https://api.flatty.ai/api/v1/listing/page/`,
+  const response = await axios.get(`https://api.flatty.ai/api/v1/listing/page`,
   {
     params: {
       page: 1,
