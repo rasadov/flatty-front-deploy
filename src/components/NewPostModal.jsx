@@ -211,7 +211,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     onClick={onClose}
   >
     <motion.div
-      className="w-[800px] h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+      className="w-[50%] h-[600px] bg-white rounded-[6px] shadow-lg flex flex-col"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}

@@ -37,10 +37,10 @@ export const Profile = () => {
         credentials: "include",
       })
       .then((res) => {
-        if (res.status === 401) {
-          window.location.href = "/login";
-          localStorage.removeItem("user");
-        }
+        // if (res.status === 401) {
+        //   window.location.href = "/login";
+        //   localStorage.removeItem("user");
+        // }
         return res.json()
       })
       .then((data) => {
@@ -50,8 +50,8 @@ export const Profile = () => {
       })
       .catch((error) => {
         console.log(error);
-        window.location.href = "/login";
-        localStorage.removeItem("user");
+        // window.location.href = "/login";
+        // localStorage.removeItem("user");
       });
       const userResponse = await fetch("https://api.flatty.ai/api/v1/user/me/agent", {
       headers: {

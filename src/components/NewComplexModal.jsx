@@ -183,7 +183,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
     onClick={onClose}
   >
     <motion.div
-      className="w-[690px] h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+      className="w-[50%] h-[600px] bg-white rounded-[6px] shadow-lg flex flex-col"
       initial={{ opacity: 0, y: -50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.3 }}
@@ -210,7 +210,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <input
                     name="residentialComplex"
                     type="text"
-                    className="w-[277px] h-[52px] p-2 border rounded-md"
+                    className="w-full h-[52px] p-2 border rounded-md"
                     value={formData.residentialComplex}
                     onChange={handleInputChange}
                 />
@@ -221,7 +221,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-[277px] h-[52px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[52px] p-2 border rounded-md bg-gray-100"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -238,7 +238,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
             <div className="flex gap-4 items-center justify-between">
             {/* Building Area */}
             <div className="w-[100%]">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-xs font-medium text-gray-700">
                 Building area
                 </label>
                 <div className="relative">
@@ -253,7 +253,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
             {/* Living Area */}
             <div className="w-[100%]">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-xs font-medium text-gray-700">
                 Living area
                 </label>
                 <div className="relative">
@@ -268,7 +268,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
             {/* Objects */}
             <div className="w-[100%]">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-xs font-medium text-gray-700">
                 Objects
                 </label>
                 <input
@@ -280,7 +280,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
             {/* Floors */}
             <div className="w-[40%]">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-xs font-medium text-gray-700">
                 Floors
                 </label>
                 <input
@@ -292,7 +292,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
             {/* Year */}
             <div className="w-[60%]">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-xs font-medium text-gray-700">
                 Year
                 </label>
                 <input
@@ -307,7 +307,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
             {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
               (field, index) => (
                 <div key={index} className="flex items-center gap-1 mx-auto my-3">
-                  <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                  <label className="block mb-1 text-xs font-medium text-gray-700 capitalize">
                     {field === "parkingSlot" ? "Parking slot" :
                     field === "installment" ? "Installment" :
                     field === "swimmingPool" ? "Swimming pool" :
@@ -323,7 +323,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
             )}
             </div>
             <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700">
+              <label className="block mb-1 text-xs font-medium text-gray-700">
                 Description
               </label>
               <textarea
