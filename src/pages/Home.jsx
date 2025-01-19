@@ -122,17 +122,19 @@ const Home = () => {
   // ——————————————————————
   const DesktopHeader = () => (
     <div
-      className="hidden md:block relative h-[700px] w-full overflow-hidden bg-no-repeat bg-cover"
+      className="hidden md:block relative w-full overflow-hidden bg-no-repeat custom-width-for-header"
       style={{
         backgroundImage: `url(${header_bg})`,
-        backgroundSize: "100vw",
-        backgroundPosition: "0% top",
+        backgroundSize: "cover",
+        backgroundPosition: "center 20px",
+        height: "calc(100vw * 0.5)", // Default height for smaller screens
+        maxHeight: "650px", // Add this to prevent excessive height on very wide screens
       }}
     >
       <h1 className="absolute z-10 text-[36px] sm:text-[48px] md:text-[56px] font-bold text-slate-900 top-8 left-20 max-w-[50%]">
         Unlocking Doors to Your Next Home
       </h1>
-
+  
       <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1300px]">
         <Searchbar
           value={searchQuery}
@@ -154,7 +156,7 @@ const Home = () => {
           filters={{}}
         />
       </div>
-
+  
       <img
         src={key_img}
         alt="Key"
@@ -165,7 +167,7 @@ const Home = () => {
         }}
       />
     </div>
-  );
+);
   console.log("Featured Properties", featuredProperties);
   console.log("Popular Properties", popularProperties);
   // console.log("Agents", agents);
