@@ -237,7 +237,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-[277px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -255,7 +255,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="residentialComplex"
-                  className="w-[277px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
