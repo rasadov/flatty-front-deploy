@@ -303,7 +303,7 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
           </button>
           {dropdownOpen === "roomNumber" && (
             <motion.div
-              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
+              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white rounded-md shadow-lg"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}

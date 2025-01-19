@@ -65,7 +65,7 @@ export const AgentPost = React.memo(
     };
     return (
       <div
-        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2]"
+        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] custom-shadow"
         style={{
           boxShadow: "0px 1px 1px 0px #703ACA14",
         }}

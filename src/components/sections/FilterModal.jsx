@@ -66,7 +66,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
     onClose(); // Close modal
   };
   const handleCancel = () => {
-    clearFilters();
+    // clearFilters();
     onClose();
   };
 
