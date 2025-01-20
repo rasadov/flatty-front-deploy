@@ -42,7 +42,7 @@ export const TestimonialSection = ({ sectionName }) => {
   ];
 
   return (
-    <section className="w-full py-12 mx-auto mt-20 mb-40 bg-white rounded-lg">
+    <section className="w-full py-12 mx-auto mt-20 mb-40 bg-white rounded-lg custom-max-width">
       <h2 className="px-8 mb-6 text-4xl font-semibold text-left ">
         {sectionName}{" "}
       </h2>

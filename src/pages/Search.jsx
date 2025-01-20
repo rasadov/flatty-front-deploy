@@ -149,7 +149,7 @@ export const Search = () => {
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
 
       {/* Searchbar and Filter Button */}
-      <div className="flex items-center justify-center w-full gap-4 mt-36  px-16.26">
+      <div className="flex items-center justify-center w-full gap-4 mt-36  px-16.26 custom-max-width">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => dispatch(loadSearchResults(filters))}
@@ -166,7 +166,7 @@ export const Search = () => {
         </button>
       </div>
 
-      <div className=" px-16.26">
+      <div className=" px-16.26 custom-max-width">
         <ResultView
           filteredItems={filteredItems}
           currentPage={currentPage}

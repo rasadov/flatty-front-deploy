@@ -5,7 +5,7 @@ import { SeeAllUnder, SeeAllRight } from "../../assets/icons";
 export const SectionArea = ({ children, sectionName, seeAll = true }) => {
   return (
     <div
-      className="w-full p-8 mx-auto my-20 bg-white rounded-2xl"
+      className="w-full p-8 mx-auto my-20 bg-white rounded-2xl custom-max-width"
       style={{ boxShadow: "0px 2px 3px 0px #703ACA14" }}
     >
       <h1 className="text-[36px] my-6  font-semibold">{sectionName}</h1>

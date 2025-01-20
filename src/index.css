@@ -22,6 +22,12 @@ input[type="number"]::-webkit-inner-spin-button {
   .max-w-1560 {
     max-width: 1560px !important;
   }
+
+  .custom-max-width {
+    max-width: 85% !important;
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 @media (min-width: 1350px) {
