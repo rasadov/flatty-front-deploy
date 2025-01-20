@@ -5,7 +5,7 @@ export const fetchPopularProperties = async () => {
     "https://api.flatty.ai/api/v1/property/",
     {
       params: {
-        page: 5,
+        page: 2,
         elements: 5,
       },
     }

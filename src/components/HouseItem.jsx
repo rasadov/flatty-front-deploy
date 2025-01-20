@@ -178,7 +178,7 @@ export const HouseItem = React.memo(
         <div
           className="relative w-full rounded-[6px] overflow-hidden"
           style={{
-            height: "16vh", // Adjust height dynamically based on width
+            height: "150px", // Adjust height dynamically based on width
             maxHeight: "300px", // Set a max height if needed
           }}
         >
