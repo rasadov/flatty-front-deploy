@@ -165,7 +165,7 @@ const Home = () => {
       <img
         src={key_img}
         alt="Key"
-        className="absolute z-20 top-[72%] left-[50%] transform -translate-x-1/2 opacity-90"
+        className="absolute z-20 top-[72%] left-[50%] transform -translate-x-1/2 opacity-90 2xl:hidden"
         style={{
           height: "auto",
           zIndex: 10,
@@ -179,7 +179,7 @@ const Home = () => {
   // console.log("Agents", agents);
   console.log("Complex Details", complexDetails);
 
-  const elementCount = window.innerWidth > 1536 ? 5: 4;
+  const elementCount = window.innerWidth >= 1536 ? 5: 4;
 
   return (
     <div className="flex flex-col min-h-screen ">
