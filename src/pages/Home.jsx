@@ -17,6 +17,7 @@ import TestimonialSection from "../components/sections/TestimonialSection";
 import { formatNumber } from "../components/numberFormater";
 // Images
 import header_bg from "../assets/images/header_bg.png";
+import header_bg2 from "../assets/images/mainpage2.svg";
 import key_img from "../assets/images/key_img.png";
 import Header from "../layouts/Header";
 import { Footer } from "../layouts/Footer";
@@ -120,22 +121,26 @@ const Home = () => {
   // ——————————————————————
   // DESKTOP HEADER (hidden on small screens)
   // ——————————————————————
+  const header_bg_image = window.innerWidth > 1600 ? header_bg2 : header_bg;
   const DesktopHeader = () => (
     <div
       className="hidden md:block relative w-full overflow-hidden bg-no-repeat custom-width-for-header"
       style={{
-        backgroundImage: `url(${header_bg})`,
+        backgroundImage: `url(${header_bg_image})`,
         backgroundSize: "cover",
         backgroundPosition: "center 20px",
         height: "calc(100vw * 0.5)", // Default height for smaller screens
         maxHeight: "650px", // Add this to prevent excessive height on very wide screens
       }}
     >
-      <h1 className="absolute z-10 text-[36px] sm:text-[48px] md:text-[56px] font-bold text-slate-900 top-8 left-20 max-w-[50%]">
+      <div className="w-[80%]">
+
+      <h1 className="absolute z-10 text-[36px] sm:text-[48px] md:text-[56px] font-bold text-slate-900 top-8 left-20 max-w-[50%]
+      2xl:left-[10%]">
         Unlocking Doors to Your Next Home
       </h1>
   
-      <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1300px]">
+      <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1300px] 2xl:left-[10%]">
         <Searchbar
           value={searchQuery}
           onChange={handleSearchQueryChange}
@@ -165,7 +170,8 @@ const Home = () => {
           height: "auto",
           zIndex: 10,
         }}
-      />
+        />
+      </div>
     </div>
 );
   console.log("Featured Properties", featuredProperties);
@@ -173,7 +179,7 @@ const Home = () => {
   // console.log("Agents", agents);
   console.log("Complex Details", complexDetails);
 
-  elementCount = window.innerWidth > 1600 ? 5: 4;
+  const elementCount = window.innerWidth > 1600 ? 5: 4;
 
   return (
     <div className="flex flex-col min-h-screen ">

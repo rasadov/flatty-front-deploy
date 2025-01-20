@@ -12,7 +12,7 @@ export const fetchFeaturedProperties = async () => {
     {
       params: {
         page: 1,
-        elements: 4,
+        elements: 5,
       },
     }
   );
