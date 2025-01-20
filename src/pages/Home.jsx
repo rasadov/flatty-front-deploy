@@ -179,7 +179,7 @@ const Home = () => {
   // console.log("Agents", agents);
   console.log("Complex Details", complexDetails);
 
-  const elementCount = window.innerWidth > 1600 ? 5: 4;
+  const elementCount = window.innerWidth > 1536 ? 5: 4;
 
   return (
     <div className="flex flex-col min-h-screen ">
