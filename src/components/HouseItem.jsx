@@ -249,7 +249,7 @@ export const HouseItem = React.memo(
         </div>
     
         {/* Information Section */}
-        <Link to={`/appartment/${id}`} className="py-5 block">
+        <Link to={`/appartment/${id}`} className="py-4 px-3 block">
           <PriceSection
             price={formatNumber(price / currencies_to_dollar[currency])}
             currency={currency}

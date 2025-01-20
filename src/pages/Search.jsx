@@ -224,7 +224,7 @@ const ResultView = ({
             {filteredItems.length} results
           </h1>
         </div>
-        <div className="grid gap-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
+        <div className="grid gap-4 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
           {filteredItems.map((item) => (
             console.log("ITEM", item),
             // <Link to={`/apartment/${item.id}`} key={item.id}>
