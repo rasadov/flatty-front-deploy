@@ -6,7 +6,7 @@ export const fetchPopularProperties = async () => {
     {
       params: {
         page: 5,
-        elements: 4,
+        elements: 5,
       },
     }
   );

@@ -173,6 +173,8 @@ const Home = () => {
   // console.log("Agents", agents);
   console.log("Complex Details", complexDetails);
 
+  elementCount = window.innerWidth > 1600 ? 5: 4;
+
   return (
     <div className="flex flex-col min-h-screen ">
       <main className="flex-grow  bg-[#F4F2FF] ">
@@ -191,7 +193,7 @@ const Home = () => {
                 <CardList sectionName="Featured" seeAll={true}>
                   {Array.isArray(featuredProperties.properties) &&
                   featuredProperties.properties.length > 0 ? (
-                    featuredProperties.properties.slice(0, 4).map((item) => (
+                    featuredProperties.properties.slice(0, elementCount).map((item) => (
                       <HouseItem
                         key={item.id}
                         images={item.images} // Access the image URL safely
@@ -217,7 +219,7 @@ const Home = () => {
               <CardList sectionName="Popular" seeAll={true}>
                 {Array.isArray(popularProperties.properties) &&
                 popularProperties.properties.length > 0 ? (
-                  popularProperties.properties.slice(0, 4).map((item) => (
+                  popularProperties.properties.slice(0, elementCount).map((item) => (
                     <HouseItem
                       key={item.id}
                       images={item.images} // Access the image URL safely
@@ -242,7 +244,7 @@ const Home = () => {
               {/* <CardList sectionName="Complexes" seeAll={true}>
                 {complexDetails.listings &&
                   complexDetails.listings
-                    .slice(0, 4)
+                    .slice(0, elementCount)
                     .map((item) => (
                       <ComplexCard
                         key={item.id}
