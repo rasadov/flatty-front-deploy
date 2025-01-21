@@ -25,7 +25,12 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation(); // useLocation istifadə edirik
-  const user = JSON.parse(localStorage.getItem("user"));
+  let user
+  if (localStorage.getItem("user")) {
+    user = JSON.parse(localStorage.getItem("user"));
+  } else {
+    user = null;
+  }
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState({
     symbol: localStorage.getItem("currency") || "£",

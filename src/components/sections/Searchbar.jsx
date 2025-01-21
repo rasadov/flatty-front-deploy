@@ -36,7 +36,16 @@ export const Searchbar = ({ onShowMap, onSearch, value, onChange, filters, API_U
     //    - If you want the local dropdownStates to override
     //      any same-key from FilterModal, spread them last:
 
-    const filters = JSON.parse(localStorage.getItem("filters"));
+    let filters;
+    try {
+      filters = JSON.parse(localStorage.getItem("filters"));
+      if (!filters) {
+        filters = {}; // Set a default value if filters is null
+      }
+    } catch (error) {
+      console.error("Error parsing filters from localStorage:", error);
+      filters = {}; // Set a default value if parsing fails
+    }
     const combinedFilters = {
       ...filters,        // from Redux/FilterModal
       ...dropdownStates, // from local dropdown

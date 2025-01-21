@@ -23,7 +23,10 @@ export const Profile = () => {
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state) => state.posts);
 
-  const user = JSON.parse(localStorage.getItem("user"));
+  let user = {};
+  if (localStorage.getItem("user")) {
+    user = JSON.parse(localStorage.getItem("user"));
+  }
   const [agent, setAgent] = useState([]);
   const [properties, setAgentProperties] = useState([]);
   const [complexes, setComplexes] = useState([]);

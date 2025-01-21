@@ -52,7 +52,10 @@ export default function MapView() {
     //    - If you want the local dropdownStates to override
     //      any same-key from FilterModal, spread them last:
 
-    const filters = JSON.parse(localStorage.getItem("filters"));
+    let filters = {}
+    if (localStorage.getItem("filters")) {
+      filters = JSON.parse(localStorage.getItem("filters"));
+    } 
     const combinedFilters = {
       ...filters,        // from Redux/FilterModal
       ...dropdownStates, // from local dropdown
