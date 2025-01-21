@@ -31,11 +31,9 @@ export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (userData, { rejectWithValue }) => {
     console.log(userData);
-    try {
-
-      const response = await fetch("https://api.flatty.ai/api/v1/auth/login", {
-        method: "POST",
-        headers: {
+    const response = await fetch("https://api.flatty.ai/api/v1/auth/login", {
+      method: "POST",
+      headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userData),
@@ -43,6 +41,7 @@ export const loginUser = createAsyncThunk(
     });
     console.log(response);
     try {
+      if (!response.ok) throw new Error("Invalid email or password");
       const data = await response.json();
       // const user = users.find(
       //   (u) => u.email === userData.email && u.password === userData.password
@@ -57,9 +56,6 @@ export const loginUser = createAsyncThunk(
       console.log(error);
       return rejectWithValue(error.message);
     }
-  } catch (error) {
-    return rejectWithValue(error.message);
-  }
   }
 );
 
