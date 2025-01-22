@@ -80,14 +80,12 @@ export const HouseItem = React.memo(
     const swiperRef = useRef(null);
     const prevRef = useRef(null);
     const nextRef = useRef(null);
-    console.log("Images prop:", images);
-    console.log("Price prop:", price);
     const currency = localStorage.getItem("currency") || "£";
 
     const currencies_to_dollar = {
       "€": 1.03,
       "£": 1.22,
-      "$": 1,
+      $: 1,
       "₺": 0.028,
     };
 
@@ -209,24 +207,27 @@ export const HouseItem = React.memo(
               }}
               className="swiper-container"
             >
-              {images.map((img, index) => (
-                console.log("Image URL:", img.image_url),
-                console.log("Index:", img),
-                <SwiperSlide key={index}>
-                  <Link to={`/appartment/${id}`}>
-                    <img
-                      src={img.image_url}
-                      alt={`Slide ${index + 1}`}
-                      className="object-cover w-full h-full"
-                    />
-                  </Link>
-                </SwiperSlide>
-              ))}
+              {images.slice(1).map(
+                (img, index) => (
+                  console.log("img img img img >>>>>>>", img),
+                  (
+                    <SwiperSlide key={index}>
+                      <Link to={`/appartment/${id}`}>
+                        <img
+                          src={img.image_url}
+                          alt={`Slide ${index + 1}`}
+                          className="object-cover w-full h-full"
+                        />
+                      </Link>
+                    </SwiperSlide>
+                  )
+                )
+              )}
             </Swiper>
           ) : (
             <div>No images available</div>
           )}
-    
+
           {/* Previous Button */}
           <div
             ref={prevRef}
@@ -235,7 +236,7 @@ export const HouseItem = React.memo(
           >
             <ArrowLeft color="white" size="30" />
           </div>
-    
+
           {/* Next Button */}
           <div
             ref={nextRef}
@@ -244,10 +245,10 @@ export const HouseItem = React.memo(
           >
             <ArrowRight color="white" />
           </div>
-    
+
           <HeartButton liked={liked} onClick={handleLikeClick} />
         </div>
-    
+
         {/* Information Section */}
         <Link to={`/appartment/${id}`} className="py-4 px-3 block">
           <PriceSection
@@ -264,7 +265,6 @@ export const HouseItem = React.memo(
         </Link>
       </div>
     );
-        
   }
 );
 
