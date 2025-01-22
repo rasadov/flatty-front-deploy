@@ -50,6 +50,7 @@ const getAddressFromLatLng = async (lat, lng) => {
 
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [selectedDocuments, setSelectedDocuments] = useState([]);
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -148,6 +149,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       });
       selectedFiles.forEach((file) => {
         formDataToSend.append('files', file);
+      });
+
+      selectedDocuments.forEach((file) => {
+        formDataToSend.append('documents', file);
       });
 
       console.log("Form data to send:");
@@ -569,6 +574,44 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               ×
             </button> */}
           </div>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  City
+                </label>
+                <select
+                  name="city"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Area
+                </label>
+                <select
+                  name="area"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.residentialComplex}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                  {complexes?  complexes.map((complex, index) => (
+                    <option key={index} value={complex.name}>
+                      {complex.name}
+                    </option>
+                  )) : ""}
+                </select>
+              </div>
+            </div>
 
           {/* Map and Address */}
           <div className="space-y-4">
