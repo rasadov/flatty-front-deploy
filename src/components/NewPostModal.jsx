@@ -521,15 +521,28 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
               >
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm  mb-4"
+                  style={{
+                    color: "rgba(130, 71, 229, 1)",
+                  }}>
                   Drag photos here to start uploading
                 </p>
                 <button
-                  className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
+                  className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
                   onClick={() =>
                     document.querySelector('input[type="file"]')?.click()
                   }
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    border: "1px solid rgba(202, 205, 213, 1)",
+                    color: "rgba(82, 92, 118, 1)",
+                    fontWeight: "600",
+                  }}
                 >
+                  <span style={{ margin: "3px 6px" }}>
+                    <LeftUpload />
+                  </span>
                   Browse Files
                 </button>
                 <input
@@ -613,124 +626,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
           </div>
         )}
-        {step === 3 && (
-          <div className="flex-1 overflow-y-auto px-6 py-4">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Choose location</h3>
-              {/* <button
-              onClick={clearLocation} // Optional clear button
-              className="text-purple-600 hover:text-purple-800"
-            >
-              ×
-            </button> */}
-            </div>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  City
-                </label>
-                <select
-                  name="city"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Area
-                </label>
-                <select
-                  name="area"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.residentialComplex}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  {/* {complexes?  complexes.map((complex, index) => (
-                    <option key={index} value={complex.name}>
-                      {complex.name}
-                    </option>
-                  )) : ""} */}
-                </select>
-              </div>
-            </div>
-
-            {/* Map and Address */}
-            <div className="space-y-4">
-              {/* Address */}
-              <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
-                <p className="text-sm text-gray-700">
-                  {formData.address || "Select a location on the map"}
-                </p>
-                {formData.address && (
-                  <button
-                    onClick={clearLocation}
-                    className="text-purple-600 hover:text-purple-800"
-                  >
-                    ×
-                  </button>
-                )}
-              </div>
-
-              {/* Map */}
-              {isLoaded && (
-                <div className="w-full h-[300px] rounded-lg overflow-hidden border">
-                  <GoogleMap
-                    mapContainerStyle={{ width: "100%", height: "100%" }}
-                    center={{ lat: 35.198284, lng: 33.355869 }} // North Cyprus coordinates
-                    zoom={12}
-                    onClick={handleMapClick}
-                    ref={mapRef}
-                  >
-                    {formData.latitude && formData.longitude && (
-                      <Marker
-                        position={{
-                          lat: formData.latitude,
-                          lng: formData.longitude,
-                        }}
-                        icon={svgIconUrl}
-                      />
-                    )}
-                  </GoogleMap>
-                </div>
-              )}
-            </div>
-
-            {/* Pagination and Buttons */}
-            <div className="flex justify-center items-center mt-4">
-              <div className="flex space-x-2">
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-                <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-              </div>
-            </div>
-            <div className="flex justify-center mt-4 gap-4">
-              <button
-                className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-                onClick={() => setStep(2)}
-              >
-                Previous
-              </button>
-              <button
-                className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-                onClick={() => setStep(4)}
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        )}
-        {step === 4 && (
+                {step === 3 && (
           // <div className="flex flex-col justify-between h-full gap-4">
           //   {/* Content area */}
           //   <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
@@ -841,7 +737,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
               {/* Header */}
               <div className="text-center mb-4">
-                <h3 className="text-lg font-semibold">Upload Files</h3>
+                <h3 className="text-lg font-semibold">Upload Documents</h3>
               </div>
 
               {/* Drag and Drop Area or Click to Browse */}
@@ -940,25 +836,137 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   {/* For the "dots" at the bottom */}
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 </div>
               </div>
 
               <div className="flex justify-center mt-4 gap-4">
                 <button
                   className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(2)}
                 >
                   Previous
                 </button>
                 <button
                   className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-                  onClick={() => handleSubmit()}
+                  onClick={() => setStep(4)}
                 >
-                  Post
+                  Next
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+        {step === 4 && (
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Choose location</h3>
+              {/* <button
+              onClick={clearLocation} // Optional clear button
+              className="text-purple-600 hover:text-purple-800"
+            >
+              ×
+            </button> */}
+            </div>
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  City
+                </label>
+                <select
+                  name="city"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Area
+                </label>
+                <select
+                  name="area"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.residentialComplex}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                  {/* {complexes?  complexes.map((complex, index) => (
+                    <option key={index} value={complex.name}>
+                      {complex.name}
+                    </option>
+                  )) : ""} */}
+                </select>
+              </div>
+            </div>
+
+            {/* Map and Address */}
+            <div className="space-y-4">
+              {/* Address */}
+              <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
+                <p className="text-sm text-gray-700">
+                  {formData.address || "Select a location on the map"}
+                </p>
+                {formData.address && (
+                  <button
+                    onClick={clearLocation}
+                    className="text-purple-600 hover:text-purple-800"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+
+              {/* Map */}
+              {isLoaded && (
+                <div className="w-full h-[300px] rounded-lg overflow-hidden border">
+                  <GoogleMap
+                    mapContainerStyle={{ width: "100%", height: "100%" }}
+                    center={{ lat: 35.198284, lng: 33.355869 }} // North Cyprus coordinates
+                    zoom={12}
+                    onClick={handleMapClick}
+                    ref={mapRef}
+                  >
+                    {formData.latitude && formData.longitude && (
+                      <Marker
+                        position={{
+                          lat: formData.latitude,
+                          lng: formData.longitude,
+                        }}
+                        icon={svgIconUrl}
+                      />
+                    )}
+                  </GoogleMap>
+                </div>
+              )}
+            </div>
+
+            {/* Pagination and Buttons */}
+            <div className="flex justify-center items-center mt-4">
+              <div className="flex space-x-2">
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+              </div>
+            </div>
+            <div className="flex justify-center mt-4 gap-4">
+              <button
+                className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                onClick={() => setStep(3)}
+              >
+                Previous
+              </button>
+              <button
+                className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                onClick={() => handleSubmit()}
+              >
+                Submit
+              </button>
             </div>
           </div>
         )}
