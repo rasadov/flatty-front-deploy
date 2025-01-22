@@ -6,12 +6,12 @@ import { addPost, fetchPosts } from "../store/slices/agentPostSlice";
 import { Add, Subtract, Active, Inactive } from "../assets/icons";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { MapPin } from "../assets/icons";
+import { FaFilePdf } from "react-icons/fa";
+import { Trash } from "../assets/icons";
+import { PDF } from "../assets/icons/PDF";
+import { LeftUpload } from "../assets/icons/LeftUpload";
 
-const categories = [
-  "Penthouse",
-  "Villa",
-  "Cottages"
-];
+const categories = ["Penthouse", "Villa", "Cottages"];
 const conditions = [
   "Without finishing",
   "Pre-finish",
@@ -30,20 +30,20 @@ const renovations = [
 ];
 
 const getAddressFromLatLng = async (lat, lng) => {
-  const apiKey = 'AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM'; // Replace with your Google Maps API key
+  const apiKey = "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM"; // Replace with your Google Maps API key
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
 
   try {
     const response = await axios.get(url);
-    if (response.data.status === 'OK') {
+    if (response.data.status === "OK") {
       const address = response.data.results[0].formatted_address;
-      console.log('Fetched address: ', address);
+      console.log("Fetched address: ", address);
       return address;
     } else {
-      throw new Error('Unable to fetch address');
+      throw new Error("Unable to fetch address");
     }
   } catch (error) {
-    console.error('Error fetching address:', error);
+    console.error("Error fetching address:", error);
     return null;
   }
 };
@@ -71,7 +71,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     apartmentStories: 0,
     floor: 0,
     year: 0,
-    buildingFloors: 0,    
+    buildingFloors: 0,
     condition: conditions[0],
     latitude: 0,
     longitude: 0,
@@ -114,6 +114,34 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
+  //?   Files ===========
+  const handleFileUpload = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+  };
+
+  const handleFileRemove = (index) => {
+    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+  };
+
+  const handleDragOverFile = (event) => {
+    event.preventDefault();
+  };
+
+  const handleDropFile = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+  };
+
+  const formatFileSize = (size) => {
+    if (size < 1024) return `${size} B`;
+    else if (size < 1048576) return `${(size / 1024).toFixed(2)} KB`;
+    else if (size < 1073741824) return `${(size / 1048576).toFixed(2)} MB`;
+    else return `${(size / 1073741824).toFixed(2)} GB`;
+  };
+  //?   Files ===========
+
   const handleImageRemove = (index) => {
     setSelectedFiles((prevFiles) => {
       const updatedFiles = [...prevFiles];
@@ -132,7 +160,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     const lng = e.latLng.lng();
     const address = await getAddressFromLatLng(lat, lng);
 
-
     setFormData((prev) => ({
       ...prev,
       latitude: lat,
@@ -148,11 +175,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         formDataToSend.append(key, formData[key]);
       });
       selectedFiles.forEach((file) => {
-        formDataToSend.append('files', file);
+        formDataToSend.append("files", file);
       });
 
       selectedDocuments.forEach((file) => {
-        formDataToSend.append('documents', file);
+        formDataToSend.append("documents", file);
       });
 
       console.log("Form data to send:");
@@ -203,35 +230,33 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   `);
   const svgIconUrl = `data:image/svg+xml,${svgString}`;
 
-  
-
   if (!isOpen) return null;
 
-  console.log("IAMNAJSLDJLKJ")
-  console.log(selectedFiles.length)
+  console.log("IAMNAJSLDJLKJ");
+  console.log(selectedFiles.length);
 
   return (
     <div
-    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-    onClick={onClose}
-  >
-    <motion.div
-      className="w-[50%] h-[600px] bg-white rounded-[6px] shadow-lg flex flex-col"
-      initial={{ opacity: 0, y: -50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      onClick={(e) => e.stopPropagation()}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      onClick={onClose}
     >
-      {/* Modal Header */}
-      <div className="flex items-center justify-between px-6 py-4 border-b">
-        <h2 className="text-xl font-semibold">New Post</h2>
-        <button
-          onClick={onClose}
-          className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
-        >
-          &times;
-        </button>
-      </div>
+      <motion.div
+        className="w-[50%] h-[600px] bg-white rounded-[6px] shadow-lg flex flex-col"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Modal Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b">
+          <h2 className="text-xl font-semibold">New Post</h2>
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
+          >
+            &times;
+          </button>
+        </div>
         {step === 1 && (
           <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
             <h3 className="text-lg font-semibold">Fill Info</h3>
@@ -265,11 +290,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
-                  {complexes?  complexes.map((complex, index) => (
+                  {/* {complexes?  complexes.map((complex, index) => (
                     <option key={index} value={complex.name}>
                       {complex.name}
                     </option>
-                  )) : ""}
+                  )) : ""} */}
                 </select>
               </div>
             </div>
@@ -301,56 +326,76 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
             {/* <div className="flex flex-wrap gap-2 justify-between mt-4"> */}
             <div className="grid grid-cols-4 gap-6">
-              {["floor", "apartmentStories", "buildingFloors", "livingRoom", "bedroom", "bathroom", "balcony"].map(
-                (field, index) => (
-                  <div key={index} className="flex items-center justify-between my-3">
-                    <label className="block mb-1 text-sm font-medium text-gray-700 capitalize"
-                    >
-                      {field == "livingRoom" ? "Living rooms":
-                       field == "buildingFloors" ? "Building floors":
-                       field == "apartmentStories" ? "Appartment stories": field}
-                    </label>
-                    <div className="flex items-center">
-                      <button
-                        onClick={() => handleNumberChange(field, "subtract")}
-                      >
-                        <Subtract />
-                      </button>
-                      <input
-                        name={field}
-                        type="number"
-                        className="w-[36px] h-[32px] text-center"
-                        value={formData[field]}
-                        onChange={handleInputChange}
-                        min="0"
-                        readOnly
-                      />
-                      <button onClick={() => handleNumberChange(field, "add")}>
-                        <Add />
-                      </button>
-                    </div>
-                  </div> 
-                )
-              )}
-            </div>
-            <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
-            {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
-              (field, index) => (
-                <div key={index} className="flex items-center gap-1 mx-auto my-3">
+              {[
+                "floor",
+                "apartmentStories",
+                "buildingFloors",
+                "livingRoom",
+                "bedroom",
+                "bathroom",
+                "balcony",
+              ].map((field, index) => (
+                <div
+                  key={index}
+                  className="flex items-center justify-between my-3"
+                >
                   <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                    {field === "parkingSlot" ? "Parking slot" :
-                    field === "installment" ? "Installment" :
-                    field === "swimmingPool" ? "Swimming pool" :
-                    field === "elevator" ? "Elevator" : field}
+                    {field == "livingRoom"
+                      ? "Living rooms"
+                      : field == "buildingFloors"
+                      ? "Building floors"
+                      : field == "apartmentStories"
+                      ? "Appartment stories"
+                      : field}
                   </label>
                   <div className="flex items-center">
-                    <button onClick={() => handleCustomToggle(field)}>
-                      {formData[field] ? <Active /> : <Inactive />}
+                    <button
+                      onClick={() => handleNumberChange(field, "subtract")}
+                    >
+                      <Subtract />
+                    </button>
+                    <input
+                      name={field}
+                      type="number"
+                      className="w-[36px] h-[32px] text-center"
+                      value={formData[field]}
+                      onChange={handleInputChange}
+                      min="0"
+                      readOnly
+                    />
+                    <button onClick={() => handleNumberChange(field, "add")}>
+                      <Add />
                     </button>
                   </div>
                 </div>
-              )
-            )}
+              ))}
+            </div>
+            <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
+              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
+                (field, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-1 mx-auto my-3"
+                  >
+                    <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                      {field === "parkingSlot"
+                        ? "Parking slot"
+                        : field === "installment"
+                        ? "Installment"
+                        : field === "swimmingPool"
+                        ? "Swimming pool"
+                        : field === "elevator"
+                        ? "Elevator"
+                        : field}
+                    </label>
+                    <div className="flex items-center">
+                      <button onClick={() => handleCustomToggle(field)}>
+                        {formData[field] ? <Active /> : <Inactive />}
+                      </button>
+                    </div>
+                  </div>
+                )
+              )}
             </div>
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -363,7 +408,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     onClick={() =>
                       setFormData((prev) => ({ ...prev, condition: condition }))
                     }
-                    className={getButtonStyle("condition", condition) + " bg-gray-100"}
+                    className={
+                      getButtonStyle("condition", condition) + " bg-gray-100"
+                    }
                   >
                     {condition}
                   </button>
@@ -372,53 +419,55 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
             <div className="flex justify-start gap-4 mt-4">
               <div className="flex flex-col items-left gap-2">
-                  <div 
+                <div
                   style={{
                     textAlign: "left",
-                  }}>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">
-                      Year
-                    </label>
-                  </div>
-                  <div className="flex gap-1">
-                    <input
-                      name="year"
-                      type="number"
-                      className="w-[76px] h-[52px] p-2 border rounded-md"
-                      value={formData.year}
-                      onChange={handleInputChange}
-                      />
-                  </div>
+                  }}
+                >
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    Year
+                  </label>
+                </div>
+                <div className="flex gap-1">
+                  <input
+                    name="year"
+                    type="number"
+                    className="w-[76px] h-[52px] p-2 border rounded-md"
+                    value={formData.year}
+                    onChange={handleInputChange}
+                  />
+                </div>
               </div>
               <div className="flex flex-col items-left gap-2">
-                  <div 
+                <div
                   style={{
                     textAlign: "left",
-                  }}>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">
-                      Price
-                    </label>
-                  </div>
-                  <div className="flex gap-1">
-                    <input
-                      name="price"
-                      type="number"
-                      className="w-[106px] h-[52px] p-2 border rounded-md"
-                      value={formData.price}
-                      onChange={handleInputChange}
-                      />
-                    <select
-                      name="currency"
-                      className="h-[52px] p-2 border rounded-md bg-gray-100"
-                      value={formData.currency}
-                      onChange={handleInputChange}
-                      >
-                      <option value="$">$</option>
-                      <option value="€">€</option>
-                      <option value="₺">₺</option>
-                      <option value="£">£</option>
-                    </select>
-                  </div>
+                  }}
+                >
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    Price
+                  </label>
+                </div>
+                <div className="flex gap-1">
+                  <input
+                    name="price"
+                    type="number"
+                    className="w-[106px] h-[52px] p-2 border rounded-md"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                  <select
+                    name="currency"
+                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    value={formData.currency}
+                    onChange={handleInputChange}
+                  >
+                    <option value="$">$</option>
+                    <option value="€">€</option>
+                    <option value="₺">₺</option>
+                    <option value="£">£</option>
+                  </select>
+                </div>
               </div>
             </div>
             <div>
@@ -434,147 +483,149 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               />
             </div>
             <div className="flex justify-center items-center">
-            <div className="flex space-x-2">
-              <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-              <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-              <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-            </div>
-            </div>
-            <div className="flex justify-center mt-4 gap-4">
-            <button
-              className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-              onClick={() => onClose()}
-              >
-              Previous
-            </button>
-            <button
-              className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-              onClick={() => setStep(2)}
-              >
-              Next
-            </button>
-            </div>
-          </div>
-        )}
-      {step === 2 && (
-        <div className="flex flex-col justify-between h-full gap-4">
-          {/* Content area */}
-          <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
-            {/* Header */}
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold">Upload photos</h3>
-            </div>
-
-            {/* Drag and Drop Area or Click to Browse */}
-            <div 
-            className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            >
-              <p className="text-sm text-gray-600 mb-4">
-                Drag photos here to start uploading
-              </p>
-              <button
-                className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
-                onClick={() =>
-                  document.querySelector('input[type="file"]')?.click()
-                }
-              >
-                Browse Files
-              </button>
-              <input
-                type="file"
-                multiple
-                accept="image/*,video/*"
-                onChange={handleImageUpload}
-                className="hidden"
-              />
-            </div>
-
-            {selectedFiles.length > 0 && (
-              // Make it horizontally scrollable instead of wrapping
-              <div className="mt-4 flex overflow-x-auto space-x-4">
-                {selectedFiles.map((file, index) => {
-                  const previewUrl = URL.createObjectURL(file);
-
-                  return (
-                    // Center the media within this container
-                    <div
-                      key={index}
-                      className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
-                                overflow-hidden flex items-center justify-center"
-                    >
-                      {file.type.startsWith("image/") ? (
-                        <img
-                          src={previewUrl}
-                          alt={file.name}
-                          className="max-w-full max-h-full object-cover"
-                        />
-                      ) : (
-                        <video
-                          src={previewUrl}
-                          className="max-w-full max-h-full object-cover"
-                          controls
-                        />
-                      )}
-
-                      {/* Delete button */}
-                      <button
-                        className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700 
-                                  rounded-full flex items-center justify-center text-xs 
-                                  hover:bg-red-600 hover:text-white transition-colors"
-                        onClick={() => handleImageRemove(index)}
-                      >
-                        X
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-
-          {/* Footer / Pagination Controls */}
-          <div className="py-4">
-            <div className="flex justify-center items-center">
               <div className="flex space-x-2">
-                {/* For the "dots" at the bottom */}
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
                 <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
               </div>
             </div>
-
             <div className="flex justify-center mt-4 gap-4">
               <button
                 className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-                onClick={() => setStep(1)}
+                onClick={() => onClose()}
               >
                 Previous
               </button>
               <button
                 className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-                onClick={() => setStep(3)}
+                onClick={() => setStep(2)}
               >
                 Next
               </button>
             </div>
           </div>
-        </div>
-      )}
-      {step === 3 && (
-        <div className="flex-1 overflow-y-auto px-6 py-4">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold">Choose location</h3>
-            {/* <button
+        )}
+        {step === 2 && (
+          <div className="flex flex-col justify-between h-full gap-4">
+            {/* Content area */}
+            <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
+              {/* Header */}
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-semibold">Upload photos</h3>
+              </div>
+
+              {/* Drag and Drop Area or Click to Browse */}
+              <div
+                className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+              >
+                <p className="text-sm text-gray-600 mb-4">
+                  Drag photos here to start uploading
+                </p>
+                <button
+                  className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
+                  onClick={() =>
+                    document.querySelector('input[type="file"]')?.click()
+                  }
+                >
+                  Browse Files
+                </button>
+                <input
+                  type="file"
+                  multiple
+                  accept="image/*,video/*"
+                  onChange={handleImageUpload}
+                  className="hidden"
+                />
+              </div>
+
+              {selectedFiles.length > 0 && (
+                // Make it horizontally scrollable instead of wrapping
+                <div className="mt-4 flex overflow-x-auto space-x-4">
+                  {selectedFiles.map((file, index) => {
+                    const previewUrl = URL.createObjectURL(file);
+
+                    return (
+                      // Center the media within this container
+                      <div
+                        key={index}
+                        className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
+                                overflow-hidden flex items-center justify-center"
+                      >
+                        {file.type.startsWith("image/") ? (
+                          <img
+                            src={previewUrl}
+                            alt={file.name}
+                            className="max-w-full max-h-full object-cover"
+                          />
+                        ) : (
+                          <video
+                            src={previewUrl}
+                            className="max-w-full max-h-full object-cover"
+                            controls
+                          />
+                        )}
+
+                        {/* Delete button */}
+                        <button
+                          className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700 
+                                  rounded-full flex items-center justify-center text-xs 
+                                  hover:bg-red-600 hover:text-white transition-colors"
+                          onClick={() => handleImageRemove(index)}
+                        >
+                          X
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Footer / Pagination Controls */}
+            <div className="py-4">
+              <div className="flex justify-center items-center">
+                <div className="flex space-x-2">
+                  {/* For the "dots" at the bottom */}
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                  <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                </div>
+              </div>
+
+              <div className="flex justify-center mt-4 gap-4">
+                <button
+                  className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                  onClick={() => setStep(1)}
+                >
+                  Previous
+                </button>
+                <button
+                  className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                  onClick={() => setStep(3)}
+                >
+                  Next
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        {step === 3 && (
+          <div className="flex-1 overflow-y-auto px-6 py-4">
+            {/* Header */}
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Choose location</h3>
+              {/* <button
               onClick={clearLocation} // Optional clear button
               className="text-purple-600 hover:text-purple-800"
             >
               ×
             </button> */}
-          </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
+            </div>
+            <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   City
@@ -604,80 +655,313 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
-                  {complexes?  complexes.map((complex, index) => (
+                  {/* {complexes?  complexes.map((complex, index) => (
                     <option key={index} value={complex.name}>
                       {complex.name}
                     </option>
-                  )) : ""}
+                  )) : ""} */}
                 </select>
               </div>
             </div>
 
-          {/* Map and Address */}
-          <div className="space-y-4">
-            {/* Address */}
-            <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
-              <p className="text-sm text-gray-700">
-                {formData.address || "Select a location on the map"}
-              </p>
-              {formData.address && (
-                <button
-                  onClick={clearLocation}
-                  className="text-purple-600 hover:text-purple-800"
-                >
-                  ×
-                </button>
+            {/* Map and Address */}
+            <div className="space-y-4">
+              {/* Address */}
+              <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
+                <p className="text-sm text-gray-700">
+                  {formData.address || "Select a location on the map"}
+                </p>
+                {formData.address && (
+                  <button
+                    onClick={clearLocation}
+                    className="text-purple-600 hover:text-purple-800"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
+
+              {/* Map */}
+              {isLoaded && (
+                <div className="w-full h-[300px] rounded-lg overflow-hidden border">
+                  <GoogleMap
+                    mapContainerStyle={{ width: "100%", height: "100%" }}
+                    center={{ lat: 35.198284, lng: 33.355869 }} // North Cyprus coordinates
+                    zoom={12}
+                    onClick={handleMapClick}
+                    ref={mapRef}
+                  >
+                    {formData.latitude && formData.longitude && (
+                      <Marker
+                        position={{
+                          lat: formData.latitude,
+                          lng: formData.longitude,
+                        }}
+                        icon={svgIconUrl}
+                      />
+                    )}
+                  </GoogleMap>
+                </div>
               )}
             </div>
 
-            {/* Map */}
-            {isLoaded && (
-              <div className="w-full h-[300px] rounded-lg overflow-hidden border">
-                <GoogleMap
-                  mapContainerStyle={{ width: "100%", height: "100%" }}
-                  center={{ lat: 35.198284, lng: 33.355869 }} // North Cyprus coordinates
-                  zoom={12}
-                  onClick={handleMapClick}
-                  ref={mapRef}
-                >
-                  {formData.latitude && formData.longitude && (
-                    <Marker
-                      position={{
-                        lat: formData.latitude,
-                        lng: formData.longitude,
-                      }}
-                      icon={svgIconUrl}
-                    />
-                  )}
-                </GoogleMap>
-              </div>
-            )}
-          </div>
-
-          {/* Pagination and Buttons */}
-          <div className="flex justify-center items-center mt-4">
+            {/* Pagination and Buttons */}
+            <div className="flex justify-center items-center mt-4">
               <div className="flex space-x-2">
                 <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
               </div>
             </div>
             <div className="flex justify-center mt-4 gap-4">
-            <button
-              className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-              onClick={() => setStep(2)}
+              <button
+                className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                onClick={() => setStep(2)}
               >
-              Previous
-            </button>
-            <button
-              className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-              onClick={() => handleSubmit()}
+                Previous
+              </button>
+              <button
+                className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                onClick={() => setStep(4)}
               >
-              Next
-            </button>
+                Next
+              </button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
+        {step === 4 && (
+          // <div className="flex flex-col justify-between h-full gap-4">
+          //   {/* Content area */}
+          //   <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
+          //     {/* Header */}
+          //     <div className="text-center mb-4">
+          //       <h3 className="text-lg font-semibold">Upload photos</h3>
+          //     </div>
+
+          //     {/* Drag and Drop Area or Click to Browse */}
+          //     <div
+          //       className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
+          //       onDragOver={handleDragOver}
+          //       onDrop={handleDrop}
+          //     >
+          //       <p className="text-sm text-gray-600 mb-4">
+          //         Drag photos here to start uploading
+          //       </p>
+          //       <button
+          //         className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
+          //         onClick={() =>
+          //           document.querySelector('input[type="file"]')?.click()
+          //         }
+          //       >
+          //         Browse Files
+          //       </button>
+          //       <input
+          //         type="file"
+          //         multiple
+          //         accept="image/*,video/*"
+          //         onChange={handleImageUpload}
+          //         className="hidden"
+          //       />
+          //     </div>
+
+          //     {selectedFiles.length > 0 && (
+          //       // Make it horizontally scrollable instead of wrapping
+          //       <div className="mt-4 flex overflow-x-auto space-x-4">
+          //         {selectedFiles.map((file, index) => {
+          //           const previewUrl = URL.createObjectURL(file);
+
+          //           return (
+          //             // Center the media within this container
+          //             <div
+          //               key={index}
+          //               className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50
+          //                     overflow-hidden flex items-center justify-center"
+          //             >
+          //               {file.type.startsWith("image/") ? (
+          //                 <img
+          //                   src={previewUrl}
+          //                   alt={file.name}
+          //                   className="max-w-full max-h-full object-cover"
+          //                 />
+          //               ) : (
+          //                 <video
+          //                   src={previewUrl}
+          //                   className="max-w-full max-h-full object-cover"
+          //                   controls
+          //                 />
+          //               )}
+
+          //               {/* Delete button */}
+          //               <button
+          //                 className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700
+          //                       rounded-full flex items-center justify-center text-xs
+          //                       hover:bg-red-600 hover:text-white transition-colors"
+          //                 onClick={() => handleImageRemove(index)}
+          //               >
+          //                 X
+          //               </button>
+          //             </div>
+          //           );
+          //         })}
+          //       </div>
+          //     )}
+          //   </div>
+
+          //   {/* Footer / Pagination Controls */}
+          //   <div className="py-4">
+          //     <div className="flex justify-center items-center">
+          //       <div className="flex space-x-2">
+          //         {/* For the "dots" at the bottom */}
+          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+          //         <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+          //       </div>
+          //     </div>
+
+          //     <div className="flex justify-center mt-4 gap-4">
+          //       <button
+          //         className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+          //         onClick={() => setStep(1)}
+          //       >
+          //         Previous
+          //       </button>
+          //       <button
+          //         className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+          //         onClick={() => setStep(3)}
+          //       >
+          //         Next
+          //       </button>
+          //     </div>
+          //   </div>
+          // </div>
+          <div className="flex flex-col justify-between h-full gap-4">
+            {/* Content area */}
+            <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
+              {/* Header */}
+              <div className="text-center mb-4">
+                <h3 className="text-lg font-semibold">Upload Files</h3>
+              </div>
+
+              {/* Drag and Drop Area or Click to Browse */}
+              <div
+                className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
+                onDragOver={handleDragOverFile}
+                onDrop={handleDropFile}
+              >
+                <p
+                  className="text-sm  mb-4"
+                  style={{
+                    color: "rgba(130, 71, 229, 1)",
+                  }}
+                >
+                  Drag files here to start uploading
+                </p>
+                <button
+                  className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
+                  onClick={() =>
+                    document.querySelector('input[type="file"]')?.click()
+                  }
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    border: "1px solid rgba(202, 205, 213, 1)",
+                    color: "rgba(82, 92, 118, 1)",
+                    fontWeight: "600",
+                  }}
+                >
+                  <span style={{ margin: "3px 6px" }}>
+                    <LeftUpload />
+                  </span>
+                  Browse Files
+                </button>
+                <input
+                  type="file"
+                  multiple
+                  accept="*/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                />
+              </div>
+
+              {selectedFiles.length > 0 && (
+                // List the selected files below
+                <div className="mt-4 space-y-2">
+                  {selectedFiles.map((file, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center p-2 border-b border-gray-300"
+                    >
+                      {file.name.endsWith(".pdf") && <PDF />}
+                      <span
+                        style={{
+                          color: "rgba(15, 29, 64, 1)",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {file.name}
+                      </span>
+                      <span
+                        className="text-sm text-gray-500"
+                        style={{
+                          padding: "4px",
+                          border: "1px solid rgba(202, 205, 213, 1)",
+                          borderRadius: "2px",
+                          color: "rgba(15, 29, 64, 1)",
+                          fontWeight: "400",
+                        }}
+                      >
+                        ({formatFileSize(file.size)})
+                      </span>
+                      <button
+                        className="w-6 h-6 bg-white text-gray-700 rounded-full flex items-center justify-center text-xs hover:bg-red-600 hover:text-white transition-colors"
+                        onClick={() => handleFileRemove(index)}
+                        style={{
+                          width: "30px",
+                          height: "30px",
+                          background: "rgba(255, 50, 54, 1)",
+                          color: "#fff",
+                          borderRadius: "3px",
+                        }}
+                      >
+                        <Trash />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Footer / Pagination Controls */}
+            <div className="py-4">
+              <div className="flex justify-center items-center">
+                <div className="flex space-x-2">
+                  {/* For the "dots" at the bottom */}
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                  <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+                </div>
+              </div>
+
+              <div className="flex justify-center mt-4 gap-4">
+                <button
+                  className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                  onClick={() => setStep(1)}
+                >
+                  Previous
+                </button>
+                <button
+                  className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                  onClick={() => handleSubmit()}
+                >
+                  Post
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </motion.div>
     </div>
   );

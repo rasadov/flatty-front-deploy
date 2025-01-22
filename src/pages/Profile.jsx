@@ -159,11 +159,11 @@ export const Profile = () => {
               (label, index) => (
                 <div key={index} className="text-center">
                   <span className="block text-sm text-gray-500">{label}</span>
-                  <p className="font-medium text-lg text-[#0F1D40]">
+                  {/* <p className="font-medium text-lg text-[#0F1D40]">
                     {index === 0 ? agent.experience ? agent.experience + " years" : "Unknown" :
                     index === 1 ? agent.sales ? agent.sales : "Unknown":
                     index === 2 ? properties.length ? properties.length : 0 : ""}
-                  </p>
+                  </p> */}
                 </div>
               )
             )}

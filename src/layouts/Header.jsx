@@ -273,7 +273,7 @@ const Header = () => {
           aria-label="Toggle navigation"
         >
           <motion.div
-            className="relative w-8 h-8"
+            className="relative w-8 h-8 flex items-center justify-center"
             initial={{ rotate: 0 }}
             animate={{ rotate: menuOpen ? 45 : 0 }}
             transition={{ duration: 0.3 }}
