@@ -521,10 +521,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
               >
-                <p className="text-sm  mb-4"
+                <p
+                  className="text-sm  mb-4"
                   style={{
                     color: "rgba(130, 71, 229, 1)",
-                  }}>
+                  }}
+                >
                   Drag photos here to start uploading
                 </p>
                 <button
@@ -626,7 +628,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
           </div>
         )}
-                {step === 3 && (
+        {step === 3 && (
           // <div className="flex flex-col justify-between h-full gap-4">
           //   {/* Content area */}
           //   <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">

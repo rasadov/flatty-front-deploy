@@ -107,6 +107,7 @@ const Home = () => {
 
   const elementCount = window.innerWidth >= 1536 ? 5 : 4;
 
+  
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow bg-[#F4F2FF]">
