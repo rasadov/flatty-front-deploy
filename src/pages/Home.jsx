@@ -23,15 +23,11 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const {
-    properties: featuredProperties = [],
-    loading: featuredLoading,
-  } = useSelector((state) => state.featured);
+  const { properties: featuredProperties = [], loading: featuredLoading } =
+    useSelector((state) => state.featured);
 
-  const {
-    properties: popularProperties = [],
-    loading: popularLoading,
-  } = useSelector((state) => state.popular);
+  const { properties: popularProperties = [], loading: popularLoading } =
+    useSelector((state) => state.popular);
 
   useEffect(() => {
     dispatch(loadFeaturedProperties());
@@ -40,12 +36,9 @@ const Home = () => {
     dispatch(loadComplexDetails());
   }, [dispatch]);
 
-  const handleSearchQueryChange = useCallback(
-    (query) => {
-      setSearchQuery(query);
-    },
-    []
-  );
+  const handleSearchQueryChange = useCallback((query) => {
+    setSearchQuery(query);
+  }, []);
 
   const MobileHeader = () => (
     <div className="block px-4 pt-8 pb-4 text-center md:hidden">
@@ -68,7 +61,9 @@ const Home = () => {
     <div
       className="hidden md:block relative w-full overflow-hidden bg-no-repeat custom-width-for-header"
       style={{
-        backgroundImage: `url(${window.innerWidth > 1600 ? header_bg2 : header_bg})`,
+        backgroundImage: `url(${
+          window.innerWidth > 1600 ? header_bg2 : header_bg
+        })`,
         backgroundSize: "cover",
         backgroundPosition: "center 20px",
         height: "calc(100vw * 0.5)",
@@ -125,7 +120,37 @@ const Home = () => {
                 {featuredLoading ? (
                   <p>Loading...</p>
                 ) : featuredProperties.properties?.length > 0 ? (
-                  featuredProperties.properties.slice(0, elementCount).map((item) => (
+                  featuredProperties.properties
+                    .slice(0, elementCount)
+                    .map((item) => (
+                      <HouseItem
+                        key={item.id}
+                        images={item.images}
+                        price={item.price}
+                        location={
+                          item.location?.address ||
+                          `${item.location?.latitude}, ${item.location?.longitude}`
+                        }
+                        rooms={item.info?.bedrooms}
+                        area={item?.info?.total_area}
+                        currFloor={item.info?.floor}
+                        building={item.info?.floors}
+                        id={item.id}
+                      />
+                    ))
+                ) : (
+                  <p>No featured properties found</p>
+                )}
+              </CardList>
+            </div>
+
+            <CardList sectionName="Popular" seeAll={true}>
+              {popularLoading ? (
+                <p>Loading...</p>
+              ) : popularProperties.properties?.length > 0 ? (
+                popularProperties.properties
+                  .slice(0, elementCount)
+                  .map((item) => (
                     <HouseItem
                       key={item.id}
                       images={item.images}
@@ -137,36 +162,10 @@ const Home = () => {
                       rooms={item.info?.bedrooms}
                       area={item?.info?.total_area}
                       currFloor={item.info?.floor}
-                      building={item.info?.floors}
+                      building={item.info?.apartment_stories}
                       id={item.id}
                     />
                   ))
-                ) : (
-                  <p>No featured properties found</p>
-                )}
-              </CardList>
-            </div>
-
-            <CardList sectionName="Popular" seeAll={true}>
-              {popularLoading ? (
-                <p>Loading...</p>
-              ) : popularProperties.properties?.length > 0 ? (
-                popularProperties.properties.slice(0, elementCount).map((item) => (
-                  <HouseItem
-                    key={item.id}
-                    images={item.images}
-                    price={item.price}
-                    location={
-                      item.location?.address ||
-                      `${item.location?.latitude}, ${item.location?.longitude}`
-                    }
-                    rooms={item.info?.bedrooms}
-                    area={item?.info?.total_area}
-                    currFloor={item.info?.floor}
-                    building={item.info?.apartment_stories}
-                    id={item.id}
-                  />
-                ))
               ) : (
                 <p>No popular properties found</p>
               )}
