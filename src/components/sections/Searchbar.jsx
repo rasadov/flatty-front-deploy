@@ -120,7 +120,6 @@ export const Searchbar = ({
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setData(data);
       });
   };
@@ -272,7 +271,10 @@ export const Searchbar = ({
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="grid items-center w-full h-full grid-cols-1 sm:grid-cols-4 lg:grid-cols-4" style={{ height: "54px" }}>
+      <div
+        className="grid items-center w-full h-full grid-cols-1 sm:grid-cols-4 lg:grid-cols-4"
+        style={{ height: "54px" }}
+      >
         {/* Category Dropdown */}
         <div className="relative">
           <button
@@ -282,17 +284,26 @@ export const Searchbar = ({
             <span className="text-[#525C76] text-sm font-semibold">
               {dropdownStates.category || "Category"}
             </span>
-            <motion.div animate={{ rotate: dropdownOpen === "category" ? 180 : 0 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              animate={{ rotate: dropdownOpen === "category" ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <ArrowDown />
             </motion.div>
           </button>
           {dropdownOpen === "category" && (
-            <motion.div className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
               {renderDropdownContent("category")}
             </motion.div>
           )}
         </div>
-  
+
         {/* Room Number Dropdown */}
         <div className="relative">
           <button
@@ -302,17 +313,26 @@ export const Searchbar = ({
             <span className="text-[#525C76] text-sm font-semibold">
               {dropdownStates.roomNumber || "Room Numbers"}
             </span>
-            <motion.div animate={{ rotate: dropdownOpen === "roomNumber" ? 180 : 0 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              animate={{ rotate: dropdownOpen === "roomNumber" ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <ArrowDown />
             </motion.div>
           </button>
           {dropdownOpen === "roomNumber" && (
-            <motion.div className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white rounded-md shadow-lg" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white rounded-md shadow-lg"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
               {renderDropdownContent("roomNumber")}
             </motion.div>
           )}
         </div>
-  
+
         {/* Price Range Dropdown */}
         <div className="relative">
           <button
@@ -324,17 +344,26 @@ export const Searchbar = ({
                 ? `${selectedCurrency}${dropdownStates.priceRange.min} - ${selectedCurrency}${dropdownStates.priceRange.max}`
                 : "Price"}
             </span>
-            <motion.div animate={{ rotate: dropdownOpen === "price" ? 180 : 0 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              animate={{ rotate: dropdownOpen === "price" ? 180 : 0 }}
+              transition={{ duration: 0.3 }}
+            >
               <ArrowDown />
             </motion.div>
           </button>
           {dropdownOpen === "price" && (
-            <motion.div className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+            <motion.div
+              className="absolute left-0 right-0 z-10 mt-2 w-[211px] bg-white border border-gray-300 rounded-md shadow-lg"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
               {renderDropdownContent("price")}
             </motion.div>
           )}
         </div>
-  
+
         {/* Location Input */}
         <div className="relative">
           <div className="flex items-center justify-between w-full px-4 bg-white border-l-2 h-[20px]">
@@ -346,32 +375,48 @@ export const Searchbar = ({
                 value={dropdownStates.location}
                 onChange={handleLocationChange}
                 className="w-full border-none pl-1 py-2 text-[#525C76] text-sm font-semibold bg-transparent pr-10 focus:outline-none focus:border-2 focus:border-[#8247E5]"
-                style={{ height: "36px", lineHeight: "36px" }} 
+                style={{ height: "36px", lineHeight: "36px" }}
               />
-              <motion.button onClick={clearLocation} className="absolute right-2 top-[9px] cursor-pointer z-10" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                {dropdownStates.location ? <LocationCancel /> : <LocationCancel className="opacity-50" />}
+              <motion.button
+                onClick={clearLocation}
+                className="absolute right-2 top-[9px] cursor-pointer z-10"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+              >
+                {dropdownStates.location ? (
+                  <LocationCancel />
+                ) : (
+                  <LocationCancel className="opacity-50" />
+                )}
               </motion.button>
             </div>
           </div>
         </div>
       </div>
-  
+
       <div className="flex items-center justify-center">
-        <button onClick={handleShowOnMap} className="flex items-center justify-center px-4 py-4 text-xl w-[188px] text-[#8247E5] bg-white border-2 border-[#8247E5] h-[54px] font-semibold">
+        <button
+          onClick={handleShowOnMap}
+          className="flex items-center justify-center px-4 py-4 text-xl w-[188px] text-[#8247E5] bg-white border-2 border-[#8247E5] h-[54px] font-semibold"
+        >
           <ShowMap />
-          <span className="ml-1 text-[18px] w-[127px] h-[32px]">Show on Map</span>
+          <span className="ml-1 text-[18px] w-[127px] h-[32px]">
+            Show on Map
+          </span>
         </button>
-  
-        <motion.button onClick={handleSearch} className="bg-[#8247E5] hover:bg-[#A673EF] text-xl w-[100px] text-white col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1 transition-colors duration-300 h-full rounded-r-md font-semibold" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}>
+
+        <motion.button
+          onClick={handleSearch}
+          className="bg-[#8247E5] hover:bg-[#A673EF] text-xl w-[100px] text-white col-span-2 sm:col-span-1 md:col-span-1 lg:col-span-1 transition-colors duration-300 h-full rounded-r-md font-semibold"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
           Search
         </motion.button>
       </div>
     </motion.div>
   );
-  
-  
-  
-  
 };
 
 export default Searchbar;

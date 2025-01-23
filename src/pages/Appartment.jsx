@@ -69,8 +69,6 @@ const Appartment = memo(() => {
 
   if (!apartmentData) return <div>Loading...</div>;
 
-  console.log("Apartment Data:", apartmentData);
-  // console.log("Number: ", apartmentData.owner?.user?.phone.slice(1))
   var phoneNumber;
   try {
     phoneNumber = apartmentData.owner?.user?.phone.slice(1);
