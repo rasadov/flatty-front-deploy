@@ -25,7 +25,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation(); // useLocation istifadə edirik
-  let user
+  let user;
   if (localStorage.getItem("user")) {
     user = JSON.parse(localStorage.getItem("user"));
   } else {
@@ -211,20 +211,41 @@ const Header = () => {
         <>
           <div className="relative">
             <button
-              className="flex justify-between  w-[104px] h-[34px] items-center gap-2 px-3 py-2 bg-gray-100 border border-transparent rounded-md hover:border-gray-300"
+              className="flex justify-between  w-[104px] h-[34px] items-center gap-2 px-3 py-2   hover:border-gray-300"
               onClick={() => setCurrencyDropdownOpen(!currencyDropdownOpen)}
+              style={{
+                border: "1px solid rgba(226, 228, 232, 1)",
+                borderRadius: "3px",
+                padding: "8px",
+              }}
             >
-              <span>{selectedCurrency.symbol}</span>
-              <span className="mx-1 text-[#525C76] text-[12p]">
+              <span style={{ color: "rgba(82, 92, 118, 1)" }}>
+                {selectedCurrency.symbol}
+              </span>
+              <span
+                className="mx-1  text-[12p]"
+                style={{ color: "rgba(82, 92, 118, 1)", fontWeight: "600" }}
+              >
                 {selectedCurrency.name}
               </span>
-              <span className="transform rotate-0">
+              <span
+                className="transform rotate-0"
+                style={{ color: "rgba(82, 92, 118, 1)", fontWeight: "600" }}
+              >
                 <ArrowDown />
               </span>
             </button>
 
             {currencyDropdownOpen && (
-              <div className="absolute left-0 mt-1 bg-white border rounded-md shadow-lg top-full w-100">
+              <div
+                className="absolute left-0 mt-1 bg-white border rounded-md shadow-lg top-full "
+                style={{
+                  width: "100%",
+                  textAlign: "center",
+                  color: "rgba(82, 92, 118, 1)",
+                  fontWeight: "600",
+                }}
+              >
                 {currencies.map((curr) => (
                   <button
                     key={curr.name}

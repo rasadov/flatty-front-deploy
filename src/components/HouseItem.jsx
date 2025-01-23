@@ -162,8 +162,6 @@ export const HouseItem = React.memo(
       ]
     );
 
-    console.log("Images prop:", images);
-
     return (
       <div
         className="block border rounded-[6px] border-[#EEEFF2] p-4 relative sm:w-full sm:p-2 outline-[#EEEFF2] transform transition-transform duration-300
@@ -176,8 +174,8 @@ export const HouseItem = React.memo(
         <div
           className="relative w-full rounded-[6px] overflow-hidden"
           style={{
-            height: "150px", // Adjust height dynamically based on width
-            maxHeight: "300px", // Set a max height if needed
+            height: "150px",
+            maxHeight: "300px",
           }}
         >
           {images && Array.isArray(images) && images.length > 0 ? (
@@ -190,7 +188,7 @@ export const HouseItem = React.memo(
                 prevEl: prevRef.current,
                 nextEl: nextRef.current,
               }}
-              speed={800} // Adjust the speed of slide transition
+              speed={800}
               breakpoints={{
                 640: {
                   slidesPerView: 1,
@@ -207,22 +205,19 @@ export const HouseItem = React.memo(
               }}
               className="swiper-container"
             >
-              {images.slice(1).map(
-                (img, index) => (
-                  console.log("img img img img >>>>>>>", img),
-                  (
-                    <SwiperSlide key={index}>
-                      <Link to={`/appartment/${id}`}>
-                        <img
-                          src={img.image_url}
-                          alt={`Slide ${index + 1}`}
-                          className="object-cover w-full h-full"
-                        />
-                      </Link>
-                    </SwiperSlide>
-                  )
-                )
-              )}
+              {images.slice(3).map((img, index) => {
+                return (
+                  <SwiperSlide key={index}>
+                    <Link to={`/appartment/${id}`}>
+                      <img
+                        src={img.image_url}
+                        alt={`Slide ${index + 1}`}
+                        className="object-cover w-full h-full"
+                      />
+                    </Link>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           ) : (
             <div>No images available</div>

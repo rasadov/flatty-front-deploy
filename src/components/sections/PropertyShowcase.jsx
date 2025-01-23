@@ -7,10 +7,6 @@ import { NoViews } from "../../assets/icons/NoViews";
 import { Report } from "../../assets/icons/Report";
 import { ShowOnMap } from "../../assets/icons/ShowOnMap";
 import { PostView } from "../../assets/icons/PostView";
-// Button Component
-const ActionButton = ({ label, onClick }) => (
-  <button onClick={onClick}>{label}</button>
-);
 
 const ImageGallery = ({ mainImage, thumbnails, length }) => {
   const [currentImage, setCurrentImage] = useState(mainImage);
@@ -18,27 +14,29 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
   return (
     <div>
       {/* Main Image */}
-      <img
-        src={currentImage}
-        alt="Property"
-        className="mb-3 rounded-md shadow-lg w-full h-[538.99px]"
-        loading="lazy"
-      />
+      <div className="mb-3 rounded-md shadow-lg w-full h-[200px] md:h-[350px] lg:h-[500px] overflow-hidden">
+        <img
+          src={currentImage}
+          alt="Property"
+          className="object-cover w-full h-full"
+          loading="lazy"
+        />
+      </div>
 
       {/* Thumbnail Gallery */}
-      <div className="flex gap-[24px]">
+      <div className="flex gap-2 overflow-x-auto">
         {thumbnails.slice(0, length).map((thumbnail, index) => (
           <div
             key={index}
-            className={`w-full min-h-[95.76px] bg-gray-200 rounded-md shadow-sm opacity-90 cursor-pointer ${
+            className={`flex-shrink-0 w-[70px] h-[70px] md:w-[95px] md:h-[95px] bg-gray-200 rounded-md shadow-sm cursor-pointer ${
               currentImage === thumbnail ? "ring-2 ring-[#8247E5]" : ""
             }`}
-            onClick={() => setCurrentImage(thumbnail)} // Update main image on click
+            onClick={() => setCurrentImage(thumbnail)}
           >
             <img
               src={thumbnail}
               alt={`Thumbnail ${index}`}
-              className="object-cover rounded-md w-full h-[95.76px]"
+              className="object-cover rounded-md w-full h-full"
               loading="lazy"
             />
           </div>
@@ -48,62 +46,47 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
   );
 };
 
-// Main PropertyShowcase Component
 const PropertyShowcase = ({ length, property }) => {
-  // State for property data
-
   if (!property) {
     return <div>No property found.</div>;
   }
 
-  console.log(property);
-  var propertyImages = property.images.map((image) => image.image_url);
+  const propertyImages = property.images.map((image) => image.image_url);
 
   const handleShowOnMapClick = () => {
     const { latitude, longitude } = property.location;
     const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
-    window.open(googleMapsUrl, '_blank');
+    window.open(googleMapsUrl, "_blank");
   };
 
   return (
-    <div className="w-full mx-auto min-w-5xl">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8">
       {/* Property Details */}
       <div>
-        <h1 className="mb-2 text-[36px] font-semibold  text-[#0F1D40] leading-[54px]">
+        <h1 className="mb-2 text-[24px] md:text-[28px] lg:text-[36px] font-semibold text-[#0F1D40] leading-[1.2]">
           {property.title}
         </h1>
-        <div className="mb-4 text-[16px] text-[#8C93A3] font-normal flex justify-start gap-1 items-center">
+        <div className="mb-4 text-[14px] md:text-[16px] text-[#8C93A3] font-normal flex items-center gap-2">
           <PostView size={20} color={"#8C93A3"} />
           <span>{property.views} views</span>
         </div>
-        <div className="flex justify-start gap-4">
-          <div className="mb-4 text-[16px] text-[#525C76] font-normal">
+        <div className="flex flex-wrap gap-2 items-center mb-5">
+          <div className="text-[14px] md:text-[16px] text-[#525C76] font-normal">
             {property.location.address}
           </div>
-          <a href="/map">
-          <div 
-          className="mb-4 text-[16px] text-[#8247E5] font-normal flex "
-          onClick={handleShowOnMapClick}>
+          <button
+            onClick={handleShowOnMapClick}
+            className="text-[14px] md:text-[16px] text-[#8247E5] font-normal flex items-center gap-1"
+          >
             <ShowOnMap />
             Show on map
-          </div>
-          </a>
+          </button>
         </div>
-      </div>
-      {/* Button Group */}
-      <div className="flex gap-2 mb-4">
-        {/* {property.map((button, index) => (
-          <ActionButton
-            key={index}
-            label={button.label}
-            onClick={() => alert(`${button.label} clicked`)}
-          />
-        ))} */}
       </div>
 
       {/* Image Gallery */}
       <ImageGallery
-        mainImage={property.images[0].image_url}
+        mainImage={property.images[5].image_url}
         thumbnails={propertyImages}
         length={property.images.length}
       />

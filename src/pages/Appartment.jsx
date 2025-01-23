@@ -26,14 +26,16 @@ const Appartment = memo(() => {
   const currencies_to_dollar = {
     "€": 1.03,
     "£": 1.22,
-    "$": 1,
+    $: 1,
     "₺": 0.028,
   };
 
   useEffect(() => {
     const fetchApartmentData = async () => {
       try {
-        const response = await fetch(`https://api.flatty.ai/api/v1/property/record/${id}`);
+        const response = await fetch(
+          `https://api.flatty.ai/api/v1/property/record/${id}`
+        );
         const data = await response.json();
 
         setApartmentData(data);
@@ -41,7 +43,7 @@ const Appartment = memo(() => {
         await fetch(`https://api.flatty.ai/api/v1/property/view/${id}`, {
           method: "POST",
         });
-        } catch (error) {
+      } catch (error) {
         console.error("Error fetching apartment data:", error);
       }
     };
@@ -67,23 +69,25 @@ const Appartment = memo(() => {
 
   if (!apartmentData) return <div>Loading...</div>;
 
-  console.log("Apartment Data:", apartmentData);
-  // console.log("Number: ", apartmentData.owner?.user?.phone.slice(1))
-  var phoneNumber
+  var phoneNumber;
   try {
-
     phoneNumber = apartmentData.owner?.user?.phone.slice(1);
   } catch (error) {
-    console.log("Error: ", error)
-    phoneNumber = "0000000000"
+    console.log("Error: ", error);
+    phoneNumber = "0000000000";
   }
 
-  var floors
+  var floors;
 
   if (apartmentData?.info?.category === "Villa") {
-    floors = { title: "Floors", value: `${apartmentData.info.floors || " "}` }
+    floors = { title: "Floors", value: `${apartmentData.info.floors || " "}` };
   } else {
-    floors = { title: "Floor", value: `${apartmentData.info.floor || " "}${"/"+apartmentData.info.floors || " "}` }
+    floors = {
+      title: "Floor",
+      value: `${apartmentData.info.floor || " "}${
+        "/" + apartmentData.info.floors || " "
+      }`,
+    };
   }
 
   return (
@@ -97,8 +101,14 @@ const Appartment = memo(() => {
           <div className="my-12">
             <PropertyDetailsGrid
               details={[
-                { title: "Rooms", value: `${apartmentData.info.bedrooms} Rooms` },
-                { title: "Apartment area", value: `${apartmentData.info.total_area } m2` },
+                {
+                  title: "Rooms",
+                  value: `${apartmentData.info.bedrooms} Rooms`,
+                },
+                {
+                  title: "Apartment area",
+                  value: `${apartmentData.info.total_area} m2`,
+                },
                 floors,
               ]}
             />
@@ -120,8 +130,7 @@ const Appartment = memo(() => {
             <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px] md:text-[24px] md:leading-[36px]">
               Map
             </h2>
-            <PropertyMap
-              location={apartmentData.location} />
+            <PropertyMap location={apartmentData.location} />
           </div>
         </div>
 
@@ -134,10 +143,15 @@ const Appartment = memo(() => {
             transition={{ duration: 0.4 }}
           >
             <div className="flex items-center justify-start gap-2 mb-2 text-[28px] font-semibold text-[#525C76]">
-              {formatNumber(apartmentData.price / currencies_to_dollar[currency])} {currency}
+              {formatNumber(
+                apartmentData.price / currencies_to_dollar[currency]
+              )}{" "}
+              {currency}
             </div>
             <div className="flex justify-start items-center gap-2 mb-2 text-[#525C76] font-medium text-[12px]">
-              <div>{apartmentData.info.bedrooms} Room {apartmentData.info.category}</div>
+              <div>
+                {apartmentData.info.bedrooms} Room {apartmentData.info.category}
+              </div>
               <div>{apartmentData.info.total_area} m2</div>
             </div>
             <hr className="my-4 border-t-2 border-[#EEEFF2]" />
@@ -161,12 +175,14 @@ const Appartment = memo(() => {
                 {/* <Rating rating={rating} onRatingClick={handleRatingClick} /> */}
               </div>
             </div>
-              <div className="flex flex-col gap-2 mt-3"
+            <div
+              className="flex flex-col gap-2 mt-3"
               onClick={() => {
                 const phoneNumber = phoneNumber;
                 const whatsappUrl = `https://wa.me/${phoneNumber}`;
                 window.location.href = whatsappUrl;
-              }}>
+              }}
+            >
               <Button
                 className="w-full text-white py-[5px] px-3 mt-3 h-[52px] rounded-sm text-[20px] font-semibold leading-[22.4px]"
                 variant="primary"
@@ -183,18 +199,19 @@ const Appartment = memo(() => {
 });
 
 const PropertyDetailsGrid = ({ details }) => (
-  <div className="grid grid-cols-5 gap-4 my-12">
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 my-6 sm:my-8 md:my-12">
     {details.map((detail, index) => (
       <div
         key={index}
-        className="flex justify-around min-w-[117px] min-h-[50px]"
+        className="flex items-center gap-3 p-2 bg-gray-50 rounded-lg shadow-sm"
       >
-        <div className="rounded-full bg-[#CACDD5] w-[50px] h-[50px]"></div>
+        <div className="rounded-full bg-[#CACDD5] w-[40px] h-[40px] sm:w-[50px] sm:h-[50px]"></div>
+
         <div className="text-left">
-          <span className="text-[#525C76] font-medium text-[14px] leading-[22.4px]">
+          <span className="block text-[#525C76] font-medium text-[12px] sm:text-[14px] leading-[1.5]">
             {detail.title}
           </span>
-          <p className="text-[#0F1D40] text-[14px] font-medium">
+          <p className="text-[#0F1D40] text-[12px] sm:text-[14px] font-medium">
             {detail.value}
           </p>
         </div>

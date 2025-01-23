@@ -37,7 +37,7 @@ const getAddressFromLatLng = async (lat, lng) => {
     const response = await axios.get(url);
     if (response.data.status === "OK") {
       const address = response.data.results[0].formatted_address;
-      console.log("Fetched address: ", address);
+
       return address;
     } else {
       throw new Error("Unable to fetch address");
@@ -181,9 +181,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       selectedDocuments.forEach((file) => {
         formDataToSend.append("documents", file);
       });
-
-      console.log("Form data to send:");
-      console.log(formDataToSend);
 
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
