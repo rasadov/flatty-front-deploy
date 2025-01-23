@@ -40,7 +40,7 @@ export const SearchbarMobile = () => {
         <input
           type="text"
           onChange={handleSearchInputChange}
-          placeholder="Search..."
+          placeholder="Search location"
           className="w-full px-4 py-2 text-left rounded-l-md focus:outline-none"
           style={{
             // backgroundColor: "rgba(108, 114, 127, 1)",

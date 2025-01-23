@@ -190,7 +190,7 @@ export const HouseItem = React.memo(
                 prevEl: prevRef.current,
                 nextEl: nextRef.current,
               }}
-              speed={800} // Adjust the speed of slide transition
+              speed={800}
               breakpoints={{
                 640: {
                   slidesPerView: 1,
@@ -207,7 +207,7 @@ export const HouseItem = React.memo(
               }}
               className="swiper-container"
             >
-              {images.slice(1).map(
+              {images.slice(3).map(
                 (img, index) => (
                   console.log("img img img img >>>>>>>", img),
                   (
