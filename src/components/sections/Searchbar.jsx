@@ -401,7 +401,7 @@ export const Searchbar = ({
         >
           <ShowMap />
           <span className="ml-1 text-[18px] w-[127px] h-[32px]">
-            Show on Map
+            Show on list
           </span>
         </button>
 

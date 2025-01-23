@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 export default function Map({ properties = [], onMarkerClick }) {
@@ -29,18 +29,31 @@ export default function Map({ properties = [], onMarkerClick }) {
 
   const mapContainerStyle = { width: "100%", height: "100%" };
 
+  // Custom map style to hide POI (Points of Interest)
+  const mapStyles = [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      stylers: [{ visibility: "off" }],
+    },
+  ];
+
   const renderMarkersWithClustering = () => {
     if (!window.google || !map) return;
 
-    const markers = properties.map((property, index) => {
+    const markers = properties.map((property) => {
       const position = { lat: property.latitude, lng: property.longitude };
       const marker = new window.google.maps.Marker({
         position,
         title: property.name,
-        label: {
-          text: property.name || null,
-          color: "#FFFFFF",
-        },
         icon: {
           path: window.google.maps.SymbolPath.CIRCLE,
           fillColor: "#7C3AED",
@@ -58,7 +71,33 @@ export default function Map({ properties = [], onMarkerClick }) {
       return marker;
     });
 
-    new MarkerClusterer({ markers, map });
+    // Настройка кластеров
+    new MarkerClusterer({
+      markers,
+      map,
+      renderer: {
+        render: ({ count, position }) => {
+          const clusterElement = new window.google.maps.Marker({
+            position,
+            icon: {
+              path: window.google.maps.SymbolPath.CIRCLE,
+              fillColor: "#7C3AED",
+              fillOpacity: 1,
+              // strokeColor: "#FFFFFF",
+              strokeWeight: 1,
+              scale: 24,
+            },
+            label: {
+              text: String(count),
+              color: "#FFFFFF",
+              fontSize: "22px",
+              fontWeight: "bold",
+            },
+          });
+          return clusterElement;
+        },
+      },
+    });
   };
 
   return (
@@ -76,6 +115,7 @@ export default function Map({ properties = [], onMarkerClick }) {
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
+        styles: mapStyles,
       }}
     />
   );
