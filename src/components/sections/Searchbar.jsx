@@ -290,7 +290,7 @@ export const Searchbar = ({
       transition={{ duration: 0.5 }}
     >
       {/* Category Dropdown */}
-      <div className="relative flex-shrink-0 w-[150px]">
+      <div className="relative flex-shrink-0 w-[200px]">
         <button
           onClick={() => handleDropdownToggle("category")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -318,7 +318,7 @@ export const Searchbar = ({
         )}
       </div>
       {/* Type Dropdown */}
-      <div className="relative flex-shrink-0 w-[150px]">
+      {/* <div className="relative flex-shrink-0 w-[150px]">
         <button
           onClick={() => handleDropdownToggle("type")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -344,9 +344,9 @@ export const Searchbar = ({
             {renderDropdownContent("type")}
           </motion.div>
         )}
-      </div>
+      </div> */}
       {/* Room Number Dropdown */}
-      <div className="relative flex-shrink-0 w-[180px]">
+      <div className="relative flex-shrink-0 w-[200px]">
         <button
           onClick={() => handleDropdownToggle("roomNumber")}
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
@@ -374,7 +374,7 @@ export const Searchbar = ({
         )}
       </div>
       {/* Price Range Dropdown */}
-      <div className="relative flex-shrink-0 w-[130px]">
+      <div className="relative flex-shrink-0 w-[180px]">
         <button
           onClick={() => handleDropdownToggle("price")}
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
@@ -404,7 +404,35 @@ export const Searchbar = ({
         )}
       </div>
       {/* City Dropdown */}
-      <div className="relative flex-shrink-0 w-[130px]">
+      <div className="relative flex-shrink-0 w-[180px]">
+        <button
+          onClick={() => handleDropdownToggle("city")}
+          className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
+        >
+          <span className="text-[#525C76] text-sm font-semibold">
+            {dropdownStates.city || "Area"}
+          </span>
+          <motion.div
+            animate={{ rotate: dropdownOpen === "city" ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ArrowDown />
+          </motion.div>
+        </button>
+        {dropdownOpen === "area" && (
+          <motion.div
+            className="absolute left-0 right-0 z-10 mt-2 bg-white border border-gray-300 rounded-md shadow-lg"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderDropdownContent("city")}
+          </motion.div>
+        )}
+      </div>
+      {/* City Dropdown */}
+      <div className="relative flex-shrink-0 w-[200px]">
         <button
           onClick={() => handleDropdownToggle("city")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -432,7 +460,7 @@ export const Searchbar = ({
         )}
       </div>
       {/* Location Input */}
-      <div className="relative flex-shrink-0 w-[200px]">
+      {/* <div className="relative flex-shrink-0 w-[200px]">
         <div className="flex items-center justify-between w-full px-4 bg-white h-[20px]">
           <div className="relative flex items-center gap-[8px] w-full ">
             <MapPin />
@@ -458,7 +486,7 @@ export const Searchbar = ({
             </motion.button>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="flex items-center justify-center ml-4">
         <button
           onClick={handleShowOnMap}
