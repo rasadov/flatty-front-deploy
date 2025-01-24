@@ -4,6 +4,7 @@ import Button from "../Button";
 import { useFilters } from "../../hooks/useFilters";
 import { updateFilters } from "../../store/slices/searchSlice";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { isApplyDisabled } from "../../utils/filterUtils";
 import {
   FilterSelect,
@@ -22,6 +23,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
     decrementFilter,
     clearFilters,
   } = useFilters();
+  const navigate = useNavigate();
 
   // Local state for UI interactions
   const [selectedFilters, setSelectedFilters] = useState(filters);
@@ -58,7 +60,15 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
       }
     });
 
-    localStorage.setItem('filters', JSON.stringify(selectedFilters));
+    // localStorage.setItem('filters', JSON.stringify(selectedFilters));
+    const currentParams = new URLSearchParams(window.location.search);
+    currentParams.forEach((value, key) => {
+      if (!queryParams.has(key)) {
+        queryParams.append(key, value);
+      }
+    });
+
+    navigate(`?${queryParams.toString()}`);
     // Dispatch the filters to Redux store
     dispatch(updateFilters(selectedFilters));
     // Send filters to parent component with query parameters

@@ -23,7 +23,6 @@ export const Searchbar = ({
   });
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [selectedCurrency, setSelectedCurrency] = useState(
     localStorage.getItem("currency") === null
       ? "£"
@@ -44,26 +43,58 @@ export const Searchbar = ({
     }));
   }, [value]);
 
-  const handleSearch = () => {
-    let filters;
-    try {
-      filters = JSON.parse(localStorage.getItem("filters"));
-      if (!filters) {
-        filters = {}; // Set a default value if filters is null
-      }
-    } catch (error) {
-      console.error("Error parsing filters from localStorage:", error);
-      filters = {}; // Set a default value if parsing fails
-    }
+
+  useEffect(() => {
+    // Parse current URL search parameters
+    const currentParams = new URLSearchParams(location.search);
+    const currentFilters = {};
+    currentParams.forEach((value, key) => {
+      currentFilters[key] = value;
+    });
 
     const combinedFilters = {
-      ...filters, // from Redux/FilterModal
-      ...dropdownStates, // from local dropdown
+      ...currentFilters, // from current URL
     };
 
+    const queryString = new URLSearchParams(combinedFilters).toString();
+
+    fetch(`${API_URL}?${queryString}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("data search bar", data);
+        setData(data);
+      });
+  }, [location.search, dropdownStates, API_URL, setData]);
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const currentParams = new URLSearchParams(window.location.search);
+    console.log("currentParams", currentParams);
+  
+    // Convert URLSearchParams to an object
+    const currentFilters = {};
+    currentParams.forEach((value, key) => {
+      currentFilters[key] = value;
+    });
+  
+    console.log("currentFilters", currentFilters);
+  
+    const combinedFilters = {
+      ...currentFilters, // from current URL
+      ...dropdownStates, // from local dropdown
+    };
+  
+    console.log("combinedFilters", combinedFilters);
+  
     // Build query parameters from the merged object
     const queryParams = new URLSearchParams();
-
+    queryParams.append("page", 1);
+    queryParams.append("elements", 10);
     Object.entries(combinedFilters).forEach(([key, value]) => {
       if (
         value !== null &&
@@ -71,6 +102,7 @@ export const Searchbar = ({
         value !== "" &&
         value !== 0
       ) {
+        console.log("key", key);
         if (typeof value === "object" && !Array.isArray(value)) {
           Object.entries(value).forEach(([subKey, subValue]) => {
             if (
@@ -105,22 +137,7 @@ export const Searchbar = ({
         }
       }
     });
-
-    onSearch(() => dispatch(loadSearchResults(combinedFilters)));
-
-    const queryString = queryParams.toString();
-
-    fetch(`${API_URL}?${queryString}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("data search bar", data);
-        // setData(data);
-      });
+    navigate(`/search?${queryParams.toString()}`);
   };
 
   const handleRoomSelect = (room) => {
