@@ -49,15 +49,16 @@ export const Search = () => {
     const params = new URLSearchParams({
       page: page,
       elements: elements,
-    })
+    });
     fetch(`https://api.flatty.ai/api/v1/property/?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA", data);
-        setTotalPages(data.results / elements + (data.results % elements ? 1 : 0));
+        setTotalPages(
+          data.results / elements + (data.results % elements ? 1 : 0)
+        );
         setResponseData(data);
         setFilteredItems(data.properties);
-        
       });
   }, [dispatch, filters]);
 
@@ -147,7 +148,6 @@ export const Search = () => {
   return (
     <div className="w-full mx-auto ">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
-
       {/* Searchbar and Filter Button */}
       <div className="flex items-center justify-center w-full gap-4 mt-36  px-16.26 custom-max-width">
         <Searchbar
@@ -165,7 +165,6 @@ export const Search = () => {
           <FilterButton />
         </button>
       </div>
-
       <div className=" px-16.26 custom-max-width">
         <ResultView
           filteredItems={filteredItems}
@@ -177,8 +176,8 @@ export const Search = () => {
           }
         />
       </div>
-
       {/* Filter Modal */}
+
       <FilterModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -198,11 +197,11 @@ export default Search;
 
 // MapView component
 
-const getImages = ({images}) => {
-  console.log ("WE ARE HERE ", images);
+const getImages = ({ images }) => {
+  console.log("WE ARE HERE ", images);
   if (!images) return [];
   return images.map((image) => image.image_url);
-}
+};
 
 // ResultView component
 const ResultView = ({
@@ -225,23 +224,27 @@ const ResultView = ({
           </h1>
         </div>
         <div className="grid gap-4 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
-          {filteredItems.map((item) => (
-            console.log("ITEM", item),
-            // <Link to={`/apartment/${item.id}`} key={item.id}>
-              <HouseItem
-                key={item.id}
-                id={item.id}
-                images={item.images}
-                title={item.title}
-                price={item.price}
-                area={item?.info?.total_area}
-                rooms={item?.info?.bedrooms}
-                location={item?.location?.address}
-                currFloor={item?.info?.floor}
-                building={item?.info?.floors}
-              />
-            // </Link>
-          ))}
+          {filteredItems.map(
+            (item) => (
+              console.log("ITEM", item),
+              (
+                // <Link to={`/apartment/${item.id}`} key={item.id}>
+                <HouseItem
+                  key={item.id}
+                  id={item.id}
+                  images={item.images}
+                  title={item.title}
+                  price={item.price}
+                  area={item?.info?.total_area}
+                  rooms={item?.info?.bedrooms}
+                  location={item?.location?.address}
+                  currFloor={item?.info?.floor}
+                  building={item?.info?.floors}
+                />
+              )
+              // </Link>
+            )
+          )}
         </div>
         {/* Pagination */}
         <Pagination

@@ -44,7 +44,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
     category: "",
     residentialComplex: "",
     description: "",
-
+    city: "",
+    area: "",
     buildingArea: 0,
     livingArea: 0,
     objects: 0,
@@ -478,12 +479,57 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       </button> */}
             </div>
 
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  City
+                </label>
+                <select
+                  name="city"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.city}
+                  onChange={handleInputChange}
+                >
+                  <option value="">City</option>
+                  <option value="Girne">Girne</option>
+                  <option value="Gazimaöusa">Gazimaöusa</option>
+                  <option value="Güzelyurt">Güzelyurt</option>
+                  <option value="İskele">İskele</option>
+                  <option value="Lefke">Lefke</option>
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Area
+                </label>
+                <select
+                  name="area"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.area}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Area</option>
+                  <option value="Akıncılar">Akıncılar</option>
+                  <option value="Balıkesir">Balıkesir</option>
+                  <option value="Batıkent">Batıkent</option>
+                  <option value="Beyköy">Beyköy</option>
+                  <option value="Lefke">Lefke</option>
+                  {/* {complexes?  complexes.map((complex, index) => (
+                    <option key={index} value={complex.name}>
+                      {complex.name}
+                    </option>
+                  )) : ""} */}
+                </select>
+              </div>
+            </div>
+
             {/* Map and Address */}
             <div className="space-y-4">
               {/* Address */}
               <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
                 <p className="text-sm text-gray-700">
-                  {formData.address || "Select a location on the map"}
+                  {formData.city + "," + formData.area ||
+                    "Select a location on the map"}
                 </p>
                 {formData.address && (
                   <button

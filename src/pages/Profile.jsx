@@ -31,72 +31,79 @@ export const Profile = () => {
   const [properties, setAgentProperties] = useState([]);
   const [complexes, setComplexes] = useState([]);
   const [resultCount, setResultCount] = useState(0);
-  const namesOfComplexes = []
+  const namesOfComplexes = [];
 
   useEffect(() => {
-  const fetchProfile = async () => {
+    const fetchProfile = async () => {
       fetch("https://api.flatty.ai/api/v1/auth/refresh", {
         method: "POST",
         credentials: "include",
       })
-      .then((res) => {
-        // if (res.status === 401) {
-        //   window.location.href = "/login";
-        //   localStorage.removeItem("user");
-        // }
-        return res.json()
-      })
-      .then((data) => {
-        if (data && data.user) {
-          dispatch(setUser(data.user));
+        .then((res) => {
+          // if (res.status === 401) {
+          //   window.location.href = "/login";
+          //   localStorage.removeItem("user");
+          // }
+          return res.json();
+        })
+        .then((data) => {
+          if (data && data.user) {
+            dispatch(setUser(data.user));
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          // window.location.href = "/login";
+          // localStorage.removeItem("user");
+        });
+      const userResponse = await fetch(
+        "https://api.flatty.ai/api/v1/user/me/agent",
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          credentials: "include",
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        // window.location.href = "/login";
-        // localStorage.removeItem("user");
-      });
-      const userResponse = await fetch("https://api.flatty.ai/api/v1/user/me/agent", {
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      credentials: 'include',
-      });
+      );
       const userProfileData = await userResponse.json();
       console.log(userProfileData);
       setAgent(userProfileData);
-      
+
       const agentPropertiesParams = new URLSearchParams({
         page: 1,
         elements: 50,
-      })
+      });
 
       const agentPropertiesResponse = await fetch(
-        `https://api.flatty.ai/api/v1/property/agent/${userProfileData.id}/page?${agentPropertiesParams.toString()}`, {
-        headers: {
-          Accept: 'application/json',
-        },
-        credentials: 'include',
-      })
+        `https://api.flatty.ai/api/v1/property/agent/${
+          userProfileData.id
+        }/page?${agentPropertiesParams.toString()}`,
+        {
+          headers: {
+            Accept: "application/json",
+          },
+          credentials: "include",
+        }
+      );
       const agentPropertiesData = await agentPropertiesResponse.json();
       setAgentProperties(agentPropertiesData.properties);
       setResultCount(agentPropertiesData.results);
       console.log(agentPropertiesData);
 
       const response3 = await fetch("https://api.flatty.ai/api/v1/listing/me", {
-      headers: {
+        headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      credentials: 'include',
-      })
+        },
+        credentials: "include",
+      });
       const data3 = await response3.json();
       setComplexes(data3);
       for (let i = 0; i < data3.length; i++) {
         namesOfComplexes.push(data3[i].name);
       }
       console.log("COMPLEX ", data3);
-  }
-  fetchProfile();
+    };
+    fetchProfile();
   }, []);
 
   useEffect(() => {
@@ -127,14 +134,20 @@ export const Profile = () => {
         <div className=" p-6 bg-white rounded-lg w-[578px] min-h-[272px]">
           <div className="flex items-center justify-start gap-4 mb-6">
             <img
-              src={user?.image_url ? user.image_url : "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"}
+              src={
+                user?.image_url
+                  ? user.image_url
+                  : "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
+              }
               className="rounded-full w-[120px] h-[120px] object-cover"
               alt="Agent"
             />
             <div className="inline-block w-full">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <h2 className="text-lg font-semibold">{agent.user ? agent.user.name : ""}</h2>
+                  <h2 className="text-lg font-semibold">
+                    {agent.user ? agent.user.name : ""}
+                  </h2>
                   {/* <DotsThreeOutline /> */}
                 </div>
 
@@ -148,7 +161,9 @@ export const Profile = () => {
                 /> */}
                 <div className="flex items-center justify-start gap-4">
                   <Rating rating="4" />
-                  <p className="text-sm text-[#525C76]">{agent.reviews ? agent.reviews.length + " Votes" : ""}</p>
+                  <p className="text-sm text-[#525C76]">
+                    {agent.reviews ? agent.reviews.length + " Votes" : ""}
+                  </p>
                 </div>
               </div>
             </div>
@@ -179,14 +194,14 @@ export const Profile = () => {
               New Object
             </Button>
             <Button
-            className="w-full py-2 text-sm h-[45px] font-semibold text-[#8247E5] bg-white border border-[#8247E5] rounded-sm leading-[28px] text-[18px]"
-            variant="outline"
-            onClick={handleOpenComplexModal}
-          >
-            <NewComplex />
-            New Complex
-          </Button>
-          {/* <Button
+              className="w-full py-2 text-sm h-[45px] font-semibold text-[#8247E5] bg-white border border-[#8247E5] rounded-sm leading-[28px] text-[18px]"
+              variant="outline"
+              onClick={handleOpenComplexModal}
+            >
+              <NewComplex />
+              New Complex
+            </Button>
+            {/* <Button
             className="w-full py-2 h-[45px] text-[#8247E5] bg-transparent border  leading-[28px] border-[#8247E5] rounded-sm text-[18px] font-semibold"
             variant="cancel"
           >
@@ -203,7 +218,7 @@ export const Profile = () => {
             className="absolute w-full h-auto rounded-lg bottom-10"
             alt="Agent"
             loading="lazy"
-          />          
+          />
         </div>
       </div>
       {/* Active Posts Section */}
@@ -213,16 +228,19 @@ export const Profile = () => {
         {Array.isArray(properties) && properties.length > 0 ? (
           properties.map((item) => (
             <a href={"/appartment/" + item.id}>
-            <AgentPost
-              key={item.id}
-              img={item.images[0]?.image_url} // Access the image URL safely
-              price={item.price}
-              location={item.location?.address || `${item.location?.latitude}, ${item.location?.longitude}`} // Format location as a string
-              area={item?.info?.total_area} // Access the area safely
-              rooms={item.info?.bedrooms} // Access the number of rooms safely
-              currFloor={item.info?.floor} // Access the current floor safely
-              building={item.info?.apartment_stories} // Access the building info safely
-              id={item.id}
+              <AgentPost
+                key={item.id}
+                img={item.images[0]?.image_url} // Access the image URL safely
+                price={item.price}
+                location={
+                  item.location?.address ||
+                  `${item.location?.latitude}, ${item.location?.longitude}`
+                } // Format location as a string
+                area={item?.info?.total_area} // Access the area safely
+                rooms={item.info?.bedrooms} // Access the number of rooms safely
+                currFloor={item.info?.floor} // Access the current floor safely
+                building={item.info?.apartment_stories} // Access the building info safely
+                id={item.id}
               />
             </a>
           ))
@@ -230,8 +248,15 @@ export const Profile = () => {
           <p>No posts found</p>
         )}
       </CardList>
-      <NewPostModal isOpen={isModalOpen} onClose={handleCloseModal} complexes={complexes} />
-      <NewComplexModal isOpen={isComplexModalOpen} onClose={handleCloseComplexModal} />
+      <NewPostModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        complexes={complexes}
+      />
+      <NewComplexModal
+        isOpen={isComplexModalOpen}
+        onClose={handleCloseComplexModal}
+      />
     </div>
   );
 };

@@ -28,6 +28,8 @@ const Home = () => {
 
   const { properties: popularProperties = [], loading: popularLoading } =
     useSelector((state) => state.popular);
+  const { properties: complexProperties = [], loading: complexLoading } =
+    useSelector((state) => state.complex);
 
   useEffect(() => {
     dispatch(loadFeaturedProperties());
@@ -107,7 +109,6 @@ const Home = () => {
 
   const elementCount = window.innerWidth >= 1536 ? 5 : 4;
 
-  
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-grow bg-[#F4F2FF]">
@@ -169,6 +170,33 @@ const Home = () => {
                   ))
               ) : (
                 <p>No popular properties found</p>
+              )}
+            </CardList>
+
+            <CardList sectionName="Complex" seeAll={true}>
+              {complexLoading ? (
+                <p>Loading...</p>
+              ) : complexProperties.properties?.length > 0 ? (
+                complexProperties.properties
+                  .slice(0, elementCount)
+                  .map((item) => (
+                    <HouseItem
+                      key={item.id}
+                      images={item.images}
+                      price={item.price}
+                      location={
+                        item.location?.address ||
+                        `${item.location?.latitude}, ${item.location?.longitude}`
+                      }
+                      rooms={item.info?.bedrooms}
+                      area={item?.info?.total_area}
+                      currFloor={item.info?.floor}
+                      building={item.info?.apartment_stories}
+                      id={item.id}
+                    />
+                  ))
+              ) : (
+                <p>No complex properties found</p>
               )}
             </CardList>
 
