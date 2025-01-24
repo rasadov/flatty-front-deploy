@@ -219,7 +219,7 @@ export const Searchbar = ({
         return (
           <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
             <div className="grid grid-cols-3 gap-2 p-4">
-              {["Studio", "2", "3", "4", "5", "6+"].map((room, index) => (
+              {["Studio", "1+1", "2+1", "3+1", "4+1", "5+1"].map((room, index) => (
                 <button
                   key={index}
                   onClick={() => handleRoomSelect(room)}

@@ -238,7 +238,7 @@ export const HouseItem = React.memo(
             className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-next top-1/2 right-2"
             onClick={() => swiperRef.current?.slideNext()}
           >
-            <ArrowRight color="white" />
+            <ArrowRight color="white" size="30" />
           </div>
 
           <HeartButton liked={liked} onClick={handleLikeClick} />

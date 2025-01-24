@@ -32,7 +32,6 @@ function App() {
             <Route path="/agent" element={<Agent />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
-
           </Route>
           <Route path="/" element={<Home />} />
           {/* <Route path="/map" element={<MapView />} /> */}
