@@ -43,7 +43,6 @@ export const Searchbar = ({
     }));
   }, [value]);
 
-
   useEffect(() => {
     // Parse current URL search parameters
     const currentParams = new URLSearchParams(location.search);
@@ -75,22 +74,22 @@ export const Searchbar = ({
     event.preventDefault();
     const currentParams = new URLSearchParams(window.location.search);
     console.log("currentParams", currentParams);
-  
+
     // Convert URLSearchParams to an object
     const currentFilters = {};
     currentParams.forEach((value, key) => {
       currentFilters[key] = value;
     });
-  
+
     console.log("currentFilters", currentFilters);
-  
+
     const combinedFilters = {
       ...currentFilters, // from current URL
       ...dropdownStates, // from local dropdown
     };
-  
+
     console.log("combinedFilters", combinedFilters);
-  
+
     // Build query parameters from the merged object
     const queryParams = new URLSearchParams();
     queryParams.append("page", 1);
@@ -406,14 +405,14 @@ export const Searchbar = ({
       {/* City Dropdown */}
       <div className="relative flex-shrink-0 w-[180px]">
         <button
-          onClick={() => handleDropdownToggle("city")}
+          onClick={() => handleDropdownToggle("area")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
         >
           <span className="text-[#525C76] text-sm font-semibold">
             {dropdownStates.city || "Area"}
           </span>
           <motion.div
-            animate={{ rotate: dropdownOpen === "city" ? 180 : 0 }}
+            animate={{ rotate: dropdownOpen === "area" ? 180 : 0 }}
             transition={{ duration: 0.3 }}
           >
             <ArrowDown />

@@ -8,7 +8,6 @@ export const loadComplexDetails = createAsyncThunk(
   "complex/loadAllDetails",
   async (_, { rejectWithValue }) => {
     try {
-      console.log('fetching complex details');
       return await fetchComplexDetails();
     } catch (error) {
       return rejectWithValue(error.message);
@@ -29,6 +28,7 @@ export const loadComplexById = createAsyncThunk(
 
 const initialState = {
   complexDetails: [],
+  listings: [],
   currentComplex: null,
   loading: false,
   error: null,

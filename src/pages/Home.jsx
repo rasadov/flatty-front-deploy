@@ -25,7 +25,6 @@ const Home = () => {
 
   const { properties: featuredProperties = [], loading: featuredLoading } =
     useSelector((state) => state.featured);
-
   const { properties: popularProperties = [], loading: popularLoading } =
     useSelector((state) => state.popular);
   const { properties: complexProperties = [], loading: complexLoading } =
@@ -147,6 +146,10 @@ const Home = () => {
             </div>
 
             <CardList sectionName="Popular" seeAll={true}>
+              {console.log(
+                "popularPropertiespopularPropertiespopularProperties >>>>>",
+                popularProperties
+              )}
               {popularLoading ? (
                 <p>Loading...</p>
               ) : popularProperties.properties?.length > 0 ? (
@@ -173,28 +176,31 @@ const Home = () => {
               )}
             </CardList>
 
-            <CardList sectionName="Complex" seeAll={true}>
+            <CardList sectionName="Complex" seeAll={true} coplexses={true}>
               {complexLoading ? (
                 <p>Loading...</p>
               ) : complexProperties.properties?.length > 0 ? (
                 complexProperties.properties
                   .slice(0, elementCount)
-                  .map((item) => (
-                    <HouseItem
-                      key={item.id}
-                      images={item.images}
-                      price={item.price}
-                      location={
-                        item.location?.address ||
-                        `${item.location?.latitude}, ${item.location?.longitude}`
-                      }
-                      rooms={item.info?.bedrooms}
-                      area={item?.info?.total_area}
-                      currFloor={item.info?.floor}
-                      building={item.info?.apartment_stories}
-                      id={item.id}
-                    />
-                  ))
+                  .map((item) => {
+                    console.log("Ba bu uje sondu brat", item);
+                    return (
+                      <HouseItem
+                        key={item.id}
+                        images={item.images}
+                        price={item.price}
+                        location={
+                          item.location?.address ||
+                          `${item.location?.latitude}, ${item.location?.longitude}`
+                        }
+                        rooms={item.info?.bedrooms}
+                        area={item?.info?.total_area}
+                        currFloor={item.info?.floor}
+                        building={item.info?.apartment_stories}
+                        id={item.id}
+                      />
+                    );
+                  })
               ) : (
                 <p>No complex properties found</p>
               )}

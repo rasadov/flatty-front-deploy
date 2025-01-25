@@ -17,6 +17,7 @@ const Complex = lazy(() => import("./pages/Complex"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const About = lazy(() => import("./pages/About"));
 const MapView = lazy(() => import("./pages/MapView"));
+const Complexes = lazy(() => import("./pages/Complexes.jsx"));
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/" element={<Home />} />
           {/* <Route path="/map" element={<MapView />} /> */}
           <Route path="/map" element={<MapView />} />
+          <Route path="/complexes" element={<Complexes />} />
           <Route path="/complex/:id" element={<Complex />} />
           <Route path="/search" element={<Search />} />
         </Routes>

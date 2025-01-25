@@ -3,7 +3,12 @@ import Button from "../Button";
 import { SeeAllUnder, SeeAllRight } from "../../assets/icons";
 import { useLocation } from "react-router-dom";
 
-export const SectionArea = ({ children, sectionName, seeAll = true }) => {
+export const SectionArea = ({
+  children,
+  sectionName,
+  seeAll = true,
+  coplexses,
+}) => {
   const location = useLocation();
   const isProfileRoute = location.pathname === "/profile";
 
@@ -18,7 +23,7 @@ export const SectionArea = ({ children, sectionName, seeAll = true }) => {
       {children}
       {seeAll && (
         <div className="flex justify-end mt-8">
-          <a href="/search">
+          <a href={coplexses ? "/complexes" : "/search"}>
             <Button
               variant="cancel"
               className="flex items-center justify-center gap-1 bg-transparent hover:bg-transparent"
