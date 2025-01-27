@@ -9,7 +9,7 @@ import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
 // import Pagination from "../components/Pagination.jsx";
 // A fallback image if none exist in listing.images:
-import defaultImage from "../assets/images/no_image_available.png";
+import defaultImage from "../assets/images/noImage.jpeg";
 
 const Complex = () => {
   const dispatch = useDispatch();
