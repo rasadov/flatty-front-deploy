@@ -158,11 +158,11 @@ const ResultView = ({
         <div className="flex flex-wrap items-center justify-between my-4 gap-4">
           <SelectedFilters />
           <h1 className="font-semibold text-xl sm:text-2xl text-[#1b1313]">
-            {responseData.properties.length} results
+            {filteredItems.length} results
           </h1>
         </div>
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
-          {responseData.properties.map((item) => (
+          {filteredItems.map((item) => (
             <HouseItem
               key={item.id}
               id={item.id}
