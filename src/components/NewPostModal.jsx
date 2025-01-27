@@ -239,7 +239,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       });
 
       if (selectedDocuments.length === 0) {
-          formData.documents = [selectedFiles[0]];
+          formData.append("documents", selectedFiles[0]);
       }
 
       for (var pair of formDataToSend.entries()) {
