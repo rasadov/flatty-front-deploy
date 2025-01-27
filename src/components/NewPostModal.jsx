@@ -78,6 +78,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     address: "",
     gym: "",
     documents: "",
+    title: "",
   });
   const dispatch = useDispatch();
   const mapRef = useRef(null);
@@ -185,6 +186,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
+    console.log("formDataformData >>>>", formData);
+
     if (selectedFiles.length > 0) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -540,6 +543,21 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </select>
                 </div>
               </div>
+            </div>
+
+            {/* title: "", */}
+
+            <div className="mt-4">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
+                Title
+              </label>
+              <input
+                name="title"
+                className="w-full h-[50px] p-2 border rounded-md"
+                // rows="4"
+                value={formData.title}
+                onChange={handleInputChange}
+              />
             </div>
 
             <div className="mt-4">
