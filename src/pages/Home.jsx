@@ -6,6 +6,7 @@ import { loadAgents } from "../store/slices/agentSlice";
 import { loadComplexDetails } from "../store/slices/complexSlice";
 import { loadPopularProperties } from "../store/slices/popularSlice.js";
 import { CardList } from "../components/sections/CardList";
+import ComplexCard from "../components/ComplexCard";
 import Searchbar from "../components/sections/Searchbar";
 import SearchbarMobile from "../components/sections/SearchbarMobile";
 import HouseItem from "../components/HouseItem";
@@ -223,20 +224,29 @@ const Home = () => {
               {complexes.length > 0 ? (
                 complexes.map((item) => {
                   return (
-                    <HouseItem
+                    // <HouseItem
+                    //   key={item.id}
+                    //   images={item.images}
+                    //   price={item.price}
+                    //   location={
+                    //     item.location?.address ||
+                    //     `${item.location?.latitude}, ${item.location?.longitude}`
+                    //   }
+                    //   rooms={item.info?.bedrooms}
+                    //   area={item?.info?.total_area}
+                    //   currFloor={item.info?.floor}
+                    //   building={item.info?.apartment_stories}
+                    //   id={item.id}
+                    //   complex={true}
+                    // />
+
+                    <ComplexCard
                       key={item.id}
-                      images={item.images}
-                      price={item.price}
-                      location={
-                        item.location?.address ||
-                        `${item.location?.latitude}, ${item.location?.longitude}`
-                      }
-                      rooms={item.info?.bedrooms}
-                      area={item?.info?.total_area}
-                      currFloor={item.info?.floor}
-                      building={item.info?.apartment_stories}
+                      img={item.images[0]?.image_url}
+                      title={item.name}
+                      roomCount={item.info?.objects}
+                      address={item.location?.address}
                       id={item.id}
-                      complex={true}
                     />
                   );
                 })

@@ -101,7 +101,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     year: 0,
     buildingFloors: 0,
     renovation: "",
-    
+    rooms: 0,
     latitude: 0,
     longitude: 0,
     address: "",
@@ -377,6 +377,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 "bedroom",
                 "bathroom",
                 "balcony",
+                "rooms",
               ].map((field, index) => (
                 <div key={index} className="flex flex-col items-start">
                   <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
