@@ -254,15 +254,15 @@ export const Searchbar = ({
               <input
                 type="number"
                 placeholder="Min"
-                value={dropdownStates.priceRange.min}
-                onChange={(e) => handlePriceChange(e, "min")}
+                value={dropdownStates.priceRange.Min}
+                onChange={(e) => handlePriceChange(e, "Min")}
                 className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
               />
               <input
                 type="number"
                 placeholder="Max"
-                value={dropdownStates.priceRange.max}
-                onChange={(e) => handlePriceChange(e, "max")}
+                value={dropdownStates.priceRange.Max}
+                onChange={(e) => handlePriceChange(e, "Max")}
                 className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
               />
             </div>
