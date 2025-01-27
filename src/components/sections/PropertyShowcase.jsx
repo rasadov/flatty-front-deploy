@@ -99,7 +99,7 @@ const PropertyShowcase = ({ length, property }) => {
 
       {/* Image Gallery */}
       <ImageGallery
-        mainImage={property.images[5].image_url}
+        mainImage={property.images[0].image_url}
         thumbnails={propertyImages}
         length={property.images.length}
       />
