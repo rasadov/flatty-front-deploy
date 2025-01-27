@@ -239,12 +239,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         formDataToSend.append("documents", file);
       });
 
-      if (selectedDocuments.length === 0) {
-        selectedFiles.forEach((file) => {
-          formDataToSend.append("files", file);
-        });
-      }
-
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
