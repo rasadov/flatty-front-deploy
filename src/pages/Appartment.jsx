@@ -7,6 +7,10 @@ import { Contact } from "../assets/icons/Contact";
 import PropertyMap from "../components/PropertyMap.jsx";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { formatNumber } from "../components/numberFormater.jsx";
+import { YearIcon } from "../assets/icons/Year.jsx";
+import { LivingAreaIcon } from "../assets/icons/LivingArea.jsx";
+import { TotalAreaIcon } from "../assets/icons/TotalArea.jsx";
+import { FloorIcon } from "../assets/icons/Floor.jsx";
 import { motion } from "framer-motion";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -102,11 +106,12 @@ const Appartment = memo(() => {
           <div className="flex flex-wrap justify-start items-center gap-8 mt-6">
             {/* Icon 1: total area */}
             <div className="flex flex-col items-center text-center">
-              <img
+              {/* <img
                 src="../assets/icons/totalArea.svg"
                 alt="Total area"
                 className="w-8 h-8 mb-2"
-              />
+              /> */}
+              <TotalAreaIcon />
               <p className="text-sm font-medium">
                 {apartmentData.info?.total_area || 0} m<sup>2</sup>
               </p>
@@ -115,11 +120,12 @@ const Appartment = memo(() => {
 
             {/* Icon 2: living area */}
             <div className="flex flex-col items-center text-center">
-              <img
+              {/* <img
                 src="../assets/icons/livingArea.svg"
                 alt="Living area"
                 className="w-8 h-8 mb-2"
-              />
+              /> */}
+              <LivingAreaIcon />
               <p className="text-sm font-medium">
                 {apartmentData.info?.living_area || 0} m<sup>2</sup>
               </p>
@@ -128,14 +134,17 @@ const Appartment = memo(() => {
 
             {/* Icon 3: year - example hard-coded or from data */}
             <div className="flex flex-col items-center text-center">
-              <img src="../assets/icons/year.svg" alt="Year" className="w-8 h-8 mb-2" />
-              <p className="text-sm font-medium">2020</p>
+              {/* <img src="../assets/icons/year.svg" alt="Year" className="w-8 h-8 mb-2" /> */}
+              <YearIcon />
+              <p className="text-sm font-medium">{apartmentData.building?.year_built}</p>
               <span className="text-xs text-[#525C76]">Year</span>
             </div>
 
             {/* Icon 4: floor */}
             <div className="flex flex-col items-center text-center">
-              <img src="../assets/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
+              {/* <img src="../assets/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
+               */}
+              <FloorIcon />
               <p className="text-sm font-medium">
                 {floors.value === " / " ? "1/4" : floors.value}
               </p>
@@ -191,10 +200,10 @@ const Appartment = memo(() => {
                     <td className="py-2 font-medium text-[#525C76]">Balcony:</td>
                     <td className="py-2">{apartmentData.info.balcony}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <td className="py-2 font-medium text-[#525C76]">Condition:</td>
                     <td className="py-2">Move-in ready</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Renovation:</td>
                     <td className="py-2">{apartmentData.info.renovation || "European style"}</td>
@@ -214,23 +223,23 @@ const Appartment = memo(() => {
                     <td className="py-2 font-medium text-[#525C76]">
                       Year of Construction:
                     </td>
-                    <td className="py-2">2015</td>
+                    <td className="py-2">{apartmentData.building?.year_built}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Installment:</td>
-                    <td className="py-2">Yes</td>
+                    <td className="py-2">{apartmentData.building?.installment || "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Elevator:</td>
-                    <td className="py-2">Yes</td>
+                    <td className="py-2">{apartmentData.building?.elevator || "Yes"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Parking:</td>
-                    <td className="py-2">Yes</td>
+                    <td className="py-2">{apartmentData.building?.parking || "Yes"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Swimming pool:</td>
-                    <td className="py-2">No</td>
+                    <td className="py-2">{apartmentData.building?.swimming_pool || "Yes"}</td>
                   </tr>
                 </tbody>
               </table>
