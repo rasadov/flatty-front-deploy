@@ -7,7 +7,7 @@ import { NoViews } from "../../assets/icons/NoViews";
 import { Report } from "../../assets/icons/Report";
 import { ShowOnMap } from "../../assets/icons/ShowOnMap";
 import { PostView } from "../../assets/icons/PostView";
-import CoverImage from "../../assets/images/WhatsApp.jpeg";
+import CoverImage from "../../assets/images/noImage.jpeg";
 
 const ImageGallery = ({ mainImage, thumbnails, length }) => {
   const [currentImage, setCurrentImage] = useState(mainImage);
