@@ -124,6 +124,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         operation === "add" ? prev[name] + 1 : Math.max(0, prev[name] - 1),
     }));
   };
+  const handleDropDocuments = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
+  };
 
   const handleParkingToggle = () => {
     setFormData((prev) => ({ ...prev, parkingSlots: !prev.parkingSlots }));
@@ -574,6 +579,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </select>
                 </div>
               </div>
+            </div>
             <div className="flex flex-col items-left gap-2">
                 <div
                   style={{
@@ -586,15 +592,14 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </div>
                 <div className="flex gap-1">
                   <input
-                    name="price"
-                    type="number"
+                    name="title"
+                    type="text"
                     className="w-full h-[52px] p-2 border rounded-md"
                     value={formData.title}
                     onChange={handleInputChange}
                   />
                 </div>
               </div>
-            </div>
 
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
