@@ -362,6 +362,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
+                  {complexes.map((complex, index) => (
+                    <option key={index} value={complex.name}>
+                      {complex.name}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
