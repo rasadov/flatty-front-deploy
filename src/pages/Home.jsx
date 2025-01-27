@@ -244,8 +244,8 @@ const Home = () => {
                       key={item.id}
                       img={item.images[0]?.image_url}
                       title={item.name}
-                      roomCount={item.info?.objects}
-                      address={item.location?.address}
+                      roomCount={item.objects}
+                      address={item.address}
                       id={item.id}
                     />
                   );
