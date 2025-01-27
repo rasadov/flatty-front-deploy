@@ -130,6 +130,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
   };
 
+  const handleDocumentUpload = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
+  };
+
   const handleParkingToggle = () => {
     setFormData((prev) => ({ ...prev, parkingSlots: !prev.parkingSlots }));
   };
@@ -234,7 +239,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       });
 
       if (selectedDocuments.length === 0) {
-          formData.documents = [];
+          formData.documents = [selectedFiles[0]];
       }
 
       for (var pair of formDataToSend.entries()) {
@@ -805,7 +810,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   type="file"
                   multiple
                   accept="*/*"
-                  onChange={handleFileUpload}
+                  onChange={handleDocumentUpload}
                   className="hidden"
                 />
               </div>
