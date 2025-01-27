@@ -418,44 +418,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
             </div>
             <div className="flex flex-wrap gap-4 mt-4">
-              {/* <div className="flex flex-col w-full sm:w-auto">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Year
-                </label>
-                <input
-                  name="year"
-                  type="number"
-                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
-                  value={formData.year}
-                  onChange={handleInputChange}
-                />
-              </div> */}
-              {/* <div className="flex flex-col w-full sm:w-auto">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Price
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    name="price"
-                    type="number"
-                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                  />
-                  <select
-                    name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100"
-                    value={formData.currency}
-                    onChange={handleInputChange}
-                  >
-                    <option value="$">$</option>
-                    <option value="€">€</option>
-                    <option value="₺">₺</option>
-                    <option value="£">£</option>
-                  </select>
-                </div>
-              </div> */}
-
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Installment
@@ -537,6 +499,46 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                       <option value="false">No</option>
                     </select>
                   </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex ">
+              <div className="flex flex-col w-full sm:w-auto mr-10">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Year
+                </label>
+                <input
+                  name="year"
+                  type="number"
+                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div className="flex flex-col w-full sm:w-auto">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Price
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    name="price"
+                    type="number"
+                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                  <select
+                    name="currency"
+                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    value={formData.currency}
+                    onChange={handleInputChange}
+                  >
+                    <option value="$">$</option>
+                    <option value="€">€</option>
+                    <option value="₺">₺</option>
+                    <option value="£">£</option>
+                  </select>
                 </div>
               </div>
             </div>
