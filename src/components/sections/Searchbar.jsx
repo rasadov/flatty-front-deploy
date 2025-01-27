@@ -427,8 +427,11 @@ export const Searchbar = ({
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
         >
           <span className="text-[#525C76] text-sm font-semibold">
-            {dropdownStates.area || "Area"}
-          </span>
+               {
+       (dropdownStates.area.min || dropdownStates.area.max)
+         ? `${dropdownStates.area.min} - ${dropdownStates.area.max} m²`
+         : "Area"
+     }          </span>
           <motion.div
             animate={{ rotate: dropdownOpen === "area" ? 180 : 0 }}
             transition={{ duration: 0.3 }}
