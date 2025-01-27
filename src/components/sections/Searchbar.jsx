@@ -6,6 +6,27 @@ import { LocationCancel } from "../../assets/icons/LocationCancel";
 import { useDispatch } from "react-redux";
 import { loadSearchResults } from "../../store/slices/searchSlice";
 
+const cities = [
+  "Lefkoşa",
+  "Girne",
+  "Gazimağusa",
+  "Güzelyurt",
+  "İskele",
+  "Lefke",
+  "Lapta",
+  "Koruçam",
+  "Alsancak",
+  "Değirmenlik",
+  "Esentepe",
+  "Dikmen",
+  "Mehmetçik",
+  "Karpaz",
+  "Dipkarpaz",
+  "Yeni Erenköy",
+  "Geçitkale",
+  "Beşparmak"
+  ]
+
 export const Searchbar = ({
   onShowMap,
   onSearch,
@@ -211,6 +232,20 @@ export const Searchbar = ({
 
   const renderDropdownContent = (type) => {
     switch (type) {
+      case "city":
+        return (
+          <div className="p-4">
+            {cities.map((cityItem, index) => (
+              <p
+                key={index}
+                onClick={() => handleSelectOption("city", cityItem)}
+                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
+              >
+                {cityItem}
+              </p>
+            ))}
+          </div>
+        );
       case "category":
         return (
           <div className="p-4">
