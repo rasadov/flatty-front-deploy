@@ -239,19 +239,19 @@ const Appartment = memo(() => {
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Installment:</td>
-                    <td className="py-2">{apartmentData.building?.installment || "No"}</td>
+                    <td className="py-2">{apartmentData.building?.installment ? "Yes" : "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Elevator:</td>
-                    <td className="py-2">{apartmentData.building?.elevator || "Yes"}</td>
+                    <td className="py-2">{apartmentData.building?.elevator ? "Yes" : "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Parking:</td>
-                    <td className="py-2">{apartmentData.building?.parking || "Yes"}</td>
+                    <td className="py-2">{apartmentData.building?.parking ? "Yes" : "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Swimming pool:</td>
-                    <td className="py-2">{apartmentData.building?.swimming_pool || "Yes"}</td>
+                    <td className="py-2">{apartmentData.building?.swimming_pool ? "Yes" : "No"}</td>
                   </tr>
                 </tbody>
               </table>

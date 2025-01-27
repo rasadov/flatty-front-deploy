@@ -20,6 +20,35 @@ const renovations = [
   "Needs renovation",
 ];
 
+const cities = [
+  "Lefkoşa",
+  "Girne",
+  "Gazimağusa",
+  "Güzelyurt",
+  "İskele",
+  "Lefke",
+  "Lapta",
+  "Koruçam",
+  "Alsancak",
+  "Değirmenlik",
+  "Esentepe",
+  "Dikmen",
+  "Mehmetçik",
+  "Karpaz",
+  "Dipkarpaz",
+  "Yeni Erenköy",
+  "Geçitkale",
+  "Beşparmak"
+  ]
+const areas = [
+      "Lefkoşa",
+      "Girne",
+      "Gazimağusa",
+      "Güzelyurt",
+      "İskele",
+      "Lefke"
+  ]
+
 const getAddressFromLatLng = async (lat, lng) => {
   const apiKey = "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM"; // Replace with your Google Maps API key
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
@@ -38,10 +67,11 @@ const getAddressFromLatLng = async (lat, lng) => {
   }
 };
 
+var city = "";
+var area = "";
+
 const NewComplexModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
-  const [citys, setCitys] = useState("");
-  const [areas, setAreas] = useState("");
 
   const [formData, setFormData] = useState({
     category: "",
@@ -79,6 +109,25 @@ const NewComplexModal = ({ isOpen, onClose }) => {
     console.log(name, value);
   };
 
+  const handleLocationChange = async (e) => {
+    console.log("e", e.target);
+    const { name, value } = e.target;
+    console.log(name, value);
+    if (name === "city") {
+      city = value;
+    } else if (name === "area") {
+      area = value;
+      console.log("area", value);
+      console.log("city", city);
+      console.log("area", area);
+    }
+    if (city && area) {
+    setFormData((prev) => ({ ...prev, address: `${area}, ${city}` }));
+    } else {
+      setFormData((prev) => ({ ...prev, address: `${value}` }));
+    }
+  };
+
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setImages((prevImages) => [...prevImages, ...files]);
@@ -92,13 +141,11 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   const handleMapClick = async (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
-    const address = await getAddressFromLatLng(lat, lng);
 
     setFormData((prev) => ({
       ...prev,
       latitude: lat,
       longitude: lng,
-      address: address,
     }));
   };
 
@@ -180,6 +227,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       latitude: null,
       longitude: null,
     }));
+    city = "";
+    area = "";
   };
   if (!isOpen) return null;
 
@@ -512,15 +561,15 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <select
                   name="city"
                   className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.city}
-                  onChange={handleInputChange}
+                  value={city}
+                  onChange={handleLocationChange}
                 >
-                  <option value="">City</option>
-                  <option value="Girne">Girne</option>
-                  <option value="Gazimaöusa">Gazimaöusa</option>
-                  <option value="Güzelyurt">Güzelyurt</option>
-                  <option value="İskele">İskele</option>
-                  <option value="Lefke">Lefke</option>
+                  <option value="">{city || "Select"}</option>
+                  {cities.map((cityobj, index) => (
+                    <option key={index} value={cityobj}>
+                      {cityobj}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -530,20 +579,15 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <select
                   name="area"
                   className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.area}
-                  onChange={handleInputChange}
+                  value={area}
+                  onChange={handleLocationChange}
                 >
                   <option value="">Area</option>
-                  <option value="Akıncılar">Akıncılar</option>
-                  <option value="Balıkesir">Balıkesir</option>
-                  <option value="Batıkent">Batıkent</option>
-                  <option value="Beyköy">Beyköy</option>
-                  <option value="Lefke">Lefke</option>
-                  {/* {complexes?  complexes.map((complex, index) => (
-                    <option key={index} value={complex.name}>
-                      {complex.name}
+                  {areas.map((areaobj, index) => (
+                    <option key={index} value={areaobj}>
+                      {areaobj}
                     </option>
-                  )) : ""} */}
+                  ))}
                 </select>
               </div>
             </div>
@@ -553,7 +597,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               {/* Address */}
               <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
                 <p className="text-sm text-gray-700">
-                  {formData.city + "," + formData.area ||
+                  {formData.address ||
                     "Select a location on the map"}
                 </p>
                 {formData.address && (

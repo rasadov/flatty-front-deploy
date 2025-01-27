@@ -76,6 +76,9 @@ const getAddressFromLatLng = async (lat, lng) => {
   }
 };
 
+var city = "";
+var area = "";
+
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
@@ -200,13 +203,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const handleMapClick = async (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
-    const address = await getAddressFromLatLng(lat, lng);
 
     setFormData((prev) => ({
       ...prev,
       latitude: lat,
       longitude: lng,
-      address: address,
     }));
   };
   const mapStyles = [
@@ -279,6 +280,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       latitude: null,
       longitude: null,
     }));
+    city = "";
+    area = "";
   };
 
   const svgString = encodeURIComponent(`
@@ -288,6 +291,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
 
   `);
   const svgIconUrl = `data:image/svg+xml,${svgString}`;
+
+  const handleLocationChange = async (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    if (name === "city") {
+      city = value;
+    } else if (name === "area") {
+      area = value;
+      console.log("area", value);
+      console.log("city", city);
+      console.log("area", area);
+    }
+    if (city && area) {
+    setFormData((prev) => ({ ...prev, address: `${area}, ${city}` }));
+    } else {
+      setFormData((prev) => ({ ...prev, address: `${value}` }));
+    }
+  };
+
 
   if (!isOpen) return null;
 
@@ -444,21 +466,21 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div> */}
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
-                Condition
+                Renovation
               </label>
               <div className="flex flex-wrap gap-2">
-                {conditions.map((condition, index) => (
+                {renovations.map((renovation, index) => (
                   <button
                     key={index}
                     onClick={() =>
-                      setFormData((prev) => ({ ...prev, condition: condition }))
+                      setFormData((prev) => ({ ...prev, renovation: renovation }))
                     }
                     className={`${getButtonStyle(
-                      "condition",
-                      condition
+                      "renovation",
+                      renovation
                     )} bg-gray-100 px-4 py-2 rounded-md`}
                   >
-                    {condition}
+                    {renovation}
                   </button>
                 ))}
               </div>
@@ -914,10 +936,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <select
                   name="city"
                   className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.category}
-                  onChange={handleInputChange}
+                  value={city}
+                  onChange={handleLocationChange}
                 >
-                  <option value="">Select</option>
+                  <option value="">{city || "Select"}</option>
                   {cities.map((city, index) => (
                     <option key={index} value={city}>
                       {city}
@@ -932,10 +954,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <select
                   name="area"
                   className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.residentialComplex}
-                  onChange={handleInputChange}
+                  value={area}
+                  onChange={handleLocationChange}
                 >
-                  <option value="">Select</option>
+                  <option value="">{area || "Select"}</option>
                   {areas.map((area, index) => (
                     <option key={index} value={area}>
                       {area}

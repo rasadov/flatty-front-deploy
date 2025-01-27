@@ -134,6 +134,16 @@ export const Searchbar = ({
             });
           }
         }
+        else if (key === "area") {
+          // e.g. if area.min or area.max exist, add them
+          if (value.min) {
+            queryParams.append("areaMin", value.min);
+          }
+          if (value.max) {
+            queryParams.append("areaMax", value.max);
+          }
+        }
+        
         // If it's your roomNumber array...
         else if (key === "roomNumber" && Array.isArray(value)) {
           // Map each room string to a pure number (or 0 for studio):
