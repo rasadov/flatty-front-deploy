@@ -30,6 +30,9 @@ const Home = () => {
   const { properties: complexProperties = [], loading: complexLoading } =
     useSelector((state) => state.complex);
 
+  console.log("Complex Properties >>>>>", complexProperties);
+  console.log("Popular Properties >>>>>", popularProperties);
+
   useEffect(() => {
     dispatch(loadFeaturedProperties());
     dispatch(loadPopularProperties());

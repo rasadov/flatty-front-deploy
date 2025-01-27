@@ -29,6 +29,35 @@ const renovations = [
   "Needs renovation",
 ];
 
+const cities = [
+  "Lefkoşa",
+  "Girne",
+  "Gazimağusa",
+  "Güzelyurt",
+  "İskele",
+  "Lefke",
+  "Lapta",
+  "Koruçam",
+  "Alsancak",
+  "Değirmenlik",
+  "Esentepe",
+  "Dikmen",
+  "Mehmetçik",
+  "Karpaz",
+  "Dipkarpaz",
+  "Yeni Erenköy",
+  "Geçitkale",
+  "Beşparmak"
+  ]
+const areas = [
+      "Lefkoşa",
+      "Girne",
+      "Gazimağusa",
+      "Güzelyurt",
+      "İskele",
+      "Lefke"
+  ]
+
 const getAddressFromLatLng = async (lat, lng) => {
   const apiKey = "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM"; // Replace with your Google Maps API key
   const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
@@ -72,7 +101,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     floor: 0,
     year: 0,
     buildingFloors: 0,
-    condition: conditions[0],
+    // condition: conditions[0],
+    renovations: renovations[0],
+    title: "",
+
     latitude: 0,
     longitude: 0,
     address: "",
@@ -134,6 +166,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
+  const handleDropDocuments = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
+  };
+
   const formatFileSize = (size) => {
     if (size < 1024) return `${size} B`;
     else if (size < 1048576) return `${(size / 1024).toFixed(2)} KB`;
@@ -172,7 +210,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     if (selectedFiles.length > 0) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
+        let value = formData[key];
+        if (typeof value === "boolean") {
+          value = value ? "True" : "False";
+        }
+        formDataToSend.append(key, value);
       });
       selectedFiles.forEach((file) => {
         formDataToSend.append("files", file);
@@ -182,9 +224,16 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         formDataToSend.append("documents", file);
       });
 
+      if (selectedDocuments.length === 0) {
+          formData.documents = [];
+      }
+
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
+
+
+
       try {
         dispatch(addPost(formDataToSend));
         dispatch(fetchPosts());
@@ -331,6 +380,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 "bedroom",
                 "bathroom",
                 "balcony",
+                "rooms"
               ].map((field, index) => (
                 <div
                   key={index}
@@ -464,6 +514,26 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     <option value="₺">₺</option>
                     <option value="£">£</option>
                   </select>
+                </div>
+              </div>
+              <div className="flex flex-col items-left gap-2">
+                <div
+                  style={{
+                    textAlign: "left",
+                  }}
+                >
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    Title
+                  </label>
+                </div>
+                <div className="flex gap-1">
+                  <input
+                    name="price"
+                    type="number"
+                    className="w-full h-[52px] p-2 border rounded-md"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                  />
                 </div>
               </div>
             </div>
@@ -626,111 +696,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
           </div>
         )}
         {step === 3 && (
-          // <div className="flex flex-col justify-between h-full gap-4">
-          //   {/* Content area */}
-          //   <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
-          //     {/* Header */}
-          //     <div className="text-center mb-4">
-          //       <h3 className="text-lg font-semibold">Upload photos</h3>
-          //     </div>
-
-          //     {/* Drag and Drop Area or Click to Browse */}
-          //     <div
-          //       className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
-          //       onDragOver={handleDragOver}
-          //       onDrop={handleDrop}
-          //     >
-          //       <p className="text-sm text-gray-600 mb-4">
-          //         Drag photos here to start uploading
-          //       </p>
-          //       <button
-          //         className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
-          //         onClick={() =>
-          //           document.querySelector('input[type="file"]')?.click()
-          //         }
-          //       >
-          //         Browse Files
-          //       </button>
-          //       <input
-          //         type="file"
-          //         multiple
-          //         accept="image/*,video/*"
-          //         onChange={handleImageUpload}
-          //         className="hidden"
-          //       />
-          //     </div>
-
-          //     {selectedFiles.length > 0 && (
-          //       // Make it horizontally scrollable instead of wrapping
-          //       <div className="mt-4 flex overflow-x-auto space-x-4">
-          //         {selectedFiles.map((file, index) => {
-          //           const previewUrl = URL.createObjectURL(file);
-
-          //           return (
-          //             // Center the media within this container
-          //             <div
-          //               key={index}
-          //               className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50
-          //                     overflow-hidden flex items-center justify-center"
-          //             >
-          //               {file.type.startsWith("image/") ? (
-          //                 <img
-          //                   src={previewUrl}
-          //                   alt={file.name}
-          //                   className="max-w-full max-h-full object-cover"
-          //                 />
-          //               ) : (
-          //                 <video
-          //                   src={previewUrl}
-          //                   className="max-w-full max-h-full object-cover"
-          //                   controls
-          //                 />
-          //               )}
-
-          //               {/* Delete button */}
-          //               <button
-          //                 className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700
-          //                       rounded-full flex items-center justify-center text-xs
-          //                       hover:bg-red-600 hover:text-white transition-colors"
-          //                 onClick={() => handleImageRemove(index)}
-          //               >
-          //                 X
-          //               </button>
-          //             </div>
-          //           );
-          //         })}
-          //       </div>
-          //     )}
-          //   </div>
-
-          //   {/* Footer / Pagination Controls */}
-          //   <div className="py-4">
-          //     <div className="flex justify-center items-center">
-          //       <div className="flex space-x-2">
-          //         {/* For the "dots" at the bottom */}
-          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-          //         <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-          //       </div>
-          //     </div>
-
-          //     <div className="flex justify-center mt-4 gap-4">
-          //       <button
-          //         className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-          //         onClick={() => setStep(1)}
-          //       >
-          //         Previous
-          //       </button>
-          //       <button
-          //         className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-          //         onClick={() => setStep(3)}
-          //       >
-          //         Next
-          //       </button>
-          //     </div>
-          //   </div>
-          // </div>
           <div className="flex flex-col justify-between h-full gap-4">
             {/* Content area */}
             <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
@@ -743,7 +708,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               <div
                 className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
                 onDragOver={handleDragOverFile}
-                onDrop={handleDropFile}
+                onDrop={handleDropDocuments}
               >
                 <p
                   className="text-sm  mb-4"
@@ -780,10 +745,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
 
-              {selectedFiles.length > 0 && (
+              {selectedDocuments.length > 0 && (
                 // List the selected files below
                 <div className="mt-4 space-y-2">
-                  {selectedFiles.map((file, index) => (
+                  {selectedDocuments.map((file, index) => (
                     <div
                       key={index}
                       className="flex justify-between items-center p-2 border-b border-gray-300"
@@ -881,6 +846,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
+                  {cities.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -894,11 +864,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
-                  {/* {complexes?  complexes.map((complex, index) => (
-                    <option key={index} value={complex.name}>
-                      {complex.name}
+                  {areas.map((area, index) => (
+                    <option key={index} value={area}>
+                      {area}
                     </option>
-                  )) : ""} */}
+                  ))}
                 </select>
               </div>
             </div>
