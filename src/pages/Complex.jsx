@@ -129,9 +129,27 @@ const Complex = () => {
 
             {listing.properties && listing.properties.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {listing.properties.map((item) => (
-                  <HouseItem key={item.id} {...item} />
-                ))}
+              {listing.properties.map((property) => (
+                <HouseItem
+                  key={property.id}
+                  id={property.id}
+                  images={property.images}
+                  // HouseItem expects a string for `location`, so pass the address text:
+                  location={property.location?.address}
+
+                  // The rest are up to you, e.g.:
+                  price={property.price}
+                  rooms={property.info?.bedrooms}
+                  area={property.info?.total_area}
+                  currFloor={property.info?.floor}
+                  building={property.info?.apartment_stories}
+
+                  // This just tells HouseItem it's being used in a "complex" context
+                  complex
+                />
+              ))}
+
+                
               </div>
             ) : (
               <p className="text-center">No properties found in this complex.</p>
