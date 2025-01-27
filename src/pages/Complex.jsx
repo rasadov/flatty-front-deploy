@@ -11,6 +11,45 @@ import Header from "../layouts/Header.jsx";
 // A fallback image if none exist in listing.images:
 import defaultImage from "../assets/images/noImage.jpeg";
 
+const ImageGallery = ({ mainImage, thumbnails, length }) => {
+  const [currentImage, setCurrentImage] = useState(mainImage);
+
+  return (
+    <div>
+      {/* Main Image */}
+      <div className="mb-3 rounded-md shadow-lg w-full h-[200px] md:h-[350px] lg:h-[500px] overflow-hidden">
+        <img
+          src={currentImage}
+          alt="Property"
+          className="object-cover w-full h-full"
+          loading="lazy"
+        />
+      </div>
+
+      {/* Thumbnail Gallery */}
+      <div className="flex gap-2 overflow-x-auto">
+        {thumbnails.slice(0, length).map((thumbnail, index) => (
+          <div
+            key={index}
+            className={`flex-shrink-0 w-[70px] h-[70px] md:w-[95px] md:h-[95px] bg-gray-200 rounded-md shadow-sm cursor-pointer ${
+              currentImage === thumbnail ? "ring-2 ring-[#8247E5]" : ""
+            }`}
+            onClick={() => setCurrentImage(thumbnail)}
+          >
+            <img
+              src={thumbnail}
+              alt={`Thumbnail ${index}`}
+              className="object-cover rounded-md w-full h-full"
+              loading="lazy"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
 const Complex = () => {
   const dispatch = useDispatch();
   // Use either useRouterParams() or just parse from window.location
@@ -71,6 +110,7 @@ const Complex = () => {
       value: listing.year && listing.year > 0 ? listing.year : "—",
     },
   ];
+  const listingImages = listing.images.map((image) => image.image_url);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -95,9 +135,10 @@ const Complex = () => {
 
           {/* Images / Showcase OR Fallback Image */}
           {listing.images && listing.images.length > 0 ? (
-            <PropertyShowcase
-              length={listing.images.length}
-              images={listing.images}
+              <ImageGallery
+              mainImage={listing.images[0].image_url}
+              thumbnails={listingImages}
+              length={listingImages.length}
             />
           ) : (
             <div className="flex justify-center items-center w-full py-6">
