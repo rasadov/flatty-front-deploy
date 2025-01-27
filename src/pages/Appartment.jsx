@@ -103,52 +103,64 @@ const Appartment = memo(() => {
           <PropertyShowcase property={apartmentData} />
 
           {/* Icons row: total area, living area, year, floor */}
-          <div className="flex flex-wrap justify-start items-center gap-8 mt-6">
+          <div className="flex flex-wrap justify-between items-center gap-8 mt-6 lg:pr-8">
             {/* Icon 1: total area */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex items-center text-center">
               {/* <img
                 src="../assets/icons/totalArea.svg"
                 alt="Total area"
                 className="w-8 h-8 mb-2"
               /> */}
               <TotalAreaIcon />
+              <div>
+
               <p className="text-sm font-medium">
                 {apartmentData.info?.total_area || 0} m<sup>2</sup>
               </p>
               <span className="text-xs text-[#525C76]">Total area</span>
+              </div>
             </div>
 
             {/* Icon 2: living area */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex items-center text-center">
               {/* <img
                 src="../assets/icons/livingArea.svg"
                 alt="Living area"
                 className="w-8 h-8 mb-2"
               /> */}
               <LivingAreaIcon />
+              <div>
+
               <p className="text-sm font-medium">
                 {apartmentData.info?.living_area || 0} m<sup>2</sup>
               </p>
               <span className="text-xs text-[#525C76]">Living area</span>
+              </div>
             </div>
 
             {/* Icon 3: year - example hard-coded or from data */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex items-center text-center">
               {/* <img src="../assets/icons/year.svg" alt="Year" className="w-8 h-8 mb-2" /> */}
               <YearIcon />
+              <div>
+
               <p className="text-sm font-medium">{apartmentData.building?.year_built}</p>
               <span className="text-xs text-[#525C76]">Year</span>
+              </div>
             </div>
 
             {/* Icon 4: floor */}
-            <div className="flex flex-col items-center text-center">
+            <div className="flex  items-center text-center">
               {/* <img src="../assets/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
                */}
               <FloorsIcon />
+              <div>
+
               <p className="text-sm font-medium">
                 {floors.value === " / " ? "1/4" : floors.value}
               </p>
               <span className="text-xs text-[#525C76]">Floor</span>
+              </div>
             </div>
           </div>
 
