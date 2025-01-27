@@ -64,10 +64,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     livingRoom: 0,
     bedroom: 0,
     balcony: 0,
-    parkingSlot: false,
-    installment: false,
-    swimmingPool: false,
-    elevator: false,
+    parkingSlot: "",
+    installment: "",
+    swimmingPool: "",
+    elevator: "",
     apartmentStories: 0,
     floor: 0,
     year: 0,
@@ -76,6 +76,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     latitude: 0,
     longitude: 0,
     address: "",
+    gym: "",
+    documents: "",
   });
   const dispatch = useDispatch();
   const mapRef = useRef(null);
@@ -183,30 +185,31 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    if (selectedFiles.length > 0) {
-      const formDataToSend = new FormData();
-      Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
-      });
-      selectedFiles.forEach((file) => {
-        formDataToSend.append("files", file);
-      });
+    console.log("formDataformDataformData >>>>>>>>", formData);
+    // if (selectedFiles.length > 0) {
+    //   const formDataToSend = new FormData();
+    //   Object.keys(formData).forEach((key) => {
+    //     formDataToSend.append(key, formData[key]);
+    //   });
+    //   selectedFiles.forEach((file) => {
+    //     formDataToSend.append("files", file);
+    //   });
 
-      selectedDocuments.forEach((file) => {
-        formDataToSend.append("documents", file);
-      });
+    //   selectedDocuments.forEach((file) => {
+    //     formDataToSend.append("documents", file);
+    //   });
 
-      for (var pair of formDataToSend.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
-      try {
-        dispatch(addPost(formDataToSend));
-        dispatch(fetchPosts());
-        onClose();
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    //   for (var pair of formDataToSend.entries()) {
+    //     console.log(pair[0] + ", " + pair[1]);
+    //   }
+    //   try {
+    //     dispatch(addPost(formDataToSend));
+    //     dispatch(fetchPosts());
+    //     onClose();
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
   };
 
   const getButtonStyle = (category, value) => {
@@ -266,229 +269,313 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
           </button>
         </div>
         {step === 1 && (
-         <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
-         <h3 className="text-base sm:text-lg font-semibold">Fill Info</h3>
-         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-           <div>
-             <label className="block mb-1 text-sm font-medium text-gray-700">
-               Category
-             </label>
-             <select
-               name="category"
-               className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-               value={formData.category}
-               onChange={handleInputChange}
-             >
-               <option value="Appartment">Appartment</option>
-               {categories.map((category, index) => (
-                 <option key={index} value={category}>
-                   {category}
-                 </option>
-               ))}
-             </select>
-           </div>
-           <div>
-             <label className="block mb-1 text-sm font-medium text-gray-700">
-               Name of residential complex
-             </label>
-             <select
-               name="residentialComplex"
-               className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-               value={formData.residentialComplex}
-               onChange={handleInputChange}
-             >
-               <option value="">Select</option>
-             </select>
-           </div>
-         </div>
-         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
-           <div>
-             <label className="block mb-1 text-sm font-medium text-gray-700">
-               Total area (m²)
-             </label>
-             <input
-               name="totalArea"
-               type="number"
-               className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
-               value={formData.totalArea}
-               onChange={handleInputChange}
-             />
-           </div>
-           <div>
-             <label className="block mb-1 text-sm font-medium text-gray-700">
-               Living area (m²)
-             </label>
-             <input
-               name="livingArea"
-               type="number"
-               className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
-               value={formData.livingArea}
-               onChange={handleInputChange}
-             />
-           </div>
-         </div>
-         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-           {[
-             "floor",
-             "apartmentStories",
-             "buildingFloors",
-             "livingRoom",
-             "bedroom",
-             "bathroom",
-             "balcony",
-           ].map((field, index) => (
-             <div key={index} className="flex flex-col items-start">
-               <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                 {field == "livingRoom"
-                   ? "Living rooms"
-                   : field == "buildingFloors"
-                   ? "Building floors"
-                   : field == "apartmentStories"
-                   ? "Appartment stories"
-                   : field}
-               </label>
-               <div className="flex items-center space-x-2">
-                 <button
-                   onClick={() => handleNumberChange(field, "subtract")}
-                   className="p-2 border rounded-md hover:bg-gray-100"
-                 >
-                   <Subtract />
-                 </button>
-                 <input
-                   name={field}
-                   type="number"
-                   className="w-[36px] h-[32px] text-center border rounded-md"
-                   value={formData[field]}
-                   onChange={handleInputChange}
-                   min="0"
-                   readOnly
-                 />
-                 <button
-                   onClick={() => handleNumberChange(field, "add")}
-                   className="p-2 border rounded-md hover:bg-gray-100"
-                 >
-                   <Add />
-                 </button>
-               </div>
-             </div>
-           ))}
-         </div>
-         <div className="flex flex-wrap gap-4 items-center mt-4">
-           {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
-             (field, index) => (
-               <div key={index} className="flex items-center gap-2">
-                 <label className="text-sm font-medium text-gray-700 capitalize">
-                   {field === "parkingSlot"
-                     ? "Parking slot"
-                     : field === "installment"
-                     ? "Installment"
-                     : field === "swimmingPool"
-                     ? "Swimming pool"
-                     : "Elevator"}
-                 </label>
-                 <button onClick={() => handleCustomToggle(field)}>
-                   {formData[field] ? <Active /> : <Inactive />}
-                 </button>
-               </div>
-             )
-           )}
-         </div>
-         <div className="mt-4">
-           <label className="block mb-1 text-sm font-medium text-gray-700">
-             Condition
-           </label>
-           <div className="flex flex-wrap gap-2">
-             {conditions.map((condition, index) => (
-               <button
-                 key={index}
-                 onClick={() =>
-                   setFormData((prev) => ({ ...prev, condition: condition }))
-                 }
-                 className={`${getButtonStyle(
-                   "condition",
-                   condition
-                 )} bg-gray-100 px-4 py-2 rounded-md`}
-               >
-                 {condition}
-               </button>
-             ))}
-           </div>
-         </div>
-         <div className="flex flex-wrap gap-4 mt-4">
-           <div className="flex flex-col w-full sm:w-auto">
-             <label className="block mb-1 text-sm font-medium text-gray-700">
-               Year
-             </label>
-             <input
-               name="year"
-               type="number"
-               className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
-               value={formData.year}
-               onChange={handleInputChange}
-             />
-           </div>
-           <div className="flex flex-col w-full sm:w-auto">
-             <label className="block mb-1 text-sm font-medium text-gray-700">
-               Price
-             </label>
-             <div className="flex items-center gap-2">
-               <input
-                 name="price"
-                 type="number"
-                 className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
-                 value={formData.price}
-                 onChange={handleInputChange}
-               />
-               <select
-                 name="currency"
-                 className="h-[52px] p-2 border rounded-md bg-gray-100"
-                 value={formData.currency}
-                 onChange={handleInputChange}
-               >
-                 <option value="$">$</option>
-                 <option value="€">€</option>
-                 <option value="₺">₺</option>
-                 <option value="£">£</option>
-               </select>
-             </div>
-           </div>
-         </div>
-         <div className="mt-4">
-           <label className="block mb-1 text-sm font-medium text-gray-700">
-             Description
-           </label>
-           <textarea
-             name="description"
-             className="w-full h-[119px] p-2 border rounded-md"
-             rows="4"
-             value={formData.description}
-             onChange={handleInputChange}
-           />
-         </div>
-         <div className="flex justify-center items-center mt-4">
-           <div className="flex space-x-2">
-             <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-             <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-             <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-             <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-           </div>
-         </div>
-         <div className="flex justify-center mt-4 gap-4">
-           <button
-             className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-             onClick={() => onClose()}
-           >
-             Previous
-           </button>
-           <button
-             className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-             onClick={() => setStep(2)}
-           >
-             Next
-           </button>
-         </div>
-       </div>
-       
+          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
+            <h3 className="text-base sm:text-lg font-semibold">Fill Info</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Category
+                </label>
+                <select
+                  name="category"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                >
+                  <option value="Appartment">Appartment</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Name of residential complex
+                </label>
+                <select
+                  name="residentialComplex"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.residentialComplex}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                </select>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Total area (m²)
+                </label>
+                <input
+                  name="totalArea"
+                  type="number"
+                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  value={formData.totalArea}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Living area (m²)
+                </label>
+                <input
+                  name="livingArea"
+                  type="number"
+                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  value={formData.livingArea}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+              {[
+                "floor",
+                "apartmentStories",
+                "buildingFloors",
+                "livingRoom",
+                "bedroom",
+                "bathroom",
+                "balcony",
+              ].map((field, index) => (
+                <div key={index} className="flex flex-col items-start">
+                  <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                    {field == "livingRoom"
+                      ? "Living rooms"
+                      : field == "buildingFloors"
+                      ? "Building floors"
+                      : field == "apartmentStories"
+                      ? "Appartment stories"
+                      : field}
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => handleNumberChange(field, "subtract")}
+                      className="p-2 border rounded-md hover:bg-gray-100"
+                    >
+                      <Subtract />
+                    </button>
+                    <input
+                      name={field}
+                      type="number"
+                      className="w-[36px] h-[32px] text-center border rounded-md"
+                      value={formData[field]}
+                      onChange={handleInputChange}
+                      min="0"
+                      readOnly
+                    />
+                    <button
+                      onClick={() => handleNumberChange(field, "add")}
+                      className="p-2 border rounded-md hover:bg-gray-100"
+                    >
+                      <Add />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* <div className="flex flex-wrap gap-4 items-center mt-4">
+              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
+                (field, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700 capitalize">
+                      {field === "parkingSlot"
+                        ? "Parking slot"
+                        : field === "installment"
+                        ? "Installment"
+                        : field === "swimmingPool"
+                        ? "Swimming pool"
+                        : "Elevator"}
+                    </label>
+                    <button onClick={() => handleCustomToggle(field)}>
+                      {formData[field] ? <Active /> : <Inactive />}
+                    </button>
+                  </div>
+                )
+              )}
+            </div> */}
+            <div className="mt-4">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
+                Condition
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {conditions.map((condition, index) => (
+                  <button
+                    key={index}
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, condition: condition }))
+                    }
+                    className={`${getButtonStyle(
+                      "condition",
+                      condition
+                    )} bg-gray-100 px-4 py-2 rounded-md`}
+                  >
+                    {condition}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-4 mt-4">
+              {/* <div className="flex flex-col w-full sm:w-auto">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Year
+                </label>
+                <input
+                  name="year"
+                  type="number"
+                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                />
+              </div> */}
+              {/* <div className="flex flex-col w-full sm:w-auto">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Price
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    name="price"
+                    type="number"
+                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                  <select
+                    name="currency"
+                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    value={formData.currency}
+                    onChange={handleInputChange}
+                  >
+                    <option value="$">$</option>
+                    <option value="€">€</option>
+                    <option value="₺">₺</option>
+                    <option value="£">£</option>
+                  </select>
+                </div>
+              </div> */}
+
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Installment
+                </label>
+                <select
+                  name="installment"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.installment}
+                  onChange={handleInputChange}
+                >
+                  <option value="installment">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Parking
+                </label>
+                <select
+                  name="parkingSlot"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.parkingSlot}
+                  onChange={handleInputChange}
+                >
+                  <option value="parkingSlot">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Swimming pool
+                </label>
+                <select
+                  name="swimmingPool"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.swimmingPool}
+                  onChange={handleInputChange}
+                >
+                  <option value="swimmingPool">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    GYM
+                  </label>
+                  <select
+                    name="gym"
+                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                    value={formData.gym}
+                    onChange={handleInputChange}
+                  >
+                    <option value="gym">GYM</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Elevator
+                    </label>
+                    <select
+                      name="elevator"
+                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                      value={formData.elevator}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
+                Description
+              </label>
+              <textarea
+                name="description"
+                className="w-full h-[119px] p-2 border rounded-md"
+                rows="4"
+                value={formData.description}
+                onChange={handleInputChange}
+              />
+            </div>
+            <div className="flex justify-center items-center mt-4">
+              <div className="flex space-x-2">
+                <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+              </div>
+            </div>
+            <div className="flex justify-center mt-4 gap-4">
+              <button
+                className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+                onClick={() => onClose()}
+              >
+                Previous
+              </button>
+              <button
+                className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+                onClick={() => setStep(2)}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         )}
         {step === 2 && (
           <div className="flex flex-col justify-between h-full gap-4">
@@ -613,111 +700,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
           </div>
         )}
         {step === 3 && (
-          // <div className="flex flex-col justify-between h-full gap-4">
-          //   {/* Content area */}
-          //   <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
-          //     {/* Header */}
-          //     <div className="text-center mb-4">
-          //       <h3 className="text-lg font-semibold">Upload photos</h3>
-          //     </div>
-
-          //     {/* Drag and Drop Area or Click to Browse */}
-          //     <div
-          //       className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
-          //       onDragOver={handleDragOver}
-          //       onDrop={handleDrop}
-          //     >
-          //       <p className="text-sm text-gray-600 mb-4">
-          //         Drag photos here to start uploading
-          //       </p>
-          //       <button
-          //         className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
-          //         onClick={() =>
-          //           document.querySelector('input[type="file"]')?.click()
-          //         }
-          //       >
-          //         Browse Files
-          //       </button>
-          //       <input
-          //         type="file"
-          //         multiple
-          //         accept="image/*,video/*"
-          //         onChange={handleImageUpload}
-          //         className="hidden"
-          //       />
-          //     </div>
-
-          //     {selectedFiles.length > 0 && (
-          //       // Make it horizontally scrollable instead of wrapping
-          //       <div className="mt-4 flex overflow-x-auto space-x-4">
-          //         {selectedFiles.map((file, index) => {
-          //           const previewUrl = URL.createObjectURL(file);
-
-          //           return (
-          //             // Center the media within this container
-          //             <div
-          //               key={index}
-          //               className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50
-          //                     overflow-hidden flex items-center justify-center"
-          //             >
-          //               {file.type.startsWith("image/") ? (
-          //                 <img
-          //                   src={previewUrl}
-          //                   alt={file.name}
-          //                   className="max-w-full max-h-full object-cover"
-          //                 />
-          //               ) : (
-          //                 <video
-          //                   src={previewUrl}
-          //                   className="max-w-full max-h-full object-cover"
-          //                   controls
-          //                 />
-          //               )}
-
-          //               {/* Delete button */}
-          //               <button
-          //                 className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700
-          //                       rounded-full flex items-center justify-center text-xs
-          //                       hover:bg-red-600 hover:text-white transition-colors"
-          //                 onClick={() => handleImageRemove(index)}
-          //               >
-          //                 X
-          //               </button>
-          //             </div>
-          //           );
-          //         })}
-          //       </div>
-          //     )}
-          //   </div>
-
-          //   {/* Footer / Pagination Controls */}
-          //   <div className="py-4">
-          //     <div className="flex justify-center items-center">
-          //       <div className="flex space-x-2">
-          //         {/* For the "dots" at the bottom */}
-          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-          //         <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-          //         <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-          //       </div>
-          //     </div>
-
-          //     <div className="flex justify-center mt-4 gap-4">
-          //       <button
-          //         className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-          //         onClick={() => setStep(1)}
-          //       >
-          //         Previous
-          //       </button>
-          //       <button
-          //         className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-          //         onClick={() => setStep(3)}
-          //       >
-          //         Next
-          //       </button>
-          //     </div>
-          //   </div>
-          // </div>
           <div className="flex flex-col justify-between h-full gap-4">
             {/* Content area */}
             <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
