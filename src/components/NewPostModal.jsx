@@ -185,31 +185,30 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    console.log("formDataformDataformData >>>>>>>>", formData);
-    // if (selectedFiles.length > 0) {
-    //   const formDataToSend = new FormData();
-    //   Object.keys(formData).forEach((key) => {
-    //     formDataToSend.append(key, formData[key]);
-    //   });
-    //   selectedFiles.forEach((file) => {
-    //     formDataToSend.append("files", file);
-    //   });
+    if (selectedFiles.length > 0) {
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        formDataToSend.append(key, formData[key]);
+      });
+      selectedFiles.forEach((file) => {
+        formDataToSend.append("files", file);
+      });
 
-    //   selectedDocuments.forEach((file) => {
-    //     formDataToSend.append("documents", file);
-    //   });
+      selectedDocuments.forEach((file) => {
+        formDataToSend.append("documents", file);
+      });
 
-    //   for (var pair of formDataToSend.entries()) {
-    //     console.log(pair[0] + ", " + pair[1]);
-    //   }
-    //   try {
-    //     dispatch(addPost(formDataToSend));
-    //     dispatch(fetchPosts());
-    //     onClose();
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
+      for (var pair of formDataToSend.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      try {
+        dispatch(addPost(formDataToSend));
+        dispatch(fetchPosts());
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
+    }
   };
 
   const getButtonStyle = (category, value) => {
