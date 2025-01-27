@@ -68,7 +68,17 @@ const LocationSection = React.memo(({ location }) => (
 ));
 
 export const HouseItem = React.memo(
-  ({ id, images, price, location, rooms, area, currFloor, building }) => {
+  ({
+    id,
+    images,
+    price,
+    location,
+    rooms,
+    area,
+    currFloor,
+    building,
+    complex,
+  }) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
@@ -208,7 +218,7 @@ export const HouseItem = React.memo(
               {images.slice(3).map((img, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <Link to={`/appartment/${id}`}>
+                    <Link to={complex ? `/complex/${id}` : `/appartment/${id}`}>
                       <img
                         src={img.image_url}
                         alt={`Slide ${index + 1}`}
@@ -224,28 +234,40 @@ export const HouseItem = React.memo(
           )}
 
           {/* Previous Button */}
-          <div
-            ref={prevRef}
-            className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-prev top-1/2 left-2"
-            onClick={() => swiperRef.current?.slidePrev()}
-          >
-            <ArrowLeft color="white" size="30" />
-          </div>
+          {complex ? (
+            ""
+          ) : (
+            <div
+              ref={prevRef}
+              className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-prev top-1/2 left-2"
+              onClick={() => swiperRef.current?.slidePrev()}
+            >
+              <ArrowLeft color="white" size="30" />
+            </div>
+          )}
 
           {/* Next Button */}
-          <div
-            ref={nextRef}
-            className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-next top-1/2 right-2"
-            onClick={() => swiperRef.current?.slideNext()}
-          >
-            <ArrowRight color="white" size="30" />
-          </div>
+
+          {complex ? (
+            ""
+          ) : (
+            <div
+              ref={nextRef}
+              className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-next top-1/2 right-2"
+              onClick={() => swiperRef.current?.slideNext()}
+            >
+              <ArrowRight color="white" size="30" />
+            </div>
+          )}
 
           <HeartButton liked={liked} onClick={handleLikeClick} />
         </div>
 
         {/* Information Section */}
-        <Link to={`/appartment/${id}`} className="py-4 px-3 block">
+        <Link
+          to={complex ? `/complex/${id}` : `/appartment/${id}`}
+          className="py-4 px-3 block"
+        >
           <PriceSection
             price={formatNumber(price / currencies_to_dollar[currency])}
             currency={currency}

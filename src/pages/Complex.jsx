@@ -43,6 +43,9 @@ const Complex = () => {
               <div className="flex flex-col ">
                 <div className="w-full">
                   <Breadcrumbs title={listing.id} />
+                  <h1 className="text-[#525C76] font-medium text-[14px] leading-[22.4px] capitalize">
+                    {listing.category}
+                  </h1>
                   <PropertyShowcase
                     length={listing.images.length}
                     images={listing.images}
@@ -90,8 +93,11 @@ const Complex = () => {
                   </div>
                 </div>
               </div>
-              {/* <div className="w-[96%] mx-auto my-20">
-              {popularProperties ? (
+              <div className="w-[96%] mx-auto my-20">
+                {/* {
+                  console.log()
+                } */}
+                {/* {popularProperties ? (
                 <div className="grid grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-4">
                   {popularProperties.map((item) => (
                     <HouseItem key={item.id} {...item} />
@@ -102,8 +108,8 @@ const Complex = () => {
                   No related properties available yet.
                 </p>
               )}
-              <Pagination />
-            </div> */}
+              <Pagination /> */}
+              </div>
               {/* location */}
               <div className="w-full border-t-2 py-14">
                 <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px]">

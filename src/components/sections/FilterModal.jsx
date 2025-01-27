@@ -107,10 +107,57 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             {/* Close icon */}
           </button>
           <h3 className="text-[28px] font-semibold text-left mb-2">Filter</h3>
+          <FilterSelect
+            label="Category"
+            options={[
+              { value: "Apartment", label: "Apartment" },
+              { value: "Villa", label: "Villa" },
+              { value: "Penthouse", label: "Penthouse" },
+              { value: "Cottages", label: "Cottages" },
+            ]}
+            category="category"
+            fromKey="from"
+            toKey="to"
+            filters={filters}
+            setFilter={setFilter}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+          />
+
+          <FilterSelect
+            label="Residence Complex"
+            options={[
+              { value: "Residence Complex", label: "Residence Complex" },
+              { value: "Villa", label: "Villa" },
+              { value: "Penthouse", label: "Penthouse" },
+              { value: "Cottages", label: "Cottages" },
+            ]}
+            category="category"
+            fromKey="from"
+            toKey="to"
+            filters={filters}
+            setFilter={setFilter}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+          />
+
+          <FilterNumberRange
+            label="Price"
+            category="price"
+            fromKey="Min"
+            toKey="Max"
+            filters={filters}
+            setFilter={setFilter}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+            // unit="m²"
+          />
+
+          {/* =========================== */}
 
           {/* Filter Components */}
           <FilterNumberRange
-            label="Area (m²)"
+            label="Total area"
             category="area"
             fromKey="from"
             toKey="to"
@@ -120,7 +167,18 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             setSelectedFilters={setSelectedFilters}
             unit="m²"
           />
-          <FilterButtonGroup
+          <FilterNumberRange
+            label="Total area"
+            category="area"
+            fromKey="from"
+            toKey="to"
+            filters={filters}
+            setFilter={setFilter}
+            selectedFilters={selectedFilters}
+            setSelectedFilters={setSelectedFilters}
+            unit="m²"
+          />
+          {/* <FilterButtonGroup
             label="Renovation"
             options={[
               "Cosmetic",
@@ -132,7 +190,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             setFilter={setFilter}
             setSelectedFilters={setSelectedFilters}
             selectedFilters={selectedFilters}
-          />
+          /> */}
 
           <FilterNumberRange
             label="Floor"
@@ -148,48 +206,46 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
           />
 
           <div className="flex flex-wrap justify-between gap-3 my-4">
-            {["bathroom", "livingRoom", "bedroom", "balcony"].map(
-              (type) => (
-                <div key={type} className="flex flex-wrap items-center my-2">
-                  <label className="block text-[10px] font-semibold capitalize text-[#525C76] leading-[16px] mr-2">
-                    {type}
-                  </label>
-                  <div className="flex items-center gap-1">
-                    <button
-                      onClick={() => {
-                        decrementFilter(`rooms.${type}`);
-                        setSelectedFilters((prev) => ({
-                          ...prev,
-                          rooms: {
-                            ...prev.rooms,
-                            [type]: Math.max((prev.rooms?.[type] || 0) - 1, 0),
-                          },
-                        }));
-                      }}
-                    >
-                      <Subtract />
-                    </button>
-                    <span className="text-[14px] align-middle font-semibold leading-[22.4px]">
-                      {selectedFilters.rooms?.[type] || 0}
-                    </span>
-                    <button
-                      onClick={() => {
-                        incrementFilter(`rooms.${type}`);
-                        setSelectedFilters((prev) => ({
-                          ...prev,
-                          rooms: {
-                            ...prev.rooms,
-                            [type]: (prev.rooms?.[type] || 0) + 1,
-                          },
-                        }));
-                      }}
-                    >
-                      <Add />
-                    </button>
-                  </div>
+            {["bathroom", "livingRoom", "bedroom", "balcony"].map((type) => (
+              <div key={type} className="flex flex-wrap items-center my-2">
+                <label className="block text-[10px] font-semibold capitalize text-[#525C76] leading-[16px] mr-2">
+                  {type}
+                </label>
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => {
+                      decrementFilter(`rooms.${type}`);
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        rooms: {
+                          ...prev.rooms,
+                          [type]: Math.max((prev.rooms?.[type] || 0) - 1, 0),
+                        },
+                      }));
+                    }}
+                  >
+                    <Subtract />
+                  </button>
+                  <span className="text-[14px] align-middle font-semibold leading-[22.4px]">
+                    {selectedFilters.rooms?.[type] || 0}
+                  </span>
+                  <button
+                    onClick={() => {
+                      incrementFilter(`rooms.${type}`);
+                      setSelectedFilters((prev) => ({
+                        ...prev,
+                        rooms: {
+                          ...prev.rooms,
+                          [type]: (prev.rooms?.[type] || 0) + 1,
+                        },
+                      }));
+                    }}
+                  >
+                    <Add />
+                  </button>
                 </div>
-              )
-            )}
+              </div>
+            ))}
           </div>
           {/* Toggles */}
           <div className="flex justify-start gap-6 mb-4"></div>

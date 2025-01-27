@@ -7,6 +7,7 @@ import { NoViews } from "../../assets/icons/NoViews";
 import { Report } from "../../assets/icons/Report";
 import { ShowOnMap } from "../../assets/icons/ShowOnMap";
 import { PostView } from "../../assets/icons/PostView";
+import CoverImage from "../../assets/images/WhatsApp.jpeg";
 
 const ImageGallery = ({ mainImage, thumbnails, length }) => {
   const [currentImage, setCurrentImage] = useState(mainImage);
@@ -48,7 +49,19 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
 
 const PropertyShowcase = ({ length, property }) => {
   if (!property) {
-    return <div>No property found.</div>;
+    return (
+      <div>
+        <img
+          src={CoverImage}
+          alt="Thumbnail"
+          className="object-cover rounded-md w-full h-full"
+          loading="lazy"
+          style={{
+            width: "40%",
+          }}
+        />
+      </div>
+    );
   }
 
   const propertyImages = property.images.map((image) => image.image_url);

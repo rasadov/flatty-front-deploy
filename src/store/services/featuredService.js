@@ -7,14 +7,11 @@
 import axios from "axios";
 
 export const fetchFeaturedProperties = async () => {
-  const response = await axios.get(
-    "https://api.flatty.ai/api/v1/property/",
-    {
-      params: {
-        page: 1,
-        elements: 5,
-      },
-    }
-  );
+  const response = await axios.get("https://api.flatty.ai/api/v1/property/", {
+    params: {
+      page: 1,
+      elements: 5,
+    },
+  });
   return response.data;
 };

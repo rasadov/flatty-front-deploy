@@ -129,10 +129,10 @@ export const Profile = () => {
   return (
     <div className="w-full py-3 mx-auto mt-8">
       <Breadcrumbs title="Apartment" />
-      <div className="flex flex-col items-start gap-6 mt-8 lg:flex-row">
+      <div className="flex flex-col gap-6 mt-8 lg:flex-row">
         {/* Agent Info */}
-        <div className=" p-6 bg-white rounded-lg w-[578px] min-h-[272px]">
-          <div className="flex items-center justify-start gap-4 mb-6">
+        <div className="p-6 bg-white rounded-lg w-full lg:w-[578px] min-h-[272px]">
+          <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-6">
             <img
               src={
                 user?.image_url
@@ -142,23 +142,13 @@ export const Profile = () => {
               className="rounded-full w-[120px] h-[120px] object-cover"
               alt="Agent"
             />
-            <div className="inline-block w-full">
+            <div className="w-full">
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <h2 className="text-lg font-semibold">
                     {agent.user ? agent.user.name : ""}
                   </h2>
-                  {/* <DotsThreeOutline /> */}
                 </div>
-
-                {/* <div className="flex items-center gap-1 text-sm text-[#525C76]">
-                  <Certified />
-                  <span>Certified</span>
-                </div>
-                <AgencyMiniCard
-                  agencyName="Emtan Construction"
-                  agencyProfileLink="/complex"
-                /> */}
                 <div className="flex items-center justify-start gap-4">
                   <Rating rating="4" />
                   <p className="text-sm text-[#525C76]">
@@ -174,17 +164,13 @@ export const Profile = () => {
               (label, index) => (
                 <div key={index} className="text-center">
                   <span className="block text-sm text-gray-500">{label}</span>
-                  {/* <p className="font-medium text-lg text-[#0F1D40]">
-                    {index === 0 ? agent.experience ? agent.experience + " years" : "Unknown" :
-                    index === 1 ? agent.sales ? agent.sales : "Unknown":
-                    index === 2 ? properties.length ? properties.length : 0 : ""}
-                  </p> */}
+                  {/* Add respective values */}
                 </div>
               )
             )}
           </div>
           {/* Buttons */}
-          <div className="flex justify-center gap-4 mt-4">
+          <div className="flex flex-col lg:flex-row justify-center gap-4 mt-4">
             <Button
               className="w-full py-2 text-sm h-[45px] font-semibold text-white rounded-sm leading-[28px] text-[18px]"
               variant="primary"
@@ -201,18 +187,11 @@ export const Profile = () => {
               <NewComplex />
               New Complex
             </Button>
-            {/* <Button
-            className="w-full py-2 h-[45px] text-[#8247E5] bg-transparent border  leading-[28px] border-[#8247E5] rounded-sm text-[18px] font-semibold"
-            variant="cancel"
-          >
-            <EditPost />
-            Edit
-          </Button> */}
           </div>
         </div>
 
         {/* Agent Image */}
-        <div className="w-[683px] h-[345px] relative">
+        <div className="w-full lg:w-[683px] h-[345px] relative">
           <img
             src={agent_back}
             className="absolute w-full h-auto rounded-lg bottom-10"
@@ -221,25 +200,24 @@ export const Profile = () => {
           />
         </div>
       </div>
+
       {/* Active Posts Section */}
       <CardList sectionName="My posts" seeAll={false}>
         {loading && <p>Loading...</p>}
-        {/* {error && <p>Error: {error}</p>} */}
         {Array.isArray(properties) && properties.length > 0 ? (
           properties.map((item) => (
-            <a href={"/appartment/" + item.id}>
+            <a href={"/appartment/" + item.id} key={item.id}>
               <AgentPost
-                key={item.id}
-                img={item.images[0]?.image_url} // Access the image URL safely
+                img={item.images[0]?.image_url}
                 price={item.price}
                 location={
                   item.location?.address ||
                   `${item.location?.latitude}, ${item.location?.longitude}`
-                } // Format location as a string
-                area={item?.info?.total_area} // Access the area safely
-                rooms={item.info?.bedrooms} // Access the number of rooms safely
-                currFloor={item.info?.floor} // Access the current floor safely
-                building={item.info?.apartment_stories} // Access the building info safely
+                }
+                area={item?.info?.total_area}
+                rooms={item.info?.bedrooms}
+                currFloor={item.info?.floor}
+                building={item.info?.apartment_stories}
                 id={item.id}
               />
             </a>
@@ -248,6 +226,8 @@ export const Profile = () => {
           <p>No posts found</p>
         )}
       </CardList>
+
+      {/* Modals */}
       <NewPostModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}

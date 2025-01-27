@@ -167,7 +167,21 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       address: address,
     }));
   };
-
+  const mapStyles = [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      stylers: [{ visibility: "off" }],
+    },
+  ];
   const handleSubmit = async () => {
     if (selectedFiles.length > 0) {
       const formDataToSend = new FormData();
@@ -229,16 +243,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
 
   if (!isOpen) return null;
 
-  console.log("IAMNAJSLDJLKJ");
-  console.log(selectedFiles.length);
-
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
       <motion.div
-        className="w-[50%] h-[600px] bg-white rounded-[6px] shadow-lg flex flex-col"
+        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -255,253 +266,229 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
           </button>
         </div>
         {step === 1 && (
-          <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
-            <h3 className="text-lg font-semibold">Fill Info</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Category
-                </label>
-                <select
-                  name="category"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.category}
-                  onChange={handleInputChange}
-                >
-                  <option value="Appartment">Appartment</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Name of residential complex
-                </label>
-                <select
-                  name="residentialComplex"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
-                  value={formData.residentialComplex}
-                  onChange={handleInputChange}
-                >
-                  <option value="">Select</option>
-                  {/* {complexes?  complexes.map((complex, index) => (
-                    <option key={index} value={complex.name}>
-                      {complex.name}
-                    </option>
-                  )) : ""} */}
-                </select>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Total area (m²)
-                </label>
-                <input
-                  name="totalArea"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.totalArea}
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Living area (m²)
-                </label>
-                <input
-                  name="livingArea"
-                  type="number"
-                  className="w-[106px] h-[52px] p-2 border rounded-md"
-                  value={formData.livingArea}
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
-            {/* <div className="flex flex-wrap gap-2 justify-between mt-4"> */}
-            <div className="grid grid-cols-4 gap-6">
-              {[
-                "floor",
-                "apartmentStories",
-                "buildingFloors",
-                "livingRoom",
-                "bedroom",
-                "bathroom",
-                "balcony",
-              ].map((field, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between my-3"
-                >
-                  <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                    {field == "livingRoom"
-                      ? "Living rooms"
-                      : field == "buildingFloors"
-                      ? "Building floors"
-                      : field == "apartmentStories"
-                      ? "Appartment stories"
-                      : field}
-                  </label>
-                  <div className="flex items-center">
-                    <button
-                      onClick={() => handleNumberChange(field, "subtract")}
-                    >
-                      <Subtract />
-                    </button>
-                    <input
-                      name={field}
-                      type="number"
-                      className="w-[36px] h-[32px] text-center"
-                      value={formData[field]}
-                      onChange={handleInputChange}
-                      min="0"
-                      readOnly
-                    />
-                    <button onClick={() => handleNumberChange(field, "add")}>
-                      <Add />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
-              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
-                (field, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-1 mx-auto my-3"
-                  >
-                    <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                      {field === "parkingSlot"
-                        ? "Parking slot"
-                        : field === "installment"
-                        ? "Installment"
-                        : field === "swimmingPool"
-                        ? "Swimming pool"
-                        : field === "elevator"
-                        ? "Elevator"
-                        : field}
-                    </label>
-                    <div className="flex items-center">
-                      <button onClick={() => handleCustomToggle(field)}>
-                        {formData[field] ? <Active /> : <Inactive />}
-                      </button>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-            <div className="mt-4">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Condition
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {conditions.map((condition, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      setFormData((prev) => ({ ...prev, condition: condition }))
-                    }
-                    className={
-                      getButtonStyle("condition", condition) + " bg-gray-100"
-                    }
-                  >
-                    {condition}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div className="flex justify-start gap-4 mt-4">
-              <div className="flex flex-col items-left gap-2">
-                <div
-                  style={{
-                    textAlign: "left",
-                  }}
-                >
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Year
-                  </label>
-                </div>
-                <div className="flex gap-1">
-                  <input
-                    name="year"
-                    type="number"
-                    className="w-[76px] h-[52px] p-2 border rounded-md"
-                    value={formData.year}
-                    onChange={handleInputChange}
-                  />
-                </div>
-              </div>
-              <div className="flex flex-col items-left gap-2">
-                <div
-                  style={{
-                    textAlign: "left",
-                  }}
-                >
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Price
-                  </label>
-                </div>
-                <div className="flex gap-1">
-                  <input
-                    name="price"
-                    type="number"
-                    className="w-[106px] h-[52px] p-2 border rounded-md"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                  />
-                  <select
-                    name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100"
-                    value={formData.currency}
-                    onChange={handleInputChange}
-                  >
-                    <option value="$">$</option>
-                    <option value="€">€</option>
-                    <option value="₺">₺</option>
-                    <option value="£">£</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div>
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Description
-              </label>
-              <textarea
-                name="description"
-                className="w-full h-[119px] p-2 border rounded-md"
-                rows="4"
-                value={formData.description}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className="flex justify-center items-center">
-              <div className="flex space-x-2">
-                <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-                <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-              </div>
-            </div>
-            <div className="flex justify-center mt-4 gap-4">
-              <button
-                className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-                onClick={() => onClose()}
-              >
-                Previous
-              </button>
-              <button
-                className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-                onClick={() => setStep(2)}
-              >
-                Next
-              </button>
-            </div>
-          </div>
+         <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
+         <h3 className="text-base sm:text-lg font-semibold">Fill Info</h3>
+         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+           <div>
+             <label className="block mb-1 text-sm font-medium text-gray-700">
+               Category
+             </label>
+             <select
+               name="category"
+               className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+               value={formData.category}
+               onChange={handleInputChange}
+             >
+               <option value="Appartment">Appartment</option>
+               {categories.map((category, index) => (
+                 <option key={index} value={category}>
+                   {category}
+                 </option>
+               ))}
+             </select>
+           </div>
+           <div>
+             <label className="block mb-1 text-sm font-medium text-gray-700">
+               Name of residential complex
+             </label>
+             <select
+               name="residentialComplex"
+               className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+               value={formData.residentialComplex}
+               onChange={handleInputChange}
+             >
+               <option value="">Select</option>
+             </select>
+           </div>
+         </div>
+         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+           <div>
+             <label className="block mb-1 text-sm font-medium text-gray-700">
+               Total area (m²)
+             </label>
+             <input
+               name="totalArea"
+               type="number"
+               className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+               value={formData.totalArea}
+               onChange={handleInputChange}
+             />
+           </div>
+           <div>
+             <label className="block mb-1 text-sm font-medium text-gray-700">
+               Living area (m²)
+             </label>
+             <input
+               name="livingArea"
+               type="number"
+               className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+               value={formData.livingArea}
+               onChange={handleInputChange}
+             />
+           </div>
+         </div>
+         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+           {[
+             "floor",
+             "apartmentStories",
+             "buildingFloors",
+             "livingRoom",
+             "bedroom",
+             "bathroom",
+             "balcony",
+           ].map((field, index) => (
+             <div key={index} className="flex flex-col items-start">
+               <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                 {field == "livingRoom"
+                   ? "Living rooms"
+                   : field == "buildingFloors"
+                   ? "Building floors"
+                   : field == "apartmentStories"
+                   ? "Appartment stories"
+                   : field}
+               </label>
+               <div className="flex items-center space-x-2">
+                 <button
+                   onClick={() => handleNumberChange(field, "subtract")}
+                   className="p-2 border rounded-md hover:bg-gray-100"
+                 >
+                   <Subtract />
+                 </button>
+                 <input
+                   name={field}
+                   type="number"
+                   className="w-[36px] h-[32px] text-center border rounded-md"
+                   value={formData[field]}
+                   onChange={handleInputChange}
+                   min="0"
+                   readOnly
+                 />
+                 <button
+                   onClick={() => handleNumberChange(field, "add")}
+                   className="p-2 border rounded-md hover:bg-gray-100"
+                 >
+                   <Add />
+                 </button>
+               </div>
+             </div>
+           ))}
+         </div>
+         <div className="flex flex-wrap gap-4 items-center mt-4">
+           {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
+             (field, index) => (
+               <div key={index} className="flex items-center gap-2">
+                 <label className="text-sm font-medium text-gray-700 capitalize">
+                   {field === "parkingSlot"
+                     ? "Parking slot"
+                     : field === "installment"
+                     ? "Installment"
+                     : field === "swimmingPool"
+                     ? "Swimming pool"
+                     : "Elevator"}
+                 </label>
+                 <button onClick={() => handleCustomToggle(field)}>
+                   {formData[field] ? <Active /> : <Inactive />}
+                 </button>
+               </div>
+             )
+           )}
+         </div>
+         <div className="mt-4">
+           <label className="block mb-1 text-sm font-medium text-gray-700">
+             Condition
+           </label>
+           <div className="flex flex-wrap gap-2">
+             {conditions.map((condition, index) => (
+               <button
+                 key={index}
+                 onClick={() =>
+                   setFormData((prev) => ({ ...prev, condition: condition }))
+                 }
+                 className={`${getButtonStyle(
+                   "condition",
+                   condition
+                 )} bg-gray-100 px-4 py-2 rounded-md`}
+               >
+                 {condition}
+               </button>
+             ))}
+           </div>
+         </div>
+         <div className="flex flex-wrap gap-4 mt-4">
+           <div className="flex flex-col w-full sm:w-auto">
+             <label className="block mb-1 text-sm font-medium text-gray-700">
+               Year
+             </label>
+             <input
+               name="year"
+               type="number"
+               className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+               value={formData.year}
+               onChange={handleInputChange}
+             />
+           </div>
+           <div className="flex flex-col w-full sm:w-auto">
+             <label className="block mb-1 text-sm font-medium text-gray-700">
+               Price
+             </label>
+             <div className="flex items-center gap-2">
+               <input
+                 name="price"
+                 type="number"
+                 className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                 value={formData.price}
+                 onChange={handleInputChange}
+               />
+               <select
+                 name="currency"
+                 className="h-[52px] p-2 border rounded-md bg-gray-100"
+                 value={formData.currency}
+                 onChange={handleInputChange}
+               >
+                 <option value="$">$</option>
+                 <option value="€">€</option>
+                 <option value="₺">₺</option>
+                 <option value="£">£</option>
+               </select>
+             </div>
+           </div>
+         </div>
+         <div className="mt-4">
+           <label className="block mb-1 text-sm font-medium text-gray-700">
+             Description
+           </label>
+           <textarea
+             name="description"
+             className="w-full h-[119px] p-2 border rounded-md"
+             rows="4"
+             value={formData.description}
+             onChange={handleInputChange}
+           />
+         </div>
+         <div className="flex justify-center items-center mt-4">
+           <div className="flex space-x-2">
+             <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
+             <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+             <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+             <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
+           </div>
+         </div>
+         <div className="flex justify-center mt-4 gap-4">
+           <button
+             className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
+             onClick={() => onClose()}
+           >
+             Previous
+           </button>
+           <button
+             className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
+             onClick={() => setStep(2)}
+           >
+             Next
+           </button>
+         </div>
+       </div>
+       
         )}
         {step === 2 && (
           <div className="flex flex-col justify-between h-full gap-4">
@@ -929,6 +916,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     zoom={12}
                     onClick={handleMapClick}
                     ref={mapRef}
+                    options={{
+                      zoomControl: false,
+                      mapTypeControl: false,
+                      streetViewControl: false,
+                      fullscreenControl: false,
+                      styles: mapStyles,
+                    }}
                   >
                     {formData.latitude && formData.longitude && (
                       <Marker
