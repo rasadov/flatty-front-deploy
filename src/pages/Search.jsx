@@ -59,7 +59,6 @@ export const Search = () => {
           data.results / elements + (data.results % elements ? 1 : 0)
         );
         setResponseData(data);
-        setFilteredItems(data.properties);
       });
   }, [dispatch, filters]);
 
@@ -97,7 +96,7 @@ export const Search = () => {
           value={searchQuery}
           onChange={handleSearchQueryChange}
           API_URL="https://api.flatty.ai/api/v1/property/"
-          setData={setFilteredItems}
+          setData={setResponseData}
         />
         <button
           onClick={() => setIsModalOpen(true)}
@@ -108,7 +107,7 @@ export const Search = () => {
       </div>
       <div className=" px-16.26 custom-max-width">
         <ResultView
-          filteredItems={filteredItems}
+          filteredItems={responseData.properties}
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
