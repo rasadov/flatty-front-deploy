@@ -21,7 +21,7 @@ export const Searchbar = ({
     priceRange: { Min: "", Max: "" },
     location: value || "",
     city: null,
-    area: null,
+    area: { min: "", max: "" },
   });
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
@@ -72,66 +72,81 @@ export const Searchbar = ({
       });
   }, [location.search, dropdownStates, API_URL, setData]);
 
+  
   const handleSearch = (event) => {
     event.preventDefault();
+  
     const currentParams = new URLSearchParams(window.location.search);
-    // Convert URLSearchParams to an object
     const currentFilters = {};
     currentParams.forEach((value, key) => {
       currentFilters[key] = value;
     });
+  
     const combinedFilters = {
-      ...currentFilters, // from current URL
-      ...dropdownStates, // from local dropdown
+      ...currentFilters,
+      ...dropdownStates,
     };
-    // Build query parameters from the merged object
+  
     const queryParams = new URLSearchParams();
-    queryParams.append("page", 1);
-    queryParams.append("elements", 10);
+  
+   // changed from append to set (to avoid duplicates)
+    queryParams.set("page", 1);
+    queryParams.set("elements", 10);
+  
     Object.entries(combinedFilters).forEach(([key, value]) => {
-      if (
-        value !== null &&
-        value !== undefined &&
-        value !== "" &&
-        value !== 0
-      ) {
-        console.log("key", key);
+      if (value !== null && value !== undefined && value !== "" && value !== 0) {
+        // If it's your priceRange object, keep your existing logic
         if (typeof value === "object" && !Array.isArray(value)) {
-          Object.entries(value).forEach(([subKey, subValue]) => {
-            if (
-              subValue !== null &&
-              subValue !== undefined &&
-              subValue !== "" &&
-              subValue !== 0
-            ) {
-              if (key === "priceRange") {
+          if (key === "priceRange") {
+            Object.entries(value).forEach(([subKey, subValue]) => {
+              if (
+                subValue !== null &&
+                subValue !== undefined &&
+                subValue !== "" &&
+                subValue !== 0
+              ) {
                 queryParams.append(
                   `${key}${subKey}`,
                   Math.round(subValue * currencies_to_dollar[selectedCurrency])
                 );
-              } else {
-                queryParams.append(`${key}${subKey}`, subValue);
               }
-            }
+            });
+          }
+        }
+        // If it's your roomNumber array...
+        else if (key === "roomNumber" && Array.isArray(value)) {
+          // Map each room string to a pure number (or 0 for studio):
+          //  "Studio" => "0"
+          //  "1+1"    => "1"
+          //  "2+1"    => "2"
+          //  etc.
+          const mappedRooms = value.map((val) => {
+            if (val.toLowerCase() === "studio") return "0";
+            // remove "+1" part, leaving only the first digit(s)
+            return val.replace("+1", "");
           });
-        } else if (Array.isArray(value)) {
+          // Join them with commas
+          const joinedRooms = mappedRooms.join(",");
+          queryParams.set("roomNumber", joinedRooms);
+        }
+        // If it's some other array (e.g., location array?), handle normally
+        else if (Array.isArray(value)) {
+          // your original array logic, e.g.:
           value.forEach((item) => {
-            if (
-              item !== null &&
-              item !== undefined &&
-              item !== "" &&
-              item !== 0
-            ) {
+            if (item) {
               queryParams.append(key, item);
             }
           });
-        } else {
-          queryParams.append(key, value);
+        }
+        // Otherwise, handle it as a plain value
+        else if (typeof value !== "object") {
+          queryParams.set(key, value);
         }
       }
     });
+  
     navigate(`/search?${queryParams.toString()}`);
-    console.log("ala bula ye gorum ala ", queryParams.toString());
+    console.log("Final query:", queryParams.toString());
   };
 
   const handleRoomSelect = (room) => {
@@ -268,6 +283,37 @@ export const Searchbar = ({
             </div>
           </div>
         );
+        case "area":
+          return (
+            <div className="p-4">
+              <div className="flex space-x-2">
+                <input
+                  type="number"
+                  placeholder="Min area"
+                  value={dropdownStates.area.min}
+                  onChange={(e) =>
+                    setDropdownStates((prev) => ({
+                      ...prev,
+                      area: { ...prev.area, min: e.target.value },
+                    }))
+                  }
+                  className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
+                />
+                <input
+                  type="number"
+                  placeholder="Max area"
+                  value={dropdownStates.area.max}
+                  onChange={(e) =>
+                    setDropdownStates((prev) => ({
+                      ...prev,
+                      area: { ...prev.area, max: e.target.value },
+                    }))
+                  }
+                  className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
+                />
+              </div>
+            </div>
+          );
       default:
         return null;
     }
@@ -348,9 +394,11 @@ export const Searchbar = ({
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
         >
           <span className="text-[#525C76] text-sm font-semibold">
-            {dropdownStates.priceRange.min || dropdownStates.priceRange.max
-              ? `${selectedCurrency}${dropdownStates.priceRange.min} - ${selectedCurrency}${dropdownStates.priceRange.max}`
-              : "Price"}
+           {
+   dropdownStates.priceRange.Min || dropdownStates.priceRange.Max
+     ? `${selectedCurrency}${dropdownStates.priceRange.Min} - ${selectedCurrency}${dropdownStates.priceRange.Max}`
+     : "Price"
+ }
           </span>
           <motion.div
             animate={{ rotate: dropdownOpen === "price" ? 180 : 0 }}
