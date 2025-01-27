@@ -125,6 +125,7 @@ const ResultView = ({
               location={item?.location?.address}
               currFloor={item?.info?.floor}
               building={item?.info?.floors}
+              complex={true}
             />
           ))}
         </div>

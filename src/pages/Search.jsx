@@ -198,7 +198,6 @@ export default Search;
 // MapView component
 
 const getImages = ({ images }) => {
-  console.log("WE ARE HERE ", images);
   if (!images) return [];
   return images.map((image) => image.image_url);
 };
@@ -210,48 +209,42 @@ const ResultView = ({
   totalPages,
   onPageChange,
 }) => {
-  console.log("Filtered3424 Items", filteredItems);
   return (
     <>
       {/* Filter Dropdowns */}
 
       {/* Filtered Results */}
-      <div className="w-full p-8 my-6 bg-white rounded-2xl">
-        <div className="flex items-center justify-between my-4">
+      <div className="w-full p-6 sm:p-8 my-6 bg-white rounded-2xl">
+        <div className="flex flex-wrap items-center justify-between my-4 gap-4">
           <SelectedFilters />
-          <h1 className="font-semibold text-2xl text-[#1b1313]">
+          <h1 className="font-semibold text-xl sm:text-2xl text-[#1b1313]">
             {filteredItems.length} results
           </h1>
         </div>
-        <div className="grid gap-4 2xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1">
-          {filteredItems.map(
-            (item) => (
-              console.log("ITEM", item),
-              (
-                // <Link to={`/apartment/${item.id}`} key={item.id}>
-                <HouseItem
-                  key={item.id}
-                  id={item.id}
-                  images={item.images}
-                  title={item.title}
-                  price={item.price}
-                  area={item?.info?.total_area}
-                  rooms={item?.info?.bedrooms}
-                  location={item?.location?.address}
-                  currFloor={item?.info?.floor}
-                  building={item?.info?.floors}
-                />
-              )
-              // </Link>
-            )
-          )}
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
+          {filteredItems.map((item) => (
+            <HouseItem
+              key={item.id}
+              id={item.id}
+              images={item.images}
+              title={item.title}
+              price={item.price}
+              area={item?.info?.total_area}
+              rooms={item?.info?.bedrooms}
+              location={item?.location?.address}
+              currFloor={item?.info?.floor}
+              building={item?.info?.floors}
+            />
+          ))}
         </div>
         {/* Pagination */}
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={onPageChange}
-        />
+        <div className="flex justify-center mt-6">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+          />
+        </div>
       </div>
     </>
   );

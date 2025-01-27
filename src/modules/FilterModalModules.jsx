@@ -37,11 +37,16 @@ const FilterSelect = ({
       }
       className="w-[224px] h-[40px] p-2 bg-[#EEEFF2] border border-[#E2E4E8] rounded-sm text-[#525C76] font-semibold text-[12px] leading-[19.2px]"
     >
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
+      {options.map((option) => {
+        {
+          console.log(option);
+        }
+        return (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        );
+      })}
     </select>
   </div>
 );
@@ -71,7 +76,9 @@ const FilterButtonGroup = ({
               false
             )
           }
-          className={getButtonStyle(selectedFilters, category, option) + "  bg-gray-200"}
+          className={
+            getButtonStyle(selectedFilters, category, option) + "  bg-gray-200"
+          }
         >
           {isSelected(selectedFilters, category, option) ? (
             <span className="font-bold">{option}</span>
@@ -139,7 +146,7 @@ const FilterNumberRange = ({
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap gap-2">
           <div className="relative">
-            <input {...getInputProps(fromKey)} placeholder="from" />
+            <input {...getInputProps(fromKey)} placeholder={fromKey} />
             {unit && (
               <span className="absolute text-xs text-gray-400 right-3 top-3">
                 {unit}
@@ -147,7 +154,7 @@ const FilterNumberRange = ({
             )}
           </div>
           <div className="relative">
-            <input {...getInputProps(toKey)} placeholder="to" />
+            <input {...getInputProps(toKey)} placeholder={toKey} />
             {unit && (
               <span className="absolute text-xs text-gray-400 right-3 top-3">
                 {unit}
@@ -158,12 +165,10 @@ const FilterNumberRange = ({
             <button
               key={option}
               onClick={() => handleOptionClick(option)}
-              className={getButtonStyle(
-                selectedFilters,
-                category,
-                option,
-                "options"
-              ) + " bg-gray-200"}
+              className={
+                getButtonStyle(selectedFilters, category, option, "options") +
+                " bg-gray-200"
+              }
             >
               {isSelected(selectedFilters, category, option, "options") ? (
                 <span className="font-bold">{option}</span>

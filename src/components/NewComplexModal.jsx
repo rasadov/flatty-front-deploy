@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
@@ -40,6 +40,9 @@ const getAddressFromLatLng = async (lat, lng) => {
 
 const NewComplexModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
+  const [citys, setCitys] = useState("");
+  const [areas, setAreas] = useState("");
+
   const [formData, setFormData] = useState({
     category: "",
     residentialComplex: "",
@@ -51,7 +54,6 @@ const NewComplexModal = ({ isOpen, onClose }) => {
     objects: 0,
     year: 0,
     buildingFloors: 0,
-
     parkingSlot: false,
     installment: false,
     swimmingPool: false,
@@ -64,9 +66,17 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const mapRef = useRef(null);
 
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      address: `${prevFormData.city || ""}, ${prevFormData.area || ""}`.trim(),
+    }));
+  }, [formData.city, formData.area]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    console.log(name, value);
   };
 
   const handleImageUpload = (e) => {
@@ -111,6 +121,22 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       return updatedFiles;
     });
   };
+  // Custom map style to hide POI (Points of Interest)
+  const mapStyles = [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      stylers: [{ visibility: "off" }],
+    },
+  ];
 
   const handleSubmit = async () => {
     if (images.length > 0) {
@@ -121,7 +147,6 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       images.forEach((file, index) => {
         formDataToSend.append(`files`, file);
       });
-
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
@@ -172,7 +197,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-[50%] h-[600px] bg-white rounded-[6px] shadow-lg flex flex-col"
+        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -550,6 +575,13 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                     zoom={12}
                     onClick={handleMapClick}
                     ref={mapRef}
+                    options={{
+                      zoomControl: false,
+                      mapTypeControl: false,
+                      streetViewControl: false,
+                      fullscreenControl: false,
+                      styles: mapStyles,
+                    }}
                   >
                     {formData.latitude && formData.longitude && (
                       <Marker

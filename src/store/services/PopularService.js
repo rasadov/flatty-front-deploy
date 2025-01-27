@@ -7,5 +7,6 @@ export const fetchPopularProperties = async () => {
       elements: 5,
     },
   });
+  console.log("popularPropertiespopularProperties >>>>>>", response);
   return response.data;
 };

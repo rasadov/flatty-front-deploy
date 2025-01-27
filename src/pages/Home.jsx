@@ -16,10 +16,12 @@ import header_bg2 from "../assets/images/mainpage2.svg";
 import key_img from "../assets/images/key_img.png";
 import Header from "../layouts/Header";
 import { Footer } from "../layouts/Footer";
+import axios from "axios";
 
 const Home = () => {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [searchQuery, setSearchQuery] = useState("");
+  const [complexes, setComplexes] = useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -30,11 +32,26 @@ const Home = () => {
   const { properties: complexProperties = [], loading: complexLoading } =
     useSelector((state) => state.complex);
 
+  const getComplexData = async () => {
+    const response = await axios.get(
+      `https://api.flatty.ai/api/v1/listing/page`,
+      {
+        params: {
+          page: 1,
+          elements: 10,
+        },
+      }
+    );
+
+    setComplexes(response.data.listings);
+  };
+
   useEffect(() => {
     dispatch(loadFeaturedProperties());
     dispatch(loadPopularProperties());
     dispatch(loadAgents());
-    dispatch(loadComplexDetails());
+    // dispatch(loadComplexDetails());
+    getComplexData();
   }, [dispatch]);
 
   const handleSearchQueryChange = useCallback((query) => {
@@ -146,10 +163,6 @@ const Home = () => {
             </div>
 
             <CardList sectionName="Popular" seeAll={true}>
-              {console.log(
-                "popularPropertiespopularPropertiespopularProperties >>>>>",
-                popularProperties
-              )}
               {popularLoading ? (
                 <p>Loading...</p>
               ) : popularProperties.properties?.length > 0 ? (
@@ -177,7 +190,7 @@ const Home = () => {
             </CardList>
 
             <CardList sectionName="Complex" seeAll={true} coplexses={true}>
-              {complexLoading ? (
+              {/* {complexLoading ? (
                 <p>Loading...</p>
               ) : complexProperties.properties?.length > 0 ? (
                 complexProperties.properties
@@ -201,6 +214,32 @@ const Home = () => {
                       />
                     );
                   })
+              ) : (
+                <p>No complex properties found</p>
+              )} */}
+
+              {console.log("complexescomplexes >>>>", complexes)}
+
+              {complexes.length > 0 ? (
+                complexes.map((item) => {
+                  return (
+                    <HouseItem
+                      key={item.id}
+                      images={item.images}
+                      price={item.price}
+                      location={
+                        item.location?.address ||
+                        `${item.location?.latitude}, ${item.location?.longitude}`
+                      }
+                      rooms={item.info?.bedrooms}
+                      area={item?.info?.total_area}
+                      currFloor={item.info?.floor}
+                      building={item.info?.apartment_stories}
+                      id={item.id}
+                      complex={true}
+                    />
+                  );
+                })
               ) : (
                 <p>No complex properties found</p>
               )}
