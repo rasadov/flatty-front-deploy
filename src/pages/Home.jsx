@@ -135,7 +135,7 @@ const Home = () => {
           <DesktopHeader />
           <div className="px-4 sm:px-8 md:px-16 mx-auto">
             <div className="relative z-10 md:-mt-40">
-              <CardList sectionName="Featured" seeAll={true}>
+              <CardList sectionName="Best Offers" seeAll={true}>
                 {featuredLoading ? (
                   <p>Loading...</p>
                 ) : featuredProperties.properties?.length > 0 ? (

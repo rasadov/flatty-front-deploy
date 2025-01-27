@@ -50,6 +50,7 @@ export const Search = () => {
       page: page,
       elements: elements,
     });
+    console.log("PARAMS", params);
     fetch(`https://api.flatty.ai/api/v1/property/?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
@@ -62,66 +63,6 @@ export const Search = () => {
       });
   }, [dispatch, filters]);
 
-  // Memoized filtering function
-  const filterItem = useCallback(
-    (item, filters) => {
-      const matchesCategory =
-        !filters.category || item.category === filters.category;
-      const matchesComplex =
-        !filters.complex || item.complex === filters.complex;
-      const matchesArea =
-        (!filters.area?.from ||
-          (item.area && item.area >= Number(filters.area.from))) &&
-        (!filters.area?.to ||
-          (item.area && item.area <= Number(filters.area.to)));
-      const matchesRenovation =
-        filters.renovation?.length === 0 ||
-        (item.renovation && filters.renovation.includes(item.renovation));
-      const matchesFloor =
-        (!filters.floor?.from ||
-          (item.floor && item.floor >= Number(filters.floor.from))) &&
-        (!filters.floor?.to ||
-          (item.floor && item.floor <= Number(filters.floor.to)));
-      const matchesCeilingHeight =
-        !filters.ceilingHeight || item.ceilingHeight === filters.ceilingHeight;
-      const matchesBathroom =
-        filters.bathroom?.length === 0 ||
-        (item.bathroom && filters.bathroom.includes(item.bathroom.type));
-      const matchesFurniture =
-        filters.furniture?.length === 0 ||
-        (Array.isArray(item.furniture) &&
-          filters.furniture.some((f) => item.furniture.includes(f)));
-      const matchesRooms = Object.entries(filters.rooms || {}).every(
-        ([key, value]) => value === 0 || item.rooms[key] === value
-      );
-      const matchesParkingSlot =
-        !filters.parkingSlot || item.parkingSlot === filters.parkingSlot;
-      const matchesSwimmingPool =
-        !filters.swimmingPool || item.swimmingPool === filters.swimmingPool;
-
-      return (
-        matchesCategory &&
-        matchesComplex &&
-        matchesArea &&
-        matchesRenovation &&
-        matchesFloor &&
-        matchesCeilingHeight &&
-        matchesBathroom &&
-        matchesFurniture &&
-        matchesRooms &&
-        matchesParkingSlot &&
-        matchesSwimmingPool
-      );
-    },
-    [filters]
-  );
-
-  // Memoized filtered items
-  // const filteredItems = useMemo(() => {
-  //   return searchResults.filter((item) => filterItem(item, filters));
-  // }, [searchResults, filters, filterItem]);
-
-  // Event handlers
   const handleShowMap = useCallback(() => setShowMap(!showMap), [showMap]);
   const handleSearchQueryChange = useCallback(
     (query) => {
@@ -155,8 +96,8 @@ export const Search = () => {
           onSearch={() => dispatch(loadSearchResults(filters))}
           value={searchQuery}
           onChange={handleSearchQueryChange}
-          API_URL="https://api.flatty.ai/api/v1/property"
-          setData={setResponseData}
+          API_URL="https://api.flatty.ai/api/v1/property/"
+          setData={setFilteredItems}
         />
         <button
           onClick={() => setIsModalOpen(true)}
