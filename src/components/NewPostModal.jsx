@@ -120,11 +120,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   //?   Files ===========
   const handleFileUpload = (event) => {
     const files = Array.from(event.target.files);
-    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
   };
 
   const handleFileRemove = (index) => {
-    setSelectedFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setSelectedDocuments((prevFiles) => prevFiles.filter((_, i) => i !== index));
   };
 
   const handleDragOverFile = (event) => {
@@ -186,8 +186,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    console.log("formDataformData >>>>", formData);
-
     if (selectedFiles.length > 0) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
