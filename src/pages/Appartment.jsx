@@ -10,7 +10,7 @@ import { formatNumber } from "../components/numberFormater.jsx";
 import { YearIcon } from "../assets/icons/Year.jsx";
 import { LivingAreaIcon } from "../assets/icons/LivingArea.jsx";
 import { TotalAreaIcon } from "../assets/icons/TotalArea.jsx";
-import { FloorIcon } from "../assets/icons/Floors.jsx";
+import { FloorsIcon } from "../assets/icons/Floors.jsx";
 import { motion } from "framer-motion";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -144,7 +144,7 @@ const Appartment = memo(() => {
             <div className="flex flex-col items-center text-center">
               {/* <img src="../assets/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
                */}
-              <FloorIcon />
+              <FloorsIcon />
               <p className="text-sm font-medium">
                 {floors.value === " / " ? "1/4" : floors.value}
               </p>
