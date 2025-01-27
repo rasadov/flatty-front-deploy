@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useParams as useRouterParams } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import HouseItem from "../components/HouseItem";
@@ -7,11 +7,13 @@ import PropertyShowcase from "../components/sections/PropertyShowcase.jsx";
 import PropertyMap from "../components/PropertyMap.jsx";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
-import Pagination from "../components/Pagination.jsx";
+// import Pagination from "../components/Pagination.jsx";
+// A fallback image if none exist in listing.images:
+import defaultImage from "../assets/images/no_image_available.png";
 
 const Complex = () => {
   const dispatch = useDispatch();
-  // Use either useRouterParams() or just parse from window.location if needed
+  // Use either useRouterParams() or just parse from window.location
   // const { id } = useRouterParams();
   const url = window.location.href;
   const id = url.split("/")[4];
@@ -58,7 +60,7 @@ const Complex = () => {
     },
     {
       label: "Objects",
-      value: listing.objects ?? "—",
+      value: listing.objects ?? "0",
     },
     {
       label: "Installment",
@@ -79,14 +81,33 @@ const Complex = () => {
           {/* Breadcrumbs */}
           <div className="w-full py-3">
             <Breadcrumbs title={listing.name || `Complex #${listing.id}`} />
-            {/* Category or other meta info here */}
-            <h2 className="text-[#525C76] font-medium text-[14px] leading-[22.4px] capitalize">
-              {listing.category}
-            </h2>
           </div>
 
-          {/* Images / Showcase */}
-          <PropertyShowcase length={listing.images?.length || 0} images={listing.images || []} />
+          {/* Main Title / Category */}
+          <div className="w-full">
+            <h1 className="text-2xl md:text-4xl font-bold text-[#0F1D40] mb-1">
+              {listing.name || `Complex #${listing.id}`}
+            </h1>
+            <p className="text-[#525C76] font-medium text-[14px] leading-[22.4px] capitalize mb-4">
+              {listing.category}
+            </p>
+          </div>
+
+          {/* Images / Showcase OR Fallback Image */}
+          {listing.images && listing.images.length > 0 ? (
+            <PropertyShowcase
+              length={listing.images.length}
+              images={listing.images}
+            />
+          ) : (
+            <div className="flex justify-center items-center w-full py-6">
+              <img
+                src={defaultImage}
+                alt="No images available"
+                className="max-w-[300px] md:max-w-[400px]"
+              />
+            </div>
+          )}
 
           {/* Info grid area */}
           <div className="grid grid-cols-1 gap-6 my-12 md:grid-cols-3 lg:grid-cols-6">
@@ -112,9 +133,9 @@ const Complex = () => {
 
           {/* Description */}
           <div className="my-14">
-            <h1 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px] mb-4">
+            <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px] mb-4">
               Description
-            </h1>
+            </h2>
             <p className="text-[#0F1D40] font-normal text-[18px] leading-[28.8px]">
               {listing.description}
             </p>
@@ -129,34 +150,28 @@ const Complex = () => {
 
             {listing.properties && listing.properties.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {listing.properties.map((property) => (
-                <HouseItem
-                  key={property.id}
-                  id={property.id}
-                  images={property.images}
-                  // HouseItem expects a string for `location`, so pass the address text:
-                  location={property.location?.address}
-
-                  // The rest are up to you, e.g.:
-                  price={property.price}
-                  rooms={property.info?.bedrooms}
-                  area={property.info?.total_area}
-                  currFloor={property.info?.floor}
-                  building={property.info?.apartment_stories}
-
-                  // This just tells HouseItem it's being used in a "complex" context
-                  complex
-                />
-              ))}
-
-                
+                {listing.properties.map((property) => (
+                  <HouseItem
+                    key={property.id}
+                    id={property.id}
+                    images={property.images}
+                    // HouseItem expects a string for `location`, so pass the address text:
+                    location={property.location?.address}
+                    price={property.price}
+                    rooms={property.info?.bedrooms}
+                    area={property.info?.total_area}
+                    currFloor={property.info?.floor}
+                    building={property.info?.apartment_stories}
+                    complex
+                  />
+                ))}
               </div>
             ) : (
               <p className="text-center">No properties found in this complex.</p>
             )}
-
-            {/* Example pagination if needed */}
-            {/* <Pagination /> */}
+            {/* If you want pagination, uncomment below:
+            <Pagination />
+            */}
           </div>
 
           {/* Location section */}
