@@ -10,7 +10,7 @@ import { formatNumber } from "../components/numberFormater.jsx";
 import { YearIcon } from "../assets/icons/Year.jsx";
 import { LivingAreaIcon } from "../assets/icons/LivingArea.jsx";
 import { TotalAreaIcon } from "../assets/icons/TotalArea.jsx";
-import { FloorIcon } from "../assets/icons/Floor.jsx";
+import { FloorIcon } from "../assets/icons/Floors.jsx";
 import { motion } from "framer-motion";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
