@@ -103,7 +103,7 @@ const Appartment = memo(() => {
             {/* Icon 1: total area */}
             <div className="flex flex-col items-center text-center">
               <img
-                src="/icons/totalArea.svg"
+                src="../assets/icons/totalArea.svg"
                 alt="Total area"
                 className="w-8 h-8 mb-2"
               />
@@ -116,7 +116,7 @@ const Appartment = memo(() => {
             {/* Icon 2: living area */}
             <div className="flex flex-col items-center text-center">
               <img
-                src="/icons/livingArea.svg"
+                src="../assets/icons/livingArea.svg"
                 alt="Living area"
                 className="w-8 h-8 mb-2"
               />
@@ -128,14 +128,14 @@ const Appartment = memo(() => {
 
             {/* Icon 3: year - example hard-coded or from data */}
             <div className="flex flex-col items-center text-center">
-              <img src="/icons/year.svg" alt="Year" className="w-8 h-8 mb-2" />
+              <img src="../assets/icons/year.svg" alt="Year" className="w-8 h-8 mb-2" />
               <p className="text-sm font-medium">2020</p>
               <span className="text-xs text-[#525C76]">Year</span>
             </div>
 
             {/* Icon 4: floor */}
             <div className="flex flex-col items-center text-center">
-              <img src="/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
+              <img src="../assets/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
               <p className="text-sm font-medium">
                 {floors.value === " / " ? "1/4" : floors.value}
               </p>
