@@ -28,6 +28,34 @@ const renovations = [
   "European style",
   "Needs renovation",
 ];
+const cities = [
+  "Lefkoşa",
+  "Girne",
+  "Gazimağusa",
+  "Güzelyurt",
+  "İskele",
+  "Lefke",
+  "Lapta",
+  "Koruçam",
+  "Alsancak",
+  "Değirmenlik",
+  "Esentepe",
+  "Dikmen",
+  "Mehmetçik",
+  "Karpaz",
+  "Dipkarpaz",
+  "Yeni Erenköy",
+  "Geçitkale",
+  "Beşparmak"
+  ]
+const areas = [
+      "Lefkoşa",
+      "Girne",
+      "Gazimağusa",
+      "Güzelyurt",
+      "İskele",
+      "Lefke"
+  ]
 
 const getAddressFromLatLng = async (lat, lng) => {
   const apiKey = "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM"; // Replace with your Google Maps API key
@@ -72,7 +100,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     floor: 0,
     year: 0,
     buildingFloors: 0,
-    condition: conditions[0],
+    renovation: "",
+    
     latitude: 0,
     longitude: 0,
     address: "",
@@ -198,6 +227,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       selectedDocuments.forEach((file) => {
         formDataToSend.append("documents", file);
       });
+
+      if (selectedDocuments.length === 0) {
+          formData.documents = [];
+      }
 
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
@@ -541,21 +574,26 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </select>
                 </div>
               </div>
-            </div>
-
-            {/* title: "", */}
-
-            <div className="mt-4">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Title
-              </label>
-              <input
-                name="title"
-                className="w-full h-[50px] p-2 border rounded-md"
-                // rows="4"
-                value={formData.title}
-                onChange={handleInputChange}
-              />
+            <div className="flex flex-col items-left gap-2">
+                <div
+                  style={{
+                    textAlign: "left",
+                  }}
+                >
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    Title
+                  </label>
+                </div>
+                <div className="flex gap-1">
+                  <input
+                    name="price"
+                    type="number"
+                    className="w-full h-[52px] p-2 border rounded-md"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="mt-4">
@@ -729,7 +767,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               <div
                 className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
                 onDragOver={handleDragOverFile}
-                onDrop={handleDropFile}
+                onDrop={handleDropDocuments}
               >
                 <p
                   className="text-sm  mb-4"
@@ -766,10 +804,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
 
-              {selectedFiles.length > 0 && (
+              {selectedDocuments.length > 0 && (
                 // List the selected files below
                 <div className="mt-4 space-y-2">
-                  {selectedFiles.map((file, index) => (
+                  {selectedDocuments.map((file, index) => (
                     <div
                       key={index}
                       className="flex justify-between items-center p-2 border-b border-gray-300"
@@ -867,6 +905,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
+                  {cities.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
@@ -880,11 +923,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 >
                   <option value="">Select</option>
-                  {/* {complexes?  complexes.map((complex, index) => (
-                    <option key={index} value={complex.name}>
-                      {complex.name}
+                  {areas.map((area, index) => (
+                    <option key={index} value={area}>
+                      {area}
                     </option>
-                  )) : ""} */}
+                  ))}
                 </select>
               </div>
             </div>
