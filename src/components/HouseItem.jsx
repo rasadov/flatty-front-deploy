@@ -218,7 +218,7 @@ export const HouseItem = React.memo(
               {images.slice(3).map((img, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <Link to={complex ? `/complex/${id}` : `/appartment/${id}`}>
+                    <Link to={complex ? `/complex/${complex}` : `/appartment/${id}`}>
                       <img
                         src={img.image_url}
                         alt={`Slide ${index + 1}`}

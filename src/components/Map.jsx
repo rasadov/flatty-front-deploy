@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
@@ -6,6 +6,8 @@ export default function Map({ properties = [], onMarkerClick }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM",
   });
+
+  const clustererRef = useRef(null);
 
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState({ lat: 35.3, lng: 33.4 });
@@ -49,6 +51,12 @@ export default function Map({ properties = [], onMarkerClick }) {
   const renderMarkersWithClustering = () => {
     if (!window.google || !map) return;
 
+    // If we already have a clusterer, clear out its markers first
+    if (clustererRef.current) {
+      clustererRef.current.clearMarkers();
+    }
+
+    // Build markers from your updated properties
     const markers = properties.map((property) => {
       const position = { lat: property.latitude, lng: property.longitude };
       const marker = new window.google.maps.Marker({
@@ -65,25 +73,24 @@ export default function Map({ properties = [], onMarkerClick }) {
       });
 
       marker.addListener("click", () => {
-        onMarkerClick?.([property]);
+        onMarkerClick?.(property);
       });
 
       return marker;
     });
 
-    // Настройка кластеров
-    new MarkerClusterer({
+    // Create / re-create the clusterer with the new markers
+    clustererRef.current = new MarkerClusterer({
       markers,
       map,
       renderer: {
         render: ({ count, position }) => {
-          const clusterElement = new window.google.maps.Marker({
+          return new window.google.maps.Marker({
             position,
             icon: {
               path: window.google.maps.SymbolPath.CIRCLE,
               fillColor: "#7C3AED",
               fillOpacity: 1,
-              // strokeColor: "#FFFFFF",
               strokeWeight: 1,
               scale: 24,
             },
@@ -94,11 +101,11 @@ export default function Map({ properties = [], onMarkerClick }) {
               fontWeight: "bold",
             },
           });
-          return clusterElement;
         },
       },
     });
   };
+
 
   return (
     <GoogleMap

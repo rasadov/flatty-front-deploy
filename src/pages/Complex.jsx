@@ -192,19 +192,19 @@ const Complex = () => {
             {listing.properties && listing.properties.length > 0 ? (
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {listing.properties.map((property) => (
+                  <a href="/apartment" key={property.id}>
                   <HouseItem
                     key={property.id}
                     id={property.id}
                     images={property.images}
-                    // HouseItem expects a string for `location`, so pass the address text:
                     location={property.location?.address}
                     price={property.price}
                     rooms={property.info?.bedrooms}
                     area={property.info?.total_area}
                     currFloor={property.info?.floor}
                     building={property.info?.apartment_stories}
-                    complex
-                  />
+                    />
+                  </a>
                 ))}
               </div>
             ) : (

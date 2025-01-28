@@ -20,7 +20,19 @@ export default function MapView() {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [resProperties, setMockProperties] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCurrency, setSelectedCurrency] = useState(
+      localStorage.getItem("currency") === null
+        ? "£"
+        : localStorage.getItem("currency")
+    );
+    const currencies_to_dollar = {
+      "€": 1.03,
+      "£": 1.22,
+      $: 1,
+      "₺": 0.028,
+    };
   const dispatch = useDispatch();
+
 
   // Fetch mock properties from the server
   useEffect(() => {
@@ -46,91 +58,13 @@ export default function MapView() {
     setSearchQuery(query);
   };
 
-
-  const handleSearch = () => {
-    // 1) Merge FilterModal filters (props.filters) + local dropdownStates
-    //    - If you want the local dropdownStates to override
-    //      any same-key from FilterModal, spread them last:
-
-    let filters = {}
-    if (localStorage.getItem("filters")) {
-      filters = JSON.parse(localStorage.getItem("filters"));
-    } 
-    const combinedFilters = {
-      ...filters,        // from Redux/FilterModal
-      ...dropdownStates, // from local dropdown
-    };  
-    // 2) Build query parameters from the merged object
-    const queryParams = new URLSearchParams();
-  
-    Object.entries(combinedFilters).forEach(([key, value]) => {
-      // Skip null, undefined, empty, or 0
-      if (value !== null && value !== undefined && value !== "" && value !== 0) {
-        // If it's a nested object like { rooms: { bathroom: 2, bedroom: 1 } }
-        if (typeof value === "object" && !Array.isArray(value)) {
-          Object.entries(value).forEach(([subKey, subValue]) => {
-            if (
-              subValue !== null &&
-              subValue !== undefined &&
-              subValue !== "" &&
-              subValue !== 0
-            ) {
-              if (key === "priceRange") {
-                queryParams.append(`${key}${subKey}`, subValue / currencies_to_dollar[selectedCurrency]);
-              } else {
-                queryParams.append(`${key}${subKey}`, subValue);
-              }
-            }
-          });
-        }
-        // If it's an array (e.g., for renovation, furniture, etc.)
-        else if (Array.isArray(value)) {
-          value.forEach((item) => {
-            if (
-              item !== null &&
-              item !== undefined &&
-              item !== "" &&
-              item !== 0
-            ) {
-              queryParams.append(key, item);
-            }
-          });
-        }
-        // Otherwise, just append it directly
-        else {
-          queryParams.append(key, value);
-        }
-      }
-    });
-    
-    // 4) Navigate with all selected filters in the URL
-    const queryString = queryParams.toString();
-
-    response = fetch(`https://api.flatty.ai/api/v1/property/map?${queryString}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("DATA", data);
-        setMockProperties(data);
-      })
-  };
-
   const handleMarkerClick = async (propertiesAtLocation) => {
       try {
-        // propertiesAtLocation is an array of your minimal property objects (with property_id)
-        const results = await Promise.all(
-          propertiesAtLocation.map(async (p) => {
-            const response = await fetch(
-              `https://api.flatty.ai/api/v1/property/record/${p.property_id}`
-            );
-            return await response.json();
-          })
+        var results = [];
+        const response = await fetch(
+          `https://api.flatty.ai/api/v1/property/record/${propertiesAtLocation.property_id}`
         );
-        // Store in state so side panel can display them
+        results.push(await response.json());
         setSelectedProperties(results);
       } catch (err) {
         console.error("Error fetching property details:", err);
@@ -148,6 +82,7 @@ export default function MapView() {
           onChange={handleSearchQueryChange}
           API_URL="https://api.flatty.ai/api/v1/property/map"
           setData={setMockProperties}
+          redirectPath="/map"
         />
         <button
           onClick={() => setIsModalOpen(true)}

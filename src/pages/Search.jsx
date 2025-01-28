@@ -16,12 +16,8 @@ import {
   RangeInput,
 } from "../components/index.js";
 import {
-  CheckboxFill,
-  CheckboxSquare,
-  DropdownUnder,
   FilterButton,
 } from "../assets/icons";
-import MapView from "./MapView.jsx";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
 

@@ -191,55 +191,11 @@ const Home = () => {
             </CardList>
 
             <CardList sectionName="Complex" seeAll={true} coplexses={true}>
-              {/* {complexLoading ? (
-                <p>Loading...</p>
-              ) : complexProperties.properties?.length > 0 ? (
-                complexProperties.properties
-                  .slice(0, elementCount)
-                  .map((item) => {
-                    console.log("Ba bu uje sondu brat", item);
-                    return (
-                      <HouseItem
-                        key={item.id}
-                        images={item.images}
-                        price={item.price}
-                        location={
-                          item.location?.address ||
-                          `${item.location?.latitude}, ${item.location?.longitude}`
-                        }
-                        rooms={item.info?.bedrooms}
-                        area={item?.info?.total_area}
-                        currFloor={item.info?.floor}
-                        building={item.info?.apartment_stories}
-                        id={item.id}
-                      />
-                    );
-                  })
-              ) : (
-                <p>No complex properties found</p>
-              )} */}
-
               {console.log("complexescomplexes >>>>", complexes)}
 
               {complexes.length > 0 ? (
                 complexes.map((item) => {
                   return (
-                    // <HouseItem
-                    //   key={item.id}
-                    //   images={item.images}
-                    //   price={item.price}
-                    //   location={
-                    //     item.location?.address ||
-                    //     `${item.location?.latitude}, ${item.location?.longitude}`
-                    //   }
-                    //   rooms={item.info?.bedrooms}
-                    //   area={item?.info?.total_area}
-                    //   currFloor={item.info?.floor}
-                    //   building={item.info?.apartment_stories}
-                    //   id={item.id}
-                    //   complex={true}
-                    // />
-
                     <ComplexCard
                       key={item.id}
                       img={item.images[0]?.image_url}
