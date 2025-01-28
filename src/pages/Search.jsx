@@ -152,7 +152,7 @@ const ResultView = ({
       {/* Filtered Results */}
       <div className="w-full p-6 sm:p-8 my-6 bg-white rounded-2xl">
         <div className="flex flex-wrap items-center justify-between my-4 gap-4">
-          <SelectedFilters />
+          {/* <SelectedFilters /> */}
           <h1 className="font-semibold text-xl sm:text-2xl text-[#1b1313]">
             {filteredItems ? filteredItems.length: 0} results
           </h1>

@@ -11,18 +11,304 @@ const cities = [
   "İskele",
   "Lefke",
   "Lapta",
-  "Koruçam",
   "Alsancak",
   "Değirmenlik",
-  "Esentepe",
-  "Dikmen",
-  "Mehmetçik",
-  "Karpaz",
-  "Dipkarpaz",
   "Yeni Erenköy",
   "Geçitkale",
-  "Beşparmak",
 ];
+
+const areas = {
+  "Lefkoşa": [
+    "Akıncılar",
+    "Alayköy",
+    "Dilekkaya",
+    "Erdemli",
+    "Gönyeli",
+    "Gürpınar",
+    "Hamitköy",
+    "Haspolat",
+    "Kanlıköy",
+    "Kırklar",
+    "Kırıkkale",
+    "Lefkoşa",
+    "Türkeli",
+    "Yılmazköy",
+    "Yiğitler",
+    "Abdi Çavuş",
+    "Akkavuk",
+    "Arabahmet",
+    "Ayyıldız",
+    "Çağlayan",
+    "Göçmenköy",
+    "Haydarpaşa",
+    "İbrahimpaşa",
+    "İplikpazarı",
+    "Kafesli",
+    "Karamanzade",
+    "Köşklüçiftlik",
+    "Kızılay",
+    "Küçük Kaymaklı",
+    "Mahmutpaşa",
+    "Marmara",
+    "Metehan",
+    "Ortaköy",
+    "Selimiye",
+    "Taşkınköy",
+    "Yenicami",
+    "Yenişehir"
+  ],
+  "Gönyeli": [
+    "Gönyeli",
+    "Yenikent"
+  ],
+  "Değirmenlik": [
+    "Balıkesir",
+    "Beyköy",
+    "Cihangir",
+    "Çukurova",
+    "Değirmenlik",
+    "Demirhan",
+    "Düzova",
+    "Gaziköy",
+    "Gökhan",
+    "Kalavaç",
+    "Meriç",
+    "Minareliköy",
+    "Yeniceköy",
+    "Bahçelievler",
+    "Başpınar",
+    "Camialtı",
+    "Mehmetçik",
+    "Saray",
+    "Tepebaşı"
+  ],
+  "Gazimağusa": [
+    "Akova",
+    "Alaniçi",
+    "Aslanköy",
+    "Dörtyol",
+    "Gazimağusa",
+    "Güvercinlik",
+    "Korkuteli",
+    "Kurudere",
+    "Mormenekşe",
+    "Mutluyaka",
+    "Pirhan",
+    "Şehitler",
+    "Yeni Boğaziçi",
+    "Yıldırım",
+    "Anadolu",
+    "Baykal",
+    "Canbolat",
+    "Çanakkale",
+    "Dumlupınar",
+    "Harika",
+    "Karakol",
+    "Lala Mustafa Paşa",
+    "Namık Kemal",
+    "Pertev Paşa",
+    "Piyale Paşa",
+    "Sakarya",
+    "Suriçi",
+    "Tuzla",
+    "Zafer",
+    "Atlılar",
+    "Muratağa",
+    "Sandallar"
+  ],
+  "Geçitkale": [
+    "Çamlıca",
+    "Çınarlı",
+    "Ergenekon",
+    "Geçitkale",
+    "Gönendere",
+    "Görneç",
+    "Mallıdağ",
+    "Nergisli",
+    "Pınarlı",
+    "Serdarlı",
+    "Sütlüce",
+    "Tatlısu",
+    "Tirmen",
+    "Ulukışla",
+    "Yamaçköy"
+  ],
+  "Tatlısu": [
+    "Aktunç",
+    "Küçükerenköy",
+    "Yalı"
+  ],
+  "Akdoğan": [
+    "Akdoğan",
+    "Beyarmudu",
+    "Çayönü",
+    "İncirli",
+    "İnönü",
+    "Köprü",
+    "Paşaköy",
+    "Turunçlu",
+    "Türkmenköy",
+    "Vadili"
+  ],
+  "Girne": [
+    "Ağırdağ",
+    "Alsancak",
+    "Arapköy",
+    "Aşağı Dikmen",
+    "Aşağı Taşkent",
+    "Bahçeli",
+    "Beşparmak",
+    "Beylerbeyi",
+    "Boğazköy",
+    "Çatalköy",
+    "Dağyolu",
+    "Esentepe",
+    "Girne",
+    "Göçeri",
+    "Güngör",
+    "Ilgaz",
+    "Karaağaç",
+    "Karaman",
+    "Karşıyaka",
+    "Kömürcü",
+    "Lapta",
+    "Malatya/İncesu",
+    "Ozanköy",
+    "Pınarbası",
+    "Yeni Mahalle",
+    "Yeşiltepe",
+    "Yukarı Dikmen",
+    "Yukarı Taşkent",
+    "Aşağı Girne",
+    "Aşağı Karaman",
+    "Doğanköy",
+    "Edremit",
+    "Karakum",
+    "Karaoğlanoğlu",
+    "Yukarı Girne",
+    "Zeytinlik"
+  ],
+  "Lapta": [
+    "Adatepe",
+    "Başpınar",
+    "Kocatepe",
+    "Sakarya",
+    "Tınaztepe",
+    "Türk",
+    "Yavuz"
+  ],
+  "Alsancak": [
+    "Çağlayan",
+    "Yayla",
+    "Yeşilova"
+  ],
+  "Çamlıbel": [
+    "Akçiçek",
+    "Akdeniz",
+    "Alemdağ",
+    "Çamlıbel",
+    "Geçitköy",
+    "Hisarköy",
+    "Karpaşa",
+    "Kayalar",
+    "Kılıçarslan",
+    "Koruçam",
+    "Kozanköy",
+    "Özhan",
+    "Sadrazamköy",
+    "Şirinevler",
+    "Tepebaşı"
+  ],
+  "Güzelyurt": [
+    "Akçay",
+    "Aydınköy",
+    "Gayretköy",
+    "Güneşköy",
+    "Güzelyurt",
+    "Kalkanlı",
+    "Mevlevi",
+    "Serhatköy",
+    "Şahinler",
+    "Yayla",
+    "Yuvacık",
+    "Zümrütköy",
+    "Asağı Bostancı",
+    "İsmetpaşa",
+    "Lala Mustafa Paşa",
+    "Piyalepaşa",
+    "Yukarı Bostancı"
+  ],
+  "İskele": [
+    "Ağıllar",
+    "Altınova",
+    "Ardahan",
+    "Aygün",
+    "Boğaziçi",
+    "Ergazi",
+    "İskele",
+    "Kalecik",
+    "Kaplıca",
+    "Kurtuluş",
+    "Kuzucuk",
+    "Mersinlik",
+    "Ötuken",
+    "Sınırüstü",
+    "Topçuköy",
+    "Turnalar",
+    "Yarköy",
+    "Boğaz",
+    "Boğaztepe",
+    "Cevizli",
+    "İskele",
+    "Bafra",
+    "Balalan",
+    "Büyükkonuk",
+    "Çayırova",
+    "Kilitkaya",
+    "Kumyalı",
+    "Mehmetçik",
+    "Pamuklu",
+    "Sazlıköy",
+    "Tuzluca",
+    "Yedikonuk",
+    "Zeybekköy"
+  ],
+  "Yeni Erenköy": [
+    "Adaçay",
+    "Avtepe",
+    "Boltaşlı",
+    "Derince",
+    "Dipkarpaz",
+    "Esenköy",
+    "Gelincik",
+    "Kaleburnu",
+    "Kuruova",
+    "Sipahi",
+    "Taşlıca",
+    "Yeni Erenköy",
+    "Yeşilköy",
+    "Ziyamet"
+  ],
+  "Lefke": [
+    "Bademliköy",
+    "Bağlıköy",
+    "Cengizköy",
+    "Çamlıköy",
+    "Doğancı",
+    "Erenköy",
+    "Gaziveren",
+    "Kurutepe",
+    "Lefke",
+    "Taşpınar",
+    "Yeşilırmak",
+    "Yeşilyurt",
+    "Denizli",
+    "Gemikonağı",
+    "Lefke",
+    "Yedidalga"
+  ]
+}
+
 
 export const Searchbar = ({
   onShowMap,
@@ -40,14 +326,17 @@ export const Searchbar = ({
     priceRange: { Min: "", Max: "" },
     location: value || "",
     city: null,
-    area: { min: "", max: "" },
+    // Instead of min/max, we store the chosen area name
+    area: "",
   });
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
 
   // Use saved currency or default to "£"
   const [selectedCurrency] = useState(
-    localStorage.getItem("currency") === null ? "£" : localStorage.getItem("currency")
+    localStorage.getItem("currency") === null
+      ? "£"
+      : localStorage.getItem("currency")
   );
 
   const currencies_to_dollar = {
@@ -57,7 +346,7 @@ export const Searchbar = ({
     "₺": 0.028,
   };
 
-  // Keep location in sync with the prop 'value'
+  // Keep 'location' synced with prop 'value'
   useEffect(() => {
     setDropdownStates((prevState) => ({
       ...prevState,
@@ -65,7 +354,7 @@ export const Searchbar = ({
     }));
   }, [value]);
 
-  // Fetch data whenever the URL changes OR dropdown states change
+  // Fetch data whenever URL changes or dropdown states change
   useEffect(() => {
     const currentParams = new URLSearchParams(window.location.search);
     const queryString = currentParams.toString();
@@ -83,7 +372,9 @@ export const Searchbar = ({
       });
   }, [window.location.search, dropdownStates, API_URL, setData]);
 
-  // Build a fresh set of query params from the current state (no merging with old)
+  /**
+   * Build a fresh query string from state, navigate, and run onSearch if needed.
+   */
   const handleSearch = (event) => {
     event.preventDefault();
 
@@ -98,23 +389,17 @@ export const Searchbar = ({
 
     // 2) Room Number
     if (dropdownStates.roomNumber.length > 0) {
-      // Example: ["Studio","1+1"] => "0,1"
-      // Now ignoring EVERYTHING after the plus sign:
+      // For example ["Studio","1+1"] => "0,1" ignoring the plus sign part
       const mapped = dropdownStates.roomNumber.map((val) => {
         if (val.toLowerCase() === "studio") {
           return "0";
         }
-        // If there's a plus sign, keep only the part before it
         const plusIndex = val.indexOf("+");
         if (plusIndex !== -1) {
-          return val.substring(0, plusIndex); // "3+1" => "3"
+          return val.substring(0, plusIndex);
         }
-        return val; // no plus sign => use original
+        return val;
       });
-      console.log("Mapped:", mapped);
-      const joined = mapped.join(",");
-      console.log("Joined:", joined);
-
       queryParams.set("roomNumber", mapped.join(","));
     }
 
@@ -133,18 +418,19 @@ export const Searchbar = ({
       );
     }
 
-    // 4) Area
-    const { min, max } = dropdownStates.area;
-    if (min) {
-      queryParams.set("areaFrom", min);
-    }
-    if (max) {
-      queryParams.set("areaTo", max);
+    // 4) Area (now a single string, not a min/max range)
+    if (dropdownStates.area) {
+      queryParams.set("area", dropdownStates.area);
     }
 
     // 5) City
     if (dropdownStates.city) {
-      queryParams.set("city", dropdownStates.city);
+      if (dropdownStates.area) {
+        queryParams.set("city", dropdownStates.area);
+      }
+      else {
+        queryParams.set("city", dropdownStates.city);
+      }
     }
 
     // 6) Location
@@ -156,6 +442,9 @@ export const Searchbar = ({
     console.log("Final query:", queryParams.toString());
   };
 
+  /**
+   * Room selection toggle
+   */
   const handleRoomSelect = (room) => {
     setDropdownStates((prevState) => {
       if (prevState.roomNumber.includes(room)) {
@@ -177,35 +466,39 @@ export const Searchbar = ({
     window.location = "/map";
   };
 
+  /**
+   * Open or close a dropdown
+   */
   const handleDropdownToggle = (type) => {
     setDropdownOpen((prev) => (prev === type ? null : type));
   };
 
+  /**
+   * Handle setting city/category/etc. from the dropdown
+   */
   const handleSelectOption = (type, newValue) => {
     setDropdownStates((prevState) => ({
       ...prevState,
       [type]: newValue,
     }));
+    // Close dropdown (except if it's for location, which might be typed?)
     if (type !== "location") setDropdownOpen(null);
   };
 
-  const handlePriceChange = (e, type) => {
+  /**
+   * Price range inputs
+   */
+  const handlePriceChange = (e, priceKey) => {
     const val = e.target.value;
     setDropdownStates((prevState) => ({
       ...prevState,
-      priceRange: { ...prevState.priceRange, [type]: val },
+      priceRange: { ...prevState.priceRange, [priceKey]: val },
     }));
   };
 
-  const clearLocation = () => {
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      location: "",
-    }));
-    onChange?.(""); // Notify parent if needed
-  };
-
-  // Renders the content of each dropdown
+  /**
+   * Render dynamic dropdown content
+   */
   const renderDropdownContent = (type) => {
     switch (type) {
       case "city":
@@ -215,11 +508,35 @@ export const Searchbar = ({
               <p
                 key={index}
                 onClick={() => handleSelectOption("city", cityItem)}
-                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
+                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
               >
                 {cityItem}
               </p>
             ))}
+          </div>
+        );
+      case "area":
+        return (
+          <div className="p-4">
+            {dropdownStates.city ? (
+              areas[dropdownStates.city] ? (
+                areas[dropdownStates.city].map((areaName, index) => (
+                  <p
+                    key={index}
+                    onClick={() => handleSelectOption("area", areaName)}
+                    className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
+                  >
+                    {areaName}
+                  </p>
+                ))
+              ) : (
+                <p className="text-sm text-gray-500">
+                  No areas found for {dropdownStates.city}
+                </p>
+              )
+            ) : (
+              <p className="text-sm text-gray-500">Please select a city first</p>
+            )}
           </div>
         );
       case "category":
@@ -229,34 +546,33 @@ export const Searchbar = ({
               <p
                 key={cat}
                 onClick={() => handleSelectOption("category", cat)}
-                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
+                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
               >
                 {cat}
               </p>
             ))}
           </div>
         );
-        case "roomNumber":
-          return (
-            <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
-              <div className="grid grid-cols-3 gap-2 p-4">
-                {/* Each button sets e.g. "3+1" into state */}
-                {["Studio", "1+1", "2+1", "3+1", "4+1", "5+1"].map((room) => (
-                  <button
-                    key={room}
-                    onClick={() => handleRoomSelect(room)}
-                    className={`flex items-center justify-center px-4 py-2 border rounded-md text-gray-700 focus:outline-none ${
-                      dropdownStates.roomNumber.includes(room)
-                        ? "border-purple-500 bg-white text-black"
-                        : "bg-gray-200"
-                    }`}
-                  >
-                    {room}
-                  </button>
-                ))}
-              </div>
+      case "roomNumber":
+        return (
+          <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
+            <div className="grid grid-cols-3 gap-2 p-4">
+              {["Studio", "1+1", "2+1", "3+1", "4+1", "5+1"].map((room) => (
+                <button
+                  key={room}
+                  onClick={() => handleRoomSelect(room)}
+                  className={`flex items-center justify-center px-4 py-2 border rounded-md text-gray-700 focus:outline-none ${
+                    dropdownStates.roomNumber.includes(room)
+                      ? "border-purple-500 bg-white text-black"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {room}
+                </button>
+              ))}
             </div>
-          );
+          </div>
+        );
       case "price":
         return (
           <div className="p-4">
@@ -273,37 +589,6 @@ export const Searchbar = ({
                 placeholder="Max"
                 value={dropdownStates.priceRange.Max}
                 onChange={(e) => handlePriceChange(e, "Max")}
-                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
-              />
-            </div>
-          </div>
-        );
-      case "area":
-        return (
-          <div className="p-4">
-            <div className="flex space-x-2">
-              <input
-                type="number"
-                placeholder="Min area"
-                value={dropdownStates.area.min}
-                onChange={(e) =>
-                  setDropdownStates((prev) => ({
-                    ...prev,
-                    area: { ...prev.area, min: e.target.value },
-                  }))
-                }
-                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
-              />
-              <input
-                type="number"
-                placeholder="Max area"
-                value={dropdownStates.area.max}
-                onChange={(e) =>
-                  setDropdownStates((prev) => ({
-                    ...prev,
-                    area: { ...prev.area, max: e.target.value },
-                  }))
-                }
                 className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
               />
             </div>
@@ -411,37 +696,6 @@ export const Searchbar = ({
         )}
       </div>
 
-      {/* Area Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
-        <button
-          onClick={() => handleDropdownToggle("area")}
-          className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
-        >
-          <span className="text-[#525C76] text-sm font-semibold">
-            {dropdownStates.area.min || dropdownStates.area.max
-              ? `${dropdownStates.area.min} - ${dropdownStates.area.max} m²`
-              : "Area"}
-          </span>
-          <motion.div
-            animate={{ rotate: dropdownOpen === "area" ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <ArrowDown />
-          </motion.div>
-        </button>
-        {dropdownOpen === "area" && (
-          <motion.div
-            className="absolute left-0 right-0 z-10 mt-2 bg-white rounded-md shadow-lg"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
-          >
-            {renderDropdownContent("area")}
-          </motion.div>
-        )}
-      </div>
-
       {/* City Dropdown */}
       <div className="relative flex-shrink-0 w-full sm:w-[170px]">
         <button
@@ -471,9 +725,40 @@ export const Searchbar = ({
         )}
       </div>
 
+      {/* Area Dropdown (select from the area list for chosen city) */}
+      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
+        <button
+          onClick={() => handleDropdownToggle("area")}
+          className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
+        >
+          <span className="text-[#525C76] text-sm font-semibold">
+            {/* Show the selected area or 'Area' if none */}
+            {dropdownStates.area || "Area"}
+          </span>
+          <motion.div
+            animate={{ rotate: dropdownOpen === "area" ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ArrowDown />
+          </motion.div>
+        </button>
+        {dropdownOpen === "area" && (
+          <motion.div
+            className="absolute left-0 right-0 z-10 mt-2 bg-white rounded-md shadow-lg"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderDropdownContent("area")}
+          </motion.div>
+        )}
+      </div>
+
+
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4 sm:mt-0">
-        {/* Show on map */}
+        {/* Show on Map */}
         <button
           onClick={handleShowOnMap}
           className="flex items-center justify-center px-4 py-2 text-[#8247E5] bg-white h-[50px] w-full sm:w-auto font-semibold rounded-md shadow-md sm:shadow-none"

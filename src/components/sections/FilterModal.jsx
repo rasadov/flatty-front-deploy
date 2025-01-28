@@ -1,11 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Button from "../Button";
-import { useFilters } from "../../hooks/useFilters";
-import { updateFilters } from "../../store/slices/searchSlice";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { isApplyDisabled } from "../../utils/filterUtils";
 import {
   FilterSelect,
   FilterButtonGroup,
@@ -13,71 +8,115 @@ import {
   FilterToggle,
 } from "../../modules/FilterModalModules";
 import { Add, Subtract } from "../../assets/icons";
+import { useSearchParams } from "react-router-dom";
 
 export const FilterModal = ({ isOpen, onClose, onApply }) => {
-  const {
-    filters = {},
-    setFilter,
-    toggleFilter,
-    incrementFilter,
-    decrementFilter,
-    clearFilters,
-  } = useFilters();
-  const navigate = useNavigate();
-
-  // Local state for UI interactions
-  const [selectedFilters, setSelectedFilters] = useState(filters);
-  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedFilters, setSelectedFilters] = useState({
+    area: {
+      from: null,
+      to: null,
+    },
+    price: {
+      RangeMin: null,
+      RangeMax: null,
+    },
+    roomNumber: null,
+    city: null,
+    category: null,
+    livingAreaFrom: null,
+    livingAreaTo: null,
+    floor: {
+      min: null,
+      max: null,
+    },
+    notFirstFloor: null,
+    notLastFloor: null,
+    lastFloor: null,
+    year: null,
+    livingRooms: 0,
+    bathrooms: 0,
+    balconies: 0,
+    bedrooms: 0,
+    installment: null,
+    elevator: null,
+    parkingSlot: null,
+    gym: null,
+    swimmingPool: null,
+  });
 
   useEffect(() => {
-    // Sync selectedFilters with filters when modal opens or filters change externally
-    setSelectedFilters(filters);
-  }, []);
+    // Load existing query parameters into filters on modal open
+    const currentFilters = {};
+    searchParams.forEach((value, key) => {
+      const [mainKey, subKey] = key.split(".");
+      if (subKey) {
+        currentFilters[mainKey] = {
+          ...currentFilters[mainKey],
+          [subKey]: isNaN(value) ? value : Number(value),
+        };
+      } else {
+        currentFilters[key] = isNaN(value) ? value : Number(value);
+      }
+    });
+    setSelectedFilters(currentFilters);
+  }, [searchParams]);
 
   const handleApply = () => {
     const queryParams = new URLSearchParams();
     Object.entries(selectedFilters).forEach(([key, value]) => {
       if (value !== null && value !== undefined && value !== "") {
         if (typeof value === "object" && !Array.isArray(value)) {
-          // For nested objects like 'rooms'
           Object.entries(value).forEach(([subKey, subValue]) => {
             if (subValue !== 0 && subValue !== "") {
-              if (subKey === "options" && Array.isArray(subValue)) {
-                subValue.forEach((option) =>
-                  queryParams.append(`${key}.${subKey}`, option)
-                );
-              } else {
-                queryParams.append(`${key}.${subKey}`, subValue);
-              }
+              queryParams.append(`${key}`, subValue);
             }
           });
-        } else if (Array.isArray(value)) {
-          // For arrays like 'renovation', 'furniture'
-          value.forEach((item) => queryParams.append(key, item));
         } else {
           queryParams.append(key, value);
         }
       }
     });
-
-    // localStorage.setItem('filters', JSON.stringify(selectedFilters));
-    const currentParams = new URLSearchParams(window.location.search);
-    currentParams.forEach((value, key) => {
-      if (!queryParams.has(key)) {
-        queryParams.append(key, value);
-      }
-    });
-
-    navigate(`?${queryParams.toString()}`);
-    // Dispatch the filters to Redux store
-    dispatch(updateFilters(selectedFilters));
-    // Send filters to parent component with query parameters
-    onApply(selectedFilters, queryParams.toString());
-    onClose(); // Close modal
-  };
-  const handleCancel = () => {
-    // clearFilters();
+    setSearchParams(queryParams);
+    onApply(selectedFilters);
     onClose();
+  };
+
+  const handleCancel = () => {
+    setSelectedFilters({
+      areaFrom: null,
+      areaTo: null,
+      priceRangeMin: null,
+      priceRangeMax: null,
+      roomNumber: null,
+      city: null,
+      category: null,
+      livingAreaFrom: null,
+      livingAreaTo: null,
+      minFloor: null,
+      maxFloor: null,
+      notFirstFloor: null,
+      notLastFloor: null,
+      lastFloor: null,
+      year: null,
+      livingRooms: 0,
+      bathrooms: 0,
+      balconies: 0,
+      bedrooms: 0,
+      installment: null,
+      elevator: null,
+      parkingSlot: null,
+      gym: null,
+      swimmingPool: null,
+    });
+    onClose();
+  };
+
+  const updateFilterValue = (key, value) => {
+    setSelectedFilters((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
   };
 
   if (!isOpen) return null;
@@ -107,78 +146,19 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             {/* Close icon */}
           </button>
           <h3 className="text-[28px] font-semibold text-left mb-2">Filter</h3>
-          <FilterSelect
-            label="Category"
-            options={[
-              { value: "Apartment", label: "Apartment" },
-              { value: "Villa", label: "Villa" },
-              { value: "Penthouse", label: "Penthouse" },
-              { value: "Cottages", label: "Cottages" },
-            ]}
-            category="category"
-            fromKey="from"
-            toKey="to"
-            filters={filters}
-            setFilter={setFilter}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-          />
-
-          <FilterSelect
-            label="Residence Complex"
-            options={[
-              { value: "Residence Complex", label: "Residence Complex" },
-              { value: "Villa", label: "Villa" },
-              { value: "Penthouse", label: "Penthouse" },
-              { value: "Cottages", label: "Cottages" },
-            ]}
-            category="category"
-            fromKey="from"
-            toKey="to"
-            filters={filters}
-            setFilter={setFilter}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-          />
-
-          <FilterNumberRange
-            label="Price"
-            category="price"
-            fromKey="Min"
-            toKey="Max"
-            filters={filters}
-            setFilter={setFilter}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-            // unit="m²"
-          />
-
-          {/* =========================== */}
 
           {/* Filter Components */}
           <FilterNumberRange
-            label="Total area"
-            category="area"
-            fromKey="from"
-            toKey="to"
-            filters={filters}
-            setFilter={setFilter}
+            label="Area (m²)"
+            category="areaFrom"
+            fromKey="areaFrom"
+            toKey="areaTo"
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
+            updateFilterValue={updateFilterValue}
             unit="m²"
           />
-          <FilterNumberRange
-            label="Total area"
-            category="area"
-            fromKey="from"
-            toKey="to"
-            filters={filters}
-            setFilter={setFilter}
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-            unit="m²"
-          />
-          {/* <FilterButtonGroup
+          <FilterButtonGroup
             label="Renovation"
             options={[
               "Cosmetic",
@@ -186,60 +166,47 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
               "European style",
               "Needs renovation",
             ]}
-            category="renovation"
-            setFilter={setFilter}
-            setSelectedFilters={setSelectedFilters}
+            category="roomNumber"
             selectedFilters={selectedFilters}
-          /> */}
+            setSelectedFilters={setSelectedFilters}
+
+            updateFilterValue={updateFilterValue}
+          />
 
           <FilterNumberRange
             label="Floor"
-            category="floor"
-            fromKey="from"
-            toKey="to"
-            filters={filters}
-            setFilter={setFilter}
-            selectedFilters={selectedFilters}
+            category="minFloor"
+            fromKey="minFloor"
+            toKey="maxFloor"
             setSelectedFilters={setSelectedFilters}
+
+            selectedFilters={selectedFilters}
+            updateFilterValue={updateFilterValue}
             additionalOptions={["Not first", "Not last", "Last"]}
             unit=""
           />
 
           <div className="flex flex-wrap justify-between gap-3 my-4">
-            {["bathroom", "livingRoom", "bedroom", "balcony"].map((type) => (
+            {["bathrooms", "livingRooms", "bedrooms", "balconies"].map((type) => (
               <div key={type} className="flex flex-wrap items-center my-2">
                 <label className="block text-[10px] font-semibold capitalize text-[#525C76] leading-[16px] mr-2">
                   {type}
                 </label>
                 <div className="flex items-center gap-1">
                   <button
-                    onClick={() => {
-                      decrementFilter(`rooms.${type}`);
-                      setSelectedFilters((prev) => ({
-                        ...prev,
-                        rooms: {
-                          ...prev.rooms,
-                          [type]: Math.max((prev.rooms?.[type] || 0) - 1, 0),
-                        },
-                      }));
-                    }}
+                    onClick={() =>
+                      updateFilterValue(type, Math.max((selectedFilters[type] || 0) - 1, 0))
+                    }
                   >
                     <Subtract />
                   </button>
                   <span className="text-[14px] align-middle font-semibold leading-[22.4px]">
-                    {selectedFilters.rooms?.[type] || 0}
+                    {selectedFilters[type] || 0}
                   </span>
                   <button
-                    onClick={() => {
-                      incrementFilter(`rooms.${type}`);
-                      setSelectedFilters((prev) => ({
-                        ...prev,
-                        rooms: {
-                          ...prev.rooms,
-                          [type]: (prev.rooms?.[type] || 0) + 1,
-                        },
-                      }));
-                    }}
+                    onClick={() =>
+                      updateFilterValue(type, (selectedFilters[type] || 0) + 1)
+                    }
                   >
                     <Add />
                   </button>
@@ -247,19 +214,11 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
               </div>
             ))}
           </div>
-          {/* Toggles */}
-          <div className="flex justify-start gap-6 mb-4"></div>
 
-          {/* Apply and Cancel buttons */}
           <div className="flex justify-end gap-4">
             <Button
               onClick={handleApply}
-              className={`bg-[#8247E5] text-white px-4 py-2 rounded ${
-                isApplyDisabled(selectedFilters)
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-              disabled={isApplyDisabled(selectedFilters)}
+              className="bg-[#8247E5] text-white px-4 py-2 rounded"
             >
               Apply
             </Button>

@@ -14,7 +14,6 @@ const FilterSelect = ({
   value,
   options,
   setFilter,
-
   setSelectedFilters,
   selectedFilters = {},
 }) => (
@@ -113,7 +112,7 @@ const FilterNumberRange = ({
           [key]: value,
         },
       });
-      setFilter(`${category}.${key}`, value);
+      // setFilter(`${category}.${key}`, value);
     },
     className:
       "p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left",
@@ -135,7 +134,7 @@ const FilterNumberRange = ({
       },
     });
     // Assume `setFilter` can handle nested paths like this
-    setFilter(`${category}.options`, newOptions);
+    // setFilter(`${category}.options`, newOptions);
   };
 
   return (

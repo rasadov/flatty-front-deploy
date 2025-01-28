@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from "framer-motion";
 const filterConfig = [
   { key: "category", label: "Category" },
   { key: "complex", label: "Complex" },
-  { key: "area.from", label: "Area From" },
-  { key: "area.to", label: "Area To" },
+  { key: "areaFrom", label: "Area From" },
+  { key: "areaTo", label: "Area To" },
   { key: "renovation", label: "Renovation", isArray: true },
   { key: "floor.from", label: "Floor From" },
   { key: "floor.to", label: "Floor To" },

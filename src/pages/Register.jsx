@@ -28,11 +28,11 @@ const schema = yup.object({
     .string()
     .required("Full name is required")
     .matches(/^[A-Za-z\s]+$/, "Only letters and spaces are allowed"),
-  phone: yup
+    phone: yup
     .string()
     .required("Mobile number is required")
     .matches(
-      /^\+\d{5,}$/,
+      /^\+\d{10,15}$/,
       "Please enter a valid mobile number with country code"
     ),
   password: yup
@@ -177,7 +177,7 @@ const Register = () => {
         <Input
           type="text"
           error={errors.phone}
-          {...register("mobile")}
+          {...register("phone")}
           placeholder="Mobile number"
           className="w-full"
         />

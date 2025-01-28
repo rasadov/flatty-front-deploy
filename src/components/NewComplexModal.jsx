@@ -28,44 +28,303 @@ const cities = [
   "İskele",
   "Lefke",
   "Lapta",
-  "Koruçam",
   "Alsancak",
   "Değirmenlik",
-  "Esentepe",
-  "Dikmen",
-  "Mehmetçik",
-  "Karpaz",
-  "Dipkarpaz",
   "Yeni Erenköy",
   "Geçitkale",
-  "Beşparmak"
+];
+
+const areas = {
+  "Lefkoşa": [
+    "Akıncılar",
+    "Alayköy",
+    "Dilekkaya",
+    "Erdemli",
+    "Gönyeli",
+    "Gürpınar",
+    "Hamitköy",
+    "Haspolat",
+    "Kanlıköy",
+    "Kırklar",
+    "Kırıkkale",
+    "Lefkoşa",
+    "Türkeli",
+    "Yılmazköy",
+    "Yiğitler",
+    "Abdi Çavuş",
+    "Akkavuk",
+    "Arabahmet",
+    "Ayyıldız",
+    "Çağlayan",
+    "Göçmenköy",
+    "Haydarpaşa",
+    "İbrahimpaşa",
+    "İplikpazarı",
+    "Kafesli",
+    "Karamanzade",
+    "Köşklüçiftlik",
+    "Kızılay",
+    "Küçük Kaymaklı",
+    "Mahmutpaşa",
+    "Marmara",
+    "Metehan",
+    "Ortaköy",
+    "Selimiye",
+    "Taşkınköy",
+    "Yenicami",
+    "Yenişehir"
+  ],
+  "Gönyeli": [
+    "Gönyeli",
+    "Yenikent"
+  ],
+  "Değirmenlik": [
+    "Balıkesir",
+    "Beyköy",
+    "Cihangir",
+    "Çukurova",
+    "Değirmenlik",
+    "Demirhan",
+    "Düzova",
+    "Gaziköy",
+    "Gökhan",
+    "Kalavaç",
+    "Meriç",
+    "Minareliköy",
+    "Yeniceköy",
+    "Bahçelievler",
+    "Başpınar",
+    "Camialtı",
+    "Mehmetçik",
+    "Saray",
+    "Tepebaşı"
+  ],
+  "Gazimağusa": [
+    "Akova",
+    "Alaniçi",
+    "Aslanköy",
+    "Dörtyol",
+    "Gazimağusa",
+    "Güvercinlik",
+    "Korkuteli",
+    "Kurudere",
+    "Mormenekşe",
+    "Mutluyaka",
+    "Pirhan",
+    "Şehitler",
+    "Yeni Boğaziçi",
+    "Yıldırım",
+    "Anadolu",
+    "Baykal",
+    "Canbolat",
+    "Çanakkale",
+    "Dumlupınar",
+    "Harika",
+    "Karakol",
+    "Lala Mustafa Paşa",
+    "Namık Kemal",
+    "Pertev Paşa",
+    "Piyale Paşa",
+    "Sakarya",
+    "Suriçi",
+    "Tuzla",
+    "Zafer",
+    "Atlılar",
+    "Muratağa",
+    "Sandallar"
+  ],
+  "Geçitkale": [
+    "Çamlıca",
+    "Çınarlı",
+    "Ergenekon",
+    "Geçitkale",
+    "Gönendere",
+    "Görneç",
+    "Mallıdağ",
+    "Nergisli",
+    "Pınarlı",
+    "Serdarlı",
+    "Sütlüce",
+    "Tatlısu",
+    "Tirmen",
+    "Ulukışla",
+    "Yamaçköy"
+  ],
+  "Tatlısu": [
+    "Aktunç",
+    "Küçükerenköy",
+    "Yalı"
+  ],
+  "Akdoğan": [
+    "Akdoğan",
+    "Beyarmudu",
+    "Çayönü",
+    "İncirli",
+    "İnönü",
+    "Köprü",
+    "Paşaköy",
+    "Turunçlu",
+    "Türkmenköy",
+    "Vadili"
+  ],
+  "Girne": [
+    "Ağırdağ",
+    "Alsancak",
+    "Arapköy",
+    "Aşağı Dikmen",
+    "Aşağı Taşkent",
+    "Bahçeli",
+    "Beşparmak",
+    "Beylerbeyi",
+    "Boğazköy",
+    "Çatalköy",
+    "Dağyolu",
+    "Esentepe",
+    "Girne",
+    "Göçeri",
+    "Güngör",
+    "Ilgaz",
+    "Karaağaç",
+    "Karaman",
+    "Karşıyaka",
+    "Kömürcü",
+    "Lapta",
+    "Malatya/İncesu",
+    "Ozanköy",
+    "Pınarbası",
+    "Yeni Mahalle",
+    "Yeşiltepe",
+    "Yukarı Dikmen",
+    "Yukarı Taşkent",
+    "Aşağı Girne",
+    "Aşağı Karaman",
+    "Doğanköy",
+    "Edremit",
+    "Karakum",
+    "Karaoğlanoğlu",
+    "Yukarı Girne",
+    "Zeytinlik"
+  ],
+  "Lapta": [
+    "Adatepe",
+    "Başpınar",
+    "Kocatepe",
+    "Sakarya",
+    "Tınaztepe",
+    "Türk",
+    "Yavuz"
+  ],
+  "Alsancak": [
+    "Çağlayan",
+    "Yayla",
+    "Yeşilova"
+  ],
+  "Çamlıbel": [
+    "Akçiçek",
+    "Akdeniz",
+    "Alemdağ",
+    "Çamlıbel",
+    "Geçitköy",
+    "Hisarköy",
+    "Karpaşa",
+    "Kayalar",
+    "Kılıçarslan",
+    "Koruçam",
+    "Kozanköy",
+    "Özhan",
+    "Sadrazamköy",
+    "Şirinevler",
+    "Tepebaşı"
+  ],
+  "Güzelyurt": [
+    "Akçay",
+    "Aydınköy",
+    "Gayretköy",
+    "Güneşköy",
+    "Güzelyurt",
+    "Kalkanlı",
+    "Mevlevi",
+    "Serhatköy",
+    "Şahinler",
+    "Yayla",
+    "Yuvacık",
+    "Zümrütköy",
+    "Asağı Bostancı",
+    "İsmetpaşa",
+    "Lala Mustafa Paşa",
+    "Piyalepaşa",
+    "Yukarı Bostancı"
+  ],
+  "İskele": [
+    "Ağıllar",
+    "Altınova",
+    "Ardahan",
+    "Aygün",
+    "Boğaziçi",
+    "Ergazi",
+    "İskele",
+    "Kalecik",
+    "Kaplıca",
+    "Kurtuluş",
+    "Kuzucuk",
+    "Mersinlik",
+    "Ötuken",
+    "Sınırüstü",
+    "Topçuköy",
+    "Turnalar",
+    "Yarköy",
+    "Boğaz",
+    "Boğaztepe",
+    "Cevizli",
+    "İskele",
+    "Bafra",
+    "Balalan",
+    "Büyükkonuk",
+    "Çayırova",
+    "Kilitkaya",
+    "Kumyalı",
+    "Mehmetçik",
+    "Pamuklu",
+    "Sazlıköy",
+    "Tuzluca",
+    "Yedikonuk",
+    "Zeybekköy"
+  ],
+  "Yeni Erenköy": [
+    "Adaçay",
+    "Avtepe",
+    "Boltaşlı",
+    "Derince",
+    "Dipkarpaz",
+    "Esenköy",
+    "Gelincik",
+    "Kaleburnu",
+    "Kuruova",
+    "Sipahi",
+    "Taşlıca",
+    "Yeni Erenköy",
+    "Yeşilköy",
+    "Ziyamet"
+  ],
+  "Lefke": [
+    "Bademliköy",
+    "Bağlıköy",
+    "Cengizköy",
+    "Çamlıköy",
+    "Doğancı",
+    "Erenköy",
+    "Gaziveren",
+    "Kurutepe",
+    "Lefke",
+    "Taşpınar",
+    "Yeşilırmak",
+    "Yeşilyurt",
+    "Denizli",
+    "Gemikonağı",
+    "Lefke",
+    "Yedidalga"
   ]
-const areas = [
-      "Lefkoşa",
-      "Girne",
-      "Gazimağusa",
-      "Güzelyurt",
-      "İskele",
-      "Lefke"
-  ]
-
-const getAddressFromLatLng = async (lat, lng) => {
-  const apiKey = "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM"; // Replace with your Google Maps API key
-  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
-
-  try {
-    const response = await axios.get(url);
-    if (response.data.status === "OK") {
-      const address = response.data.results[0].formatted_address;
-
-      return address;
-    } else {
-      throw new Error("Unable to fetch address");
-    }
-  } catch (error) {
-    return null;
-  }
-};
+}
 
 var city = "";
 var area = "";
@@ -122,10 +381,10 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       console.log("area", area);
     }
     if (city && area) {
-    setFormData((prev) => ({ ...prev, address: `${area}, ${city}` }));
-    } else {
-      setFormData((prev) => ({ ...prev, address: `${value}` }));
-    }
+      setFormData((prev) => ({ ...prev, address: `${city}, ${area}` }));
+      } else {
+        setFormData((prev) => ({ ...prev, address: `${value}` }));
+      }
   };
 
   const handleImageUpload = (e) => {
@@ -134,7 +393,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM", // Replace with your key
+    googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM",
     libraries: ["places"],
   });
 
@@ -582,12 +841,13 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   value={area}
                   onChange={handleLocationChange}
                 >
-                  <option value="">Area</option>
-                  {areas.map((areaobj, index) => (
-                    <option key={index} value={areaobj}>
-                      {areaobj}
+                  <option value="">{!city ? "Select a city first" : area || "Select"}</option>
+                  { city ?
+                  areas[city].map((area, index) => (
+                    <option key={index} value={area}>
+                      {area}
                     </option>
-                  ))}
+                  )) : null}
                 </select>
               </div>
             </div>

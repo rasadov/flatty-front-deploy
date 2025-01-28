@@ -17,17 +17,14 @@ export const useFilters = () => {
   const clearFilters = () => dispatch(clearAllFilters());
 
   const setCategory = (value) => setFilter("category", value);
-  const setComplex = (value) => setFilter("complex", value);
-  const setAreaFrom = (value) => setFilter("area.from", value);
-  const setAreaTo = (value) => setFilter("area.to", value);
-  const setRenovation = (value) => setFilter("renovation", value);
-  const setFloorFrom = (value) => setFilter("floor.from", value);
-  const setFloorTo = (value) => setFilter("floor.to", value);
-  const setCeilingHeight = (value) => setFilter("ceilingHeight", value);
-  const setBathroom = (value) => setFilter("bathroom", value);
-  const setFurniture = (value) => setFilter("furniture", value);
-  const setRooms = (value) => setFilter("rooms.rooms", value);
-  const setLivingRoom = (value) => setFilter("rooms.livingRoom", value);
+  const setAreaFrom = (value) => setFilter("areaFrom", value);
+  const setAreaTo = (value) => setFilter("areaTo", value);
+  const setMinFloor = (value) => setFilter("minFloor", value);
+  const setMaxFloor = (value) => setFilter("maxFloor", value);
+  const setBathroom = (value) => setFilter("bathrooms", value);
+  const setBalconies = (value) => setFilter("balconies", value);
+
+  const setLivingRoom = (value) => setFilter("", value);
   const setBedroom = (value) => setFilter("rooms.bedroom", value);
   const setBalcony = (value) => setFilter("rooms.balcony", value);
   const toggleParkingSlot = () => toggleFilter("parkingSlot");
