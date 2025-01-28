@@ -54,13 +54,14 @@ const NewComplexModal = ({ isOpen, onClose }) => {
     objects: 0,
     year: 0,
     buildingFloors: 0,
-    parkingSlot: false,
-    installment: false,
-    swimmingPool: false,
-    elevator: false,
+    parkingSlot: "",
+    installment: "",
+    swimmingPool: "",
+    elevator: "",
     latitude: 0,
     longitude: 0,
     address: "",
+    gym: "",
   });
   const [images, setImages] = useState([]);
   const dispatch = useDispatch();
@@ -69,7 +70,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      address: `${prevFormData.city || ""}, ${prevFormData.area || ""}`.trim(),
+      address: `${prevFormData.city || ""}, ${prevFormData.area || ""} , ${prevFormData.address || ""}`.trim(),
     }));
   }, [formData.city, formData.area]);
 
@@ -321,7 +322,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
+            {/* <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
               {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
                 (field, index) => (
                   <div
@@ -347,6 +348,131 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   </div>
                 )
               )}
+            </div> */}
+            <div className="flex flex-wrap gap-4 mt-4">
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Installment
+                </label>
+                <select
+                  name="installment"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.installment}
+                  onChange={handleInputChange}
+                >
+                  <option value="installment">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Parking
+                </label>
+                <select
+                  name="parkingSlot"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.parkingSlot}
+                  onChange={handleInputChange}
+                >
+                  <option value="parkingSlot">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Swimming pool
+                </label>
+                <select
+                  name="swimmingPool"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.swimmingPool}
+                  onChange={handleInputChange}
+                >
+                  <option value="swimmingPool">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    GYM
+                  </label>
+                  <select
+                    name="gym"
+                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                    value={formData.gym}
+                    onChange={handleInputChange}
+                  >
+                    <option value="gym">Select</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block mb-1 text-sm font-medium text-gray-700">
+                      Elevator
+                    </label>
+                    <select
+                      name="elevator"
+                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                      value={formData.elevator}
+                      onChange={handleInputChange}
+                    >
+                      <option value="">Select</option>
+                      <option value="true">Yes</option>
+                      <option value="false">No</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex ">
+              {/* <div className="flex flex-col w-full sm:w-auto mr-10">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Year
+                </label>
+                <input
+                  name="year"
+                  type="number"
+                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+                  value={formData.year}
+                  onChange={handleInputChange}
+                />
+              </div> */}
+              {/* <div className="flex flex-col w-full sm:w-auto">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Price
+                </label>
+                <div className="flex items-center gap-2">
+                  <input
+                    name="price"
+                    type="number"
+                    className="w-full sm:w-[107px] h-[52px] p-2 border rounded-md"
+                    value={formData.price}
+                    onChange={handleInputChange}
+                  />
+                  <select
+                    name="currency"
+                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    value={formData.currency}
+                    onChange={handleInputChange}
+                  >
+                    <option value="$">$</option>
+                    <option value="€">€</option>
+                    <option value="₺">₺</option>
+                    <option value="£">£</option>
+                  </select>
+                </div>
+              </div> */}
             </div>
             <div>
               <label className="block mb-1 text-xs font-medium text-gray-700">
@@ -553,7 +679,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               {/* Address */}
               <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
                 <p className="text-sm text-gray-700">
-                  {formData.city + "," + formData.area ||
+                  { formData.address ||
                     "Select a location on the map"}
                 </p>
                 {formData.address && (

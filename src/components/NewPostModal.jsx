@@ -23,10 +23,10 @@ const conditions = [
   "Needs renovation",
 ];
 const renovations = [
-  "Cosmetic",
-  "Designer",
-  "European style",
-  "Needs renovation",
+  "Witout finishing",
+  "Pre-finish",
+  "Move-in ready",
+  "With furniture",
 ];
 
 const getAddressFromLatLng = async (lat, lng) => {
@@ -124,7 +124,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   };
 
   const handleFileRemove = (index) => {
-    setSelectedDocuments((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setSelectedDocuments((prevFiles) =>
+      prevFiles.filter((_, i) => i !== index)
+    );
   };
 
   const handleDragOverFile = (event) => {
@@ -134,7 +136,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const handleDropFile = (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
-    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
   };
 
   const formatFileSize = (size) => {
@@ -143,6 +145,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     else if (size < 1073741824) return `${(size / 1048576).toFixed(2)} MB`;
     else return `${(size / 1073741824).toFixed(2)} GB`;
   };
+
   //?   Files ===========
 
   const handleImageRemove = (index) => {
@@ -186,17 +189,22 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    if (selectedFiles.length > 0) {
+    if (selectedFiles.length && selectedDocuments.length > 0) {
       const formDataToSend = new FormData();
+      const formDocumentToSend = new FormData();
+
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
       selectedFiles.forEach((file) => {
         formDataToSend.append("files", file);
       });
-
+      // ? ========================================================
+      Object.keys(formData).forEach((key) => {
+        formDocumentToSend.append(key, formData[key]);
+      });
       selectedDocuments.forEach((file) => {
-        formDataToSend.append("documents", file);
+        formDocumentToSend.append("files", file);
       });
 
       for (var pair of formDataToSend.entries()) {
@@ -204,6 +212,17 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       }
       try {
         dispatch(addPost(formDataToSend));
+        dispatch(fetchPosts());
+        onClose();
+      } catch (error) {
+        console.error(error);
+      }
+
+      for (var pair of formDocumentToSend.entries()) {
+        console.log(pair[0] + ", " + pair[1]);
+      }
+      try {
+        dispatch(addPost(formDocumentToSend));
         dispatch(fetchPosts());
         onClose();
       } catch (error) {
@@ -252,7 +271,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+        className="w-full sm:w-[75%] md:w-[80%] h-[800px] sm:h-[990px] bg-white rounded-lg shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
@@ -331,50 +350,94 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-              {[
-                "floor",
-                "apartmentStories",
-                "buildingFloors",
-                "livingRoom",
-                "bedroom",
-                "bathroom",
-                "balcony",
-              ].map((field, index) => (
-                <div key={index} className="flex flex-col items-start">
-                  <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                    {field == "livingRoom"
-                      ? "Living rooms"
-                      : field == "buildingFloors"
-                      ? "Building floors"
-                      : field == "apartmentStories"
-                      ? "Appartment stories"
-                      : field}
-                  </label>
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => handleNumberChange(field, "subtract")}
-                      className="p-2 border rounded-md hover:bg-gray-100"
-                    >
-                      <Subtract />
-                    </button>
-                    <input
-                      name={field}
-                      type="number"
-                      className="w-[36px] h-[32px] text-center border rounded-md"
-                      value={formData[field]}
-                      onChange={handleInputChange}
-                      min="0"
-                      readOnly
-                    />
-                    <button
-                      onClick={() => handleNumberChange(field, "add")}
-                      className="p-2 border rounded-md hover:bg-gray-100"
-                    >
-                      <Add />
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {formData.category !== "Villa"
+                ? [
+                    "floor",
+                    "apartmentStories",
+                    "buildingFloors",
+                    "livingRoom",
+                    "bedroom",
+                    "bathroom",
+                    "balcony",
+                  ].map((field, index) => (
+                    <div key={index} className="flex flex-col items-start">
+                      <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                        {field == "livingRoom"
+                          ? "Living rooms"
+                          : field == "buildingFloors"
+                          ? "Building floors"
+                          : field == "apartmentStories"
+                          ? "Appartment stories"
+                          : field}
+                      </label>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleNumberChange(field, "subtract")}
+                          className="p-2 border rounded-md hover:bg-gray-100"
+                        >
+                          <Subtract />
+                        </button>
+                        <input
+                          name={field}
+                          type="number"
+                          className="w-[36px] h-[32px] text-center border rounded-md"
+                          value={formData[field]}
+                          onChange={handleInputChange}
+                          min="0"
+                          readOnly
+                        />
+                        <button
+                          onClick={() => handleNumberChange(field, "add")}
+                          className="p-2 border rounded-md hover:bg-gray-100"
+                        >
+                          <Add />
+                        </button>
+                      </div>
+                    </div>
+                  ))
+                : [
+                    "floors",
+                    ,
+                    "livingRoom",
+                    "bedroom",
+                    "bathroom",
+                    "balcony",
+                  ].map((field, index) => (
+                    <div key={index} className="flex flex-col items-start">
+                      <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                        {field == "livingRoom"
+                          ? "Living rooms"
+                          : field == "buildingFloors"
+                          ? "Building floors"
+                          : field == "apartmentStories"
+                          ? "Appartment stories"
+                          : field}
+                      </label>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => handleNumberChange(field, "subtract")}
+                          className="p-2 border rounded-md hover:bg-gray-100"
+                        >
+                          <Subtract />
+                        </button>
+                        <input
+                          name={field}
+                          type="number"
+                          className="w-[36px] h-[32px] text-center border rounded-md"
+                          value={formData[field]}
+                          onChange={handleInputChange}
+                          min="0"
+                          readOnly
+                        />
+                        <button
+                          onClick={() => handleNumberChange(field, "add")}
+                          className="p-2 border rounded-md hover:bg-gray-100"
+                        >
+                          <Add />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
             </div>
             {/* <div className="flex flex-wrap gap-4 items-center mt-4">
               {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
@@ -396,7 +459,39 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 )
               )}
             </div> */}
-            <div className="mt-4">
+
+            {/* {console.log("bax bax buna baaaxx>>>>>>", formData)}
+
+            {formData.category == "Appartment" ? (
+              ""
+            ) : (
+              <div className="mt-4">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Renovation
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {renovations.map((renovations, index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          renovations: renovations,
+                        }))
+                      }
+                      className={`${getButtonStyle(
+                        "renovations",
+                        renovations
+                      )} bg-gray-100 px-4 py-2 rounded-md`}
+                    >
+                      {renovations}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )} */}
+
+            {/* <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Condition
               </label>
@@ -416,7 +511,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
             <div className="flex flex-wrap gap-4 mt-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -477,7 +572,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     value={formData.gym}
                     onChange={handleInputChange}
                   >
-                    <option value="gym">GYM</option>
+                    <option value="gym">Select</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
@@ -766,10 +861,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
 
-              {selectedFiles.length > 0 && (
+              {selectedDocuments.length > 0 && (
                 // List the selected files below
                 <div className="mt-4 space-y-2">
-                  {selectedFiles.map((file, index) => (
+                  {selectedDocuments.map((file, index) => (
                     <div
                       key={index}
                       className="flex justify-between items-center p-2 border-b border-gray-300"
@@ -866,7 +961,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   value={formData.category}
                   onChange={handleInputChange}
                 >
-                  <option value="">Select</option>
+                  <option value="">City</option>
+                  <option value="Girne">Girne</option>
+                  <option value="Gazimaöusa">Gazimaöusa</option>
+                  <option value="Güzelyurt">Güzelyurt</option>
+                  <option value="İskele">İskele</option>
+                  <option value="Lefke">Lefke</option>
                 </select>
               </div>
               <div>
@@ -879,7 +979,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
-                  <option value="">Select</option>
+                  <option value="">Area</option>
+                  <option value="Akıncılar">Akıncılar</option>
+                  <option value="Balıkesir">Balıkesir</option>
+                  <option value="Batıkent">Batıkent</option>
+                  <option value="Beyköy">Beyköy</option>
+                  <option value="Lefke">Lefke</option>
                   {/* {complexes?  complexes.map((complex, index) => (
                     <option key={index} value={complex.name}>
                       {complex.name}
