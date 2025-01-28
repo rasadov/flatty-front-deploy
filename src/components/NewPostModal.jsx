@@ -519,7 +519,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="installment"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -535,7 +535,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -551,7 +551,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -561,14 +561,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
+              <div>
                   <label className="block mb-1 text-sm font-medium text-gray-700">
                     GYM
                   </label>
                   <select
                     name="gym"
-                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                    className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
                     value={formData.gym}
                     onChange={handleInputChange}
                   >
@@ -585,7 +584,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     </label>
                     <select
                       name="elevator"
-                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                      className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
                       value={formData.elevator}
                       onChange={handleInputChange}
                     >
@@ -595,7 +594,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     </select>
                   </div>
                 </div>
-              </div>
+
+              {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+             
+              </div> */}
             </div>
 
             <div className="flex ">
