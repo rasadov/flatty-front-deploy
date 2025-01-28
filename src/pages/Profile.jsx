@@ -161,13 +161,17 @@ export const Profile = () => {
           {/* Experience, Sales, Active Posts */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#EEEFF2] p-4 rounded-md">
             {["Experience", "Successful sales", "Active posts"].map(
-              (label, index) => (
-                <div key={index} className="text-center">
-                  <span className="block text-sm text-gray-500">{label}</span>
-                  {/* Add respective values */}
-                </div>
-              )
-            )}
+                (label, index) => (
+                  <div key={index} className="text-center">
+                    <span className="block text-sm text-gray-500">{label}</span>
+                    <p className="font-medium text-lg text-[#0F1D40]">
+                      {index === 0 ? agent.experience ? agent.experience + " years" : "Unknown" :
+                      index === 1 ? agent.sales ? agent.sales : "Unknown":
+                      index === 2 ? properties.length ? properties.length : "Unknown" : ""}
+                    </p>
+                  </div>
+                )
+              )}
           </div>
           {/* Buttons */}
           <div className="flex flex-col lg:flex-row justify-center gap-4 mt-4">

@@ -37,7 +37,7 @@ export const Searchbar = ({
     "₺": 0.028,
   };
 
-  // Sync the location with the prop 'value'
+  
   useEffect(() => {
     setDropdownStates((prevState) => ({
       ...prevState,
@@ -46,7 +46,7 @@ export const Searchbar = ({
   }, [value]);
 
   useEffect(() => {
-    // Parse current URL search parameters
+   
     const currentParams = new URLSearchParams(location.search);
     const currentFilters = {};
     currentParams.forEach((value, key) => {
@@ -54,7 +54,7 @@ export const Searchbar = ({
     });
 
     const combinedFilters = {
-      ...currentFilters, // from current URL
+      ...currentFilters, 
     };
 
     let queryString = new URLSearchParams(combinedFilters).toString();
@@ -81,22 +81,22 @@ export const Searchbar = ({
 
     const currentParams = new URLSearchParams(window.location.search);
 
-    // Конвертируем URLSearchParams в объект
+    
     const currentFilters = {};
     currentParams.forEach((value, key) => {
       currentFilters[key] = value;
     });
 
     const combinedFilters = {
-      ...currentFilters, // из текущего URL
-      ...dropdownStates, // из локального состояния
+      ...currentFilters, 
+      ...dropdownStates, 
     };
 
     const queryParams = new URLSearchParams();
     queryParams.append("page", 1);
     queryParams.append("elements", 10);
 
-    // Перебираем объединенные фильтры
+    
     Object.entries(combinedFilters).forEach(([key, value]) => {
       if (
         value !== null &&
@@ -105,10 +105,10 @@ export const Searchbar = ({
         value !== 0
       ) {
         if (key === "roomNumber" && Array.isArray(value)) {
-          // Добавляем roomNumber без кодирования запятой
+          
           queryParams.append(key, value.join(","));
         } else if (typeof value === "object" && !Array.isArray(value)) {
-          // Обрабатываем вложенные объекты (например, priceRange)
+         
           Object.entries(value).forEach(([subKey, subValue]) => {
             if (
               subValue !== null &&
@@ -127,7 +127,7 @@ export const Searchbar = ({
             }
           });
         } else if (Array.isArray(value)) {
-          // Для других массивов (не roomNumber)
+          
           value.forEach((item) => {
             queryParams.append(key, item);
           });
@@ -137,15 +137,14 @@ export const Searchbar = ({
       }
     });
 
-    // Конвертация query-параметров в строку и ручная обработка roomNumber
     let queryString = queryParams.toString();
 
-    // Заменяем roomNumber=1%2C2%2C3 на roomNumber=1,2,3
+   
     queryString = queryString.replace(/roomNumber=([^&]*)/g, (match, p1) => {
       return `roomNumber=${decodeURIComponent(p1)}`;
     });
 
-    // Навигация с новым query-параметром
+  
     navigate(`/search?${queryString}`);
   };
 
