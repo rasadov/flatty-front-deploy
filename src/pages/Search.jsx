@@ -45,6 +45,7 @@ export const Search = () => {
   const elements = 50;
 
   const [responseData, setResponseData] = useState([]);
+
   useEffect(() => {
     const params = new URLSearchParams({
       page: page,
@@ -140,10 +141,6 @@ export const Search = () => {
   );
 
   if (loading) return <div>Loading...</div>;
-
-  console.log("Filtered Items", filteredItems);
-
-  console.log("Response Data", responseData);
 
   return (
     <div className="w-full mx-auto ">

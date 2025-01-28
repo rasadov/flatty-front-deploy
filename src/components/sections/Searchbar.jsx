@@ -57,7 +57,11 @@ export const Searchbar = ({
       ...currentFilters, // from current URL
     };
 
-    const queryString = new URLSearchParams(combinedFilters).toString();
+    let queryString = new URLSearchParams(combinedFilters).toString();
+
+    queryString = queryString.replace(/roomNumber=([^&]*)/g, (match, p1) => {
+      return `roomNumber=${decodeURIComponent(p1)}`;
+    });
 
     fetch(`${API_URL}?${queryString}`, {
       method: "GET",
@@ -74,20 +78,25 @@ export const Searchbar = ({
 
   const handleSearch = (event) => {
     event.preventDefault();
+
     const currentParams = new URLSearchParams(window.location.search);
-    // Convert URLSearchParams to an object
+
+    // Конвертируем URLSearchParams в объект
     const currentFilters = {};
     currentParams.forEach((value, key) => {
       currentFilters[key] = value;
     });
+
     const combinedFilters = {
-      ...currentFilters, // from current URL
-      ...dropdownStates, // from local dropdown
+      ...currentFilters, // из текущего URL
+      ...dropdownStates, // из локального состояния
     };
-    // Build query parameters from the merged object
+
     const queryParams = new URLSearchParams();
     queryParams.append("page", 1);
     queryParams.append("elements", 10);
+
+    // Перебираем объединенные фильтры
     Object.entries(combinedFilters).forEach(([key, value]) => {
       if (
         value !== null &&
@@ -95,8 +104,11 @@ export const Searchbar = ({
         value !== "" &&
         value !== 0
       ) {
-        console.log("key", key);
-        if (typeof value === "object" && !Array.isArray(value)) {
+        if (key === "roomNumber" && Array.isArray(value)) {
+          // Добавляем roomNumber без кодирования запятой
+          queryParams.append(key, value.join(","));
+        } else if (typeof value === "object" && !Array.isArray(value)) {
+          // Обрабатываем вложенные объекты (например, priceRange)
           Object.entries(value).forEach(([subKey, subValue]) => {
             if (
               subValue !== null &&
@@ -115,23 +127,26 @@ export const Searchbar = ({
             }
           });
         } else if (Array.isArray(value)) {
+          // Для других массивов (не roomNumber)
           value.forEach((item) => {
-            if (
-              item !== null &&
-              item !== undefined &&
-              item !== "" &&
-              item !== 0
-            ) {
-              queryParams.append(key, item);
-            }
+            queryParams.append(key, item);
           });
         } else {
           queryParams.append(key, value);
         }
       }
     });
-    navigate(`/search?${queryParams.toString()}`);
-    console.log("ala bula ye gorum ala ", queryParams.toString());
+
+    // Конвертация query-параметров в строку и ручная обработка roomNumber
+    let queryString = queryParams.toString();
+
+    // Заменяем roomNumber=1%2C2%2C3 на roomNumber=1,2,3
+    queryString = queryString.replace(/roomNumber=([^&]*)/g, (match, p1) => {
+      return `roomNumber=${decodeURIComponent(p1)}`;
+    });
+
+    // Навигация с новым query-параметром
+    navigate(`/search?${queryString}`);
   };
 
   const handleRoomSelect = (room) => {
@@ -229,21 +244,19 @@ export const Searchbar = ({
         return (
           <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
             <div className="grid grid-cols-3 gap-2 p-4">
-              {["Studio", "1+1", "2+1", "3+1", "4+1", "5+1"].map(
-                (room, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleRoomSelect(room)}
-                    className={`flex items-center justify-center px-4 py-2 border rounded-md text-gray-700 focus:outline-none ${
-                      dropdownStates.roomNumber.includes(room)
-                        ? "border-purple-500 bg-white text-black"
-                        : "bg-gray-200"
-                    }`}
-                  >
-                    {room}
-                  </button>
-                )
-              )}
+              {["Studio", "1", "2", "3", "4", "5+"].map((room, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleRoomSelect(room)}
+                  className={`flex items-center justify-center px-4 py-2 border rounded-md text-gray-700 focus:outline-none ${
+                    dropdownStates.roomNumber.includes(room)
+                      ? "border-purple-500 bg-white text-black"
+                      : "bg-gray-200"
+                  }`}
+                >
+                  {room}
+                </button>
+              ))}
             </div>
           </div>
         );
