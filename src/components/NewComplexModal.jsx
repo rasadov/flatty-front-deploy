@@ -70,7 +70,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      address: `${prevFormData.city || ""}, ${prevFormData.area || ""} , ${prevFormData.address || ""}`.trim(),
+      address: `${prevFormData.city || ""}, ${prevFormData.area || ""}`.trim(),
     }));
   }, [formData.city, formData.area]);
 
@@ -679,7 +679,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               {/* Address */}
               <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
                 <p className="text-sm text-gray-700">
-                  { formData.address ||
+                  {formData.city + "," + formData.area ||
                     "Select a location on the map"}
                 </p>
                 {formData.address && (
