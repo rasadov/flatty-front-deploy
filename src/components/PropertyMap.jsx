@@ -11,7 +11,21 @@ const PropertyMap = ({ location }) => {
     width: "100%",
     height: "300px",
   };
-
+  const mapStyles = [
+    {
+      featureType: "poi",
+      elementType: "labels",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "poi.business",
+      stylers: [{ visibility: "off" }],
+    },
+    {
+      featureType: "transit",
+      stylers: [{ visibility: "off" }],
+    },
+  ];
   return (
     <div className="w-full">
       <LoadScript googleMapsApiKey="AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM">
@@ -22,6 +36,13 @@ const PropertyMap = ({ location }) => {
           }}
           center={center}
           zoom={14}
+          options={{
+            zoomControl: false,
+            mapTypeControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+            styles: mapStyles,
+          }}
         >
           <Marker position={center} />
         </GoogleMap>

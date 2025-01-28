@@ -5,7 +5,9 @@ import {
   FilterSelect,
   FilterButtonGroup,
   FilterNumberRange,
+  FilterSingleNumber,
   FilterToggle,
+  FilterButtonToggle,
 } from "../../modules/FilterModalModules";
 import { Add, Subtract } from "../../assets/icons";
 import { useSearchParams } from "react-router-dom";
@@ -13,23 +15,17 @@ import { useSearchParams } from "react-router-dom";
 export const FilterModal = ({ isOpen, onClose, onApply }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedFilters, setSelectedFilters] = useState({
-    area: {
-      from: null,
-      to: null,
-    },
-    price: {
-      RangeMin: null,
-      RangeMax: null,
-    },
+    areaFrom: null,
+    areaTo: null,
+    priceRangeMin: null,
+    priceRangeMax: null,
     roomNumber: null,
     city: null,
     category: null,
     livingAreaFrom: null,
     livingAreaTo: null,
-    floor: {
-      min: null,
-      max: null,
-    },
+    minFloor: null,
+    maxFloor: null,
     notFirstFloor: null,
     notLastFloor: null,
     lastFloor: null,
@@ -148,7 +144,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
           <h3 className="text-[28px] font-semibold text-left mb-2">Filter</h3>
 
           {/* Filter Components */}
-          <FilterNumberRange
+          {/* <FilterNumberRange
             label="Area (m²)"
             category="areaFrom"
             fromKey="areaFrom"
@@ -157,8 +153,73 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             setSelectedFilters={setSelectedFilters}
             updateFilterValue={updateFilterValue}
             unit="m²"
+          /> */}
+          <FilterSingleNumber
+            label="Total Area (m²)"
+            category="area"
+            placeholderMin="From"
+            placeholderMax="To"
+            categoryMin="areaFrom"
+            categoryMax="areaTo"
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
           />
-          <FilterButtonGroup
+          <FilterSingleNumber
+            label="Living Area (m²)"
+            category="livingArea"
+            placeholderMin="From"
+            placeholderMax="To"
+            categoryMin="livingAreaFrom"
+            categoryMax="livingAreaTo"
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+          />
+          <FilterSingleNumber
+            label="Price"
+            category="price"
+            placeholderMin="Min"
+            placeholderMax="Max"
+            categoryMin="priceRangeMin"
+            categoryMax="priceRangeMax"
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+          />
+          <FilterSingleNumber
+            label="Floor"
+            category="floor"
+            placeholderMin="from"
+            placeholderMax="to"
+            categoryMin="minFloor"
+            categoryMax="maxFloor"
+            children={
+              <>
+              <FilterButtonToggle 
+                // label="Floor"
+                placeholder="Not first"
+                category="notFirstFloor"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+                />
+              <FilterButtonToggle 
+                // label="Floor"
+                placeholder="Not last"
+                category="notLastFloor"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+                />
+              <FilterButtonToggle 
+              // label="Floor"
+              placeholder="Last"
+              category="lastFloor"
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
+              />
+              </>
+            }
+            setSelectedFilters={setSelectedFilters}
+            selectedFilters={selectedFilters}
+          />
+          {/* <FilterButtonGroup
             label="Renovation"
             options={[
               "Cosmetic",
@@ -169,23 +230,8 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             category="roomNumber"
             selectedFilters={selectedFilters}
             setSelectedFilters={setSelectedFilters}
-
             updateFilterValue={updateFilterValue}
-          />
-
-          <FilterNumberRange
-            label="Floor"
-            category="minFloor"
-            fromKey="minFloor"
-            toKey="maxFloor"
-            setSelectedFilters={setSelectedFilters}
-
-            selectedFilters={selectedFilters}
-            updateFilterValue={updateFilterValue}
-            additionalOptions={["Not first", "Not last", "Last"]}
-            unit=""
-          />
-
+          /> */}
           <div className="flex flex-wrap justify-between gap-3 my-4">
             {["bathrooms", "livingRooms", "bedrooms", "balconies"].map((type) => (
               <div key={type} className="flex flex-wrap items-center my-2">

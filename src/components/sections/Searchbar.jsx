@@ -601,7 +601,7 @@ export const Searchbar = ({
 
   return (
     <motion.div
-      className="max-w-full w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4"
+      className="max-w-full w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4 justify-between"
       style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

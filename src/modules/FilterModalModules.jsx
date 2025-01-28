@@ -181,6 +181,93 @@ const FilterNumberRange = ({
     </div>
   );
 };
+
+const FilterSingleNumber = ({
+  label,
+  category,
+    placeholderMin,
+  placeholderMax,
+  categoryMin,
+  categoryMax,
+  setFilter,
+  setSelectedFilters,
+  selectedFilters = {},
+  children,
+}) => {
+  // const value = selectedFilters[category] || "";
+  const minVal = selectedFilters[categoryMin] || "";
+  const maxVal = selectedFilters[categoryMax] || "";
+  return (
+    <div className="flex items-center justify-between mb-3">
+      <label className="block text-xs font-medium">{label}</label>
+      <div className="flex gap-2">
+
+      <input
+        type="number"
+        placeholder={placeholderMin}
+        value={minVal}
+        onChange={(e) => {
+          const value = e.target.value === "" ? "" : parseInt(e.target.value, 10);
+          setSelectedFilters({
+            ...selectedFilters,
+            [categoryMin]: value,
+          });
+          // setFilter(category, value);
+        }}
+        className="p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left"
+        />
+      <input
+        type="number"
+        placeholder={placeholderMax}
+        value={maxVal}
+        onChange={(e) => {
+          const value = e.target.value === "" ? "" : parseInt(e.target.value, 10);
+          setSelectedFilters({
+            ...selectedFilters,
+            [categoryMax]: value,
+          });
+          // setFilter(category, value);
+        }}
+        className="p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left"
+        />
+      {children}
+      </div>
+    </div>
+  );
+};
+
+const FilterButtonToggle = ({
+  label,
+  category,
+  options,
+  setFilter,
+  setSelectedFilters,
+  selectedFilters = {},
+  placeholder,
+}) => (
+  <div className="flex items-center justify-between mb-3">
+    {/* <label className="block text-xs font-medium">{label}</label> */}
+    <div className="flex flex-wrap gap-2">
+        <button
+          key={category}
+          onClick={() =>
+            setSelectedFilters({
+              ...selectedFilters,
+              [category]: !selectedFilters[category],
+            })
+          }
+          className={
+            `${selectedFilters[category] ? "border-[#8247E5] outline outline-2 outline-[#DCD4FF] scale-105" : "border-[#E2E4E8] hover:border-[#8247E5] hover:bg-[#F5F6F7]"}` +
+            getButtonStyle(selectedFilters, category, selectedFilters[category]) +
+            "bg-gray-100 px-4 py-2 text-xs font-semibold border text-[#525C76] h-[40px] rounded-sm transition-all duration-300 ease-in-out transform"
+          }
+        >
+          {placeholder}
+        </button>
+    </div>
+  </div>
+);
+
 const FilterToggle = ({
   label,
   keyName, // Changed prop name to avoid React warning
@@ -210,4 +297,4 @@ const FilterToggle = ({
     </div>
   );
 };
-export { FilterSelect, FilterButtonGroup, FilterNumberRange, FilterToggle };
+export { FilterSelect, FilterButtonGroup, FilterNumberRange, FilterToggle, FilterSingleNumber, FilterButtonToggle };
