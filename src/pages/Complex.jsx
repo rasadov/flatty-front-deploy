@@ -90,6 +90,7 @@ const Complex = () => {
   const infoItems = [
     {
       label: "Category",
+      icon: <div className="w-[50px] h-[50px] bg-[#CACDD5] rounded-full flex items-center justify-center"></div>,
       value: listing.category,
     },
     {
@@ -158,7 +159,7 @@ const Complex = () => {
           )}
 
           {/* Info grid area */}
-          <div className="grid grid-cols-1 gap-6 my-12 md:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-1 gap-6 my-12 md:grid-cols-3 lg:grid-cols-5">
             {infoItems.map((item, idx) => (
               <div
                 key={idx}
