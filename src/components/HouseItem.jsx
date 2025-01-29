@@ -222,7 +222,7 @@ export const HouseItem = React.memo(
                       <img
                         src={img.image_url}
                         alt={`Slide ${index + 1}`}
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-[173px]"
                       />
                     </Link>
                   </SwiperSlide>

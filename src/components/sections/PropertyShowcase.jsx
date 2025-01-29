@@ -33,6 +33,9 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
               currentImage === thumbnail ? "ring-2 ring-[#8247E5]" : ""
             }`}
             onClick={() => setCurrentImage(thumbnail)}
+            style={{
+              margin: "8px",
+            }}
           >
             <img
               src={thumbnail}

@@ -439,79 +439,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     </div>
                   ))}
             </div>
-            {/* <div className="flex flex-wrap gap-4 items-center mt-4">
-              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
-                (field, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-gray-700 capitalize">
-                      {field === "parkingSlot"
-                        ? "Parking slot"
-                        : field === "installment"
-                        ? "Installment"
-                        : field === "swimmingPool"
-                        ? "Swimming pool"
-                        : "Elevator"}
-                    </label>
-                    <button onClick={() => handleCustomToggle(field)}>
-                      {formData[field] ? <Active /> : <Inactive />}
-                    </button>
-                  </div>
-                )
-              )}
-            </div> */}
 
-            {/* {console.log("bax bax buna baaaxx>>>>>>", formData)}
-
-            {formData.category == "Appartment" ? (
-              ""
-            ) : (
-              <div className="mt-4">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Renovation
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {renovations.map((renovations, index) => (
-                    <button
-                      key={index}
-                      onClick={() =>
-                        setFormData((prev) => ({
-                          ...prev,
-                          renovations: renovations,
-                        }))
-                      }
-                      className={`${getButtonStyle(
-                        "renovations",
-                        renovations
-                      )} bg-gray-100 px-4 py-2 rounded-md`}
-                    >
-                      {renovations}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )} */}
-
-            {/* <div className="mt-4">
-              <label className="block mb-1 text-sm font-medium text-gray-700">
-                Condition
-              </label>
-              <div className="flex flex-wrap gap-2">
-                {conditions.map((condition, index) => (
-                  <button
-                    key={index}
-                    onClick={() =>
-                      setFormData((prev) => ({ ...prev, condition: condition }))
-                    }
-                    className={`${getButtonStyle(
-                      "condition",
-                      condition
-                    )} bg-gray-100 px-4 py-2 rounded-md`}
-                  >
-                    {condition}
-                  </button>
-                ))}
-              </div>
-            </div> */}
             <div className="flex flex-wrap gap-4 mt-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -519,7 +447,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="installment"
-                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -535,7 +463,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -562,42 +490,38 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
 
               <div>
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  GYM
+                </label>
+                <select
+                  name="gym"
+                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  value={formData.gym}
+                  onChange={handleInputChange}
+                >
+                  <option value="gym">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
                   <label className="block mb-1 text-sm font-medium text-gray-700">
-                    GYM
+                    Elevator
                   </label>
                   <select
-                    name="gym"
+                    name="elevator"
                     className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
-                    value={formData.gym}
+                    value={formData.elevator}
                     onChange={handleInputChange}
                   >
-                    <option value="gym">Select</option>
+                    <option value="">Select</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
                 </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">
-                      Elevator
-                    </label>
-                    <select
-                      name="elevator"
-                      className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
-                      value={formData.elevator}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                </div>
-
-              {/* <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-             
-              </div> */}
+              </div>
             </div>
 
             <div className="flex ">

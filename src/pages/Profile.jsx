@@ -191,7 +191,7 @@ export const Profile = () => {
         </div>
 
         {/* Agent Image */}
-        <div className="w-full lg:w-[683px] h-[345px] relative">
+        <div className="hidden lg:block w-full lg:w-[683px] h-[345px] relative">
           <img
             src={agent_back}
             className="absolute w-full h-auto rounded-lg bottom-10"

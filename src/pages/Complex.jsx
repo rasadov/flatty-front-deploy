@@ -98,17 +98,17 @@ const Complex = () => {
                   console.log()
                 } */}
                 {/* {popularProperties ? (
-                <div className="grid grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-4">
-                  {popularProperties.map((item) => (
-                    <HouseItem key={item.id} {...item} />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center">
-                  No related properties available yet.
-                </p>
-              )}
-              <Pagination /> */}
+                  <div className="grid grid-cols-1 gap-6 mx-auto sm:grid-cols-2 lg:grid-cols-4">
+                    {popularProperties.map((item) => (
+                      <HouseItem key={item.id} {...item} />
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center">
+                    No related properties available yet.
+                  </p>
+                )} */}
+                <Pagination />
               </div>
               {/* location */}
               <div className="w-full border-t-2 py-14">
