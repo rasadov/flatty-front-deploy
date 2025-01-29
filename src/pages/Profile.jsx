@@ -12,6 +12,7 @@ import { NewPost } from "../assets/icons/NewPost.jsx";
 import { EditPost } from "../assets/icons/EditPost.jsx";
 import { DotsThreeOutline } from "../assets/icons/DotsThreeOutline.jsx";
 import AgentPost from "../components/AgentPost.jsx";
+import AgentComplex from "../components/AgentComplex.jsx";
 import NewPostModal from "../components/NewPostModal.jsx"; // Import the modal component
 import NewComplexModal from "../components/NewComplexModal.jsx";
 import { fetchPosts } from "../store/slices/agentPostSlice";
@@ -225,6 +226,26 @@ export const Profile = () => {
                 id={item.id}
               />
             </a>
+          ))
+        ) : (
+          <p>No posts found</p>
+        )}
+      </CardList>
+
+      <CardList sectionName="Complexes" seeAll={false}>
+        {loading && <p>Loading...</p>}
+        {Array.isArray(properties) && properties.length > 0 ? (
+          properties.map((item) => (
+            agent.id === item.agent_id ? 
+            <a href={"/complex/" + item.id} key={item.id}>
+              <AgentComplex
+                img={item.images[0]?.image_url}
+                title={item.title}
+                roomCount={item.roomCount}
+                address={item.address}
+                id={item.id}
+              />
+            </a> : ""
           ))
         ) : (
           <p>No posts found</p>
