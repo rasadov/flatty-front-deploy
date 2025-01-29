@@ -3,6 +3,7 @@ import { Euro, MapPin, Trash, EditPencil } from "../assets/icons";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { formatNumber } from './numberFormater'; 
+import { Link } from "react-router-dom";
 
 
 const ComplexTitle = React.memo(({ title }) => (
