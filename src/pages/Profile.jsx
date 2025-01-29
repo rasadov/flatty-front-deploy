@@ -240,8 +240,8 @@ export const Profile = () => {
             <a href={"/complex/" + item.id} key={item.id}>
               <AgentComplex
                 img={item.images[0]?.image_url}
-                title={item.title}
-                roomCount={item.roomCount}
+                title={item.name}
+                roomCount={item.objects}
                 address={item.address}
                 id={item.id}
               />

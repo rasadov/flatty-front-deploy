@@ -19,12 +19,12 @@ const RoomAreaFloor = React.memo(({ roomCount }) => (
 ));
 
 const Location = React.memo(({ address }) => (
-  <div className="flex items-center gap-2 mt-3 text-[#525C76] font-medium flex-wrap w-full">
+  <div className="flex items-center gap-2 text-[#525C76] font-medium">
     <div aria-hidden="true" className="shrink-0">
       <MapPin />
     </div>
     <motion.span
-      className="text-sm font-medium text-[#525C76] w-full min-w-0 truncate"
+      className="text-sm font-medium text-[#525C76] truncate"
       whileHover={{
         color: "#A673EF",
         transition: { duration: 0.2 },
@@ -34,6 +34,7 @@ const Location = React.memo(({ address }) => (
     </motion.span>
   </div>
 ));
+
 
 const handleDeleteComplex = (id) => {
   if (window.confirm("Are you sure you want to delete this property?")) {
@@ -55,7 +56,7 @@ export const AgentComplex = React.memo(
         <>
         <Link
         to={`/complex/${id}`}
-        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] lg:h-[299px]"
+        className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] lg:h-[320px]"
         style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
         aria-label={`View details for ${title}`}
         >
