@@ -16,12 +16,12 @@ const RoomAreaFloor = React.memo(({ roomCount }) => (
 ));
 
 const Location = React.memo(({ address }) => (
-  <div className="flex items-center gap-2 mt-3 text-[#525C76] font-medium flex-wrap w-full">
+  <div className="flex items-center gap-2 text-[#525C76] font-medium">
     <div aria-hidden="true" className="shrink-0">
       <MapPin />
     </div>
     <motion.span
-      className="text-sm font-medium text-[#525C76] w-full min-w-0 truncate"
+      className="text-sm font-medium text-[#525C76] truncate"
       whileHover={{
         color: "#A673EF",
         transition: { duration: 0.2 },
@@ -36,12 +36,12 @@ export const ComplexCard = React.memo(({ id, img, title, roomCount, address }) =
   return (
     <Link
       to={`/complex/${id}`}
-      className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] lg:h-[299px]"
+      className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] lg:h-[350px] flex flex-col"
       style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
       aria-label={`View details for ${title}`}
     >
       <motion.div
-        className="rounded-[6px] overflow-hidden w-full h-[173px] relative"
+        className="rounded-[6px] overflow-hidden w-full h-[173px] relative flex-shrink-0"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
@@ -54,10 +54,12 @@ export const ComplexCard = React.memo(({ id, img, title, roomCount, address }) =
         />
       </motion.div>
 
-      <div className="py-2 flex flex-col">
+      <div className="py-2 flex flex-col flex-grow">
         <ComplexTitle title={title} />
         <RoomAreaFloor roomCount={roomCount} />
-        <Location address={address} />
+        <div className="mt-auto">
+          <Location address={address} />
+        </div>
       </div>
     </Link>
   );
