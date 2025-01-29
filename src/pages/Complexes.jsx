@@ -7,7 +7,7 @@ import {
 } from "../components/index.js";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
-import ComplexCard from "../components/index.js";
+import ComplexCard from "../components/ComplexCard";
 
 export const Complexes = () => {
   const dispatch = useDispatch();
