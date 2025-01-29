@@ -212,7 +212,7 @@ const Home = () => {
             </CardList>
 
             <WhyChooseUsSection />
-            <TestimonialSection sectionName="Testimonials" />
+            {/* <TestimonialSection sectionName="Testimonials" /> */}
           </div>
         </div>
         <div className="px-4 sm:px-12 mx-auto bg-[#ECE8FF]">

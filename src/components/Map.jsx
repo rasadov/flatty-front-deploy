@@ -11,7 +11,7 @@ export default function Map({ properties = [], onMarkerClick }) {
 
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState({ lat: 35.3, lng: 33.4 });
-  const [zoomLevel, setZoomLevel] = useState(13);
+  const [zoomLevel, setZoomLevel] = useState(10);
 
   useEffect(() => {
     if (map && properties.length > 0) {
