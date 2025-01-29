@@ -75,8 +75,12 @@ const Header = () => {
   );
 
   const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
+    fetch("https://api.flatty.ai/api/v1/auth/logout", {
+      method: "POST",
+      credentials: "include",
+  });
+  localStorage.removeItem("user");
+  window.location.href = "/";
   };
 
   const handleClearAll = () => {
@@ -195,14 +199,14 @@ const Header = () => {
                 className="w-full h-full rounded-full"
               />
             </div>
-            {/* <Button
+            <Button
             type="button"
             variant="secondary"
             onClick={handleLogout}
             className="px-[18.6px] py-[9.5px] cursor border rounded-md"
             >
             Log out
-            </Button> */}
+            </Button>
           </div>
         </>
       );
@@ -259,7 +263,7 @@ const Header = () => {
             )}
           </div>
           <div className="w-[154px] h-[34px] flex justify-center gap-4 items-center ">
-            <Button
+          <Button
               type="button"
               variant="secondary"
               onClick={() => handleNavigation("/login")}
