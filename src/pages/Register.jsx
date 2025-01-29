@@ -7,8 +7,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 import {
-  CheckSquare,
-  CheckSquareFull,
   HouseIcon,
   UserCircle,
   Warning,
@@ -19,7 +17,9 @@ import Button from "../components/Button";
 import Input from "../components/İnput";
 
 const schema = yup.object({
-  role: yup.string().required("Role is required"),
+  // role: yup.string().required("Role is required"),
+  role: yup.string().oneOf(["buyer", "agent"]).required(),
+
   email: yup
     .string()
     .email("Please enter a valid email address")

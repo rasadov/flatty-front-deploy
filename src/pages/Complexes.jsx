@@ -1,27 +1,10 @@
-import React, { useState, useMemo, useEffect, useCallback } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import React, { useState, useEffect, useCallback } from "react";
 import "leaflet/dist/leaflet.css";
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { loadSearchResults, updateFilters } from "../store/slices/searchSlice";
+import { updateFilters } from "../store/slices/searchSlice";
 import {
-  FilterModal,
-  Searchbar,
-  SelectedFilters,
-} from "../components/sections/index.js";
-import {
-  Dropdown,
-  HouseItem,
   Pagination,
-  RangeInput,
 } from "../components/index.js";
-import {
-  CheckboxFill,
-  CheckboxSquare,
-  DropdownUnder,
-  FilterButton,
-} from "../assets/icons";
-import MapView from "./MapView.jsx";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
 
@@ -35,16 +18,12 @@ export const Complexes = () => {
     loading,
     error,
   } = useSelector((state) => state.search);
-  const [showMap, setShowMap] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   const [filteredItems, setFilteredItems] = useState([]);
   const page = filters.page || 1;
   const elements = 50;
 
-  const [responseData, setResponseData] = useState([]);
   useEffect(() => {
     const params = new URLSearchParams({
       page: page,
@@ -56,7 +35,6 @@ export const Complexes = () => {
         setTotalPages(
           data.listings / elements + (data.listings % elements ? 1 : 0)
         );
-        setResponseData(data);
         setFilteredItems(data.listings);
       });
   }, [dispatch, filters]);
@@ -113,21 +91,25 @@ const ResultView = ({
           </h1>
         </div>
         <div className="grid gap-4 sm:gap-6 lg:gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredItems.map((item) => (
-            <HouseItem
-              key={item.id}
-              id={item.id}
-              images={item.images}
-              title={item.title}
-              price={item.price}
-              area={item?.info?.total_area}
-              rooms={item?.info?.bedrooms}
-              location={item?.location?.address}
-              currFloor={item?.info?.floor}
-              building={item?.info?.floors}
-              complex={true}
-            />
-          ))}
+          {
+            filteredItems.length > 0 ? (
+              filteredItems.map((item) => {
+                return (
+                  <ComplexCard
+                    key={item.id}
+                    img={item.images[0]?.image_url}
+                    title={item.name}
+                    roomCount={item.objects}
+                    address={item.address}
+                    id={item.id}
+                  />
+                );
+              })
+            ) : (
+              <p>No complexes found</p>
+            )
+          }
+
         </div>
         <Pagination
           currentPage={currentPage}

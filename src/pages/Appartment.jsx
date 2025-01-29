@@ -301,9 +301,9 @@ const Appartment = memo(() => {
                 className="object-cover w-[47px] h-[47px] rounded-full"
               />
               <div>
-                <Link to={"/agent"} className="font-semibold text-[#525C76] text-[16px]">
+                {/* <Link to={"/agent"} className="font-semibold text-[#525C76] text-[16px]"> */}
                   {apartmentData.owner?.user?.name || "Unknown Agent"}
-                </Link>
+                {/* </Link> */}
                 <div className="text-sm text-[#525C76] font-medium">
                   Real Estate Agent
                 </div>
