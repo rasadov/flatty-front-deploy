@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams as useRouterParams } from "react-router-dom";
 import Breadcrumbs from "../components/Breadcrumbs";
 import HouseItem from "../components/HouseItem";
-import PropertyShowcase from "../components/sections/PropertyShowcase.jsx";
+import { YearIcon } from "../assets/icons/Year.jsx";
+import { LivingAreaIcon } from "../assets/icons/LivingArea.jsx";
+import { TotalAreaIcon } from "../assets/icons/TotalArea.jsx";
+import { FloorsIcon } from "../assets/icons/Floors.jsx";
 import PropertyMap from "../components/PropertyMap.jsx";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
 // import Pagination from "../components/Pagination.jsx";
 // A fallback image if none exist in listing.images:
 import defaultImage from "../assets/images/noImage.jpeg";
+import { icon } from "leaflet";
 
 const ImageGallery = ({ mainImage, thumbnails, length }) => {
   const [currentImage, setCurrentImage] = useState(mainImage);
@@ -91,22 +94,26 @@ const Complex = () => {
     },
     {
       label: "Building Area",
+      icon: <TotalAreaIcon />,
       value: listing.building_area ? listing.building_area + " m²" : "—",
     },
     {
       label: "Living Area",
+      icon: <LivingAreaIcon />,
       value: listing.living_area ? listing.living_area + " m²" : "—",
     },
     {
       label: "Objects",
+      icon: <YearIcon />,
       value: listing.objects ?? "0",
     },
-    {
-      label: "Installment",
-      value: listing.installment ? "Yes" : "No",
-    },
+    // {
+    //   label: "Installment",
+    //   value: listing.installment ? "Yes" : "No",
+    // },
     {
       label: "Completion Year",
+      icon: <YearIcon />,
       value: listing.year && listing.year > 0 ? listing.year : "—",
     },
   ];
@@ -158,8 +165,12 @@ const Complex = () => {
                 className="flex items-center w-full min-h-[50px] gap-2"
               >
                 {/* Placeholder for icon */}
-                <div className="rounded-full bg-[#CACDD5] w-[50px] h-[50px]" />
-                {/* Label and value */}
+                                {/* Icon */}
+                {item.icon ? (
+                  <div className="w-[50px] h-[50px] bg-[#CACDD5] rounded-full flex items-center justify-center">
+                    {item.icon}
+                  </div>
+                ) : "" }
                 <div>
                   <span className="text-[#525C76] font-medium text-[14px] leading-[22.4px] capitalize">
                     {item.label}
