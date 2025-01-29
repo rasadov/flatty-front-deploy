@@ -25,12 +25,17 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation(); // useLocation istifadə edirik
-  let user;
-  if (localStorage.getItem("user")) {
-    user = JSON.parse(localStorage.getItem("user"));
-  } else {
-    user = null;
-  }
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+  let user = {"user_id": 23, "email": "random@sad", "image_url": "https://api.flatty.ai/storage/avatars/23/1629870737.jpg"};
+  // if (localStorage.getItem("user")) {
+  //   user = JSON.parse(localStorage.getItem("user"));
+  // } else {
+  //   user = null;
+  // }
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState({
     symbol: localStorage.getItem("currency") || "£",
@@ -172,7 +177,7 @@ const Header = () => {
               </div>
             )}
           </div>
-          <div className="w-[120px] h-[34px] flex justify-center gap-2 items-center ">
+          <div className="w-[220px] h-[34px] flex justify-center gap-2 items-center ">
             <div
               onClick={() => handleNavigation("/wishlist")}
               className=" cursor text-[#A673EF]  w-[34px] h-[34px] flex justify-center items-center"
@@ -190,25 +195,41 @@ const Header = () => {
               <NotificationTrue />
             </div>
             <div
-              onClick={() => handleNavigation("/profile")}
-              className=" cursor  w-[34px] h-[34px] rounded-full border border-[#A673EF]"
-            >
-              <img
-                src={user.image_url}
-                alt="Profile"
-                className="w-full h-full rounded-full"
-              />
-            </div>
-            <Button
-            type="button"
-            variant="secondary"
-            onClick={handleLogout}
-            className="px-[18.6px] py-[9.5px] cursor border rounded-md"
-            >
-            Log out
-            </Button>
-          </div>
-        </>
+  onClick={toggleDropdown}
+  className="relative cursor-pointer w-[34px] h-[34px] rounded-full border border-[#A673EF]"
+>
+  <img
+    src={user.image_url}
+    alt="Profile"
+    className="w-full h-full rounded-full"
+  />
+  {dropdownOpen && (
+    <div className="absolute right-0 top-10 mt-2 w-24 bg-white border border-gray-200 rounded-md shadow-lg z-10 
+      sm:right-0 sm:top-full sm:w-28">
+      <button
+        onClick={() => {
+          handleNavigation("/profile");
+          setDropdownOpen(false);
+        }}
+        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Profile
+      </button>
+      <button
+        onClick={() => {
+          handleLogout();
+          setDropdownOpen(false);
+        }}
+        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Log out
+      </button>
+    </div>
+  )}
+</div>
+
+        </div>
+      </>
       );
     } else {
       return (
@@ -293,33 +314,33 @@ const Header = () => {
         </Link>
 
         <button
-          onClick={toggleMenu}
-          className="block md:hidden p-2 rounded-full bg-[#F9F8FF] shadow-md focus:outline-none transition-all duration-300 transform hover:scale-110"
-          aria-label="Toggle navigation"
-        >
-          <motion.div
-            className="relative w-8 h-8 flex items-center justify-center"
-            initial={{ rotate: 0 }}
-            animate={{ rotate: menuOpen ? 45 : 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div
-              className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
-                menuOpen ? "rotate-45 translate-y-2" : ""
-              }`}
-            ></div>
-            <div
-              className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out ${
-                menuOpen ? "opacity-0" : "opacity-100"
-              }`}
-            ></div>
-            <div
-              className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
-                menuOpen ? "-rotate-45 -translate-y-2" : ""
-              }`}
-            ></div>
-          </motion.div>
-        </button>
+  onClick={toggleMenu}
+  className="block md:hidden p-2 rounded-full bg-[#F9F8FF] shadow-md focus:outline-none transition-all duration-300 transform hover:scale-110"
+  aria-label="Toggle navigation"
+>
+  <motion.div
+    className="relative w-8 h-8 flex items-center justify-center"
+    initial={{ rotate: 0 }}
+    animate={{ rotate: menuOpen ? 45 : 0 }}
+    transition={{ duration: 0.3 }}
+  >
+    <div
+      className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
+        menuOpen ? "rotate-45 translate-y-2" : "-translate-y-2"
+      }`}
+    ></div>
+    <div
+      className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out ${
+        menuOpen ? "opacity-0" : "opacity-100"
+      }`}
+    ></div>
+    <div
+      className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
+        menuOpen ? "-rotate-45 -translate-y-2" : "translate-y-2"
+      }`}
+    ></div>
+  </motion.div>
+</button>
 
         <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[16px] leading-[28.8px] font-medium">
           {renderNavLinks()}
