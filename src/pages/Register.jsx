@@ -49,7 +49,7 @@ const schema = yup.object({
     .required("Confirm Password is required"),
   serialNumber: yup.string().when("role", {
     is: "agent",
-    then: (schema) => schema.required("Serial number is required"),
+    then: (schema) => schema.notRequired(),
     otherwise: (schema) => schema.notRequired(),
   }),
 });
@@ -75,6 +75,9 @@ const Register = () => {
       // if (!isHuman) return notify("Please confirm you're not a robot");
       try {
         console.log("data", data);
+        if (data.role === "agent" && !data.serialNumber) {
+          data.serialNumber = "N/A";
+        }
         await dispatch(registerUser({ ...data, role })).unwrap();
         console.log("data", data);
         notify("Account created successfully!");
@@ -186,7 +189,7 @@ const Register = () => {
             type="text"
             error={errors.serialNumber}
             {...register("serialNumber")}
-            placeholder="Enter Serial Number"
+            placeholder="Enter Contract Number"
             className="w-full"
           />
         )}
