@@ -234,8 +234,8 @@ export const Profile = () => {
 
       <CardList sectionName="Complexes" seeAll={false}>
         {loading && <p>Loading...</p>}
-        {Array.isArray(data3) && data3.length > 0 ? (
-          data3.map((item) => (
+        {Array.isArray(complexes) && complexes.length > 0 ? (
+          complexes.map((item) => (
             agent.id === item.agent_id ? 
             <a href={"/complex/" + item.id} key={item.id}>
               <AgentComplex
