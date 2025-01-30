@@ -124,6 +124,8 @@ const Home = () => {
     </div>
   );
 
+  console.log("POPULAR PROPERTIES", popularProperties);
+
   const elementCount = window.innerWidth >= 1536 ? 5 : 4;
 
   return (
@@ -166,8 +168,8 @@ const Home = () => {
             <CardList sectionName="Popular" seeAll={true}>
               {popularLoading ? (
                 <p>Loading...</p>
-              ) : popularProperties.properties?.length > 0 ? (
-                popularProperties.properties
+              ) : popularProperties.length > 0 ? (
+                popularProperties
                   .slice(0, elementCount)
                   .map((item) => (
                     <HouseItem
