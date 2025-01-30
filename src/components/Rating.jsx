@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useCallback, useRef } from "react";
 
-export const Rating = ({ initialRating = 0, onRatingChange }) => {
+export const Rating = ({ initialRating = Math.random() * (5 - 4) + 4, onRatingChange }) => {
   const [rating, setRating] = useState(initialRating);
   const [hoverRating, setHoverRating] = useState(null);
   const isHovering = useRef(false);

@@ -107,7 +107,7 @@ const Register = () => {
 
   return (
     <motion.div
-      className="max-w-md sm:p-6 p-8 mx-auto mt-2 border shadow-md rounded-[18px] bg-white"
+      className="max-w-md sm:p-6 p-8 mx-auto mt-2 border shadow-md rounded-[18px] bg-white  mb-28 mt-28"
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}

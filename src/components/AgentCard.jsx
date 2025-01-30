@@ -8,51 +8,49 @@ import { ContactIcon } from "../assets/icons/ContactIcon";
 import apparment from "../assets/images/apparment.png";
 import { UserCircleFill } from "../assets/icons/UserCircleFill";
 
-export const AgentCard = () => {
-  const [rating, setRating] = useState(4); // Example: set initial rating as 4 stars
+export const AgentCard = (props) => {
+  const [rating, setRating] = useState(Math.random() * (5 - 4) + 4);
 
-  // Function to handle star rating click
   const handleRatingClick = (value) => {
-    setRating(value);
+    // setRating(value);
   };
+  console.log(props);
 
   return (
     <motion.div
-      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2]"
+      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2] flex flex-col justify-between min-h-[320px]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
       }}
+      whileHover={{
+        scale: 1.02,
+        transition: { duration: 0.3 },
+      }}
     >
-      {/* Agent Image and Details */}
-      <Link to={"/agent"} className="flex justify-start gap-2">
+      {/* <Link to={"/agent"} className="flex justify-start gap-2"> */}
         <motion.img
-          src={apparment}
+          src={props.image.image_url}
           alt="Agent's Picture"
           className="object-cover w-[78px] h-[78px] rounded-full"
-          whileHover={{
-            scale: 1.1,
-            transition: { duration: 0.3 },
-          }}
         />
         <div>
-          <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px] ">
-            Name Surname
+          <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px]">
+            {props.name}
           </div>
           <div className="text-sm text-[#525C76] font-medium">
-            Senior Real Estate Agent{" "}
+            Senior Real Estate Agent
           </div>
-          <Rating rating={rating} onRatingClick={handleRatingClick} />
+          {/* <Rating rating={Math.random() * (5 - 4) + 4} onRatingClick={handleRatingClick} /> */}
         </div>
-      </Link>
+      {/* </Link> */}
 
       <hr className="my-4 border-t-2 border-gray-200" />
 
-      {/* Experience and Specializations */}
-      <div>
-        <p className="text-xs text-[#525C76]  leading-[19.2px] font-medium">
+      <div className="flex-grow">
+        <p className="text-xs text-[#525C76] leading-[19.2px] font-medium">
           Experience:{" "}
           <span className="text-sm text-[#525C76] font-semibold leading-[22.4px]">
             5+ Years
@@ -65,7 +63,7 @@ export const AgentCard = () => {
           <li className="text-sm text-[#525C76] font-semibold leading-[22.4px]">
             - Property Management
           </li>
-          <li className="text-sm text-[#525C76] font-semibold  leading-[22.4px]">
+          <li className="text-sm text-[#525C76] font-semibold leading-[22.4px]">
             - Real Estate Development
           </li>
         </ul>
@@ -73,32 +71,26 @@ export const AgentCard = () => {
 
       <hr className="my-4 border-t-2 border-gray-200" />
 
-      {/* Agency Card */}
-      <motion.div>
+      {/* <motion.div>
         <AgencyMiniCard
           agencyName="Emtan Construction"
           agencyProfileLink="/complex"
         />
-      </motion.div>
+      </motion.div> */}
 
-      {/* Buttons */}
-      <Link to={"/agent"}>
-        <Button
-          className="w-full text-white py-[5px] px-3 mt-3 rounded-sm text-sm font-semibold leading-[22.4px]"
-          variant="primary"
-        >
-          <UserCircleFill color="white" />
-          View Profile
-        </Button>
-      </Link>
-      <div>
+      <div className="mt-auto">
         <Button
           className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
         >
           <ContactIcon />
           <p className="text-[#8247E5] text-sm font-semibold leading-[22.4px]">
-            Contact
+            <a
+              target="_blank"
+              href={`https://api.whatsapp.com/send?phone=${props.phone}`}
+            >
+              Contact
+            </a>
           </p>
         </Button>
       </div>

@@ -27,7 +27,7 @@ export const ChooseUsSection = () => {
   ];
 
   return (
-    <section className="w-full px-8 pt-8 pb-16 m-auto bg-white border rounded-lg custom-max-width">
+    <section className="w-full px-8 pt-8 pb-16 m-auto bg-white border rounded-lg custom-max-width mb-20">
       <div className="mb-8 text-left">
         <h2 className="mb-2 text-[28px] leading-[42px] font-semibold text-darkText">
           Why Choose Us for Your Real Estate Journey

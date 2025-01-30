@@ -267,7 +267,7 @@ const areas = {
     "Kuruova",
     "Sipahi",
     "Taşlıca",
-      "Yeşilköy",
+    "Yeşilköy",
     "Ziyamet"
   ],
   "Lefke": [
