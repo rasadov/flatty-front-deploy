@@ -1,6 +1,7 @@
 // authActions.js
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setUser } from "./authSlice";
+import { toast } from "react-toastify";
 
 // Assuming you have an API for authentication
 export const loginUser = createAsyncThunk(
@@ -26,6 +27,7 @@ export const loginUser = createAsyncThunk(
       dispatch(setUser(data));
       return data;
     } else {
+      toast.error(data.message || "Login failed");
       throw new Error(data.message || "Login failed");
     }
   }
@@ -49,6 +51,7 @@ export const registerUser = createAsyncThunk(
       dispatch(setUser(data));
       return data;
     } else {
+      toast.error(data.message || "Registration failed");
       throw new Error(data.message || "Registration failed");
     }
   }

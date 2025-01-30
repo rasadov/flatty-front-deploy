@@ -4,6 +4,7 @@ import { Suspense, lazy } from "react";
 import Layout from "./layouts/Layout";
 import NotFound from "./pages/NotFound";
 import Loading from "./components/Loading";
+import { ToastContainer } from "react-toastify";
 
 // Lazy load components
 const Home = lazy(() => import("./pages/Home"));
@@ -42,6 +43,7 @@ function App() {
           <Route path="/search" element={<Search />} />
         </Routes>
       </Suspense>
+      <ToastContainer />
     </Router>
   );
 }

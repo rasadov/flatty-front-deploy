@@ -13,7 +13,6 @@ const cities = [
   "Lapta",
   "Alsancak",
   "Değirmenlik",
-  "Yeni Erenköy",
 
 ];
 
@@ -268,8 +267,7 @@ const areas = {
     "Kuruova",
     "Sipahi",
     "Taşlıca",
-    "Yeni Erenköy",
-    "Yeşilköy",
+      "Yeşilköy",
     "Ziyamet"
   ],
   "Lefke": [

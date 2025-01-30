@@ -10,6 +10,7 @@ import { FaFilePdf } from "react-icons/fa";
 import { Trash } from "../assets/icons";
 import { PDF } from "../assets/icons/PDF";
 import { LeftUpload } from "../assets/icons/LeftUpload";
+import { toast } from "react-toastify";
 
 const categories = ["Penthouse", "Villa", "Cottages"];
 
@@ -29,7 +30,6 @@ const cities = [
   "Lapta",
   "Alsancak",
   "Değirmenlik",
-  "Yeni Erenköy",
 
 ];
 
@@ -284,8 +284,7 @@ const areas = {
     "Kuruova",
     "Sipahi",
     "Taşlıca",
-    "Yeni Erenköy",
-    "Yeşilköy",
+      "Yeşilköy",
     "Ziyamet"
   ],
   "Lefke": [
@@ -343,6 +342,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     gym: "",
     documents: "",
     title: "",
+    price: null,
   });
   const dispatch = useDispatch();
   const mapRef = useRef(null);
@@ -458,7 +458,20 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    if (selectedFiles.length > 0) {
+    if (selectedFiles.length > 0
+      && !!formData.address
+      && !!formData.totalArea
+      && !!formData.livingArea
+      && !!formData.description
+      && !!formData.currency
+      && !!formData.price
+      && !!formData.year
+      && !!formData.buildingFloors
+      && !!formData.rooms
+      && !!formData.latitude
+      && !!formData.longitude
+      && !!formData.title
+    ) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
@@ -481,6 +494,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       } catch (error) {
         console.error(error);
       }
+    } else {
+      toast.error("Please fill all required fields");
     }
   };
 

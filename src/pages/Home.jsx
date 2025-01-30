@@ -32,6 +32,10 @@ const Home = () => {
     useSelector((state) => state.popular);
   const { properties: complexProperties = [], loading: complexLoading } =
     useSelector((state) => state.complex);
+  const { agents = [], loading: agentsLoading } = useSelector(
+    (state) => state.agent
+  );
+  console.log(agents);
 
   const getComplexData = async () => {
     const response = await axios.get(

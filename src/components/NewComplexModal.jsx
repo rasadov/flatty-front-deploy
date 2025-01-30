@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { addPost, fetchPosts } from "../store/slices/agentPostSlice";
 import { Add, Subtract, Active, Inactive } from "../assets/icons";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { toast } from "react-toastify";
 
 const categories = ["Penthouse", "Villa", "Cottages"];
 const conditions = [
@@ -30,7 +31,6 @@ const cities = [
   "Lapta",
   "Alsancak",
   "Değirmenlik",
-  "Yeni Erenköy",
 ];
 
 const areas = {
@@ -284,8 +284,7 @@ const areas = {
     "Kuruova",
     "Sipahi",
     "Taşlıca",
-    "Yeni Erenköy",
-    "Yeşilköy",
+      "Yeşilköy",
     "Ziyamet"
   ],
   "Lefke": [
@@ -427,7 +426,19 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   ];
 
   const handleSubmit = async () => {
-    if (images.length > 0) {
+    if (images.length > 0
+      && formData.name
+      && formData.residentialComplex
+      && formData.category
+      && formData.description
+      && formData.buildingArea
+      && formData.livingArea
+      && formData.objects
+      && formData.year
+      && formData.address
+      && formData.latitude
+      && formData.longitude
+    ) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
@@ -454,6 +465,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       } catch (error) {
         console.error(error);
       }
+    } else {
+      toast.error("Please fill in all required fields");
     }
   };
 
