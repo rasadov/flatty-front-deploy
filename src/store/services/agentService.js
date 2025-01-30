@@ -8,7 +8,7 @@
 import axios from "axios";
 
 export const fetchAgents = async () => {
-  const response = await axios.get("https://api.flatty.ai/agents");
+  const response = await axios.get("https://api.flatty.ai/api/v1/user/page/agents");
   return response.data;
 };
 

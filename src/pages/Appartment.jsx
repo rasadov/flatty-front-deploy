@@ -239,19 +239,26 @@ const Appartment = memo(() => {
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Installment:</td>
-                    <td className="py-2">{apartmentData.building?.installment ? "Yes" : "No"}</td>
+                    <td className="py-2">{(apartmentData.building?.installment
+                      && apartmentData.building?.installment !== "false"
+                    ) ? "Yes" : "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Elevator:</td>
-                    <td className="py-2">{apartmentData.building?.elevator ? "Yes" : "No"}</td>
+                    <td className="py-2">{(apartmentData.building?.elevators
+                      && apartmentData.building?.elevators !== "false"
+                    ) ? "Yes" : "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Parking:</td>
-                    <td className="py-2">{apartmentData.building?.parking ? "Yes" : "No"}</td>
+                    <td className="py-2">{(apartmentData.building?.parking
+                      && apartmentData.building?.parking !== "false") ?  "Yes" : "No"}</td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Swimming pool:</td>
-                    <td className="py-2">{apartmentData.building?.swimming_pool ? "Yes" : "No"}</td>
+                    <td className="py-2">{(apartmentData.building?.swimming_pool
+                      && apartmentData.building?.swimming_pool !== "false"
+                    ) ? "Yes" : "No"}</td>
                   </tr>
                 </tbody>
               </table>

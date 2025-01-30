@@ -124,8 +124,6 @@ const Home = () => {
     </div>
   );
 
-  console.log("POPULAR PROPERTIES", popularProperties);
-
   const elementCount = window.innerWidth >= 1536 ? 5 : 4;
 
   return (

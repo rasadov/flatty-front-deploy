@@ -776,7 +776,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     value={formData.gym}
                     onChange={handleInputChange}
                   >
-                    <option value="gym">GYM</option>
+                    <option value="">Select</option>
                     <option value="true">Yes</option>
                     <option value="false">No</option>
                   </select>
