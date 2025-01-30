@@ -1,9 +1,9 @@
 import axios from "axios";
 
 export const fetchPopularProperties = async () => {
-  const response = await axios.get("https://api.flatty.ai/api/v1/property/", {
+  const response = await axios.get("https://api.flatty.ai/api/v1/property/popular", {
     params: {
-      page: 2,
+      page: 1,
       elements: 5,
     },
   });

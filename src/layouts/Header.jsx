@@ -30,12 +30,12 @@ const Header = () => {
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
-  let user = {"user_id": 23, "email": "random@sad", "image_url": "https://api.flatty.ai/storage/avatars/23/1629870737.jpg"};
-  // if (localStorage.getItem("user")) {
-  //   user = JSON.parse(localStorage.getItem("user"));
-  // } else {
-  //   user = null;
-  // }
+  let user;
+  if (localStorage.getItem("user")) {
+    user = JSON.parse(localStorage.getItem("user"));
+  } else {
+    user = null;
+  }
   const [currencyDropdownOpen, setCurrencyDropdownOpen] = useState(false);
   const [selectedCurrency, setSelectedCurrency] = useState({
     symbol: localStorage.getItem("currency") || "£",

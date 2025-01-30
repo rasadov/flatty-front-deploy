@@ -14,7 +14,7 @@ const cities = [
   "Alsancak",
   "Değirmenlik",
   "Yeni Erenköy",
-  "Geçitkale",
+
 ];
 
 const areas = {
@@ -115,23 +115,6 @@ const areas = {
     "Atlılar",
     "Muratağa",
     "Sandallar"
-  ],
-  "Geçitkale": [
-    "Çamlıca",
-    "Çınarlı",
-    "Ergenekon",
-    "Geçitkale",
-    "Gönendere",
-    "Görneç",
-    "Mallıdağ",
-    "Nergisli",
-    "Pınarlı",
-    "Serdarlı",
-    "Sütlüce",
-    "Tatlısu",
-    "Tirmen",
-    "Ulukışla",
-    "Yamaçköy"
   ],
   "Tatlısu": [
     "Aktunç",
