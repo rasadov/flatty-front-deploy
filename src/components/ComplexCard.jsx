@@ -36,12 +36,12 @@ export const ComplexCard = React.memo(({ id, img, title, roomCount, address }) =
   return (
     <Link
       to={`/complex/${id}`}
-      className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] lg:h-[320px] flex flex-col"
+      className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] lg:h-[320px] flex flex-col custom-shadow"
       style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
       aria-label={`View details for ${title}`}
     >
       <motion.div
-        className="rounded-[6px] overflow-hidden w-full h-[173px] relative flex-shrink-0 custom-shadow" 
+        className="rounded-[6px] overflow-hidden w-full h-[173px] relative flex-shrink-0 " 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
