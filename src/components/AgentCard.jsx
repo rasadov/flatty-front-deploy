@@ -9,7 +9,7 @@ import apparment from "../assets/images/apparment.png";
 import { UserCircleFill } from "../assets/icons/UserCircleFill";
 
 export const AgentCard = (props) => {
-  const [rating, setRating] = useState(Math.random() * (5 - 4) + 4);
+  const [rating, setRating] = useState(0);
 
   const handleRatingClick = (value) => {
     // setRating(value);

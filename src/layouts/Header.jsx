@@ -101,16 +101,6 @@ const Header = () => {
     );
   };
 
-  // const handleMarkSelectedRead = (selectedNotifications) => {
-  //   setNotifications((prevNotifications) =>
-  //     prevNotifications.map((notification) =>
-  //       selectedNotifications.includes(notification.id)
-  //         ? { ...notification, read: true }
-  //         : notification
-  //     )
-  //   );
-  // };
-
   const navLinks = [
     // { to: "/agents", label: "Agents" },
     // { to: "/about", label: "About us" },
@@ -195,9 +185,9 @@ const Header = () => {
               <NotificationTrue />
             </div>
             <div
-  onClick={toggleDropdown}
-  className="relative cursor-pointer w-[34px] h-[34px] rounded-full border border-[#A673EF]"
->
+              onClick={toggleDropdown}
+              className="relative cursor-pointer w-[34px] h-[34px] rounded-full border border-[#A673EF]"
+            >
   <img
     src={user.image_url}
     alt="Profile"
@@ -321,8 +311,8 @@ const Header = () => {
   <motion.div
     className="relative w-8 h-8 flex items-center justify-center"
     initial={{ rotate: 0 }}
-    animate={{ rotate: menuOpen ? 45 : 0 }}
-    transition={{ duration: 0.3 }}
+    // animate={{ rotate: menuOpen ? 45 : 0 }}
+    // transition={{ duration: 0.3 }}
   >
     <div
       className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${

@@ -174,7 +174,8 @@ export const HouseItem = React.memo(
 
     return (
       <div
-        className="block border rounded-[6px] border-[#EEEFF2] relative sm:w-full  outline-[#EEEFF2] transform transition-transform duration-300
+        className="block border rounded-[6px] border-[#EEEFF2] relative sm:w-full
+        outline-[#EEEFF2] transform transition-transform duration-300
          custom-shadow"
         style={{
           boxShadow: "0px 1px 1px 0px #703ACA14",
@@ -218,11 +219,11 @@ export const HouseItem = React.memo(
               {images.slice(3).map((img, index) => {
                 return (
                   <SwiperSlide key={index}>
-                    <Link to={complex ? `/complex/${complex}` : `/appartment/${id}`}>
+                    <Link to={complex ? `/complex/${id}` : `/appartment/${id}`}>
                       <img
                         src={img.image_url}
                         alt={`Slide ${index + 1}`}
-                        className="object-cover w-full h-full"
+                        className="object-cover w-full h-[173px]"
                       />
                     </Link>
                   </SwiperSlide>
