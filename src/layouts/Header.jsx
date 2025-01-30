@@ -282,84 +282,62 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#F9F8FF] min-w-full border-b-2 px-16.26 py-[14.5px] z-50 relative">
-      <nav className="flex items-center justify-between w-full min-w-full mx-auto">
+    <header className="bg-[#F9F8FF] w-full border-b-2 px-6 md:px-16 py-4 z-50 relative">
+      <nav className="flex items-center justify-between w-full mx-auto">
         <Link to="/" className="flex items-center">
-          <LogoDesktop className="w-[120px] md:w-[180px]" />
+          <LogoDesktop className="w-[100px] md:w-[180px]" />
         </Link>
 
         <button
           onClick={toggleMenu}
-          className="block md:hidden p-2 rounded-full bg-[#F9F8FF] shadow-md focus:outline-none transition-all duration-300 transform hover:scale-110"
+          className="block md:hidden p-3 focus:outline-none transition-all duration-300 transform hover:scale-110  "
           aria-label="Toggle navigation"
         >
-          <motion.div
-            className="relative w-8 h-8 flex items-center justify-center"
-            initial={{ rotate: 0 }}
-            animate={{ rotate: menuOpen ? 45 : 0 }}
-            transition={{ duration: 0.3 }}
+          <div
+            className="relative w-8 h-6 flex flex-col justify-around"
+            style={{
+              left: " 22px",
+            }}
           >
-            <div
-              className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
-                menuOpen ? "rotate-45 translate-y-2" : ""
-              }`}
-            ></div>
-            <div
-              className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out ${
-                menuOpen ? "opacity-0" : "opacity-100"
-              }`}
-            ></div>
-            <div
-              className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
-                menuOpen ? "-rotate-45 -translate-y-2" : ""
-              }`}
-            ></div>
-          </motion.div>
+            <div className="w-6 h-0.5 bg-black"></div>
+            <div className="w-6 h-0.5 bg-black"></div>
+          </div>
         </button>
 
         <div className="hidden md:flex items-center gap-6 text-[#220D6D] text-[16px] leading-[28.8px] font-medium">
           {renderNavLinks()}
         </div>
 
-        <div className="items-center hidden gap-6 md:flex">
+        <div className="hidden md:flex items-center gap-6">
           {renderAuthButtons()}
         </div>
       </nav>
 
-      <motion.div
+      <div
         className={`${
           menuOpen ? "flex" : "hidden"
-        } flex-col items-center justify-center fixed inset-0 bg-[#F9F8FF] z-50 p-6 transition-all duration-500 ease-in-out transform`}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: menuOpen ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
+        } flex-col items-center justify-center fixed inset-0 bg-[#F9F8FF] z-50 p-8`}
       >
         <Link to="/" className="flex items-center mb-8">
           <LogoDesktop className="w-[120px] md:w-[180px]" />
         </Link>
 
-        <motion.button
+        <button
           onClick={toggleMenu}
-          className="absolute text-3xl text-black transition-all duration-300 transform top-4 right-4 hover:scale-110"
+          className="absolute text-3xl text-black top-4 right-6 hover:scale-110"
           aria-label="Close menu"
-          whileHover={{ scale: 1.1 }}
         >
           &times;
-        </motion.button>
+        </button>
 
-        <motion.div
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="flex flex-col items-center w-full space-y-4 text-center"
-        >
+        <div className="flex flex-col items-center w-full space-y-6 text-center">
           {renderNavLinks()}
-        </motion.div>
+        </div>
 
-        <div className="flex items-center justify-center gap-6">
+        <div className="flex items-center justify-center gap-6 mt-4">
           {renderAuthButtons()}
         </div>
-      </motion.div>
+      </div>
 
       <NotificationsModal
         isOpen={notificationsOpen}
