@@ -140,7 +140,7 @@ const Home = () => {
       company: null,
       sales: null,
       user: {
-        name: "ILYA TARASOV",
+        name: "Ilya Tarasov",
         bio: null,
         id: 18,
         email: "sarov1983@mail.ru",
@@ -228,7 +228,7 @@ const Home = () => {
       company: null,
       sales: null,
       user: {
-        name: "Kirill Torbenkov ",
+        name: "Kirill Torbenkov",
         bio: null,
         id: 38,
         email: "ki.torbenkov@gmail.com",

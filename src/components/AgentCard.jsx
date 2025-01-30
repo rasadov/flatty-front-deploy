@@ -34,7 +34,7 @@ export const AgentCard = (props) => {
         <motion.img
           src={props.image.image_url}
           alt="Agent's Picture"
-          className="object-cover w-[78px] h-[78px] rounded-full"
+          className="object-cover w-[78px] h-[78px] rounded-full mb-4"
         />
         <div>
           <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px]">
