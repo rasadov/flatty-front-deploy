@@ -30,7 +30,6 @@ const cities = [
   "Lefke",
   "Lapta",
   "Alsancak",
-  "Değirmenlik",
 ];
 
 const areas = {
@@ -82,8 +81,7 @@ const areas = {
     "Beyköy",
     "Cihangir",
     "Çukurova",
-    "Değirmenlik",
-    "Demirhan",
+      "Demirhan",
     "Düzova",
     "Gaziköy",
     "Gökhan",

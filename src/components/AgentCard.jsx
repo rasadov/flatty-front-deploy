@@ -18,16 +18,12 @@ export const AgentCard = (props) => {
 
   return (
     <motion.div
-      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2] flex flex-col justify-between min-h-[320px]"
+      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2] flex flex-col justify-between min-h-[320px] custom-shadow"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
-      }}
-      whileHover={{
-        scale: 1.02,
-        transition: { duration: 0.3 },
       }}
     >
       {/* <Link to={"/agent"} className="flex justify-start gap-2"> */}
@@ -41,9 +37,9 @@ export const AgentCard = (props) => {
             {props.name}
           </div>
           <div className="text-sm text-[#525C76] font-medium">
-            Senior Real Estate Agent
+            Flatty Real Estate Agent
           </div>
-          {/* <Rating rating={Math.random() * (5 - 4) + 4} onRatingClick={handleRatingClick} /> */}
+          <Rating rating={5} onRatingClick={handleRatingClick} initialRating={5} />
         </div>
       {/* </Link> */}
 
