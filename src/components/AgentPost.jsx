@@ -40,8 +40,7 @@ const LocationSection = React.memo(({ location }) => (
   </div>
 ));
 
-const handleDeletePost = (id, event) => {
-  event.stopPropagation();
+const handleDeletePost = (id) => {
   if (window.confirm("Are you sure you want to delete this property?")) {
     fetch(`https://api.flatty.ai/api/v1/property/record/${id}`, {
       method: "DELETE",
@@ -81,8 +80,12 @@ export const AgentPost = React.memo(
           {/* Trash and EditPencil Icons */}
           <div className="absolute flex gap-2 bottom-2 right-2">
             <div className="w-[33px] h-[33px] flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer "
-              onClick={(event) => handleDeletePost(id, event)}
-            >
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                handleDeletePost(id);
+              }}
+              >
               <Trash color="black" size="20"/>
             </div>
             {/* <div className="w-[33px] h-[33px]  flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer ">
