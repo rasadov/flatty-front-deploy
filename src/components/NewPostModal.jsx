@@ -466,6 +466,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       && !!formData.year
       && !!formData.buildingFloors
       && !!formData.rooms
+      && !!formData.renovation
       && !!formData.latitude
       && !!formData.longitude
       && !!formData.title
