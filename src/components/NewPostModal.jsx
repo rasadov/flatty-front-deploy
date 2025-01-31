@@ -324,10 +324,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     livingRoom: 0,
     bedroom: 0,
     balcony: 0,
-    parkingSlot: "",
-    installment: "",
-    swimmingPool: "",
-    elevator: "",
+    parkingSlot: null,
+    installment: null,
+    swimmingPool: null,
+    elevator: null,
     apartmentStories: 0,
     floor: 0,
     year: 0,
@@ -337,7 +337,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     latitude: 0,
     longitude: 0,
     address: "",
-    gym: "",
+    gym: null,
     documents: "",
     title: "",
     price: null,
@@ -469,6 +469,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       && !!formData.latitude
       && !!formData.longitude
       && !!formData.title
+      && !!formData.category
+      && formData.swimmingPool !== null
+      && formData.parkingSlot !== null
+      && formData.installment !== null
+      && formData.elevator !== null
+      && formData.gym !== null
     ) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -490,6 +496,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         dispatch(fetchPosts());
         onClose();
       } catch (error) {
+        toast.error("An error occurred. Please try again. Make sure you complete all required fields");
         console.error(error);
       }
     } else {

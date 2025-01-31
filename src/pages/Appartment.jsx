@@ -303,7 +303,9 @@ const Appartment = memo(() => {
             {/* Agent Info */}
             <div className="flex items-center justify-start gap-4">
               <motion.img
-                src="https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
+                src={
+                  apartmentData.owner?.user?.image?.image_url ||
+                  "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"}
                 alt="Agent"
                 className="object-cover w-[47px] h-[47px] rounded-full"
               />
@@ -312,7 +314,7 @@ const Appartment = memo(() => {
                   {apartmentData.owner?.user?.name || "Unknown Agent"}
                 {/* </Link> */}
                 <div className="text-sm text-[#525C76] font-medium">
-                  Real Estate Agent
+                  Flatty Estate Agent
                 </div>
               </div>
             </div>
