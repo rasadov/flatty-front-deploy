@@ -98,7 +98,7 @@ const Home = () => {
           Unlocking Doors to Your Next Home
         </h1>
 
-        <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1300px] 2xl:left-[10%]">
+        <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1440px] 2xl:left-[10%]">
           <Searchbar
             value={searchQuery}
             onChange={handleSearchQueryChange}
