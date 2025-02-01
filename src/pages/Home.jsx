@@ -352,7 +352,7 @@ const Home = () => {
 
             <AgentCardList sectionName={"Agents"}>
               {items.map((item) => {
-                return <AgentCard key={item.user.id} {...item.user} />;
+                return <AgentCard item={item} />;
               })}
             </AgentCardList>
 

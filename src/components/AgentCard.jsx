@@ -8,13 +8,15 @@ import { ContactIcon } from "../assets/icons/ContactIcon";
 import apparment from "../assets/images/apparment.png";
 import { UserCircleFill } from "../assets/icons/UserCircleFill";
 
-export const AgentCard = (props) => {
+export const AgentCard = (
+  item
+) => {
   const [rating, setRating] = useState(0);
-
+  item = item.item;
   const handleRatingClick = (value) => {
     // setRating(value);
   };
-  console.log(props);
+  console.log(item);
 
   return (
     <motion.div
@@ -28,13 +30,13 @@ export const AgentCard = (props) => {
     >
       {/* <Link to={"/agent"} className="flex justify-start gap-2"> */}
         <motion.img
-          src={props.image.image_url}
+          src={item?.user?.image?.image_url}
           alt="Agent's Picture"
           className="object-cover w-[78px] h-[78px] rounded-full mb-4"
         />
         <div>
           <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px]">
-            {props.name}
+            {item.user.name}
           </div>
           <div className="text-sm text-[#525C76] font-medium">
             Flatty Real Estate Agent
@@ -75,29 +77,33 @@ export const AgentCard = (props) => {
       </motion.div> */}
 
       <div className="mt-auto">
+        <a href={`/agent/${item.id}`}>
         <Button
           className="w-full py-[5px] px-3 my-2 text-white rounded-sm"
           variant="primary"
-        >
+          >
           <UserCircleFill />
           <p className="text-white text-sm font-semibold leading-[22.4px]">
-            <Link to={`/agent/${props.id}`}>View Profile</Link>
+            <Link to={`/agent/${item.id}`}>View Profile</Link>
           </p>
         </Button>
+        </a>
+        <a
+          target="_blank"
+          href={`https://api.whatsapp.com/send?phone=${
+            item?.user?.phone?.slice(1)
+          }`}
+        >
         <Button
           className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
         >
           <ContactIcon />
           <p className="text-[#8247E5] text-sm font-semibold leading-[22.4px]">
-            <a
-              target="_blank"
-              href={`https://api.whatsapp.com/send?phone=${props.phone}`}
-            >
               Contact
-            </a>
           </p>
         </Button>
+        </a>
       </div>
     </motion.div>
   );

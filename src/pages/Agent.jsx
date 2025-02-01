@@ -58,8 +58,8 @@ const Agent = () => {
           <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-6">
             <img
               src={
-                user?.image_url
-                  ? user.image_url
+                user?.image?.image_url
+                  ? user?.image?.image_url
                   : "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
               }
               className="rounded-full w-[120px] h-[120px] object-cover"
