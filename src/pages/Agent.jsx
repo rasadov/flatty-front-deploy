@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Rating from "../components/Rating";
 import AgencyMiniCard from "../components/AgencyMiniCard";
 import CardList from "../components/sections/CardList";
@@ -14,11 +14,15 @@ import { FaEllipsisH } from "react-icons/fa";
 import Loading from "../components/Loading.jsx";
 
 
-export const Agent = (agent_id) => {
+const Agent = () => {
+  console.log("DSADASD");
   const [agent, setAgent] = useState([]);
   const [properties, setAgentProperties] = useState([]);
   const [complexes, setComplexes] = useState([]);
+  const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  const agent_id = window.location.pathname.split("/").pop();
+  console.log(agent_id);
   useEffect(() => {
     const fetchProfile = async () => {
       const response = await fetch(`https://api.flatty.ai/api/v1/user/agent/${agent_id}`, {
@@ -26,11 +30,17 @@ export const Agent = (agent_id) => {
           "Accept": "application/json",
         },
       })
-      const data = await response.json();
-      setAgent(data);
-      setAgentProperties(data.properties);
-      setComplexes(data.listings);
-      setLoading(false);
+      if (!response.ok) {
+        console.log("Error");
+        return;
+      } else {
+        const data = await response.json();
+        setAgent(data);
+        setAgentProperties(data.properties);
+        setComplexes(data.listings);
+        setUser(data.user);
+        setLoading(false);
+      }
     };
     fetchProfile();
   }, []);
@@ -144,3 +154,5 @@ export const Agent = (agent_id) => {
     </div>
   );
 };
+
+export default Agent;

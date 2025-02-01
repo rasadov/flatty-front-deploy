@@ -31,7 +31,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/appartment/:id" element={<Appartment />} />
             <Route path="/about" element={<About />} />
-            <Route path="/agent/:agent_id" element={<Agent />} />
+            <Route path="/agent/:id" element={<Agent />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
           </Route>
