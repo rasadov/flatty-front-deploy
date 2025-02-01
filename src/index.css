@@ -68,7 +68,8 @@ body {
 @layer components {
   /* Define a custom shadow class */
   .shadow-card {
-    box-shadow: 0px 1px 1px 0px #703aca14; /* Adjust this to match your desired shadow */
+    box-shadow: 0px 1px 1px 0px #703aca14;
+    /* Adjust this to match your desired shadow */
   }
 
   .agent-card {

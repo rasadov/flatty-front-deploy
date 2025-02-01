@@ -68,10 +68,13 @@ const Login = () => {
 
   return (
     <motion.div
-      className="max-w-md p-8 mx-auto mt-8 bg-white border shadow-md rounded-[18px] mb-28 mt-28"
+      className="max-w-md p-8 mx-auto  bg-white border shadow-md rounded-[18px] mt-[65%] sm:mt-[15%]"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
+      // style={{
+      //   marginTop: "15%",
+      // }}
     >
       <h1 className="mb-6 text-4xl font-semibold text-center text-gray-800">
         Sign in

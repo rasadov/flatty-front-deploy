@@ -12,8 +12,8 @@ const PropertyMap = ({ location }) => {
     height: "300px",
   };
 
-   // Custom map style to hide POI (Points of Interest)
-   const mapStyles = [
+  // Custom map style to hide POI (Points of Interest)
+  const mapStyles = [
     {
       featureType: "poi",
       elementType: "labels",
@@ -40,7 +40,10 @@ const PropertyMap = ({ location }) => {
           center={center}
           zoom={14}
           options={{
-            zoomControl: false,
+            zoomControl: true,
+            zoomControlOptions: {
+              position: window.google.maps.ControlPosition.RIGHT_CENTER, // Adjust this to move the control higher
+            },
             mapTypeControl: false,
             streetViewControl: false,
             fullscreenControl: false,

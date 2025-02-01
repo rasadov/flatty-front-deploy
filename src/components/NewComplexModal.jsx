@@ -225,7 +225,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <input
                   name="residentialComplex"
                   type="text"
-                  className="w-full h-[52px] p-2 border rounded-md"
+                  className="w-full h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 />
@@ -236,7 +236,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[52px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[52px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -259,7 +259,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-[100%] p-2 border rounded-md"
+                    className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     placeholder="45"
                   />
                   <span className="absolute right-3 top-2 text-gray-500">
@@ -276,7 +276,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-[100%] p-2 border rounded-md"
+                    className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     placeholder="38"
                   />
                   <span className="absolute right-3 top-2 text-gray-500">
@@ -292,7 +292,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md"
+                  className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="38"
                 />
               </div>
@@ -304,7 +304,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md"
+                  className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="16"
                 />
               </div>
@@ -316,7 +316,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md"
+                  className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="2020"
                 />
               </div>
@@ -356,7 +356,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="installment"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -372,7 +372,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -388,7 +388,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -405,7 +405,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   </label>
                   <select
                     name="gym"
-                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     value={formData.gym}
                     onChange={handleInputChange}
                   >
@@ -422,7 +422,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                     </label>
                     <select
                       name="elevator"
-                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                       value={formData.elevator}
                       onChange={handleInputChange}
                     >
@@ -480,7 +480,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </label>
               <textarea
                 name="description"
-                className="w-full h-[119px] p-2 border rounded-md"
+                className="w-full h-[119px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                 rows="4"
                 value={formData.description}
                 onChange={handleInputChange}
@@ -542,7 +542,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   multiple
                   accept="image/*,video/*"
                   onChange={handleImageUpload}
-                  className="hidden"
+                  className="hidden focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                 />
               </div>
 
@@ -637,7 +637,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="city"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.city}
                   onChange={handleInputChange}
                 >
@@ -655,7 +655,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="area"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.area}
                   onChange={handleInputChange}
                 >
@@ -702,7 +702,11 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                     onClick={handleMapClick}
                     ref={mapRef}
                     options={{
-                      zoomControl: false,
+                      zoomControl: true,
+                      zoomControlOptions: {
+                        position:
+                          window.google.maps.ControlPosition.RIGHT_CENTER, // Adjust this to move the control higher
+                      },
                       mapTypeControl: false,
                       streetViewControl: false,
                       fullscreenControl: false,

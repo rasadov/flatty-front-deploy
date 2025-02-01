@@ -17,6 +17,7 @@ import key_img from "../assets/images/key_img.png";
 import Header from "../layouts/Header";
 import { Footer } from "../layouts/Footer";
 import AgentCard from "../components/AgentCard.jsx";
+import CardListAgent from "../components/sections/CardListAgent.jsx";
 import axios from "axios";
 
 const Home = () => {
@@ -101,6 +102,7 @@ const Home = () => {
           <Searchbar
             value={searchQuery}
             onChange={handleSearchQueryChange}
+            home={true}
             onShowMap={() => {
               navigate(`/search?query=${encodeURIComponent(searchQuery)}`);
             }}
@@ -379,11 +381,11 @@ const Home = () => {
               )}
             </CardList>
 
-            <CardList sectionName={"Agents"}>
+            <CardListAgent sectionName={"Agents"}>
               {items.map((item) => {
                 return <AgentCard key={item.user.id} {...item.user} />;
               })}
-            </CardList>
+            </CardListAgent>
 
             <WhyChooseUsSection />
             {/* <TestimonialSection sectionName="Testimonials" /> */}

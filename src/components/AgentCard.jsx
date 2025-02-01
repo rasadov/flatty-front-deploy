@@ -7,6 +7,7 @@ import Rating from "./Rating";
 import { ContactIcon } from "../assets/icons/ContactIcon";
 import apparment from "../assets/images/apparment.png";
 import { UserCircleFill } from "../assets/icons/UserCircleFill";
+
 export const AgentCard = (props) => {
   const [rating, setRating] = useState(4);
 
@@ -16,12 +17,16 @@ export const AgentCard = (props) => {
 
   return (
     <motion.div
-      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2] flex flex-col justify-between min-h-[320px]"
+      className="px-4 py-6 bg-white border rounded-md shadow-lg outline-[#EEEFF2] flex flex-col justify-between "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
+        border: "1px solid rgba(238, 239, 242, 1)",
+        width: "316px",
+        height: "388px",
+        marginBottom: "14px",
       }}
     >
       <Link to={"/agent"} className="flex justify-start gap-2">
@@ -34,7 +39,11 @@ export const AgentCard = (props) => {
             transition: { duration: 0.3 },
           }}
         />
-        <div>
+        <div
+          style={{
+            marginRight: "10px",
+          }}
+        >
           <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px]">
             {props.name}
           </div>
@@ -45,7 +54,12 @@ export const AgentCard = (props) => {
         </div>
       </Link>
 
-      <hr className="my-4 border-t-2 border-gray-200" />
+      <hr
+        className="my-4 "
+        style={{
+          border: "1 px solid rgba(238, 239, 242, 1)",
+        }}
+      />
 
       <div className="flex-grow">
         <p className="text-xs text-[#525C76] leading-[19.2px] font-medium">
@@ -67,19 +81,31 @@ export const AgentCard = (props) => {
         </ul>
       </div>
 
-      <hr className="my-4 border-t-2 border-gray-200" />
-
-      {/* <motion.div>
+      <motion.div>
         <AgencyMiniCard
           agencyName="Emtan Construction"
           agencyProfileLink="/complex"
         />
-      </motion.div> */}
+      </motion.div>
+
+      <Link to={"/agent"}>
+        <Button
+          className="w-full text-white py-[5px] px-3 mt-3 rounded-sm text-sm font-semibold leading-[22.4px]"
+          variant="primary"
+        >
+          <UserCircleFill color="white" />
+          View Profile
+        </Button>
+      </Link>
 
       <div className="mt-auto">
         <Button
           className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
+          style={{
+            border: "1px solid rgba(166, 115, 239, 1)",
+            background: "rgba(255, 255, 255, 1)",
+          }}
         >
           <ContactIcon />
           <p className="text-[#8247E5] text-sm font-semibold leading-[22.4px]">

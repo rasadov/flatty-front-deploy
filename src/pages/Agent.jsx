@@ -7,7 +7,7 @@ import TestimonialSection from "../components/sections/TestimonialSection.jsx";
 import HouseItem from "../components/HouseItem.jsx";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import apparment from "../assets/images/apparment.png";
-import agent_back from "../assets/images/agent_back.png";
+import agent_back from "../assets/images/Group 15.png";
 import ComplexCard from "../components/ComplexCard.jsx";
 import { Certified } from "../assets/icons/Certified.jsx";
 import { FaEllipsisH } from "react-icons/fa";
@@ -46,7 +46,7 @@ export const Agent = () => {
   return (
     <div className="w-full py-3 mx-auto mt-8">
       <Breadcrumbs title="Apartment" />
-      <div className="flex flex-col items-start gap-6 mt-8 lg:flex-row">
+      <div className="flex justify-between   gap-6 mt-8 lg:flex-row">
         {/* Agent Info */}
         <div className=" p-6 bg-white rounded-lg w-[578px] min-h-[272px]">
           <div className="flex items-center justify-start gap-4 mb-6">

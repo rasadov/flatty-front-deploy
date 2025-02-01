@@ -14,9 +14,10 @@ export const Searchbar = ({
   filters,
   API_URL,
   setData,
+  home,
 }) => {
   const [dropdownStates, setDropdownStates] = useState({
-    category: null,
+    category: [],
     roomNumber: [],
     priceRange: { Min: "", Max: "" },
     location: value || "",
@@ -37,7 +38,6 @@ export const Searchbar = ({
     "₺": 0.028,
   };
 
-  
   useEffect(() => {
     setDropdownStates((prevState) => ({
       ...prevState,
@@ -46,7 +46,6 @@ export const Searchbar = ({
   }, [value]);
 
   useEffect(() => {
-   
     const currentParams = new URLSearchParams(location.search);
     const currentFilters = {};
     currentParams.forEach((value, key) => {
@@ -54,7 +53,7 @@ export const Searchbar = ({
     });
 
     const combinedFilters = {
-      ...currentFilters, 
+      ...currentFilters,
     };
 
     let queryString = new URLSearchParams(combinedFilters).toString();
@@ -62,6 +61,16 @@ export const Searchbar = ({
     queryString = queryString.replace(/roomNumber=([^&]*)/g, (match, p1) => {
       return `roomNumber=${decodeURIComponent(p1)}`;
     });
+
+    let categories = [];
+    queryString = queryString.replace(/category=([^&]*)/g, (match, p1) => {
+      categories.push(decodeURIComponent(p1)); // Collect all decoded category values
+      return ""; // Remove the original category match
+    });
+
+    if (categories.length > 0) {
+      queryString += `&category=${categories.join(",")}`;
+    }
 
     fetch(`${API_URL}?${queryString}`, {
       method: "GET",
@@ -81,22 +90,20 @@ export const Searchbar = ({
 
     const currentParams = new URLSearchParams(window.location.search);
 
-    
     const currentFilters = {};
     currentParams.forEach((value, key) => {
       currentFilters[key] = value;
     });
 
     const combinedFilters = {
-      ...currentFilters, 
-      ...dropdownStates, 
+      ...currentFilters,
+      ...dropdownStates,
     };
 
     const queryParams = new URLSearchParams();
     queryParams.append("page", 1);
     queryParams.append("elements", 10);
 
-    
     Object.entries(combinedFilters).forEach(([key, value]) => {
       if (
         value !== null &&
@@ -105,10 +112,8 @@ export const Searchbar = ({
         value !== 0
       ) {
         if (key === "roomNumber" && Array.isArray(value)) {
-          
           queryParams.append(key, value.join(","));
         } else if (typeof value === "object" && !Array.isArray(value)) {
-         
           Object.entries(value).forEach(([subKey, subValue]) => {
             if (
               subValue !== null &&
@@ -127,7 +132,6 @@ export const Searchbar = ({
             }
           });
         } else if (Array.isArray(value)) {
-          
           value.forEach((item) => {
             queryParams.append(key, item);
           });
@@ -139,12 +143,20 @@ export const Searchbar = ({
 
     let queryString = queryParams.toString();
 
-   
     queryString = queryString.replace(/roomNumber=([^&]*)/g, (match, p1) => {
       return `roomNumber=${decodeURIComponent(p1)}`;
     });
 
-  
+    let categories = [];
+    queryString = queryString.replace(/category=([^&]*)/g, (match, p1) => {
+      categories.push(decodeURIComponent(p1)); // Collect all decoded category values
+      return ""; // Remove the original category match
+    });
+
+    if (categories.length > 0) {
+      queryString += `&category=${categories.join(",")}`;
+    }
+
     navigate(`/search?${queryString}`);
   };
 
@@ -161,6 +173,18 @@ export const Searchbar = ({
           roomNumber: [...prevState.roomNumber, room],
         };
       }
+    });
+  };
+
+  const handleCheckboxChange = (option) => {
+    setDropdownStates((prevState) => {
+      const newCategories = prevState.category.includes(option)
+        ? prevState.category.filter((cat) => cat !== option)
+        : [...prevState.category, option];
+      return {
+        ...prevState,
+        category: newCategories,
+      };
     });
   };
 
@@ -268,14 +292,14 @@ export const Searchbar = ({
                 placeholder="Min"
                 value={dropdownStates.priceRange.min}
                 onChange={(e) => handlePriceChange(e, "min")}
-                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
+                className="w-1/2 px-2 py-1 border-[1px]  focus:outline-none border-gray-300 focus:ring-2 focus:ring-[rgba(130,71,229,1)] rounded-md text-[#525C76] text-sm"
               />
               <input
                 type="number"
                 placeholder="Max"
                 value={dropdownStates.priceRange.max}
                 onChange={(e) => handlePriceChange(e, "max")}
-                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
+                className="w-1/2 px-2 py-1 border border-gray-300 border-[1px]  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] rounded-md text-[#525C76] text-sm"
               />
             </div>
           </div>
@@ -296,36 +320,51 @@ export const Searchbar = ({
       transition={{ duration: 0.5 }}
     >
       {/* Category Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[200px]">
+      <div className="relative flex-shrink-0 w-full sm:w-[180px]">
         <button
           onClick={() => handleDropdownToggle("category")}
-          className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
+          className="flex items-center justify-between w-full px-4 py-2 text-left bg-white "
         >
-          <span className="text-[#525C76] text-sm font-semibold">
-            {dropdownStates.category || "Category"}
-          </span>
+          <span className="text-[#525C76] text-sm font-semibold">Category</span>
           <motion.div
             animate={{ rotate: dropdownOpen === "category" ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
           >
             <ArrowDown />
           </motion.div>
         </button>
         {dropdownOpen === "category" && (
           <motion.div
-            className="absolute left-0 right-0 z-10 mt-2 bg-white rounded-md shadow-lg"
+            className="absolute left-0 right-0 z-10 mt-2 bg-white rounded-md shadow-lg p-2"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
           >
-            {renderDropdownContent("category")}
+            {["Apartment", "Villa", "Penthouse", "Cottages"].map((option) => (
+              <label
+                key={option}
+                className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-md"
+              >
+                <input
+                  type="checkbox"
+                  checked={dropdownStates.category.includes(option)}
+                  onChange={() => handleCheckboxChange(option)}
+                  className="form-checkbox text-[rgba(130, 71, 229, 1)] focus:ring-[rgba(130, 71, 229, 1)] focus:ring-2 h-5 w-5 border-[rgba(130, 71, 229, 1)]"
+                  style={{
+                    accentColor: "rgba(130, 71, 229, 1)",
+                    border: "none",
+                    outline: "none",
+                    boxShadow: "none",
+                  }}
+                />
+                <span className="text-sm text-[#525C76]">{option}</span>
+              </label>
+            ))}
           </motion.div>
         )}
       </div>
 
       {/* Room Number Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[150px]">
+      <div className="relative flex-shrink-0 w-full sm:w-[190px]">
         <button
           onClick={() => handleDropdownToggle("roomNumber")}
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
@@ -354,7 +393,7 @@ export const Searchbar = ({
       </div>
 
       {/* Price Range Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
+      <div className="relative flex-shrink-0 w-full sm:w-[160px]">
         <button
           onClick={() => handleDropdownToggle("price")}
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
@@ -385,7 +424,7 @@ export const Searchbar = ({
       </div>
 
       {/* Area Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
+      <div className="relative flex-shrink-0 w-full sm:w-[160px]">
         <button
           onClick={() => handleDropdownToggle("area")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -450,7 +489,10 @@ export const Searchbar = ({
           className="flex items-center justify-center px-4 py-2 text-[#8247E5] bg-white h-[50px] w-full sm:w-auto font-semibold rounded-md shadow-md sm:shadow-none"
         >
           <ShowMap />
-          <span className="ml-2 text-sm sm:text-base">Show on map</span>
+          <span className="ml-2 text-sm sm:text-base">
+            {" "}
+            {home ? "Show on map" : "Show on list"}{" "}
+          </span>
         </button>
 
         {/* Кнопка "Search" */}

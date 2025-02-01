@@ -297,7 +297,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -315,7 +315,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="residentialComplex"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
@@ -343,7 +343,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="livingArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.livingArea}
                   onChange={handleInputChange}
                 />
@@ -380,7 +380,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                         <input
                           name={field}
                           type="number"
-                          className="w-[36px] h-[32px] text-center border rounded-md"
+                          className="w-[36px] h-[32px] text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                           value={formData[field]}
                           onChange={handleInputChange}
                           min="0"
@@ -423,7 +423,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                         <input
                           name={field}
                           type="number"
-                          className="w-[36px] h-[32px] text-center border rounded-md"
+                          className="w-[36px] h-[32px] text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                           value={formData[field]}
                           onChange={handleInputChange}
                           min="0"
@@ -447,7 +447,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="installment"
-                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -463,7 +463,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -479,7 +479,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -495,7 +495,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="gym"
-                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.gym}
                   onChange={handleInputChange}
                 >
@@ -512,7 +512,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </label>
                   <select
                     name="elevator"
-                    className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100"
+                    className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     value={formData.elevator}
                     onChange={handleInputChange}
                   >
@@ -532,7 +532,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="year"
                   type="number"
-                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.year}
                   onChange={handleInputChange}
                 />
@@ -545,13 +545,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <input
                     name="price"
                     type="number"
-                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     value={formData.price}
                     onChange={handleInputChange}
                   />
                   <select
                     name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    className="h-[52px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     value={formData.currency}
                     onChange={handleInputChange}
                   >
@@ -572,7 +572,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </label>
               <input
                 name="title"
-                className="w-full h-[50px] p-2 border rounded-md"
+                className="w-full h-[50px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                 // rows="4"
                 value={formData.title}
                 onChange={handleInputChange}
@@ -585,7 +585,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </label>
               <textarea
                 name="description"
-                className="w-full h-[119px] p-2 border rounded-md"
+                className="w-full h-[119px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                 rows="4"
                 value={formData.description}
                 onChange={handleInputChange}
@@ -661,7 +661,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   multiple
                   accept="image/*,video/*"
                   onChange={handleImageUpload}
-                  className="hidden"
+                  className="hidden focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                 />
               </div>
 
@@ -783,7 +783,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   multiple
                   accept="*/*"
                   onChange={handleFileUpload}
-                  className="hidden"
+                  className="hidden focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                 />
               </div>
 
@@ -883,7 +883,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="city"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -901,7 +901,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="area"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
@@ -947,7 +947,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     onClick={handleMapClick}
                     ref={mapRef}
                     options={{
-                      zoomControl: false,
+                      zoomControl: true,
+                      zoomControlOptions: {
+                        position:
+                          window.google.maps.ControlPosition.RIGHT_CENTER, // Adjust this to move the control higher
+                      },
                       mapTypeControl: false,
                       streetViewControl: false,
                       fullscreenControl: false,

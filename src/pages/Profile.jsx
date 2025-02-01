@@ -6,7 +6,7 @@ import CardList from "../components/sections/CardList";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import Button from "../components/Button.jsx";
 import apparment from "../assets/images/apparment.png";
-import agent_back from "../assets/images/agent_back.png";
+import agent_back from "../assets/images/Group 15.png";
 import { Certified } from "../assets/icons/Certified.jsx";
 import { NewPost } from "../assets/icons/NewPost.jsx";
 import { EditPost } from "../assets/icons/EditPost.jsx";
@@ -101,7 +101,6 @@ export const Profile = () => {
       for (let i = 0; i < data3.length; i++) {
         namesOfComplexes.push(data3[i].name);
       }
-      console.log("COMPLEX ", data3);
     };
     fetchProfile();
   }, []);
@@ -129,7 +128,7 @@ export const Profile = () => {
   return (
     <div className="w-full py-3 mx-auto mt-8">
       <Breadcrumbs title="Apartment" />
-      <div className="flex flex-col gap-6 mt-8 lg:flex-row">
+      <div className="flex justify-between gap-6 mt-8 lg:flex-row">
         {/* Agent Info */}
         <div className="p-6 bg-white rounded-lg w-full lg:w-[578px] min-h-[272px]">
           <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-6">
@@ -191,10 +190,12 @@ export const Profile = () => {
         </div>
 
         {/* Agent Image */}
-        <div className="hidden lg:block w-full lg:w-[683px] h-[345px] relative">
+        <div className="hidden lg:block w-full lg:w-[740px] h-[375px] relative">
+          {" "}
+          {/* Increased width and height */}
           <img
             src={agent_back}
-            className="absolute w-full h-auto rounded-lg bottom-10"
+            className="absolute w-full rounded-lg "
             alt="Agent"
             loading="lazy"
           />

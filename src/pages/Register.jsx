@@ -93,18 +93,17 @@ const Register = () => {
   };
 
   const handleCancel = () => {
-    notify(t("Register Cancelled"));
+    notify("Register Cancelled");
     reset();
-    navigate("/login");
+    navigate("/");
   };
-
   const handleCheckboxChange = () => {
     setIsHuman((prev) => !prev);
   };
 
   return (
     <motion.div
-      className="max-w-md sm:p-6 p-8 mx-auto mt-2 border shadow-md rounded-[18px] bg-white mb-20 mt-20"
+      className="max-w-md sm:p-6 p-8 mx-auto mt-2 border shadow-md rounded-[18px] bg-white mt-[10%] sm:mt-[8%]"
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}
@@ -262,7 +261,7 @@ const Register = () => {
           <Button
             type="button"
             variant="cancel"
-            onClick={() => handleCancel()}
+            onClick={handleCancel}
             className="w-full px-5 py-[8.7px]"
           >
             Cancel

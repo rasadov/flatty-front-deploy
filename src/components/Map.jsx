@@ -49,6 +49,7 @@ export default function Map({ properties = [], onMarkerClick }) {
   const renderMarkersWithClustering = () => {
     if (!window.google || !map) return;
 
+    // Array to hold markers
     const markers = properties.map((property) => {
       const position = { lat: property.latitude, lng: property.longitude };
       const marker = new window.google.maps.Marker({
@@ -65,14 +66,14 @@ export default function Map({ properties = [], onMarkerClick }) {
       });
 
       marker.addListener("click", () => {
-        onMarkerClick?.([property]);
+        onMarkerClick?.([property]); // When clicking on a single marker, show the associated property
       });
 
       return marker;
     });
 
-    // Настройка кластеров
-    new MarkerClusterer({
+    // Setup the MarkerClusterer
+    const markerClusterer = new MarkerClusterer({
       markers,
       map,
       renderer: {
@@ -81,10 +82,10 @@ export default function Map({ properties = [], onMarkerClick }) {
             position,
             icon: {
               path: window.google.maps.SymbolPath.CIRCLE,
-              fillColor: "#7C3AED",
+              fillColor: "#7C3AED", // Keep the fill color
               fillOpacity: 1,
-              // strokeColor: "#FFFFFF",
-              strokeWeight: 1,
+              strokeColor: "#7C3AED", // Set the stroke color to transparent to remove the outline
+              strokeWeight: 0, // Optionally set stroke weight to 0
               scale: 24,
             },
             label: {
@@ -97,6 +98,19 @@ export default function Map({ properties = [], onMarkerClick }) {
           return clusterElement;
         },
       },
+    });
+
+    // Handle cluster clicks
+    markerClusterer.addListener("clusterclick", (event) => {
+      const clickedCluster = event.getCluster();
+      const markersInCluster = clickedCluster.getMarkers(); // Get all markers in the clicked cluster
+      const propertiesInCluster = markersInCluster.map((marker) => {
+        const propertyTitle = marker.getTitle();
+        return properties.find((property) => property.name === propertyTitle);
+      });
+
+      // Call onMarkerClick with all properties in the cluster
+      onMarkerClick(propertiesInCluster);
     });
   };
 
@@ -111,7 +125,10 @@ export default function Map({ properties = [], onMarkerClick }) {
       }}
       onZoomChanged={handleZoomChanged}
       options={{
-        zoomControl: false,
+        zoomControl: true,
+        zoomControlOptions: {
+          position: window.google.maps.ControlPosition.RIGHT_CENTER, // Adjust this to move the control higher
+        },
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
