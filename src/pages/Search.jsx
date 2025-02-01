@@ -20,6 +20,7 @@ import {
 } from "../assets/icons";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export const Search = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,9 @@ export const Search = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
   const [filteredItems, setFilteredItems] = useState([]);
-  const page = filters.page || 1;
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const page = query.get("page") || 1;
   const elements = 50;
 
   const [responseData, setResponseData] = useState([]);
@@ -70,9 +73,8 @@ export const Search = () => {
   const handlePageChange = useCallback(
     (page) => {
       setCurrentPage(page);
-      dispatch(updateFilters({ page }));
+      dispatch(loadSearchResults({ ...filters, page }));
     },
-    [dispatch]
   );
 
   if (loading) return <div>Loading...</div>;

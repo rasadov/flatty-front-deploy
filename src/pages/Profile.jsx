@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Rating from "../components/Rating";
-import AgencyMiniCard from "../components/AgencyMiniCard";
 import CardList from "../components/sections/CardList";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import Button from "../components/Button.jsx";
-import apparment from "../assets/images/apparment.png";
 import agent_back from "../assets/images/agent_back.png";
 import { Certified } from "../assets/icons/Certified.jsx";
 import { NewPost } from "../assets/icons/NewPost.jsx";

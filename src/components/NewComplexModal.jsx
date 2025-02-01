@@ -7,7 +7,7 @@ import { Add, Subtract, Active, Inactive } from "../assets/icons";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { toast } from "react-toastify";
 
-const categories = ["Penthouse", "Villa", "Cottages"];
+const categories = ["Penthouse", "Villa", "Cottages",  "Loft", "Townhouse",  "Bungalow"];
 const conditions = [
   "Without finishing",
   "Pre-finish",

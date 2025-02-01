@@ -521,7 +521,7 @@ export const Searchbar = ({
       case "category":
         return (
           <div className="p-4">
-            {["Appartment", "Villa", "Penthouse", "Cottages"].map((cat) => (
+            {["Appartment", "Villa", "Penthouse", "Cottages", "Loft", "Townhouse",  "Bungalow"].map((cat) => (
               <p
                 key={cat}
                 onClick={() => handleSelectOption("category", cat)}

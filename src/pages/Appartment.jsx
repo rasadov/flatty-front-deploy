@@ -301,14 +301,15 @@ const Appartment = memo(() => {
             <hr className="my-4 border-t-2 border-[#EEEFF2]" />
 
             {/* Agent Info */}
+            <a href={`/agent/${apartmentData.owner?.id}`}>
             <div className="flex items-center justify-start gap-4">
               <motion.img
                 src={
                   apartmentData.owner?.user?.image?.image_url ||
                   "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"}
-                alt="Agent"
-                className="object-cover w-[47px] h-[47px] rounded-full"
-              />
+                  alt="Agent"
+                  className="object-cover w-[47px] h-[47px] rounded-full"
+                  />
               <div>
                 {/* <Link to={"/agent"} className="font-semibold text-[#525C76] text-[16px]"> */}
                   {apartmentData.owner?.user?.name || "Unknown Agent"}
@@ -318,6 +319,7 @@ const Appartment = memo(() => {
                 </div>
               </div>
             </div>
+            </a>
 
             {/* Contact */}
             <div

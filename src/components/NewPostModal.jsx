@@ -12,7 +12,7 @@ import { PDF } from "../assets/icons/PDF";
 import { LeftUpload } from "../assets/icons/LeftUpload";
 import { toast } from "react-toastify";
 
-const categories = ["Penthouse", "Villa", "Cottages"];
+const categories = ["Penthouse", "Villa", "Cottages", "Loft", "Townhouse",  "Bungalow"];
 
 const renovations = [
   "Cosmetic",

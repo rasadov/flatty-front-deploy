@@ -33,6 +33,9 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
               currentImage === thumbnail ? "ring-2 ring-[#8247E5]" : ""
             }`}
             onClick={() => setCurrentImage(thumbnail)}
+            style={{
+              margin: "8px",
+            }}
           >
             <img
               src={thumbnail}
@@ -73,7 +76,7 @@ const PropertyShowcase = ({ length, property }) => {
   };
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:py-8 lg:pr-8 lg:pl-0">
+    <div className="w-full mx-auto p-4 md:p-6 lg:p-8">
       {/* Property Details */}
       <div>
         <h1 className="mb-2 text-[24px] md:text-[28px] lg:text-[36px] font-semibold text-[#0F1D40] leading-[1.2]">

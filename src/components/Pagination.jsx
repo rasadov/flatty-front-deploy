@@ -53,17 +53,19 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <div className="flex items-center justify-center gap-2 my-6">
       {/* Left Arrow */}
-      <Link
+      { totalPages > 1 && currentPage > 1 && (
+        <Link
         onClick={() => handlePageClick(currentPage - 1)}
         disabled={currentPage === 1}
         className={`p-2 rounded-md font-semibold text-[16px]  ${
           currentPage === 1
-            ? "opacity-50 cursor-not-allowed"
-            : "hover:text-[#7949FF]"
-        }`}
-      >
+          ? "opacity-50 cursor-not-allowed"
+          : "hover:text-[#7949FF]"
+          }`}
+          >
         <ArrowLeft />
       </Link>
+      )}
 
       {/* Page Numbers */}
       {pageNumbers.map((page, index) =>
@@ -88,17 +90,19 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }) => {
       )}
 
       {/* Right Arrow */}
-      <Link
-        onClick={() => handlePageClick(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={`p-2  ${
-          currentPage === totalPages
-            ? "opacity-50 cursor-not-allowed "
-            : "hover:text-[#7949FF]"
-        }`}
-      >
-        <ArrowRight />
-      </Link>
+      {totalPages > 1 && currentPage < totalPages && (
+        <Link
+          onClick={() => handlePageClick(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className={`p-2 rounded-md font-semibold text-[16px] ${
+            currentPage === totalPages
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:text-[#7949FF]"
+          }`}
+        >
+          <ArrowRight />
+        </Link>
+      )}
     </div>
   );
 };

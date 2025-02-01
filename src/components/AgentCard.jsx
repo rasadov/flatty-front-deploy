@@ -76,6 +76,15 @@ export const AgentCard = (props) => {
 
       <div className="mt-auto">
         <Button
+          className="w-full py-[5px] px-3 my-2 text-white rounded-sm"
+          variant="primary"
+        >
+          <UserCircleFill />
+          <p className="text-white text-sm font-semibold leading-[22.4px]">
+            <Link to={`/agent/${props.id}`}>View Profile</Link>
+          </p>
+        </Button>
+        <Button
           className="w-full py-[5px] px-3 my-2 text-[#8247E5] rounded-sm"
           variant="cancel"
         >
