@@ -11,26 +11,33 @@ import agent_back from "../assets/images/agent_back.png";
 import ComplexCard from "../components/ComplexCard.jsx";
 import { Certified } from "../assets/icons/Certified.jsx";
 import { FaEllipsisH } from "react-icons/fa";
+import Loading from "../components/Loading.jsx";
 
 
 export const Agent = (agent_id) => {
   const [agent, setAgent] = useState([]);
   const [properties, setAgentProperties] = useState([]);
   const [complexes, setComplexes] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchProfile = async () => {
       const response = await fetch(`https://api.flatty.ai/api/v1/user/agent/${agent_id}`, {
         headers: {
           "Accept": "application/json",
         },
-      }).then((res) => res.json()).then((data) => {
-        setAgent(data);
-        setAgentProperties(data.properties);
-        setComplexes(data.listings);
-      });
+      })
+      const data = await response.json();
+      setAgent(data);
+      setAgentProperties(data.properties);
+      setComplexes(data.listings);
+      setLoading(false);
     };
     fetchProfile();
   }, []);
+
+  if (!agent) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full py-3 mx-auto mt-8">
