@@ -426,7 +426,6 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     if (images.length > 0
-      && formData.name
       && formData.residentialComplex
       && formData.category
       && formData.description
