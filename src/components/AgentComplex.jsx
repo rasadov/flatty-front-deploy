@@ -36,16 +36,20 @@ const Location = React.memo(({ address }) => (
 ));
 
 
-const handleDeleteComplex = (id) => {
+const handleDeleteComplex = async (id) => {
   if (window.confirm("Are you sure you want to delete this property?")) {
-    fetch(`https://api.flatty.ai/api/v1/listing/record/${id}`, {
+    const response = await fetch(`https://api.flatty.ai/api/v1/listing/record/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       credentials: "include",
     });
-    window.location.href = "/profile";
+    if (!response.ok) {
+      toast.error("Error deleting property");
+    } else {
+      window.location.reload();
+    }
   }
 };
 

@@ -41,9 +41,9 @@ const LocationSection = React.memo(({ location }) => (
   </div>
 ));
 
-const handleDeletePost = (id) => {
+const handleDeletePost = async (id) => {
   if (window.confirm("Are you sure you want to delete this property?")) {
-    const response = fetch(`https://api.flatty.ai/api/v1/property/record/${id}`, {
+    const response = await fetch(`https://api.flatty.ai/api/v1/property/record/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,

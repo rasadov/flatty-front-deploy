@@ -313,7 +313,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
-    category: "",
+    category: "Appartment",
     residentialComplex: "",
     description: "",
     city: "",
@@ -464,6 +464,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
         console.error(error);
       }
     } else {
+      console.log(images)
       console.log(formData);
       console.log("Unsuccessful");
       toast.error("Please fill in all required fields");

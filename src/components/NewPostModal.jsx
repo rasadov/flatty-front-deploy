@@ -502,6 +502,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       }
     } else {
       toast.error("Please fill all required fields");
+      console.log("Please fill all required fields");
+      console.log(selectedFiles.length);
+      console.log(formData);
     }
   };
 

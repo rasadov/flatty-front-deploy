@@ -15,12 +15,15 @@ import NewPostModal from "../components/NewPostModal.jsx"; // Import the modal c
 import NewComplexModal from "../components/NewComplexModal.jsx";
 import { fetchPosts } from "../store/slices/agentPostSlice";
 import { NewComplex } from "../assets/icons/NewComplex.jsx";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isComplexModalOpen, setIsComplexModalOpen] = useState(false);
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state) => state.posts);
+
+  const navigate = useNavigate();
 
   let user = {};
   if (localStorage.getItem("user")) {
@@ -39,10 +42,11 @@ export const Profile = () => {
         credentials: "include",
       })
         .then((res) => {
-          // if (res.status === 401) {
-          //   window.location.href = "/login";
-          //   localStorage.removeItem("user");
-          // }
+          if (res.status === 401) {
+            window.location.href = "/login";
+            navigate("/login");
+            localStorage.removeItem("user");
+          }
           return res.json();
         })
         .then((data) => {
@@ -52,8 +56,9 @@ export const Profile = () => {
         })
         .catch((error) => {
           console.log(error);
-          // window.location.href = "/login";
-          // localStorage.removeItem("user");
+          window.location.href = "/login";
+          navigate("/login");
+          localStorage.removeItem("user");
         });
       const userResponse = await fetch(
         "https://api.flatty.ai/api/v1/user/me/agent",
