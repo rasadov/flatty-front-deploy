@@ -307,6 +307,7 @@ const areas = {
 
 var city = "";
 var area = "";
+const libraries = ["places"];
 
 const NewComplexModal = ({ isOpen, onClose }) => {
   const [step, setStep] = useState(1);
@@ -373,7 +374,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM",
-    libraries: ["places"],
+    libraries: libraries,
   });
 
   const handleMapClick = async (e) => {
@@ -464,6 +465,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
         console.error(error);
       }
     } else {
+      console.log(formData);
+      console.log("Unsuccessful");
       toast.error("Please fill in all required fields");
     }
   };
@@ -476,8 +479,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
     setFormData((prev) => ({
       ...prev,
       address: "",
-      latitude: null,
-      longitude: null,
+      latitude: 0,
+      longitude: 0,
     }));
     city = "";
     area = "";
@@ -561,6 +564,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                     type="number"
                     className="w-[100%] p-2 border rounded-md"
                     placeholder="45"
+                    onChange={handleInputChange}
+                    name="buildingArea"
                   />
                   <span className="absolute right-3 top-2 text-gray-500">
                     m²
@@ -578,6 +583,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                     type="number"
                     className="w-[100%] p-2 border rounded-md"
                     placeholder="38"
+                    onChange={handleInputChange}
+                    name="livingArea"
                   />
                   <span className="absolute right-3 top-2 text-gray-500">
                     m²
@@ -594,6 +601,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   type="number"
                   className="w-[100%] p-2 border rounded-md"
                   placeholder="38"
+                  onChange={handleInputChange}
+                  name="objects"
                 />
               </div>
 
@@ -606,6 +615,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   type="number"
                   className="w-[100%] p-2 border rounded-md"
                   placeholder="16"
+                  onChange={handleInputChange}
+                  name="buildingFloors"
                 />
               </div>
 
@@ -618,6 +629,8 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   type="number"
                   className="w-[100%] p-2 border rounded-md"
                   placeholder="2020"
+                  onChange={handleInputChange}
+                  name="year"
                 />
               </div>
             </div>

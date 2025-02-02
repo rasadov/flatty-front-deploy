@@ -307,6 +307,8 @@ const areas = {
 
 var city = "";
 var area = "";
+const libraries = ["places"];
+
 
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -328,6 +330,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     installment: null,
     swimmingPool: null,
     elevator: null,
+    gym: null,
     apartmentStories: 0,
     floor: 0,
     year: 0,
@@ -337,7 +340,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     latitude: 0,
     longitude: 0,
     address: "",
-    gym: null,
     documents: "",
     title: "",
     price: null,
@@ -427,7 +429,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
 
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM", // Replace with your key
-    libraries: ["places"],
+    libraries: libraries,
   });
 
   const handleMapClick = async (e) => {
@@ -464,8 +466,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       && !!formData.currency
       && !!formData.price
       && !!formData.year
-      && !!formData.buildingFloors
-      && !!formData.rooms
       && !!formData.renovation
       && !!formData.latitude
       && !!formData.longitude
@@ -524,8 +524,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     setFormData((prev) => ({
       ...prev,
       address: "",
-      latitude: null,
-      longitude: null,
+      latitude: 0,
+      longitude: 0,
     }));
     city = "";
     area = "";

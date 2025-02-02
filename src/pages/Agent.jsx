@@ -63,6 +63,9 @@ const Agent = () => {
                   : "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
               }
               className="rounded-full w-[120px] h-[120px] object-cover"
+              style={{
+                minWidth: "120px",
+              }}
               alt="Agent"
             />
             <div className="w-full">

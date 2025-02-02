@@ -3,6 +3,7 @@ import { Euro, MapPin, Trash, EditPencil } from "../assets/icons";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { formatNumber } from './numberFormater'; 
+import { toast } from "react-toastify";
 
 const PriceSection = React.memo(({ price }) => (
   <div className="flex items-center justify-start gap-2 mb-2 text-lg font-semibold text-[#525C76]">
@@ -42,14 +43,18 @@ const LocationSection = React.memo(({ location }) => (
 
 const handleDeletePost = (id) => {
   if (window.confirm("Are you sure you want to delete this property?")) {
-    fetch(`https://api.flatty.ai/api/v1/property/record/${id}`, {
+    const response = fetch(`https://api.flatty.ai/api/v1/property/record/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       credentials: "include",
     });
-    window.location.href = "/profile";
+    if (!response.ok) {
+      toast.error("Error deleting property");
+    } else {
+      window.location.href = "/profile";
+    }
   }
 };
 
