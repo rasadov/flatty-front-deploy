@@ -271,33 +271,52 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[55%] md:w-[60%] h-[800px] sm:h-[990px] bg-white rounded-lg shadow-lg flex flex-col"
+        className=" h-[830px] sm:h-[1000px] bg-white rounded-lg shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "634px",
+        }}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-xl font-semibold">New Post</h2>
-          <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
-          >
-            &times;
-          </button>
-        </div>
+
+        {/* ============================= STEP 1 =============================== */}
+
         {step === 1 && (
-          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
-            <h3 className="text-base sm:text-lg font-semibold">Fill Info</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-8 py-3 sm:py-4">
+            <div className="flex items-center justify-between mb-6">
+              <h3
+                className="text-2xl sm:text-3xl font-semibold"
+                style={{
+                  color: "rgba(15, 29, 64, 1)",
+                  fontWeight: 600,
+                  fontSize: "28px",
+                }}
+              >
+                Fill Info
+              </h3>
+              <button
+                onClick={onClose}
+                className="text-gray-600 hover:text-gray-800 text-3xl"
+              >
+                &times;
+              </button>
+            </div>
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+              style={{
+                width: "100%",
+              }}
+            >
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Category
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -315,7 +334,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="residentialComplex"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
@@ -323,15 +342,20 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 gap-6"
+              style={{
+                width: "100%",
+              }}
+            >
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Total area (m²)
                 </label>
                 <input
                   name="totalArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  className="w-full h-[46px] p-3 border rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-500"
                   value={formData.totalArea}
                   onChange={handleInputChange}
                 />
@@ -343,13 +367,18 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="livingArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[46px] p-3 border rounded-md  focus:outline-none focus:ring-2 focus:ring-purple-500"
                   value={formData.livingArea}
                   onChange={handleInputChange}
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+            <div
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6"
+              style={{
+                width: "100%",
+              }}
+            >
               {formData.category !== "Villa"
                 ? [
                     "floor",
@@ -361,7 +390,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     "balcony",
                   ].map((field, index) => (
                     <div key={index} className="flex flex-col items-start">
-                      <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                      <label className="block mb-2 text-sm font-medium text-gray-700 capitalize">
                         {field == "livingRoom"
                           ? "Living rooms"
                           : field == "buildingFloors"
@@ -373,14 +402,14 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleNumberChange(field, "subtract")}
-                          className="p-2 border rounded-md hover:bg-gray-100"
+                          className=""
                         >
                           <Subtract />
                         </button>
                         <input
                           name={field}
                           type="number"
-                          className="w-[36px] h-[32px] text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                          className="w-[50px] h-[46px] text-center   focus:outline-none focus:ring-2 focus:ring-purple-500"
                           value={formData[field]}
                           onChange={handleInputChange}
                           min="0"
@@ -388,7 +417,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                         />
                         <button
                           onClick={() => handleNumberChange(field, "add")}
-                          className="p-2 border rounded-md hover:bg-gray-100"
+                          className=""
                         >
                           <Add />
                         </button>
@@ -397,7 +426,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   ))
                 : [
                     "floors",
-                    ,
                     "livingRoom",
                     "bedroom",
                     "bathroom",
@@ -416,14 +444,14 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => handleNumberChange(field, "subtract")}
-                          className="p-2 border rounded-md hover:bg-gray-100"
+                          className=""
                         >
                           <Subtract />
                         </button>
                         <input
                           name={field}
                           type="number"
-                          className="w-[36px] h-[32px] text-center border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                          className="w-[50px] h-[46px] text-center   focus:outline-none focus:ring-2 focus:ring-purple-500"
                           value={formData[field]}
                           onChange={handleInputChange}
                           min="0"
@@ -431,7 +459,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                         />
                         <button
                           onClick={() => handleNumberChange(field, "add")}
-                          className="p-2 border rounded-md hover:bg-gray-100"
+                          className=""
                         >
                           <Add />
                         </button>
@@ -440,14 +468,14 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   ))}
             </div>
 
-            <div className="flex flex-wrap gap-4 mt-4">
-              <div>
+            <div className="flex flex-wrap gap-6 items-center">
+              <div className="flex flex-col w-auto">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Installment
                 </label>
                 <select
                   name="installment"
-                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="h-[46px] p-2 border rounded-md = focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -457,13 +485,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
 
-              <div>
+              <div className="flex flex-col w-auto">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Parking
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-[200px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -473,13 +501,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
 
-              <div>
+              <div className="flex flex-col w-auto">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Swimming pool
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -489,13 +517,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
 
-              <div>
+              <div className="flex flex-col w-auto">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   GYM
                 </label>
                 <select
                   name="gym"
-                  className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.gym}
                   onChange={handleInputChange}
                 >
@@ -505,28 +533,26 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Elevator
-                  </label>
-                  <select
-                    name="elevator"
-                    className="w-[180px] h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                    value={formData.elevator}
-                    onChange={handleInputChange}
-                  >
-                    <option value="">Select</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
+              <div className="flex flex-col w-auto">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Elevator
+                </label>
+                <select
+                  name="elevator"
+                  className="h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  value={formData.elevator}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
               </div>
             </div>
 
-            <div className="flex ">
-              <div className="flex flex-col w-full sm:w-auto mr-10">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+            <div className="flex flex-wrap gap-6 mb-6 items-center">
+              <div className="flex flex-col w-full sm:w-auto">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Year
                 </label>
                 <input
@@ -537,8 +563,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   onChange={handleInputChange}
                 />
               </div>
+
               <div className="flex flex-col w-full sm:w-auto">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-2 text-sm font-medium text-gray-700">
                   Price
                 </label>
                 <div className="flex items-center gap-2">
@@ -548,12 +575,19 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     value={formData.price}
                     onChange={handleInputChange}
+                    style={{
+                      color: "rgba(15, 29, 64, 1)",
+                    }}
                   />
                   <select
                     name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                    className="h-[52px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     value={formData.currency}
                     onChange={handleInputChange}
+                    style={{
+                      width: "55px",
+                      color: "rgba(140, 147, 163, 1)",
+                    }}
                   >
                     <option value="$">$</option>
                     <option value="€">€</option>
@@ -566,7 +600,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
 
             {/* title: "", */}
 
-            <div className="mt-4">
+            <div
+              className="mt-4"
+              style={{
+                width: "100%",
+              }}
+            >
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Title
               </label>
@@ -576,10 +615,18 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 // rows="4"
                 value={formData.title}
                 onChange={handleInputChange}
+                style={{
+                  width: "131px",
+                }}
               />
             </div>
 
-            <div className="mt-4">
+            <div
+              className="mt-4"
+              style={{
+                width: "100%",
+              }}
+            >
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Description
               </label>
@@ -615,8 +662,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
           </div>
         )}
+        {/* ============================= STEP 2 =============================== */}
+
         {step === 2 && (
-          <div className="flex flex-col justify-between h-full gap-4">
+          <div className="space-y-6 flex-1 overflow-y-auto px-6 sm:px-10 py-6 sm:py-8 bg-white rounded-lg shadow-lg">
             {/* Content area */}
             <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
               {/* Header */}
@@ -737,6 +786,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
           </div>
         )}
+        {/* ============================= STEP 3 =============================== */}
+
         {step === 3 && (
           <div className="flex flex-col justify-between h-full gap-4">
             {/* Content area */}
@@ -864,6 +915,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </div>
           </div>
         )}
+        {/* ============================= STEP 4 =============================== */}
+
         {step === 4 && (
           <div className="flex-1 overflow-y-auto px-6 py-4">
             {/* Header */}

@@ -198,11 +198,14 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+        className=" h-[830px] sm:h-[650px] bg-white rounded-lg shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "634px",
+        }}
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
@@ -215,28 +218,30 @@ const NewComplexModal = ({ isOpen, onClose }) => {
           </button>
         </div>
         {step === 1 && (
-          <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
-            <h3 className="text-lg font-semibold">Fill Info</h3>
-            <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-4">
+            <h3 className="text-lg sm:text-xl font-semibold">Fill Info</h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-sm sm:text-base font-medium text-gray-700">
                   Name of residential complex
                 </label>
                 <input
                   name="residentialComplex"
                   type="text"
-                  className="w-full h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[52px] sm:h-[60px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 />
               </div>
+
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-sm sm:text-base font-medium text-gray-700">
                   Category
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[52px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[52px] sm:h-[60px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -249,17 +254,18 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </select>
               </div>
             </div>
-            {/* Row snippet: Building area, Living area, Objects, Floors, Year */}
-            <div className="flex gap-4 items-center justify-between">
+
+            {/* Building area, Living area, Objects, Floors, Year */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-4">
               {/* Building Area */}
-              <div className="w-[100%]">
-                <label className="block mb-1 text-xs font-medium text-gray-700">
+              <div className="w-full">
+                <label className="block mb-1 text-xs sm:text-sm font-medium text-gray-700">
                   Building area
                 </label>
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     placeholder="45"
                   />
                   <span className="absolute right-3 top-2 text-gray-500">
@@ -269,14 +275,14 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Living Area */}
-              <div className="w-[100%]">
-                <label className="block mb-1 text-xs font-medium text-gray-700">
+              <div className="w-full">
+                <label className="block mb-1 text-xs sm:text-sm font-medium text-gray-700">
                   Living area
                 </label>
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     placeholder="38"
                   />
                   <span className="absolute right-3 top-2 text-gray-500">
@@ -286,77 +292,51 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Objects */}
-              <div className="w-[100%]">
-                <label className="block mb-1 text-xs font-medium text-gray-700">
+              <div className="w-full">
+                <label className="block mb-1 text-xs sm:text-sm font-medium text-gray-700">
                   Objects
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="38"
                 />
               </div>
 
               {/* Floors */}
-              <div className="w-[40%]">
-                <label className="block mb-1 text-xs font-medium text-gray-700">
+              <div className="w-full sm:w-[48%] lg:w-[40%]">
+                <label className="block mb-1 text-xs sm:text-sm font-medium text-gray-700">
                   Floors
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="16"
                 />
               </div>
 
               {/* Year */}
-              <div className="w-[60%]">
-                <label className="block mb-1 text-xs font-medium text-gray-700">
+              <div className="w-full sm:w-[48%] lg:w-[60%]">
+                <label className="block mb-1 text-xs sm:text-sm font-medium text-gray-700">
                   Year
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="2020"
                 />
               </div>
             </div>
 
-            {/* <div className="flex flex-wrap gap-2 items-center justify-start mt-4">
-              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
-                (field, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-1 mx-auto my-3"
-                  >
-                    <label className="block mb-1 text-xs font-medium text-gray-700 capitalize">
-                      {field === "parkingSlot"
-                        ? "Parking slot"
-                        : field === "installment"
-                        ? "Installment"
-                        : field === "swimmingPool"
-                        ? "Swimming pool"
-                        : field === "elevator"
-                        ? "Elevator"
-                        : field}
-                    </label>
-                    <div className="flex items-center">
-                      <button onClick={() => handleCustomToggle(field)}>
-                        {formData[field] ? <Active /> : <Inactive />}
-                      </button>
-                    </div>
-                  </div>
-                )
-              )}
-            </div> */}
-            <div className="flex flex-wrap gap-4 mt-4">
+            {/* Installment, Parking, Swimming pool, Elevator */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-sm sm:text-base font-medium text-gray-700">
                   Installment
                 </label>
                 <select
                   name="installment"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[46px] sm:h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -367,12 +347,12 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
 
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-sm sm:text-base font-medium text-gray-700">
                   Parking
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[46px] sm:h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -383,12 +363,12 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
 
               <div>
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-sm sm:text-base font-medium text-gray-700">
                   Swimming pool
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  className="w-full h-[46px] sm:h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -398,84 +378,26 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </select>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    GYM
-                  </label>
-                  <select
-                    name="gym"
-                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                    value={formData.gym}
-                    onChange={handleInputChange}
-                  >
-                    <option value="gym">Select</option>
-                    <option value="true">Yes</option>
-                    <option value="false">No</option>
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-700">
-                      Elevator
-                    </label>
-                    <select
-                      name="elevator"
-                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                      value={formData.elevator}
-                      onChange={handleInputChange}
-                    >
-                      <option value="">Select</option>
-                      <option value="true">Yes</option>
-                      <option value="false">No</option>
-                    </select>
-                  </div>
-                </div>
+              <div>
+                <label className="block mb-1 text-sm sm:text-base font-medium text-gray-700">
+                  Elevator
+                </label>
+                <select
+                  name="elevator"
+                  className="w-full h-[46px] sm:h-[52px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+                  value={formData.elevator}
+                  onChange={handleInputChange}
+                >
+                  <option value="">Select</option>
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
               </div>
             </div>
 
-            <div className="flex ">
-              {/* <div className="flex flex-col w-full sm:w-auto mr-10">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Year
-                </label>
-                <input
-                  name="year"
-                  type="number"
-                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
-                  value={formData.year}
-                  onChange={handleInputChange}
-                />
-              </div> */}
-              {/* <div className="flex flex-col w-full sm:w-auto">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Price
-                </label>
-                <div className="flex items-center gap-2">
-                  <input
-                    name="price"
-                    type="number"
-                    className="w-full sm:w-[107px] h-[52px] p-2 border rounded-md"
-                    value={formData.price}
-                    onChange={handleInputChange}
-                  />
-                  <select
-                    name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100"
-                    value={formData.currency}
-                    onChange={handleInputChange}
-                  >
-                    <option value="$">$</option>
-                    <option value="€">€</option>
-                    <option value="₺">₺</option>
-                    <option value="£">£</option>
-                  </select>
-                </div>
-              </div> */}
-            </div>
+            {/* Description */}
             <div>
-              <label className="block mb-1 text-xs font-medium text-gray-700">
+              <label className="block mb-1 text-xs sm:text-sm font-medium text-gray-700">
                 Description
               </label>
               <textarea
@@ -486,6 +408,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 onChange={handleInputChange}
               />
             </div>
+
             <div className="py-4">
               <div className="flex justify-center items-center">
                 <div className="flex space-x-2">
@@ -494,6 +417,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 </div>
               </div>
+
               <div className="flex justify-center mt-4 gap-4">
                 <button
                   className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"

@@ -10,6 +10,7 @@ export const Button = ({
   onMouseOut,
   onFocus,
   onBlur,
+  style,
   ...props
 }) => {
   const variants = {
@@ -32,6 +33,7 @@ export const Button = ({
       onFocus={onFocus}
       onBlur={onBlur}
       disabled={isLoading}
+      style={style}
       {...props}
     >
       {isLoading ? (

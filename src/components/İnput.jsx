@@ -86,7 +86,7 @@ export const Input = forwardRef(
           {...props}
           style={{
             borderColor: status ? "#8247E5" : "#D1D5DB",
-            lineHeight: "1.5", // This keeps the icons and text properly aligned
+            lineHeight: "1.5",
           }}
         />
 
@@ -107,9 +107,9 @@ export const Input = forwardRef(
             onClick={togglePasswordVisibility}
           >
             {showPassword ? (
-              <AiOutlineEyeInvisible size="24px" />
-            ) : (
               <AiOutlineEye size="24px" />
+            ) : (
+              <AiOutlineEyeInvisible size="24px" />
             )}
           </span>
         )}

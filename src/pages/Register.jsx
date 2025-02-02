@@ -108,7 +108,14 @@ const Register = () => {
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="text-3xl font-semibold text-[#0F1D40]">
+      <h1
+        style={{
+          color: "rgba(15, 29, 64, 1)",
+          fontSize: "28px",
+          fontWeight: "600",
+          marginBottom: "24px",
+        }}
+      >
         Select Your Role
       </h1>
       <div className="flex justify-center my-5">
@@ -164,21 +171,21 @@ const Register = () => {
           error={errors.email}
           {...register("email")}
           placeholder="Email"
-          className="w-full"
+          className="w-full border-none bg-white"
         />
         <Input
           type="text"
           error={errors.name}
           {...register("name")}
           placeholder="Name Surname"
-          className="w-full"
+          className="w-full border-none bg-white"
         />
         <Input
           type="text"
           error={errors.mobile}
           {...register("mobile")}
           placeholder="Mobile number"
-          className="w-full"
+          className="w-full border-none bg-white"
         />
         {role === "agent" && (
           <Input
@@ -186,7 +193,7 @@ const Register = () => {
             error={errors.serialNumber}
             {...register("serialNumber")}
             placeholder="Enter Serial Number"
-            className="w-full"
+            className="w-full border-none bg-white"
           />
         )}
         <Input
@@ -194,14 +201,14 @@ const Register = () => {
           error={errors.password}
           {...register("password")}
           placeholder="Create a password"
-          className="w-full"
+          className="w-full border-none bg-white"
         />
         <Input
           type="password"
           error={errors.confirmPassword}
           {...register("confirmPassword")}
           placeholder="Confirm password"
-          className="w-full"
+          className="w-full border-none bg-white"
         />
         <p className="flex items-center text-[#525C76] text-[10px]">
           <Warning />
@@ -242,6 +249,11 @@ const Register = () => {
           variant="primary"
           isLoading={isSubmitting}
           className="w-full mt-[36px!important] px-5 py-[8.7px]"
+          style={{
+            borderRadius: "3px",
+            fontSize: "18px",
+            fontWeight: "600",
+          }}
         >
           Create account
         </Button>
@@ -263,6 +275,14 @@ const Register = () => {
             variant="cancel"
             onClick={handleCancel}
             className="w-full px-5 py-[8.7px]"
+            style={{
+              borderRadius: "3px",
+              border: "1px solid rgba(202, 205, 213, 1)",
+              background: "rgba(255, 255, 255, 1)",
+              color: "rgba(82, 92, 118, 1)",
+              fontSize: "18px",
+              fontWeight: "600",
+            }}
           >
             Cancel
           </Button>

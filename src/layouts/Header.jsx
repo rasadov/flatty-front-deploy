@@ -219,7 +219,7 @@ const Header = () => {
                 padding: "8px",
               }}
             >
-              <span style={{ color: "rgba(82, 92, 118, 1)" }}>
+              <span style={{ color: "rgba(140, 147, 163, 1)" }}>
                 {selectedCurrency.symbol}
               </span>
               <span
@@ -238,7 +238,7 @@ const Header = () => {
 
             {currencyDropdownOpen && (
               <div
-                className="absolute left-0 mt-1 bg-white border rounded-md shadow-lg top-full "
+                className="absolute left-0 mt-1 bg-white border  shadow-lg top-full "
                 style={{
                   width: "100%",
                   textAlign: "center",
@@ -251,8 +251,22 @@ const Header = () => {
                     key={curr.name}
                     onClick={() => handleCurrencyChange(curr)}
                     className="block w-full px-3 py-2 text-left hover:bg-gray-100"
+                    style={{
+                      width: "100%",
+                      textAlign: "center",
+                      color: "rgba(82, 92, 118, 1)",
+                      fontWeight: "600",
+                      height: "35px",
+                    }}
                   >
-                    <span>{curr.symbol}</span> <span>{curr.name}</span>
+                    <span>{curr.symbol}</span>{" "}
+                    <span
+                      style={{
+                        marginLeft: "4px",
+                      }}
+                    >
+                      {curr.name}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -271,7 +285,12 @@ const Header = () => {
               type="submit"
               variant="primary"
               onClick={() => handleNavigation("/register")}
-              className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white border rounded-sm text-[14px] leading-[22.4px] font-semibold"
+              className=" w-[64px] h-[34px] transition-all duration-300 hover:bg-hoverPrimary hover:text-white  text-[14px] leading-[22.4px] font-semibold"
+              style={{
+                // border: "1px solid rgba(226, 228, 232, 1)",
+                borderRadius: "3px",
+                // padding: "8px",
+              }}
             >
               Sign up
             </Button>

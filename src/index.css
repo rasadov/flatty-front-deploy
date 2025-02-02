@@ -63,6 +63,9 @@ input[type="number"] {
 
 body {
   background-color: #ece8ff;
+  /* fontFamily: "General Sans", */
+  /* font-family: "General Sans"; */
+  /* font-family: "General Sans"; */
 }
 
 @layer components {
