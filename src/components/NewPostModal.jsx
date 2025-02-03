@@ -925,7 +925,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <button
                   className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
                   onClick={() =>
-                    document.querySelector('input[type="file"]')?.click()
+                    document.querySelector('input[id="newpostimage"]')?.click()
                   }
                   style={{
                     display: "flex",
@@ -942,6 +942,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </button>
                 <input
                   type="file"
+                  id="newpostimage"
                   multiple
                   accept="image/*,video/*"
                   onChange={handleImageUpload}

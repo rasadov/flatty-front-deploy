@@ -721,13 +721,14 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <button
                   className="px-4 py-2 bg-purple-600 text-white rounded-md w-[200px] mx-auto"
                   onClick={() =>
-                    document.querySelector('input[type="file"]')?.click()
+                    document.querySelector('input[id="newComplexImages"]')?.click()
                   }
                 >
                   Browse Files
                 </button>
                 <input
                   type="file"
+                  id="newComplexImages"
                   multiple
                   accept="image/*,video/*"
                   onChange={handleImageUpload}
