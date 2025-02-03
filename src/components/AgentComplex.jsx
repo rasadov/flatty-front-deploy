@@ -79,7 +79,11 @@ export const AgentComplex = React.memo(
             {/* Trash and EditPencil Icons */}
           <div className="absolute flex gap-2 bottom-2 right-2">
             <div className="w-[33px] h-[33px] flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer "
-              onClick={() => handleDeleteComplex(id)}
+              onClick={(event) => {
+                event.stopPropagation();
+                event.preventDefault();
+                handleDeleteComplex(id);
+              }}
               >
               <Trash color="black" size="20"/>
             </div>

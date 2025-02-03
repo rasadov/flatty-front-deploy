@@ -310,6 +310,7 @@ var area = "";
 const libraries = ["places"];
 
 const NewComplexModal = ({ isOpen, onClose }) => {
+  const [uploading, setUploading] = useState(false);
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
@@ -426,16 +427,16 @@ const NewComplexModal = ({ isOpen, onClose }) => {
 
   const handleSubmit = async () => {
     if (images.length > 0
-      && formData.residentialComplex
-      && formData.category
-      && formData.description
-      && formData.buildingArea
-      && formData.livingArea
-      && formData.objects
-      && formData.year
-      && formData.address
-      && formData.latitude
-      && formData.longitude
+      // && formData.residentialComplex
+      // && formData.category
+      // && formData.description
+      // && formData.buildingArea
+      // && formData.livingArea
+      // && formData.objects
+      // && formData.year
+      // && formData.address
+      // && formData.latitude
+      // && formData.longitude
     ) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -509,7 +510,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-xl font-semibold">New Post</h2>
+          <h2 className="text-xl font-semibold">New Complex</h2>
           <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"

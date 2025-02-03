@@ -370,10 +370,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
   };
 
-  const handleParkingToggle = () => {
-    setFormData((prev) => ({ ...prev, parkingSlots: !prev.parkingSlots }));
-  };
-
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
@@ -459,23 +455,23 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   ];
   const handleSubmit = async () => {
     if (selectedFiles.length > 0
-      && !!formData.address
-      && !!formData.totalArea
-      && !!formData.livingArea
-      && !!formData.description
-      && !!formData.currency
-      && !!formData.price
-      && !!formData.year
-      && !!formData.renovation
-      && !!formData.latitude
-      && !!formData.longitude
-      && !!formData.title
-      && !!formData.category
-      && formData.swimmingPool !== null
-      && formData.parkingSlot !== null
-      && formData.installment !== null
-      && formData.elevator !== null
-      && formData.gym !== null
+      // && !!formData.address
+      // && !!formData.totalArea
+      // && !!formData.livingArea
+      // && !!formData.description
+      // && !!formData.currency
+      // && !!formData.price
+      // && !!formData.year
+      // && !!formData.renovation
+      // && !!formData.latitude
+      // && !!formData.longitude
+      // && !!formData.title
+      // && !!formData.category
+      // && formData.swimmingPool !== null
+      // && formData.parkingSlot !== null
+      // && formData.installment !== null
+      // && formData.elevator !== null
+      // && formData.gym !== null
     ) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
@@ -496,12 +492,17 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         dispatch(addPost(formDataToSend));
         dispatch(fetchPosts());
         onClose();
+        window.location.reload();
       } catch (error) {
-        toast.error("An error occurred. Please try again. Make sure you complete all required fields");
+        toast.error("An error occurred. Please try again. Make sure you complete all required fields", {
+          toastId: "upload-error",
+        } );
         console.error(error);
       }
     } else {
-      toast.error("Please fill all required fields");
+      toast.error("Please fill all required fields", {
+        toastId: "unfilled-error",
+      });
       console.log("Please fill all required fields");
       console.log(selectedFiles.length);
       console.log(formData);
@@ -517,10 +518,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         ? " border-[#8247E5] outline outline-2 outline-[#DCD4FF] scale-105"
         : "border-[#E2E4E8] hover:border-[#8247E5] hover:bg-[#F0F0F5]"
     }`;
-  };
-
-  const handleCustomToggle = (field) => {
-    setFormData((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   const clearLocation = () => {
@@ -699,26 +696,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </div>
               ))}
             </div>
-            {/* <div className="flex flex-wrap gap-4 items-center mt-4">
-              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
-                (field, index) => (
-                  <div key={index} className="flex items-center gap-2">
-                    <label className="text-sm font-medium text-gray-700 capitalize">
-                      {field === "parkingSlot"
-                        ? "Parking slot"
-                        : field === "installment"
-                        ? "Installment"
-                        : field === "swimmingPool"
-                        ? "Swimming pool"
-                        : "Elevator"}
-                    </label>
-                    <button onClick={() => handleCustomToggle(field)}>
-                      {formData[field] ? <Active /> : <Inactive />}
-                    </button>
-                  </div>
-                )
-              )}
-            </div> */}
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Renovation
