@@ -326,11 +326,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     livingRoom: 0,
     bedroom: 0,
     balcony: 0,
-    parkingSlot: null,
-    installment: null,
-    swimmingPool: null,
-    elevator: null,
-    gym: null,
+    parkingSlot: false,
+    installment: false,
+    swimmingPool: false,
+    elevator: false,
+    gym: false,
     apartmentStories: 0,
     floor: 0,
     year: 0,
@@ -342,7 +342,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     address: "",
     documents: "",
     title: "",
-    price: null,
+    price: 0,
   });
   const dispatch = useDispatch();
   const mapRef = useRef(null);
@@ -496,7 +496,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       } catch (error) {
         toast.error("An error occurred. Please try again. Make sure you complete all required fields", {
           toastId: "upload-error",
-        } );
+        });
         console.error(error);
       }
     } else {
