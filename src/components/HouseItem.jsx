@@ -216,7 +216,7 @@ export const HouseItem = React.memo(
               }}
               className="swiper-container"
             >
-              {images.slice(3).map((img, index) => {
+              {images.length > 2 ? images.slice(3).map((img, index) => {
                 return (
                   <SwiperSlide key={index}>
                     <Link to={complex ? `/complex/${id}` : `/appartment/${id}`}>
@@ -228,7 +228,11 @@ export const HouseItem = React.memo(
                     </Link>
                   </SwiperSlide>
                 );
-              })}
+              }) : <img
+              src={images[0].image_url}
+              alt={`Slide ${id}`}
+              className="object-cover w-full h-[173px]"
+            /> }
             </Swiper>
           ) : (
             <div>No images available</div>
