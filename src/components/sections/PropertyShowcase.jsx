@@ -7,7 +7,7 @@ import { NoViews } from "../../assets/icons/NoViews";
 import { Report } from "../../assets/icons/Report";
 import { ShowOnMap } from "../../assets/icons/ShowOnMap";
 import { PostView } from "../../assets/icons/PostView";
-import CoverImage from "../../assets/images/WhatsApp.jpeg";
+import CoverImage from "../../assets/images/noImage.jpeg";
 
 const ImageGallery = ({ mainImage, thumbnails, length }) => {
   const [currentImage, setCurrentImage] = useState(mainImage);
@@ -76,7 +76,7 @@ const PropertyShowcase = ({ length, property }) => {
   };
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto p-4 md:p-6 lg:py-8 lg:pr-8 lg:pl-0">
       {/* Property Details */}
       <div>
         <h1 className="mb-2 text-[24px] md:text-[28px] lg:text-[36px] font-semibold text-[#0F1D40] leading-[1.2]">
@@ -102,7 +102,7 @@ const PropertyShowcase = ({ length, property }) => {
 
       {/* Image Gallery */}
       <ImageGallery
-        mainImage={property.images[5].image_url}
+        mainImage={property.images[0].image_url}
         thumbnails={propertyImages}
         length={property.images.length}
       />

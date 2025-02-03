@@ -16,12 +16,8 @@ import {
   RangeInput,
 } from "../components/index.js";
 import {
-  CheckboxFill,
-  CheckboxSquare,
-  DropdownUnder,
   FilterButton,
 } from "../assets/icons";
-import MapView from "./MapView.jsx";
 import { Footer } from "../layouts/Footer.jsx";
 import Header from "../layouts/Header.jsx";
 
@@ -51,6 +47,7 @@ export const Search = () => {
       page: page,
       elements: elements,
     });
+    console.log("PARAMS", params);
     fetch(`https://api.flatty.ai/api/v1/property/?${params.toString()}`)
       .then((res) => res.json())
       .then((data) => {
@@ -59,70 +56,9 @@ export const Search = () => {
           data.results / elements + (data.results % elements ? 1 : 0)
         );
         setResponseData(data);
-        setFilteredItems(data.properties);
       });
   }, [dispatch, filters]);
 
-  // Memoized filtering function
-  const filterItem = useCallback(
-    (item, filters) => {
-      const matchesCategory =
-        !filters.category || item.category === filters.category;
-      const matchesComplex =
-        !filters.complex || item.complex === filters.complex;
-      const matchesArea =
-        (!filters.area?.from ||
-          (item.area && item.area >= Number(filters.area.from))) &&
-        (!filters.area?.to ||
-          (item.area && item.area <= Number(filters.area.to)));
-      const matchesRenovation =
-        filters.renovation?.length === 0 ||
-        (item.renovation && filters.renovation.includes(item.renovation));
-      const matchesFloor =
-        (!filters.floor?.from ||
-          (item.floor && item.floor >= Number(filters.floor.from))) &&
-        (!filters.floor?.to ||
-          (item.floor && item.floor <= Number(filters.floor.to)));
-      const matchesCeilingHeight =
-        !filters.ceilingHeight || item.ceilingHeight === filters.ceilingHeight;
-      const matchesBathroom =
-        filters.bathroom?.length === 0 ||
-        (item.bathroom && filters.bathroom.includes(item.bathroom.type));
-      const matchesFurniture =
-        filters.furniture?.length === 0 ||
-        (Array.isArray(item.furniture) &&
-          filters.furniture.some((f) => item.furniture.includes(f)));
-      const matchesRooms = Object.entries(filters.rooms || {}).every(
-        ([key, value]) => value === 0 || item.rooms[key] === value
-      );
-      const matchesParkingSlot =
-        !filters.parkingSlot || item.parkingSlot === filters.parkingSlot;
-      const matchesSwimmingPool =
-        !filters.swimmingPool || item.swimmingPool === filters.swimmingPool;
-
-      return (
-        matchesCategory &&
-        matchesComplex &&
-        matchesArea &&
-        matchesRenovation &&
-        matchesFloor &&
-        matchesCeilingHeight &&
-        matchesBathroom &&
-        matchesFurniture &&
-        matchesRooms &&
-        matchesParkingSlot &&
-        matchesSwimmingPool
-      );
-    },
-    [filters]
-  );
-
-  // Memoized filtered items
-  // const filteredItems = useMemo(() => {
-  //   return searchResults.filter((item) => filterItem(item, filters));
-  // }, [searchResults, filters, filterItem]);
-
-  // Event handlers
   const handleShowMap = useCallback(() => setShowMap(!showMap), [showMap]);
   const handleSearchQueryChange = useCallback(
     (query) => {
@@ -152,7 +88,7 @@ export const Search = () => {
           onSearch={() => dispatch(loadSearchResults(filters))}
           value={searchQuery}
           onChange={handleSearchQueryChange}
-          API_URL="https://api.flatty.ai/api/v1/property"
+          API_URL="https://api.flatty.ai/api/v1/property/"
           setData={setResponseData}
         />
         <button
@@ -164,7 +100,7 @@ export const Search = () => {
       </div>
       <div className=" px-16.26 custom-max-width">
         <ResultView
-          filteredItems={filteredItems}
+          filteredItems={responseData.properties}
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
@@ -215,11 +151,11 @@ const ResultView = ({
         <div className="flex flex-wrap items-center justify-between my-4 gap-4">
           <SelectedFilters />
           <h1 className="font-semibold text-xl sm:text-2xl text-[#1b1313]">
-            {filteredItems.length} results
+            {filteredItems ? filteredItems.length: 0} results
           </h1>
         </div>
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5">
-          {filteredItems.map((item) => (
+          {filteredItems ? filteredItems.map((item) => (
             <HouseItem
               key={item.id}
               id={item.id}
@@ -232,7 +168,7 @@ const ResultView = ({
               currFloor={item?.info?.floor}
               building={item?.info?.floors}
             />
-          ))}
+          )) : ""}
         </div>
         {/* Pagination */}
         <div className="flex justify-center mt-6">

@@ -1,10 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowDown, MapPin, ShowMap } from "../../assets/icons";
+import { ArrowDown, ShowMap } from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
-import { LocationCancel } from "../../assets/icons/LocationCancel";
-import { useDispatch } from "react-redux";
-import { loadSearchResults } from "../../store/slices/searchSlice";
+
+const cities = [
+  "Lefkoşa",
+  "Girne",
+  "Gazimağusa",
+  "Güzelyurt",
+  "İskele",
+  "Lefke",
+  "Lapta",
+  "Koruçam",
+  "Alsancak",
+  "Değirmenlik",
+  "Esentepe",
+  "Dikmen",
+  "Mehmetçik",
+  "Karpaz",
+  "Dipkarpaz",
+  "Yeni Erenköy",
+  "Geçitkale",
+  "Beşparmak",
+];
 
 export const Searchbar = ({
   onShowMap,
@@ -14,7 +32,11 @@ export const Searchbar = ({
   filters,
   API_URL,
   setData,
+
   home,
+
+  redirectPath = "/search",
+
 }) => {
   const [dropdownStates, setDropdownStates] = useState({
     category: [],
@@ -22,15 +44,16 @@ export const Searchbar = ({
     priceRange: { Min: "", Max: "" },
     location: value || "",
     city: null,
-    area: null,
+    area: { min: "", max: "" },
   });
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const navigate = useNavigate();
-  const [selectedCurrency, setSelectedCurrency] = useState(
-    localStorage.getItem("currency") === null
-      ? "£"
-      : localStorage.getItem("currency")
+
+  // Use saved currency or default to "£"
+  const [selectedCurrency] = useState(
+    localStorage.getItem("currency") === null ? "£" : localStorage.getItem("currency")
   );
+
   const currencies_to_dollar = {
     "€": 1.03,
     "£": 1.22,
@@ -45,7 +68,9 @@ export const Searchbar = ({
     }));
   }, [value]);
 
+  // Fetch data whenever the URL changes OR dropdown states change
   useEffect(() => {
+
     const currentParams = new URLSearchParams(location.search);
     const currentFilters = {};
     currentParams.forEach((value, key) => {
@@ -72,6 +97,10 @@ export const Searchbar = ({
       queryString += `&category=${categories.join(",")}`;
     }
 
+    const currentParams = new URLSearchParams(window.location.search);
+    const queryString = currentParams.toString();
+
+
     fetch(`${API_URL}?${queryString}`, {
       method: "GET",
       headers: {
@@ -83,10 +112,12 @@ export const Searchbar = ({
         console.log("data search bar", data);
         setData(data);
       });
-  }, [location.search, dropdownStates, API_URL, setData]);
+  }, [window.location.search, dropdownStates, API_URL, setData]);
 
+  // Build a fresh set of query params from the current state (no merging with old)
   const handleSearch = (event) => {
     event.preventDefault();
+
 
     const currentParams = new URLSearchParams(window.location.search);
 
@@ -158,6 +189,75 @@ export const Searchbar = ({
     }
 
     navigate(`/search?${queryString}`);
+
+    const queryParams = new URLSearchParams();
+    queryParams.set("page", 1);
+    queryParams.set("elements", 50);
+
+    // 1) Category
+    if (dropdownStates.category) {
+      queryParams.set("category", dropdownStates.category);
+    }
+
+    // 2) Room Number
+    if (dropdownStates.roomNumber.length > 0) {
+      // Example: ["Studio","1+1"] => "0,1"
+      // Now ignoring EVERYTHING after the plus sign:
+      const mapped = dropdownStates.roomNumber.map((val) => {
+        if (val.toLowerCase() === "studio") {
+          return "0";
+        }
+        // If there's a plus sign, keep only the part before it
+        const plusIndex = val.indexOf("+");
+        if (plusIndex !== -1) {
+          return val.substring(0, plusIndex); // "3+1" => "3"
+        }
+        return val; // no plus sign => use original
+      });
+      console.log("Mapped:", mapped);
+      const joined = mapped.join(",");
+      console.log("Joined:", joined);
+
+      queryParams.set("roomNumber", mapped.join(","));
+    }
+
+    // 3) Price Range
+    const { Min, Max } = dropdownStates.priceRange;
+    if (Min) {
+      queryParams.set(
+        "priceRangeMin",
+        Math.round(Min * currencies_to_dollar[selectedCurrency])
+      );
+    }
+    if (Max) {
+      queryParams.set(
+        "priceRangeMax",
+        Math.round(Max * currencies_to_dollar[selectedCurrency])
+      );
+    }
+
+    // 4) Area
+    const { min, max } = dropdownStates.area;
+    if (min) {
+      queryParams.set("areaFrom", min);
+    }
+    if (max) {
+      queryParams.set("areaTo", max);
+    }
+
+    // 5) City
+    if (dropdownStates.city) {
+      queryParams.set("city", dropdownStates.city);
+    }
+
+    // 6) Location
+    if (dropdownStates.location) {
+      queryParams.set("location", dropdownStates.location);
+    }
+
+    navigate(`${redirectPath}?${queryParams.toString()}`);
+    console.log("Final query:", queryParams.toString());
+
   };
 
   const handleRoomSelect = (room) => {
@@ -189,7 +289,7 @@ export const Searchbar = ({
   };
 
   const handleShowOnMap = () => {
-    // Redirect to map page when Show on Map is clicked
+    // Show on map
     window.location = "/map";
   };
 
@@ -197,30 +297,19 @@ export const Searchbar = ({
     setDropdownOpen((prev) => (prev === type ? null : type));
   };
 
-  const handleSelectOption = (type, value) => {
+  const handleSelectOption = (type, newValue) => {
     setDropdownStates((prevState) => ({
       ...prevState,
-      [type]: value,
+      [type]: newValue,
     }));
     if (type !== "location") setDropdownOpen(null);
   };
 
   const handlePriceChange = (e, type) => {
-    const value = e.target.value;
+    const val = e.target.value;
     setDropdownStates((prevState) => ({
       ...prevState,
-      priceRange: {
-        ...prevState.priceRange,
-        [type]: value,
-      },
-    }));
-  };
-
-  const handleLocationChange = (e) => {
-    const value = e.target.value;
-    setDropdownStates((prevState) => ({
-      ...prevState,
-      location: value,
+      priceRange: { ...prevState.priceRange, [type]: val },
     }));
   };
 
@@ -229,42 +318,29 @@ export const Searchbar = ({
       ...prevState,
       location: "",
     }));
-    onChange(""); // Notify parent that location is cleared
+    onChange?.(""); // Notify parent if needed
   };
 
+  // Renders the content of each dropdown
   const renderDropdownContent = (type) => {
     switch (type) {
-      case "category":
+      case "city":
         return (
           <div className="p-4">
-            <p
-              onClick={() => handleSelectOption(type, "Appartment")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              Appartment
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "Villa")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              Villa
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "Penthouse")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              Penthouse
-            </p>
-            <p
-              onClick={() => handleSelectOption(type, "Cottages")}
-              className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
-            >
-              Cottages
-            </p>
+            {cities.map((cityItem, index) => (
+              <p
+                key={index}
+                onClick={() => handleSelectOption("city", cityItem)}
+                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
+              >
+                {cityItem}
+              </p>
+            ))}
           </div>
         );
-      case "roomNumber":
+      case "category":
         return (
+
           <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
             <div className="grid grid-cols-3 gap-2 p-4">
               {["Studio", "1", "2", "3", "4", "5+"].map((room, index) => (
@@ -280,9 +356,41 @@ export const Searchbar = ({
                   {room}
                 </button>
               ))}
-            </div>
+
+          <div className="p-4">
+            {["Appartment", "Villa", "Penthouse", "Cottages"].map((cat) => (
+              <p
+                key={cat}
+                onClick={() => handleSelectOption("category", cat)}
+                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm"
+              >
+                {cat}
+              </p>
+            ))}
           </div>
         );
+        case "roomNumber":
+          return (
+            <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10">
+              <div className="grid grid-cols-3 gap-2 p-4">
+                {/* Each button sets e.g. "3+1" into state */}
+                {["Studio", "1+1", "2+1", "3+1", "4+1", "5+1"].map((room) => (
+                  <button
+                    key={room}
+                    onClick={() => handleRoomSelect(room)}
+                    className={`flex items-center justify-center px-4 py-2 border rounded-md text-gray-700 focus:outline-none ${
+                      dropdownStates.roomNumber.includes(room)
+                        ? "border-purple-500 bg-white text-black"
+                        : "bg-gray-200"
+                    }`}
+                  >
+                    {room}
+                  </button>
+                ))}
+              </div>
+
+            </div>
+          );
       case "price":
         return (
           <div className="p-4">
@@ -290,16 +398,58 @@ export const Searchbar = ({
               <input
                 type="number"
                 placeholder="Min"
-                value={dropdownStates.priceRange.min}
-                onChange={(e) => handlePriceChange(e, "min")}
+
+                
+               
                 className="w-1/2 px-2 py-1 border-[1px]  focus:outline-none border-gray-300 focus:ring-2 focus:ring-[rgba(130,71,229,1)] rounded-md text-[#525C76] text-sm"
+
+                value={dropdownStates.priceRange.Min}
+                onChange={(e) => handlePriceChange(e, "Min")}
+                
               />
               <input
                 type="number"
                 placeholder="Max"
-                value={dropdownStates.priceRange.max}
-                onChange={(e) => handlePriceChange(e, "max")}
+
+                
+                
                 className="w-1/2 px-2 py-1 border border-gray-300 border-[1px]  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] rounded-md text-[#525C76] text-sm"
+
+                value={dropdownStates.priceRange.Max}
+                onChange={(e) => handlePriceChange(e, "Max")}
+                
+              />
+            </div>
+          </div>
+        );
+      case "area":
+        return (
+          <div className="p-4">
+            <div className="flex space-x-2">
+              <input
+                type="number"
+                placeholder="Min area"
+                value={dropdownStates.area.min}
+                onChange={(e) =>
+                  setDropdownStates((prev) => ({
+                    ...prev,
+                    area: { ...prev.area, min: e.target.value },
+                  }))
+                }
+                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
+              />
+              <input
+                type="number"
+                placeholder="Max area"
+                value={dropdownStates.area.max}
+                onChange={(e) =>
+                  setDropdownStates((prev) => ({
+                    ...prev,
+                    area: { ...prev.area, max: e.target.value },
+                  }))
+                }
+                className="w-1/2 px-2 py-1 border border-gray-300 rounded-md text-[#525C76] text-sm"
+=
               />
             </div>
           </div>
@@ -311,11 +461,13 @@ export const Searchbar = ({
 
   return (
     <motion.div
+
       className="max-w-full w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4 "
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
         padding: "5px",
       }}
+
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -400,8 +552,8 @@ export const Searchbar = ({
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
         >
           <span className="text-[#525C76] text-sm font-semibold">
-            {dropdownStates.priceRange.min || dropdownStates.priceRange.max
-              ? `${selectedCurrency}${dropdownStates.priceRange.min} - ${selectedCurrency}${dropdownStates.priceRange.max}`
+            {dropdownStates.priceRange.Min || dropdownStates.priceRange.Max
+              ? `${selectedCurrency}${dropdownStates.priceRange.Min} - ${selectedCurrency}${dropdownStates.priceRange.Max}`
               : "Price"}
           </span>
           <motion.div
@@ -431,7 +583,9 @@ export const Searchbar = ({
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
         >
           <span className="text-[#525C76] text-sm font-semibold">
-            {dropdownStates.area || "Area"}
+            {dropdownStates.area.min || dropdownStates.area.max
+              ? `${dropdownStates.area.min} - ${dropdownStates.area.max} m²`
+              : "Area"}
           </span>
           <motion.div
             animate={{ rotate: dropdownOpen === "area" ? 180 : 0 }}
@@ -484,7 +638,7 @@ export const Searchbar = ({
 
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4 sm:mt-0">
-        {/* Кнопка "Show on map" */}
+        {/* Show on map */}
         <button
           onClick={handleShowOnMap}
           className="flex items-center justify-center px-4 py-2 text-[#8247E5] bg-white h-[50px] w-full sm:w-auto font-semibold rounded-md shadow-md sm:shadow-none"
@@ -495,8 +649,7 @@ export const Searchbar = ({
             {home ? "Show on map" : "Show on list"}{" "}
           </span>
         </button>
-
-        {/* Кнопка "Search" */}
+        {/* Search */}
         <motion.button
           onClick={handleSearch}
           className="bg-[#8247E5] hover:bg-[#A673EF] text-white px-6 py-3 w-full sm:w-auto h-[50px] sm:h-auto rounded-md font-semibold shadow-md sm:shadow-none"

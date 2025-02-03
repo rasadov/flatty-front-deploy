@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
@@ -6,6 +6,8 @@ export default function Map({ properties = [], onMarkerClick }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM",
   });
+
+  const clustererRef = useRef(null);
 
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState({ lat: 35.3, lng: 33.4 });
@@ -49,7 +51,12 @@ export default function Map({ properties = [], onMarkerClick }) {
   const renderMarkersWithClustering = () => {
     if (!window.google || !map) return;
 
-    // Array to hold markers
+
+    if (clustererRef.current) {
+      clustererRef.current.clearMarkers();
+    }
+
+
     const markers = properties.map((property) => {
       const position = { lat: property.latitude, lng: property.longitude };
       const marker = new window.google.maps.Marker({
@@ -66,26 +73,31 @@ export default function Map({ properties = [], onMarkerClick }) {
       });
 
       marker.addListener("click", () => {
-        onMarkerClick?.([property]); // When clicking on a single marker, show the associated property
+
+        onMarkerClick?.([property]); 
+
       });
 
       return marker;
     });
 
-    // Setup the MarkerClusterer
+
     const markerClusterer = new MarkerClusterer({
+
       markers,
       map,
       renderer: {
         render: ({ count, position }) => {
-          const clusterElement = new window.google.maps.Marker({
+          return new window.google.maps.Marker({
             position,
             icon: {
               path: window.google.maps.SymbolPath.CIRCLE,
               fillColor: "#7C3AED", // Keep the fill color
               fillOpacity: 1,
+
               strokeColor: "#7C3AED", // Set the stroke color to transparent to remove the outline
               strokeWeight: 0, // Optionally set stroke weight to 0
+
               scale: 24,
             },
             label: {
@@ -95,12 +107,11 @@ export default function Map({ properties = [], onMarkerClick }) {
               fontWeight: "bold",
             },
           });
-          return clusterElement;
         },
       },
     });
 
-    // Handle cluster clicks
+
     markerClusterer.addListener("clusterclick", (event) => {
       const clickedCluster = event.getCluster();
       const markersInCluster = clickedCluster.getMarkers(); // Get all markers in the clicked cluster
@@ -109,10 +120,11 @@ export default function Map({ properties = [], onMarkerClick }) {
         return properties.find((property) => property.name === propertyTitle);
       });
 
-      // Call onMarkerClick with all properties in the cluster
+      
       onMarkerClick(propertiesInCluster);
     });
   };
+
 
   return (
     <GoogleMap
@@ -127,7 +139,7 @@ export default function Map({ properties = [], onMarkerClick }) {
       options={{
         zoomControl: true,
         zoomControlOptions: {
-          position: window.google.maps.ControlPosition.RIGHT_CENTER, // Adjust this to move the control higher
+          position: window.google.maps.ControlPosition.RIGHT_CENTER, 
         },
         mapTypeControl: false,
         streetViewControl: false,

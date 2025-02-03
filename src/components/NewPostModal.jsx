@@ -30,6 +30,34 @@ const renovations = [
   "Move-in ready",
   "With furniture",
 ];
+const cities = [
+  "Lefkoşa",
+  "Girne",
+  "Gazimağusa",
+  "Güzelyurt",
+  "İskele",
+  "Lefke",
+  "Lapta",
+  "Koruçam",
+  "Alsancak",
+  "Değirmenlik",
+  "Esentepe",
+  "Dikmen",
+  "Mehmetçik",
+  "Karpaz",
+  "Dipkarpaz",
+  "Yeni Erenköy",
+  "Geçitkale",
+  "Beşparmak"
+  ]
+const areas = [
+      "Lefkoşa",
+      "Girne",
+      "Gazimağusa",
+      "Güzelyurt",
+      "İskele",
+      "Lefke"
+  ]
 
 const getAddressFromLatLng = async (lat, lng) => {
   const apiKey = "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM"; // Replace with your Google Maps API key
@@ -49,6 +77,9 @@ const getAddressFromLatLng = async (lat, lng) => {
     return null;
   }
 };
+
+var city = "";
+var area = "";
 
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -74,7 +105,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     floor: 0,
     year: 0,
     buildingFloors: 0,
-    condition: conditions[0],
+    renovation: "",
+    rooms: 0,
     latitude: 0,
     longitude: 0,
     address: "",
@@ -96,6 +128,16 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       [name]:
         operation === "add" ? prev[name] + 1 : Math.max(0, prev[name] - 1),
     }));
+  };
+  const handleDropDocuments = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
+  };
+
+  const handleDocumentUpload = (event) => {
+    const files = Array.from(event.target.files);
+    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
   };
 
   const handleParkingToggle = () => {
@@ -166,13 +208,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const handleMapClick = async (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
-    const address = await getAddressFromLatLng(lat, lng);
 
     setFormData((prev) => ({
       ...prev,
       latitude: lat,
       longitude: lng,
-      address: address,
     }));
   };
   const mapStyles = [
@@ -256,6 +296,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       latitude: null,
       longitude: null,
     }));
+    city = "";
+    area = "";
   };
 
   const svgString = encodeURIComponent(`
@@ -265,6 +307,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
 
   `);
   const svgIconUrl = `data:image/svg+xml,${svgString}`;
+
+  const handleLocationChange = async (e) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+    if (name === "city") {
+      city = value;
+    } else if (name === "area") {
+      area = value;
+      console.log("area", value);
+      console.log("city", city);
+      console.log("area", area);
+    }
+    if (city && area) {
+    setFormData((prev) => ({ ...prev, address: `${area}, ${city}` }));
+    } else {
+      setFormData((prev) => ({ ...prev, address: `${value}` }));
+    }
+  };
+
 
   if (!isOpen) return null;
 
@@ -373,6 +434,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     )
                   }
                 >
+
                   {formData.residentialComplex || "Select"}
                   <ArrowDown className="w-5 h-5 text-gray-500" />
                 </button>
@@ -403,6 +465,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     }
                   </ul>
                 )}
+
               </div>
             </div>
             <div
@@ -436,6 +499,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
             </div>
+
             <div
               className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mb-6"
               style={{
@@ -529,6 +593,95 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                       </div>
                     </div>
                   ))}
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+              {[
+                "floor",
+                "apartmentStories",
+                "buildingFloors",
+                "livingRoom",
+                "bedroom",
+                "bathroom",
+                "balcony",
+                "rooms",
+              ].map((field, index) => (
+                <div key={index} className="flex flex-col items-start">
+                  <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
+                    {field == "livingRoom"
+                      ? "Living rooms"
+                      : field == "buildingFloors"
+                      ? "Building floors"
+                      : field == "apartmentStories"
+                      ? "Appartment stories"
+                      : field}
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => handleNumberChange(field, "subtract")}
+                      className="p-2 border rounded-md hover:bg-gray-100"
+                    >
+                      <Subtract />
+                    </button>
+                    <input
+                      name={field}
+                      type="number"
+                      className="w-[36px] h-[32px] text-center border rounded-md"
+                      value={formData[field]}
+                      onChange={handleInputChange}
+                      min="0"
+                      readOnly
+                    />
+                    <button
+                      onClick={() => handleNumberChange(field, "add")}
+                      className="p-2 border rounded-md hover:bg-gray-100"
+                    >
+                      <Add />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* <div className="flex flex-wrap gap-4 items-center mt-4">
+              {["parkingSlot", "installment", "swimmingPool", "elevator"].map(
+                (field, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-700 capitalize">
+                      {field === "parkingSlot"
+                        ? "Parking slot"
+                        : field === "installment"
+                        ? "Installment"
+                        : field === "swimmingPool"
+                        ? "Swimming pool"
+                        : "Elevator"}
+                    </label>
+                    <button onClick={() => handleCustomToggle(field)}>
+                      {formData[field] ? <Active /> : <Inactive />}
+                    </button>
+                  </div>
+                )
+              )}
+            </div> */}
+            <div className="mt-4">
+              <label className="block mb-1 text-sm font-medium text-gray-700">
+                Renovation
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {renovations.map((renovation, index) => (
+                  <button
+                    key={index}
+                    onClick={() =>
+                      setFormData((prev) => ({ ...prev, renovation: renovation }))
+                    }
+                    className={`${getButtonStyle(
+                      "renovation",
+                      renovation
+                    )} bg-gray-100 px-4 py-2 rounded-md`}
+                  >
+                    {renovation}
+                  </button>
+                ))}
+              </div>
+
             </div>
 
             <div className="flex flex-wrap gap-6 items-center">
@@ -661,6 +814,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
             </div>
 
+
             {/* title: "", */}
 
             <div
@@ -683,6 +837,28 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 }}
               />
             </div>
+
+            <div className="flex flex-col items-left gap-2">
+                <div
+                  style={{
+                    textAlign: "left",
+                  }}
+                >
+                  <label className="block mb-1 text-sm font-medium text-gray-700">
+                    Title
+                  </label>
+                </div>
+                <div className="flex gap-1">
+                  <input
+                    name="title"
+                    type="text"
+                    className="w-full h-[52px] p-2 border rounded-md"
+                    value={formData.title}
+                    onChange={handleInputChange}
+                  />
+                </div>
+              </div>
+
 
             <div
               className="mt-4"
@@ -864,7 +1040,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               <div
                 className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
                 onDragOver={handleDragOverFile}
-                onDrop={handleDropFile}
+                onDrop={handleDropDocuments}
               >
                 <p
                   className="text-sm  mb-4"
@@ -896,8 +1072,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   type="file"
                   multiple
                   accept="*/*"
+
                   onChange={handleFileUpload}
                   className="hidden focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
+
                 />
               </div>
 
@@ -993,22 +1171,26 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
             </button> */}
             </div>
             <div className="grid grid-cols-2 gap-4 mb-4">
-              <div>
+        
+          <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   City
                 </label>
                 <select
                   name="city"
+
                   className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                  value={formData.category}
-                  onChange={handleInputChange}
+                  value={city}
+                  onChange={handleLocationChange}
                 >
-                  <option value="">City</option>
-                  <option value="Girne">Girne</option>
-                  <option value="Gazimaöusa">Gazimaöusa</option>
-                  <option value="Güzelyurt">Güzelyurt</option>
-                  <option value="İskele">İskele</option>
-                  <option value="Lefke">Lefke</option>
+                  
+                  <option value="">{city || "Select"}</option>
+                  {cities.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
+
                 </select>
               </div>
               <div>
@@ -1018,7 +1200,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <select
                   name="area"
                   className="w-full h-[46px] p-2 border rounded-md bg-gray-100 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                  value={formData.residentialComplex}
+                  value={formData.area}
                   onChange={handleInputChange}
                 >
                   <option value="">Area</option>
@@ -1027,11 +1209,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <option value="Batıkent">Batıkent</option>
                   <option value="Beyköy">Beyköy</option>
                   <option value="Lefke">Lefke</option>
-                  {/* {complexes?  complexes.map((complex, index) => (
-                    <option key={index} value={complex.name}>
-                      {complex.name}
-                    </option>
-                  )) : ""} */}
+           
                 </select>
               </div>
             </div>

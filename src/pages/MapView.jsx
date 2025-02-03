@@ -20,7 +20,19 @@ export default function MapView() {
   const { isLoggedIn } = useSelector((state) => state.auth);
   const [resProperties, setMockProperties] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+    const [selectedCurrency, setSelectedCurrency] = useState(
+      localStorage.getItem("currency") === null
+        ? "£"
+        : localStorage.getItem("currency")
+    );
+    const currencies_to_dollar = {
+      "€": 1.03,
+      "£": 1.22,
+      $: 1,
+      "₺": 0.028,
+    };
   const dispatch = useDispatch();
+
 
   // Fetch mock properties from the server
   useEffect(() => {
@@ -45,6 +57,7 @@ export default function MapView() {
   const handleSearchQueryChange = (query) => {
     setSearchQuery(query);
   };
+
 
   const handleSearch = () => {
     // 1) Merge FilterModal filters (props.filters) + local dropdownStates
@@ -148,6 +161,20 @@ export default function MapView() {
     }
   };
 
+  const handleMarkerClick = async (propertiesAtLocation) => {
+      try {
+        var results = [];
+        const response = await fetch(
+          `https://api.flatty.ai/api/v1/property/record/${propertiesAtLocation.property_id}`
+        );
+        results.push(await response.json());
+        setSelectedProperties(results);
+      } catch (err) {
+        console.error("Error fetching property details:", err);
+      }
+    };
+
+
   return (
     <main className="flex-grow bg-[#F4F2FF]">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
@@ -159,6 +186,7 @@ export default function MapView() {
           onChange={handleSearchQueryChange}
           API_URL="https://api.flatty.ai/api/v1/property/map"
           setData={setMockProperties}
+          redirectPath="/map"
         />
         <button
           onClick={() => setIsModalOpen(true)}
