@@ -141,7 +141,7 @@ export const Profile = () => {
   };
 
   // Handle file selection and upload the image.
-  const handleFileChange = async (event) => {
+  const handleUserProfileImage = async (event) => {
     const file = event.target.files[0];
     if (!file) return; // No file selected
 
@@ -166,6 +166,7 @@ export const Profile = () => {
 
       const data = await response.json();
       console.log("Upload successful:", data);
+      window.location.reload();
       // Optionally, update your state or perform additional actions here.
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -203,7 +204,7 @@ export const Profile = () => {
         type="file"
         ref={fileInputRef}
         className="hidden"
-        onChange={handleFileChange}
+        onChange={handleUserProfileImage}
         accept="image/*"
       />
       </div>

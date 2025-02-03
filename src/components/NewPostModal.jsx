@@ -401,6 +401,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     event.preventDefault();
   };
 
+  const handleDropFile = (event) => {
+    event.preventDefault();
+    const files = Array.from(event.dataTransfer.files);
+    setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
+  };
+
   const formatFileSize = (size) => {
     if (size < 1024) return `${size} B`;
     else if (size < 1048576) return `${(size / 1024).toFixed(2)} KB`;
@@ -486,7 +492,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         dispatch(addPost(formDataToSend));
         dispatch(fetchPosts());
         onClose();
-        // window.location.reload();
+        window.location.reload();
       } catch (error) {
         toast.error("An error occurred. Please try again. Make sure you complete all required fields", {
           toastId: "upload-error",
