@@ -44,8 +44,8 @@ export const Profile = () => {
       })
         .then((res) => {
           if (res.status === 401) {
-            // window.location.href = "/login";
-            // navigate("/login");
+            window.location.href = "/login";
+            navigate("/login");
             localStorage.removeItem("user");
           }
           return res.json();
@@ -57,8 +57,8 @@ export const Profile = () => {
         })
         .catch((error) => {
           console.log(error);
-          // window.location.href = "/login";
-          // navigate("/login");
+          window.location.href = "/login";
+          navigate("/login");
           localStorage.removeItem("user");
         });
       const userResponse = await fetch(
@@ -166,6 +166,8 @@ export const Profile = () => {
 
       const data = await response.json();
       console.log("Upload successful:", data);
+      const parsedUser = JSON.parse(localStorage.getItem("user"));
+      parsedUser.image_url = data.image_url;
       window.location.reload();
       // Optionally, update your state or perform additional actions here.
     } catch (error) {
