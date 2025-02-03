@@ -492,7 +492,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         dispatch(addPost(formDataToSend));
         dispatch(fetchPosts());
         onClose();
-        window.location.reload();
+        // window.location.reload();
       } catch (error) {
         toast.error("An error occurred. Please try again. Make sure you complete all required fields", {
           toastId: "upload-error",

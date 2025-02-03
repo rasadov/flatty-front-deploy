@@ -33,7 +33,7 @@ const schema = yup.object({
     .required("Mobile number is required")
     .matches(
       /^\+\d{5,15}$/,
-      "Please enter a valid mobile number with country code"
+      "Please enter a valid mobile number in this format +*********"
     ),
   password: yup
     .string()

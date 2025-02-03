@@ -168,6 +168,7 @@ export const Profile = () => {
       console.log("Upload successful:", data);
       const parsedUser = JSON.parse(localStorage.getItem("user"));
       parsedUser.image_url = data.image_url;
+      localStorage.setItem("user", JSON.stringify(parsedUser));
       window.location.reload();
       // Optionally, update your state or perform additional actions here.
     } catch (error) {

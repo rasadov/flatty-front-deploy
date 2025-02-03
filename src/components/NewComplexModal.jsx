@@ -449,7 +449,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
         console.log(pair[0] + ", " + pair[1]);
       }
       try {
-        const response = await axios.post(
+        const response = axios.post(
           "https://api.flatty.ai/api/v1/listing/",
           formDataToSend,
           {
