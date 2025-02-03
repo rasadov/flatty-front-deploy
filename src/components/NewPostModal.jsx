@@ -10,6 +10,8 @@ import { FaFilePdf } from "react-icons/fa";
 import { Trash } from "../assets/icons";
 import { PDF } from "../assets/icons/PDF";
 import { LeftUpload } from "../assets/icons/LeftUpload";
+// import { ArrowDo } from "lucide-react";
+import { ArrowDown } from "../assets/icons";
 
 const categories = ["Penthouse", "Villa", "Cottages"];
 const conditions = [
@@ -51,7 +53,7 @@ const getAddressFromLatLng = async (lat, lng) => {
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
-
+  const [openDropdown, setOpenDropdown] = useState(null);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     category: "Appartment",
@@ -189,46 +191,47 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    if (selectedFiles.length && selectedDocuments.length > 0) {
-      const formDataToSend = new FormData();
-      const formDocumentToSend = new FormData();
+    console.log("BAAA BUNA BAAAXX >>>>>>>>>>", formData);
+    // if (selectedFiles.length && selectedDocuments.length > 0) {
+    //   const formDataToSend = new FormData();
+    //   const formDocumentToSend = new FormData();
 
-      Object.keys(formData).forEach((key) => {
-        formDataToSend.append(key, formData[key]);
-      });
-      selectedFiles.forEach((file) => {
-        formDataToSend.append("files", file);
-      });
-      // ? ========================================================
-      Object.keys(formData).forEach((key) => {
-        formDocumentToSend.append(key, formData[key]);
-      });
-      selectedDocuments.forEach((file) => {
-        formDocumentToSend.append("files", file);
-      });
+    //   Object.keys(formData).forEach((key) => {
+    //     formDataToSend.append(key, formData[key]);
+    //   });
+    //   selectedFiles.forEach((file) => {
+    //     formDataToSend.append("files", file);
+    //   });
+    //   // ? ========================================================
+    //   Object.keys(formData).forEach((key) => {
+    //     formDocumentToSend.append(key, formData[key]);
+    //   });
+    //   selectedDocuments.forEach((file) => {
+    //     formDocumentToSend.append("files", file);
+    //   });
 
-      for (var pair of formDataToSend.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
-      try {
-        dispatch(addPost(formDataToSend));
-        dispatch(fetchPosts());
-        onClose();
-      } catch (error) {
-        console.error(error);
-      }
+    //   for (var pair of formDataToSend.entries()) {
+    //     console.log(pair[0] + ", " + pair[1]);
+    //   }
+    //   try {
+    //     dispatch(addPost(formDataToSend));
+    //     dispatch(fetchPosts());
+    //     onClose();
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
 
-      for (var pair of formDocumentToSend.entries()) {
-        console.log(pair[0] + ", " + pair[1]);
-      }
-      try {
-        dispatch(addPost(formDocumentToSend));
-        dispatch(fetchPosts());
-        onClose();
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    //   for (var pair of formDocumentToSend.entries()) {
+    //     console.log(pair[0] + ", " + pair[1]);
+    //   }
+    //   try {
+    //     dispatch(addPost(formDocumentToSend));
+    //     dispatch(fetchPosts());
+    //     onClose();
+    //   } catch (error) {
+    //     console.error(error);
+    //   }
+    // }
   };
 
   const getButtonStyle = (category, value) => {
@@ -264,6 +267,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const svgIconUrl = `data:image/svg+xml,${svgString}`;
 
   if (!isOpen) return null;
+
+  const handleSelect = (name, value) => {
+    setFormData({ ...formData, [name]: value });
+    setOpenDropdown(null);
+  };
 
   return (
     <div
@@ -310,36 +318,91 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 width: "100%",
               }}
             >
-              <div>
-                <label className="block mb-2 text-sm font-medium text-gray-700">
+              {/* CATEGORY SELECT */}
+              <div className="relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
                   Category
                 </label>
-                <select
-                  name="category"
-                  className="w-full h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                  value={formData.category}
-                  onChange={handleInputChange}
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "category" ? null : "category"
+                    )
+                  }
                 >
-                  <option value="Appartment">Appartment</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
+                  {formData.category || "Select category"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "category" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("category", "Appartment")}
+                    >
+                      Appartment
+                    </li>
+                    {categories.map((category, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("category", category)}
+                      >
+                        {category}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-              <div>
+
+              {/* RESIDENTIAL COMPLEX SELECT */}
+              <div className="relative">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Name of residential complex
                 </label>
-                <select
-                  name="residentialComplex"
-                  className="w-full h-[46px] p-2 border rounded-md  focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
-                  value={formData.residentialComplex}
-                  onChange={handleInputChange}
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "residentialComplex"
+                        ? null
+                        : "residentialComplex"
+                    )
+                  }
                 >
-                  <option value="">Select</option>
-                </select>
+                  {formData.residentialComplex || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "residentialComplex" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    {
+                      (complexes = "Could not validate credentials" ? (
+                        <li
+                          className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                          onClick={() => handleSelect("residentialComplex", "")}
+                        >
+                          Select
+                        </li>
+                      ) : (
+                        complexes.map((complex, index) => (
+                          <li
+                            key={index}
+                            className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                            onClick={() =>
+                              handleSelect("residentialComplex", complex)
+                            }
+                          >
+                            {complex}
+                          </li>
+                        ))
+                      ))
+                    }
+                  </ul>
+                )}
               </div>
             </div>
             <div
