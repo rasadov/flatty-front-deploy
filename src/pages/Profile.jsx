@@ -40,11 +40,11 @@ export const Profile = () => {
         credentials: "include",
       })
         .then((res) => {
-          // if (res.status === 401) {
-          //   window.location.href = "/login";
-          //   navigate("/login");
-          //   localStorage.removeItem("user");
-          // }
+          if (res.status === 401) {
+            window.location.href = "/login";
+            navigate("/login");
+            localStorage.removeItem("user");
+          }
           return res.json();
         })
         .then((data) => {
@@ -54,9 +54,9 @@ export const Profile = () => {
         })
         .catch((error) => {
           console.log(error);
-          // window.location.href = "/login";
-          // navigate("/login");
-          // localStorage.removeItem("user");
+          window.location.href = "/login";
+          navigate("/login");
+          localStorage.removeItem("user");
         });
       const userResponse = await fetch(
         "https://api.flatty.ai/api/v1/user/me/agent",
@@ -270,14 +270,16 @@ export const Profile = () => {
   </div>
 
   {/* Agent Image */}
-  <div className="w-full lg:w-[683px] h-[345px] relative">
-    <img
-      src={agent_back}
-      className="absolute w-full h-auto rounded-lg bottom-10"
-      alt="Agent"
-      loading="lazy"
-    />
-  </div>
+  <div className="hidden lg:block w-full lg:w-[740px] h-[375px] relative">
+          {" "}
+          {/* Increased width and height */}
+          <img
+            src={agent_back}
+            className="absolute w-full rounded-lg "
+            alt="Agent"
+            loading="lazy"
+          />
+        </div>
 </div>
 
       {/* Active Posts Section */}

@@ -74,7 +74,7 @@ export default function MapView() {
   return (
     <main className="flex-grow bg-[#F4F2FF]">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
-      <div className="flex items-center justify-center w-full gap-4 my-12  px-16.26">
+      <div className="max-w-[78%] px-4 2xl:max-w-[1440px] flex items-center justify-center w-full gap-4 my-12 px-4 md:px-16">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => {}}

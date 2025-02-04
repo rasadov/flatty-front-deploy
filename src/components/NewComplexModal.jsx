@@ -502,11 +502,14 @@ const NewComplexModal = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+        className=" h-[830px] sm:h-[650px] bg-white rounded-lg shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "634px",
+        }}
       >
         {/* Modal Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b">
@@ -521,7 +524,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
         {step === 1 && (
           <div className="space-y-4 flex-1 overflow-y-auto px-6 py-4">
             <h3 className="text-lg font-semibold">Fill Info</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Name of residential complex
@@ -529,7 +532,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <input
                   name="residentialComplex"
                   type="text"
-                  className="w-full h-[52px] p-2 border rounded-md"
+                  className="w-full h-[52px] sm:h-[60px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 />
@@ -540,7 +543,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[52px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[52px] sm:h-[60px] p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -554,7 +557,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
             </div>
             {/* Row snippet: Building area, Living area, Objects, Floors, Year */}
-            <div className="flex gap-4 items-center justify-between">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-4">
               {/* Building Area */}
               <div className="w-[100%]">
                 <label className="block mb-1 text-xs font-medium text-gray-700">
@@ -563,7 +566,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-[100%] p-2 border rounded-md"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     placeholder="45"
                     onChange={handleInputChange}
                     name="buildingArea"
@@ -582,7 +585,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 <div className="relative">
                   <input
                     type="number"
-                    className="w-[100%] p-2 border rounded-md"
+                    className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                     placeholder="38"
                     onChange={handleInputChange}
                     name="livingArea"
@@ -600,7 +603,7 @@ const NewComplexModal = ({ isOpen, onClose }) => {
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="38"
                   onChange={handleInputChange}
                   name="objects"
@@ -608,13 +611,13 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Floors */}
-              <div className="w-[40%]">
+              <div className="w-full sm:w-[48%] lg:w-[40%]">
                 <label className="block mb-1 text-xs font-medium text-gray-700">
                   Floors
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="16"
                   onChange={handleInputChange}
                   name="buildingFloors"
@@ -622,13 +625,13 @@ const NewComplexModal = ({ isOpen, onClose }) => {
               </div>
 
               {/* Year */}
-              <div className="w-[60%]">
+              <div className="w-full sm:w-[48%] lg:w-[60%]">
                 <label className="block mb-1 text-xs font-medium text-gray-700">
                   Year
                 </label>
                 <input
                   type="number"
-                  className="w-[100%] p-2 border rounded-md"
+                  className="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)]"
                   placeholder="2020"
                   onChange={handleInputChange}
                   name="year"
