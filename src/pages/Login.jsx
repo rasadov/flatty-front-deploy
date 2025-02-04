@@ -68,12 +68,20 @@ const Login = () => {
 
   return (
     <motion.div
-      className="max-w-md p-8 mx-auto mt-8 bg-white border shadow-md rounded-[18px] mb-28 mt-28"
+      className="max-w-md p-8 mx-auto  bg-white border shadow-md rounded-[18px] mt-[65%] sm:mt-[15%]"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      <h1 className="mb-6 text-4xl font-semibold text-center text-gray-800">
+      <h1
+        style={{
+          color: "rgba(15, 29, 64, 1)",
+          fontSize: "28px",
+          fontWeight: "600",
+          marginBottom: "24px",
+          textAlign: "center",
+        }}
+      >
         Sign in
       </h1>
       <motion.form
@@ -93,7 +101,7 @@ const Login = () => {
             error={errors.email}
             {...register("email")}
             placeholder="Email"
-            className="w-full"
+            className="w-full border-none bg-white"
           />
         </motion.div>
 
@@ -107,7 +115,7 @@ const Login = () => {
             error={errors.password}
             {...register("password")}
             placeholder="Password"
-            className="w-full"
+            className="w-full border-none bg-white"
           />
         </motion.div>
 
@@ -121,6 +129,11 @@ const Login = () => {
             variant="primary"
             isLoading={isSubmitting}
             className="w-full mt-[39px!important] px-5 py-[8.7px]"
+            style={{
+              borderRadius: "3px",
+              fontSize: "18px",
+              fontWeight: "600",
+            }}
           >
             Sign in
           </Button>
@@ -136,6 +149,12 @@ const Login = () => {
             variant="secondary"
             onClick={() => navigate("/register")}
             className="w-full px-5 py-[8.7px]"
+            style={{
+              borderRadius: "3px",
+              border: "1px solid rgba(166, 115, 239, 1)",
+              fontSize: "18px",
+              fontWeight: "600",
+            }}
           >
             Sign up
           </Button>
@@ -151,6 +170,14 @@ const Login = () => {
             variant="cancel"
             onClick={handleCancel}
             className="w-full px-5 py-[8.7px]"
+            style={{
+              borderRadius: "3px",
+              border: "1px solid rgba(202, 205, 213, 1)",
+              background: "rgba(255, 255, 255, 1)",
+              color: "rgba(82, 92, 118, 1)",
+              fontSize: "18px",
+              fontWeight: "600",
+            }}
           >
             Cancel
           </Button>

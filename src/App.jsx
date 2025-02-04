@@ -26,8 +26,6 @@ function App() {
       <Suspense fallback={<Loading />}>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/appartment/:id" element={<Appartment />} />
             <Route path="/about" element={<About />} />
@@ -35,6 +33,8 @@ function App() {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
           </Route>
+          <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           <Route path="/" element={<Home />} />
           {/* <Route path="/map" element={<MapView />} /> */}
           <Route path="/map" element={<MapView />} />

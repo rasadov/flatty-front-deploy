@@ -5,7 +5,6 @@ import "swiper/css/navigation";
 import {
   ArrowLeft,
   ArrowRight,
-  Euro,
   HeartEmpty,
   HeartFull,
   MapPin,

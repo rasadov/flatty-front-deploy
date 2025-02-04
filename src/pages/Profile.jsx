@@ -4,11 +4,8 @@ import Rating from "../components/Rating";
 import CardList from "../components/sections/CardList";
 import Breadcrumbs from "../components/Breadcrumbs.jsx";
 import Button from "../components/Button.jsx";
-import agent_back from "../assets/images/agent_back.png";
-import { Certified } from "../assets/icons/Certified.jsx";
+import agent_back from "../assets/images/Group 15.png";
 import { NewPost } from "../assets/icons/NewPost.jsx";
-import { EditPost } from "../assets/icons/EditPost.jsx";
-import { DotsThreeOutline } from "../assets/icons/DotsThreeOutline.jsx";
 import AgentPost from "../components/AgentPost.jsx";
 import AgentComplex from "../components/AgentComplex.jsx";
 import NewPostModal from "../components/NewPostModal.jsx"; // Import the modal component
@@ -43,11 +40,11 @@ export const Profile = () => {
         credentials: "include",
       })
         .then((res) => {
-          if (res.status === 401) {
-            window.location.href = "/login";
-            navigate("/login");
-            localStorage.removeItem("user");
-          }
+          // if (res.status === 401) {
+          //   window.location.href = "/login";
+          //   navigate("/login");
+          //   localStorage.removeItem("user");
+          // }
           return res.json();
         })
         .then((data) => {
@@ -57,15 +54,15 @@ export const Profile = () => {
         })
         .catch((error) => {
           console.log(error);
-          window.location.href = "/login";
-          navigate("/login");
-          localStorage.removeItem("user");
+          // window.location.href = "/login";
+          // navigate("/login");
+          // localStorage.removeItem("user");
         });
       const userResponse = await fetch(
         "https://api.flatty.ai/api/v1/user/me/agent",
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Accept: "application/json",
           },
           credentials: "include",
         }
