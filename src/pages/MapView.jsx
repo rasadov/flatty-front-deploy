@@ -91,17 +91,15 @@ export default function MapView() {
           <FilterButton />
         </button>
       </div>
-      <div className="flex h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
+      <div className="flex flex-col lg:flex-row h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
   {/* Left side: property details */}
 
   {selectedProperties.length > 0 ? (
-    <div
-      className="w-1/4 border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500"
-    >
-      {/* Pass the array of properties to the details component */}
-      <MapPropertyDetails properties={selectedProperties} />
-    </div>
-  ) : null}
+          <div className="w-full lg:w-[300px] border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
+            {/* Pass the array of properties to the details component */}
+            <MapPropertyDetails properties={selectedProperties} />
+          </div>
+        ) : null}
 
         {/* Filter Modal */}
         <FilterModal
