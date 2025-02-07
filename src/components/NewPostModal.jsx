@@ -12,7 +12,14 @@ import { PDF } from "../assets/icons/PDF";
 import { LeftUpload } from "../assets/icons/LeftUpload";
 import { toast } from "react-toastify";
 
-const categories = ["Penthouse", "Villa", "Cottages", "Loft", "Townhouse",  "Bungalow"];
+const categories = [
+  "Penthouse",
+  "Villa",
+  "Cottages",
+  "Loft",
+  "Townhouse",
+  "Bungalow",
+];
 
 const renovations = [
   "Cosmetic",
@@ -29,11 +36,10 @@ const cities = [
   "Lefke",
   "Lapta",
   "Alsancak",
-
 ];
 
 const areas = {
-  "Lefkoşa": [
+  Lefkoşa: [
     "Akıncılar",
     "Alayköy",
     "Dilekkaya",
@@ -70,18 +76,15 @@ const areas = {
     "Selimiye",
     "Taşkınköy",
     "Yenicami",
-    "Yenişehir"
+    "Yenişehir",
   ],
-  "Gönyeli": [
-    "Gönyeli",
-    "Yenikent"
-  ],
-  "Değirmenlik": [
+  Gönyeli: ["Gönyeli", "Yenikent"],
+  Değirmenlik: [
     "Balıkesir",
     "Beyköy",
     "Cihangir",
     "Çukurova",
-      "Demirhan",
+    "Demirhan",
     "Düzova",
     "Gaziköy",
     "Gökhan",
@@ -94,9 +97,9 @@ const areas = {
     "Camialtı",
     "Mehmetçik",
     "Saray",
-    "Tepebaşı"
+    "Tepebaşı",
   ],
-  "Gazimağusa": [
+  Gazimağusa: [
     "Akova",
     "Alaniçi",
     "Aslanköy",
@@ -128,14 +131,10 @@ const areas = {
     "Zafer",
     "Atlılar",
     "Muratağa",
-    "Sandallar"
+    "Sandallar",
   ],
-  "Tatlısu": [
-    "Aktunç",
-    "Küçükerenköy",
-    "Yalı"
-  ],
-  "Akdoğan": [
+  Tatlısu: ["Aktunç", "Küçükerenköy", "Yalı"],
+  Akdoğan: [
     "Akdoğan",
     "Beyarmudu",
     "Çayönü",
@@ -145,9 +144,9 @@ const areas = {
     "Paşaköy",
     "Turunçlu",
     "Türkmenköy",
-    "Vadili"
+    "Vadili",
   ],
-  "Girne": [
+  Girne: [
     "Ağırdağ",
     "Alsancak",
     "Arapköy",
@@ -183,23 +182,19 @@ const areas = {
     "Karakum",
     "Karaoğlanoğlu",
     "Yukarı Girne",
-    "Zeytinlik"
+    "Zeytinlik",
   ],
-  "Lapta": [
+  Lapta: [
     "Adatepe",
     "Başpınar",
     "Kocatepe",
     "Sakarya",
     "Tınaztepe",
     "Türk",
-    "Yavuz"
+    "Yavuz",
   ],
-  "Alsancak": [
-    "Çağlayan",
-    "Yayla",
-    "Yeşilova"
-  ],
-  "Çamlıbel": [
+  Alsancak: ["Çağlayan", "Yayla", "Yeşilova"],
+  Çamlıbel: [
     "Akçiçek",
     "Akdeniz",
     "Alemdağ",
@@ -214,9 +209,9 @@ const areas = {
     "Özhan",
     "Sadrazamköy",
     "Şirinevler",
-    "Tepebaşı"
+    "Tepebaşı",
   ],
-  "Güzelyurt": [
+  Güzelyurt: [
     "Akçay",
     "Aydınköy",
     "Gayretköy",
@@ -233,9 +228,9 @@ const areas = {
     "İsmetpaşa",
     "Lala Mustafa Paşa",
     "Piyalepaşa",
-    "Yukarı Bostancı"
+    "Yukarı Bostancı",
   ],
-  "İskele": [
+  İskele: [
     "Ağıllar",
     "Altınova",
     "Ardahan",
@@ -268,7 +263,7 @@ const areas = {
     "Sazlıköy",
     "Tuzluca",
     "Yedikonuk",
-    "Zeybekköy"
+    "Zeybekköy",
   ],
   "Yeni Erenköy": [
     "Adaçay",
@@ -282,10 +277,10 @@ const areas = {
     "Kuruova",
     "Sipahi",
     "Taşlıca",
-      "Yeşilköy",
-    "Ziyamet"
+    "Yeşilköy",
+    "Ziyamet",
   ],
-  "Lefke": [
+  Lefke: [
     "Bademliköy",
     "Bağlıköy",
     "Cengizköy",
@@ -301,18 +296,23 @@ const areas = {
     "Denizli",
     "Gemikonağı",
     "Lefke",
-    "Yedidalga"
-  ]
-}
+    "Yedidalga",
+  ],
+};
 
 var city = "";
 var area = "";
 const libraries = ["places"];
 
-
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
+
+  const [coverPhotoIndex, setCoverPhotoIndex] = useState(null);
+
+  const handleSetCoverPhoto = (index) => {
+    setCoverPhotoIndex(index);
+  };
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -394,7 +394,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   };
 
   const handleFileRemove = (index) => {
-    setSelectedDocuments((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setSelectedDocuments((prevFiles) =>
+      prevFiles.filter((_, i) => i !== index)
+    );
   };
 
   const handleDragOverFile = (event) => {
@@ -454,7 +456,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    if (selectedFiles.length > 0
+    if (
+      selectedFiles.length > 0
       // && !!formData.address
       // && !!formData.totalArea
       // && !!formData.livingArea
@@ -494,9 +497,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         onClose();
         // window.location.reload();
       } catch (error) {
-        toast.error("An error occurred. Please try again. Make sure you complete all required fields", {
-          toastId: "upload-error",
-        });
+        toast.error(
+          "An error occurred. Please try again. Make sure you complete all required fields",
+          {
+            toastId: "upload-error",
+          }
+        );
         console.error(error);
       }
     } else {
@@ -519,6 +525,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         : "border-[#E2E4E8] hover:border-[#8247E5] hover:bg-[#F0F0F5]"
     }`;
   };
+
+  // Добавляем состояние для хранения индекса выбранного cover-фото
 
   const clearLocation = () => {
     setFormData((prev) => ({
@@ -551,12 +559,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       console.log("area", area);
     }
     if (city && area) {
-    setFormData((prev) => ({ ...prev, address: `${city}, ${area}` }));
+      setFormData((prev) => ({ ...prev, address: `${city}, ${area}` }));
     } else {
       setFormData((prev) => ({ ...prev, address: `${value}` }));
     }
   };
-
 
   if (!isOpen) return null;
 
@@ -705,7 +712,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <button
                     key={index}
                     onClick={() =>
-                      setFormData((prev) => ({ ...prev, renovation: renovation }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        renovation: renovation,
+                      }))
                     }
                     className={`${getButtonStyle(
                       "renovation",
@@ -843,25 +853,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
             </div>
             <div className="flex flex-col items-left gap-2">
-                <div
-                  style={{
-                    textAlign: "left",
-                  }}
-                >
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Title
-                  </label>
-                </div>
-                <div className="flex gap-1">
-                  <input
-                    name="title"
-                    type="text"
-                    className="w-full h-[52px] p-2 border rounded-md"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              <div
+                style={{
+                  textAlign: "left",
+                }}
+              >
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Title
+                </label>
               </div>
+              <div className="flex gap-1">
+                <input
+                  name="title"
+                  type="text"
+                  className="w-full h-[52px] p-2 border rounded-md"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
 
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -915,10 +925,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 onDrop={handleDrop}
               >
                 <p
-                  className="text-sm  mb-4"
-                  style={{
-                    color: "rgba(130, 71, 229, 1)",
-                  }}
+                  className="text-sm mb-4"
+                  style={{ color: "rgba(130, 71, 229, 1)" }}
                 >
                   Drag photos here to start uploading
                 </p>
@@ -955,13 +963,16 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <div className="mt-4 flex overflow-x-auto space-x-4">
                   {selectedFiles.map((file, index) => {
                     const previewUrl = URL.createObjectURL(file);
+                    const isCover = index === coverPhotoIndex;
 
                     return (
                       // Center the media within this container
                       <div
                         key={index}
-                        className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
-                                overflow-hidden flex items-center justify-center"
+                        className={`relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
+                        overflow-hidden flex flex-col items-center justify-center ${
+                          isCover ? "border-4 border-purple-600" : ""
+                        }`}
                       >
                         {file.type.startsWith("image/") ? (
                           <img
@@ -977,14 +988,23 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                           />
                         )}
 
-                        {/* Delete button */}
+                        {/* Кнопка удаления */}
                         <button
                           className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700 
-                                  rounded-full flex items-center justify-center text-xs 
-                                  hover:bg-red-600 hover:text-white transition-colors"
+                            rounded-full flex items-center justify-center text-xs 
+                            hover:bg-red-600 hover:text-white transition-colors"
                           onClick={() => handleImageRemove(index)}
                         >
                           X
+                        </button>
+
+                        {/* Кнопка выбора cover фото */}
+                        <button
+                          className="absolute bottom-2 left-2 px-2 py-1 bg-white text-xs text-purple-600 
+                          border border-purple-600 rounded-md hover:bg-purple-600 hover:text-white transition-colors"
+                          onClick={() => handleSetCoverPhoto(index)}
+                        >
+                          {isCover ? "Cover" : "Set as Cover"}
                         </button>
                       </div>
                     );
@@ -1048,7 +1068,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <button
                   className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
                   onClick={() =>
-                    document.querySelector('input[id="uploadDocuments"]')?.click()
+                    document
+                      .querySelector('input[id="uploadDocuments"]')
+                      ?.click()
                   }
                   style={{
                     display: "flex",
@@ -1191,13 +1213,16 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   value={area}
                   onChange={handleLocationChange}
                 >
-                  <option value="">{!city ? "Select a city first" : area || "Select"}</option>
-                  { city ?
-                  areas[city].map((area, index) => (
-                    <option key={index} value={area}>
-                      {area}
-                    </option>
-                  )) : null}
+                  <option value="">
+                    {!city ? "Select a city first" : area || "Select"}
+                  </option>
+                  {city
+                    ? areas[city].map((area, index) => (
+                        <option key={index} value={area}>
+                          {area}
+                        </option>
+                      ))
+                    : null}
                 </select>
               </div>
             </div>

@@ -83,7 +83,7 @@ export default function MapView() {
     setSearchQuery(query);
   };
 
-  // При клике по маркеру запрашиваем детальную информацию для выбранного объекта
+  // При клике по маркеру – запрашиваем детальную информацию для выбранного объекта
   const handleMarkerClick = async (property) => {
     try {
       const response = await fetch(
@@ -97,9 +97,19 @@ export default function MapView() {
     }
   };
 
-  // При клике по кластеру – устанавливаем массив объектов кластера (для выделения)
-  const handleClusterClick = (clusterProperties) => {
-    setSelectedProperties(clusterProperties);
+  // При клике по кластеру – для каждого объекта из массива запрашиваем детальную информацию
+  const handleClusterClick = async (clusterProperties) => {
+    try {
+      const detailedCluster = await Promise.all(
+        clusterProperties.map((property) =>
+          fetch(`https://api.flatty.ai/api/v1/property/record/${property.property_id}`)
+            .then((res) => res.json())
+        )
+      );
+      setSelectedProperties(detailedCluster);
+    } catch (err) {
+      console.error("Ошибка при загрузке детальной информации кластерных объектов:", err);
+    }
   };
 
   // Обработчик изменения границ карты.
@@ -145,7 +155,7 @@ export default function MapView() {
   return (
     <main className="flex-grow mt-28 bg-[#F4F2FF]">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
-      <div className=" flex items-center justify-center w-full  px-4">
+      <div className="flex items-center justify-center w-full px-4">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => {}}
@@ -154,10 +164,7 @@ export default function MapView() {
           API_URL="https://api.flatty.ai/api/v1/property/map"
           setData={setResProperties}
           redirectPath="/map"
-
-          
         />
-       
       </div>
       <div className="flex flex-col lg:flex-row h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
         {/* Левый сайдбар – отображаем объекты, находящиеся в видимой области карты */}
