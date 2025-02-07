@@ -68,7 +68,8 @@ const Home = () => {
   const MobileHeader = () => (
     <div className="block px-4 pt-8 pb-4 text-center md:hidden">
       <h1 className="mb-3 px-8 mt-[80px]  text-3xl font-bold text-slate-900">
-        Unlocking Doors to Your Next  Home
+      Flatty – Secondary Real Estate at Real Prices
+
       </h1>
       <div className="mb-4">
         <SearchbarMobile
@@ -99,7 +100,8 @@ const Home = () => {
           className=" z-10 mb-10 mt-[100px] text-[36px] sm:text-[48px] md:text-[56px] font-bold text-slate-900  max-w-[50%]
       2xl:left-[10%]"
         >
-          Unlocking Doors to Your Next Home
+          Flatty – Secondary Real Estate at Real Prices
+
         </h1>
 
         <div className=" z-20 ">

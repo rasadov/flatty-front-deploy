@@ -155,7 +155,9 @@ export default function MapView() {
   return (
     <main className="flex-grow mt-28 bg-[#F4F2FF]">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
-      <div className="flex items-center justify-center w-full px-4">
+      
+      {/* Searchbar */}
+      <div className="hidden sm:flex items-center justify-center w-full px-4">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => {}}
@@ -166,9 +168,20 @@ export default function MapView() {
           redirectPath="/map"
         />
       </div>
-      <div className="flex flex-col lg:flex-row h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
-        {/* Левый сайдбар – отображаем объекты, находящиеся в видимой области карты */}
-        <div className="w-full sm:w-[300px] mb-4 border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500 mt-4">
+      
+      {/* Основной контент */}
+      <div className="flex flex-col lg:flex-row  h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
+        {/* На мобильных: карта (order-1), затем список (order-2).
+            На десктопе: список слева (order-1), карта справа (order-2) */}
+        <div className="flex-1 p-4 min-h-[400px] max-h-[400px] sm:max-h-full order-1 lg:order-2">
+          <Map
+            properties={resProperties}
+            onMarkerClick={handleMarkerClick}
+            onClusterClick={handleClusterClick}
+            onBoundsChanged={handleBoundsChanged}  // Передаём callback для обновления видимых объектов
+          />
+        </div>
+        <div className="w-full sm:w-[300px] mb-4 border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500 mt-4 order-2 lg:order-1">
           <MapPropertyDetails
             properties={orderedProperties}
             selectedProperties={selectedProperties}
@@ -185,17 +198,8 @@ export default function MapView() {
             setIsModalOpen(false);
           }}
         />
-
-        {/* Правая часть – карта */}
-        <div className="flex-1 p-4">
-          <Map
-            properties={resProperties}
-            onMarkerClick={handleMarkerClick}
-            onClusterClick={handleClusterClick}
-            onBoundsChanged={handleBoundsChanged}  // Передаём callback для обновления видимых объектов
-          />
-        </div>
       </div>
+      
       <div className="px-6 mx-auto bg-[#ECE8FF]">
         <Footer />
       </div>

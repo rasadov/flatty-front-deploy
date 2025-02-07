@@ -16,7 +16,7 @@ export const SearchbarMobile = () => {
 
   return (
     <motion.div
-      className="max-w-full w-full mx-auto  rounded-md shadow-lg flex items-center"
+      className=" w-full mx-auto justify-center  rounded-md shadow-lg  flex items-center"
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
       }}
