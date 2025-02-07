@@ -103,38 +103,30 @@ const Appartment = memo(() => {
           <PropertyShowcase property={apartmentData} />
 
           {/* Icons row: total area, living area, year, floor */}
-          <div className="flex flex-wrap justify-between items-center gap-8 mt-6 lg:pr-8">
+          <div className="flex flex-wrap justify-center items-center gap-12 mt-6 lg:pr-8">
             {/* Icon 1: total area */}
             <div className="flex items-center text-center">
-              {/* <img
-                src="../assets/icons/totalArea.svg"
-                alt="Total area"
-                className="w-8 h-8 mb-2"
-              /> */}
+           
               <TotalAreaIcon />
               <div>
 
-              <p className="text-sm font-medium">
+              <p className="text-sm ml-2 font-medium">
                 {apartmentData.info?.total_area || 0} m<sup>2</sup>
               </p>
-              <span className="text-xs text-[#525C76]">Total area</span>
+              <span className="ml-2 text-xs text-[#525C76]">Total area</span>
               </div>
             </div>
 
             {/* Icon 2: living area */}
             <div className="flex items-center text-center">
-              {/* <img
-                src="../assets/icons/livingArea.svg"
-                alt="Living area"
-                className="w-8 h-8 mb-2"
-              /> */}
+            
               <LivingAreaIcon />
               <div>
 
-              <p className="text-sm font-medium">
+              <p className="text-sm ml-2 font-medium">
                 {apartmentData.info?.living_area || 0} m<sup>2</sup>
               </p>
-              <span className="text-xs text-[#525C76]">Living area</span>
+              <span className="ml-2 text-xs text-[#525C76]">Living area</span>
               </div>
             </div>
 
@@ -144,8 +136,8 @@ const Appartment = memo(() => {
               <YearIcon />
               <div>
 
-              <p className="text-sm font-medium">{apartmentData.building?.year_built}</p>
-              <span className="text-xs text-[#525C76]">Year</span>
+              <p className="ml-2 text-sm font-medium">{apartmentData.building?.year_built}</p>
+              <span className="ml-2 text-xs text-[#525C76]">Year</span>
               </div>
             </div>
 
@@ -156,16 +148,16 @@ const Appartment = memo(() => {
               <FloorsIcon />
               <div>
 
-              <p className="text-sm font-medium">
+              <p className="ml-2 text-sm font-medium">
                 {floors.value === " / " ? "1/4" : floors.value}
               </p>
-              <span className="text-xs text-[#525C76]">Floor</span>
+              <span className="ml-2 text-xs text-[#525C76]">Floor</span>
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="my-14">
+          <div className="my-14 mx-4">
             <h1 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px] md:text-[24px] md:leading-[36px] mb-3">
               Description
             </h1>
@@ -178,13 +170,13 @@ const Appartment = memo(() => {
           </div>
 
           {/* Apartment & Building Tables */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 px-4">
             {/* APARTMENT table */}
             <div>
               <h2 className="text-xl font-semibold text-[#0F1D40] mb-4">
                 Apartment
               </h2>
-              <table className="w-full text-left border-collapse">
+              <table className="w-full text-left border-collapse ">
                 <tbody>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Total area:</td>
@@ -266,7 +258,7 @@ const Appartment = memo(() => {
           </div>
 
           {/* Map Section */}
-          <div className="w-full my-8">
+          <div className="w-full my-8 px-4">
             <h2 className="text-[#0F1D40] font-semibold text-[36px] leading-[54px] md:text-[24px] md:leading-[36px] mb-3">
               Map
             </h2>

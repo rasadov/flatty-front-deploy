@@ -21,7 +21,7 @@ export const Breadcrumbs = () => {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="text-[#8C93A3]  font-normal text-xs leading-[19.2px] h-[19px] w-[169px]"
+      className="text-[#8C93A3]  font-normal text-xs sm:ml-8 ml-4 leading-[19.2px] h-[19px] w-[169px]"
     >
       <ul className="flex items-center space-x-2">
         <li className="flex items-center justify-between">

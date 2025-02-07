@@ -580,14 +580,14 @@ export const Searchbar = ({
 
   return (
     <motion.div
-      className="max-w-full w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4 justify-between"
+      className="p-4 w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4  justify-between"
       style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       {/* Category Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[200px]">
+      <div className="relative flex-shrink-0 ">
         <button
           onClick={() => handleDropdownToggle("category")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -604,7 +604,7 @@ export const Searchbar = ({
         </button>
         {dropdownOpen === "category" && (
           <motion.div
-            className="absolute left-0 right-0 z-10 mt-2 bg-white rounded-md shadow-lg"
+            className="absolute z-10 mt-2 bg-white rounded-md shadow-lg"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -616,7 +616,7 @@ export const Searchbar = ({
       </div>
 
       {/* Room Number Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[150px]">
+      <div className="relative flex-shrink-0 ">
         <button
           onClick={() => handleDropdownToggle("roomNumber")}
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
@@ -633,7 +633,7 @@ export const Searchbar = ({
         </button>
         {dropdownOpen === "roomNumber" && (
           <motion.div
-            className="absolute left-0 right-0 z-10 mt-2 bg-white rounded-md shadow-lg"
+            className="absolute z-10 mt-2 bg-white rounded-md shadow-lg"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -645,7 +645,7 @@ export const Searchbar = ({
       </div>
 
       {/* Price Range Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
+      <div className="relative flex-shrink-0 w-full sm:w-[10%]">
         <button
           onClick={() => handleDropdownToggle("price")}
           className="flex items-center justify-between w-full px-4 py-2 bg-white"
@@ -705,7 +705,7 @@ export const Searchbar = ({
       </div>
 
       {/* Area Dropdown (select from the area list for chosen city) */}
-      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
+      <div className="relative flex-shrink-0 w-full sm:w-[10%]">
         <button
           onClick={() => handleDropdownToggle("area")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -732,13 +732,13 @@ export const Searchbar = ({
             {renderDropdownContent("area")}
           </motion.div>
         )}
+         <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4 sm:mt-0">
+       
       </div>
-
-
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mt-4 sm:mt-0">
-        {/* Show on Map */}
-        <button
+      
+      </div>
+       {/* Show on Map */}
+       <button
           onClick={handleShowOnMap}
           className="flex items-center justify-center px-4 py-2 text-[#8247E5] bg-white h-[50px] w-full sm:w-auto font-semibold rounded-md shadow-md sm:shadow-none"
         >
@@ -755,7 +755,10 @@ export const Searchbar = ({
         >
           Search
         </motion.button>
-      </div>
+
+
+      {/* Action Buttons */}
+     
     </motion.div>
   );
 };

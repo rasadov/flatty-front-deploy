@@ -33,7 +33,7 @@ export const Search = () => {
     error,
   } = useSelector((state) => state.search);
   const [showMap, setShowMap] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
@@ -87,7 +87,7 @@ export const Search = () => {
     <div className="w-full mx-auto ">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
       {/* Searchbar and Filter Button */}
-      <div className="flex items-center justify-center w-full gap-4 mt-36  px-16.26 custom-max-width">
+      <div className="hidden sm:flex items-center justify-center  gap-4 sm:mt-36 mt-20  px-16.26 custom-max-width">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => dispatch(loadSearchResults(filters))}
@@ -98,12 +98,12 @@ export const Search = () => {
         />
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex justify-center items-center w-[54px] h-[54px] bg-white border border-[#A673EF] rounded-md"
+          className="hidden sm:flex justify-center items-center w-[54px] h-[54px] bg-white border border-[#A673EF] rounded-md"
         >
           <FilterButton />
         </button>
       </div>
-      <div className=" px-16.26 custom-max-width">
+      <div className=" px-10.26 sm:px-16.26 custom-max-width">
         <ResultView
           filteredItems={responseData.properties}
           currentPage={currentPage}
@@ -152,7 +152,7 @@ const ResultView = ({
       {/* Filter Dropdowns */}
 
       {/* Filtered Results */}
-      <div className="w-full p-6 sm:p-8 my-6 bg-white rounded-2xl">
+      <div className="w-full p-6 sm:p-8 my-12 bg-white rounded-2xl">
         <div className="flex flex-wrap items-center justify-between my-4 gap-4">
           {/* <SelectedFilters /> */}
           <h1 className="font-semibold text-xl sm:text-2xl text-[#1b1313]">

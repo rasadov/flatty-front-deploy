@@ -27,12 +27,12 @@ export const ChooseUsSection = () => {
   ];
 
   return (
-    <section className="w-full px-8 pt-8 pb-16 m-auto bg-white border rounded-lg custom-max-width mb-20">
-      <div className="mb-8 text-left">
+    <section className="w-full px-2 sm:px-8 pt-8 pb-16 m-auto bg-white border rounded-lg custom-max-width mb-20">
+      <div className="mb-8 text-center sm:text-left">
         <h2 className="mb-2 text-[28px] leading-[42px] font-semibold text-darkText">
           Why Choose Us for Your Real Estate Journey
         </h2>
-        <div className="w-[55%]">
+        <div>
           <p className="text-[18x] text-black  font-normal leading-[28px] mb-2">
             Easily connect with trusted realtors, explore dream properties, and
             enjoy a smooth, stress-free real estate experience.

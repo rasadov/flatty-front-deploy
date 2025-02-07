@@ -128,7 +128,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
     >
       <div className="fixed z-50 flex items-center justify-center inset-1">
         <motion.div
-          className="bg-white rounded-lg w-full max-w-[638px] h-[376px] overflow-auto p-6 relative"
+          className="bg-white  sm:rounded-lg w-full w-screen sm:max-w-[638px] h-screen sm:h-[376px] overflow-auto p-6 relative"
           animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 50, rotate: 10 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -184,7 +184,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             setSelectedFilters={setSelectedFilters}
             selectedFilters={selectedFilters}
           />
-          <FilterSingleNumber
+          {/* <FilterSingleNumber
             label="Floor"
             category="floor"
             placeholderMin="from"
@@ -218,7 +218,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             }
             setSelectedFilters={setSelectedFilters}
             selectedFilters={selectedFilters}
-          />
+          /> */}
           {/* <FilterButtonGroup
             label="Renovation"
             options={[

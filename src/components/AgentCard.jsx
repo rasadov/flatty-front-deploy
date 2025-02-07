@@ -29,19 +29,24 @@ export const AgentCard = (
       }}
     >
       {/* <Link to={"/agent"} className="flex justify-start gap-2"> */}
+        
+        <div className="flex gap-2">
+        <div>
         <motion.img
           src={item?.user?.image?.image_url}
           alt="Agent's Picture"
           className="object-cover w-[78px] h-[78px] rounded-full mb-4"
         />
-        <div>
+        </div>
+          <div>
           <div className="font-semibold text-[#525C76] text-[16px] leading-[25.6px]">
             {item.user.name}
           </div>
-          <div className="text-sm text-[#525C76] font-medium">
+          <div className="text-[12px] text-[#525C76] font-medium">
             Flatty Real Estate Agent
           </div>
           <Rating rating={5} onRatingClick={handleRatingClick} initialRating={5} />
+          </div>
         </div>
       {/* </Link> */}
 
