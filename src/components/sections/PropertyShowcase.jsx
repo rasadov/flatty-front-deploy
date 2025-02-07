@@ -15,7 +15,7 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
   return (
     <div>
       {/* Main Image */}
-      <div className="mb-3 rounded-md shadow-lg w-full h-[200px] md:h-[350px] lg:h-[500px] overflow-hidden">
+      <div className="mb-3 rounded-md shadow-lg w-full h-[300px] md:h-[350px] lg:h-[500px] overflow-hidden">
         <img
           src={currentImage}
           alt="Property"

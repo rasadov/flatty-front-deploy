@@ -103,55 +103,51 @@ const Appartment = memo(() => {
           <PropertyShowcase property={apartmentData} />
 
           {/* Icons row: total area, living area, year, floor */}
-          <div className="flex flex-wrap justify-center items-center gap-12 mt-6 lg:pr-8">
+          <div className="block sm:flex justify-center items-center gap-12 mt-6 p-4">
             {/* Icon 1: total area */}
-            <div className="flex items-center text-center">
-           
+            <div className="flex items-center text-right mb-4 justify-evenly">
               <TotalAreaIcon />
               <div>
-
-              <p className="text-sm ml-2 font-medium">
-                {apartmentData.info?.total_area || 0} m<sup>2</sup>
-              </p>
-              <span className="ml-2 text-xs text-[#525C76]">Total area</span>
+                <p className="text-sm ml-2 font-medium">
+                  {apartmentData.info?.total_area || 0} m<sup>2</sup>
+                </p>
+                <span className="ml-2 text-xs text-[#525C76]">Total area</span>
               </div>
             </div>
 
             {/* Icon 2: living area */}
-            <div className="flex items-center text-center">
-            
+            <div className="flex items-center text-right  mb-4 justify-evenly w-50">
               <LivingAreaIcon />
               <div>
-
-              <p className="text-sm ml-2 font-medium">
-                {apartmentData.info?.living_area || 0} m<sup>2</sup>
-              </p>
-              <span className="ml-2 text-xs text-[#525C76]">Living area</span>
+                <p className="text-sm ml-2 font-medium">
+                  {apartmentData.info?.living_area || 0} m<sup>2</sup>
+                </p>
+                <span className="ml-2 text-xs text-[#525C76]">Living area</span>
               </div>
             </div>
 
             {/* Icon 3: year - example hard-coded or from data */}
-            <div className="flex items-center text-center">
+            <div className="flex items-center text-right justify-evenly w-50  mb-4">
               {/* <img src="../assets/icons/year.svg" alt="Year" className="w-8 h-8 mb-2" /> */}
               <YearIcon />
               <div>
-
-              <p className="ml-2 text-sm font-medium">{apartmentData.building?.year_built}</p>
-              <span className="ml-2 text-xs text-[#525C76]">Year</span>
+                <p className="ml-2 text-sm font-medium">
+                  {apartmentData.building?.year_built}
+                </p>
+                <span className="ml-2 text-xs text-[#525C76]">Year</span>
               </div>
             </div>
 
             {/* Icon 4: floor */}
-            <div className="flex  items-center text-center">
+            <div className="flex  items-center text-right justify-evenly  mb-4">
               {/* <img src="../assets/icons/floors.svg" alt="Floor" className="w-8 h-8 mb-2" />
                */}
               <FloorsIcon />
               <div>
-
-              <p className="ml-2 text-sm font-medium">
-                {floors.value === " / " ? "1/4" : floors.value}
-              </p>
-              <span className="ml-2 text-xs text-[#525C76]">Floor</span>
+                <p className="ml-2 text-sm font-medium">
+                  {floors.value === " / " ? "1/4" : floors.value}
+                </p>
+                <span className="ml-2 text-xs text-[#525C76]">Floor</span>
               </div>
             </div>
           </div>
@@ -179,29 +175,42 @@ const Appartment = memo(() => {
               <table className="w-full text-left border-collapse ">
                 <tbody>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Total area:</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Total area:
+                    </td>
                     <td className="py-2">{apartmentData.info.total_area} m²</td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Living area:</td>
-                    <td className="py-2">{apartmentData.info.living_area} m²</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Living area:
+                    </td>
+                    <td className="py-2">
+                      {apartmentData.info.living_area} m²
+                    </td>
                   </tr>
                   <tr>
                     <td className="py-2 font-medium text-[#525C76]">Rooms:</td>
                     <td className="py-2">
-                      {apartmentData.info.bedrooms + (apartmentData.info.living_rooms || 0)}
+                      {apartmentData.info.bedrooms +
+                        (apartmentData.info.living_rooms || 0)}
                     </td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Bedroom:</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Bedroom:
+                    </td>
                     <td className="py-2">{apartmentData.info.bedrooms}</td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Bathroom:</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Bathroom:
+                    </td>
                     <td className="py-2">{apartmentData.info.bathrooms}</td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Balcony:</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Balcony:
+                    </td>
                     <td className="py-2">{apartmentData.info.balcony}</td>
                   </tr>
                   {/* <tr>
@@ -209,8 +218,12 @@ const Appartment = memo(() => {
                     <td className="py-2">Move-in ready</td>
                   </tr> */}
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Renovation:</td>
-                    <td className="py-2">{apartmentData.info.renovation || "European style"}</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Renovation:
+                    </td>
+                    <td className="py-2">
+                      {apartmentData.info.renovation || "European style"}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -227,30 +240,53 @@ const Appartment = memo(() => {
                     <td className="py-2 font-medium text-[#525C76]">
                       Year of Construction:
                     </td>
-                    <td className="py-2">{apartmentData.building?.year_built}</td>
+                    <td className="py-2">
+                      {apartmentData.building?.year_built}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Installment:</td>
-                    <td className="py-2">{(apartmentData.building?.installment
-                      && apartmentData.building?.installment !== "false"
-                    ) ? "Yes" : "No"}</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Installment:
+                    </td>
+                    <td className="py-2">
+                      {apartmentData.building?.installment &&
+                      apartmentData.building?.installment !== "false"
+                        ? "Yes"
+                        : "No"}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Elevator:</td>
-                    <td className="py-2">{(apartmentData.building?.elevators
-                      && apartmentData.building?.elevators !== "false"
-                    ) ? "Yes" : "No"}</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Elevator:
+                    </td>
+                    <td className="py-2">
+                      {apartmentData.building?.elevators &&
+                      apartmentData.building?.elevators !== "false"
+                        ? "Yes"
+                        : "No"}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Parking:</td>
-                    <td className="py-2">{(apartmentData.building?.parking
-                      && apartmentData.building?.parking !== "false") ?  "Yes" : "No"}</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Parking:
+                    </td>
+                    <td className="py-2">
+                      {apartmentData.building?.parking &&
+                      apartmentData.building?.parking !== "false"
+                        ? "Yes"
+                        : "No"}
+                    </td>
                   </tr>
                   <tr>
-                    <td className="py-2 font-medium text-[#525C76]">Swimming pool:</td>
-                    <td className="py-2">{(apartmentData.building?.swimming_pool
-                      && apartmentData.building?.swimming_pool !== "false"
-                    ) ? "Yes" : "No"}</td>
+                    <td className="py-2 font-medium text-[#525C76]">
+                      Swimming pool:
+                    </td>
+                    <td className="py-2">
+                      {apartmentData.building?.swimming_pool &&
+                      apartmentData.building?.swimming_pool !== "false"
+                        ? "Yes"
+                        : "No"}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -285,8 +321,7 @@ const Appartment = memo(() => {
             {/* Basic Info */}
             <div className="flex justify-start items-center gap-2 mb-2 text-[#525C76] font-medium text-[12px]">
               <div>
-                {apartmentData.info.bedrooms} Room{" "}
-                {apartmentData.info.category}
+                {apartmentData.info.bedrooms} Room {apartmentData.info.category}
               </div>
               <div>{apartmentData.info.total_area} m²</div>
             </div>
@@ -294,23 +329,24 @@ const Appartment = memo(() => {
 
             {/* Agent Info */}
             <a href={`/agent/${apartmentData.owner?.id}`}>
-            <div className="flex items-center justify-start gap-4">
-              <motion.img
-                src={
-                  apartmentData.owner?.user?.image?.image_url ||
-                  "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"}
+              <div className="flex items-center justify-start gap-4">
+                <motion.img
+                  src={
+                    apartmentData.owner?.user?.image?.image_url ||
+                    "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
+                  }
                   alt="Agent"
                   className="object-cover w-[47px] h-[47px] rounded-full"
-                  />
-              <div>
-                {/* <Link to={"/agent"} className="font-semibold text-[#525C76] text-[16px]"> */}
+                />
+                <div>
+                  {/* <Link to={"/agent"} className="font-semibold text-[#525C76] text-[16px]"> */}
                   {apartmentData.owner?.user?.name || "Unknown Agent"}
-                {/* </Link> */}
-                <div className="text-sm text-[#525C76] font-medium">
-                  Flatty Estate Agent
+                  {/* </Link> */}
+                  <div className="text-sm text-[#525C76] font-medium">
+                    Flatty Estate Agent
+                  </div>
                 </div>
               </div>
-            </div>
             </a>
 
             {/* Contact */}

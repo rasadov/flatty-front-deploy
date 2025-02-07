@@ -41,7 +41,7 @@ export const ComplexCard = React.memo(({ id, img, title, roomCount, address }) =
       aria-label={`View details for ${title}`}
     >
       <motion.div
-        className="rounded-[6px] overflow-hidden w-full h-[173px] relative flex-shrink-0 " 
+        className="rounded-[6px] overflow-hidden w-full h-[250px] relative flex-shrink-0 " 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}

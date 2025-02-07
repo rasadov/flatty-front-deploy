@@ -184,7 +184,7 @@ export const HouseItem = React.memo(
         <div
           className="relative w-full rounded-[6px] overflow-hidden"
           style={{
-            height: "150px",
+            height: "250px",
             maxHeight: "300px",
           }}
         >
@@ -222,7 +222,7 @@ export const HouseItem = React.memo(
                       <img
                         src={img.image_url}
                         alt={`Slide ${index + 1}`}
-                        className="object-cover w-full h-[173px]"
+                        className="object-cover w-full h-[250px]"
                       />
                     </Link>
                   </SwiperSlide>
