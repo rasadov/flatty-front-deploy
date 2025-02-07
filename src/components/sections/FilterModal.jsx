@@ -11,9 +11,22 @@ import {
 } from "../../modules/FilterModalModules";
 import { Add, Subtract } from "../../assets/icons";
 import { useSearchParams } from "react-router-dom";
+import { ArrowDown } from "../../assets/icons";
 
-export const FilterModal = ({ isOpen, onClose, onApply }) => {
+export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
+  const categories = ["Penthouse", "Villa", "Cottages"];
+  const livingRoomses = [1, 2, 3, 4, 5];
+  const furnitures = ["true", "false"];
+  const balconie = [1, 2, 3, 4, 5];
+  const bedrooms = [1, 2, 3];
+  const bathrooms = [1, 2, 3];
+  const parkingSlot = ["true", "false"];
+  const swimmingPool = ["true", "false"];
+  const gym = ["true", "false"];
+  const elevator = ["true", "false"];
+
   const [searchParams, setSearchParams] = useSearchParams();
+  const [openDropdown, setOpenDropdown] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState({
     areaFrom: null,
     areaTo: null,
@@ -39,7 +52,13 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
     parkingSlot: null,
     gym: null,
     swimmingPool: null,
+    furniture: null,
   });
+
+  const handleSelect = (name, value) => {
+    setSelectedFilters({ ...selectedFilters, [name]: value });
+    setOpenDropdown(null);
+  };
 
   useEffect(() => {
     // Load existing query parameters into filters on modal open
@@ -104,6 +123,7 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
       parkingSlot: null,
       gym: null,
       swimmingPool: null,
+      furniture: null,
     });
     onClose();
   };
@@ -119,16 +139,16 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
 
   return (
     <motion.div
-      className="fixed inset-0 z-50 bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 bg-black bg-opacity-50 overflow-y-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
       onClick={onClose}
     >
-      <div className="fixed z-50 flex items-center justify-center inset-1">
+      <div className="fixed z-50 flex items-center justify-center inset-0 p-4 md:p-0">
         <motion.div
-          className="bg-white  sm:rounded-lg w-full w-screen sm:max-w-[638px] h-screen sm:h-[376px] overflow-auto p-6 relative"
+          className="bg-white w-full md:rounded-lg md:max-w-[938px] min-h-screen md:min-h-0 md:h-[786px] overflow-auto p-4 md:p-6 relative"
           animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 50, rotate: 10 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -154,124 +174,618 @@ export const FilterModal = ({ isOpen, onClose, onApply }) => {
             updateFilterValue={updateFilterValue}
             unit="m²"
           /> */}
-          <FilterSingleNumber
-            label="Total Area (m²)"
-            category="area"
-            placeholderMin="From"
-            placeholderMax="To"
-            categoryMin="areaFrom"
-            categoryMax="areaTo"
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          />
-          <FilterSingleNumber
-            label="Living Area (m²)"
-            category="livingArea"
-            placeholderMin="From"
-            placeholderMax="To"
-            categoryMin="livingAreaFrom"
-            categoryMax="livingAreaTo"
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          />
-          <FilterSingleNumber
-            label="Price"
-            category="price"
-            placeholderMin="Min"
-            placeholderMax="Max"
-            categoryMin="priceRangeMin"
-            categoryMax="priceRangeMax"
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          />
-          {/* <FilterSingleNumber
-            label="Floor"
-            category="floor"
-            placeholderMin="from"
-            placeholderMax="to"
-            categoryMin="minFloor"
-            categoryMax="maxFloor"
-            children={
-              <>
-              <FilterButtonToggle 
-                // label="Floor"
-                placeholder="Not first"
-                category="notFirstFloor"
-                setSelectedFilters={setSelectedFilters}
-                selectedFilters={selectedFilters}
-                />
-              <FilterButtonToggle 
-                // label="Floor"
-                placeholder="Not last"
-                category="notLastFloor"
-                setSelectedFilters={setSelectedFilters}
-                selectedFilters={selectedFilters}
-                />
-              <FilterButtonToggle 
-              // label="Floor"
-              placeholder="Last"
-              category="lastFloor"
+
+          <div className="flex flex-col gap-4">
+            {/* =========================== CATEGORY SELECT ========================== */}
+            <div className="relative flex gap-4">
+              <div className="w-2/5 pt-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Category
+                </label>
+              </div>
+              <div className="w-3/5 relative">
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "category" ? null : "category"
+                    )
+                  }
+                >
+                  {selectedFilters.category || "Choose Category"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "category" && (
+                  <ul className="absolute w-[200px] bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("category", "Appartment")}
+                    >
+                      Appartment
+                    </li>
+                    {categories.map((category, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("category", category)}
+                      >
+                        {category}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+            {/* =========================== RESIDENTIAL COMPLEX SELECT  ========================== */}
+
+            <div className="relative flex gap-4">
+              <div className="w-2/5 pt-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Residens Complex
+                </label>
+              </div>
+
+              <div className="w-3/5 relative">
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "residentialComplex"
+                        ? null
+                        : "residentialComplex"
+                    )
+                  }
+                >
+                  {selectedFilters.residentialComplex || "Choose Complex"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "residentialComplex" && (
+                  <ul className="absolute w-[200px] bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    {
+                      (complexes = "Could not validate credentials" ? (
+                        <li
+                          className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                          onClick={() => handleSelect("residentialComplex", "")}
+                        >
+                          Select
+                        </li>
+                      ) : (
+                        complexes.map((complex, index) => (
+                          <li
+                            key={index}
+                            className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                            onClick={() =>
+                              handleSelect("residentialComplex", complex)
+                            }
+                          >
+                            {complex}
+                          </li>
+                        ))
+                      ))
+                    }
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            {/* =========================== Installment ========================== */}
+
+            <div className="relative flex gap-4">
+              <div className="w-2/5 pt-2">
+                <label className="block text-sm font-medium text-gray-700">
+                  Installment
+                </label>
+              </div>
+
+              <div className="w-3/5 relative">
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "installment" ? null : "installment"
+                    )
+                  }
+                >
+                  {selectedFilters.installment || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "installment" && (
+                  <ul className="absolute w-[200px] bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    {
+                      (complexes = "Could not validate credentials" ? (
+                        <li
+                          className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                          onClick={() => handleSelect("installment", "")}
+                        >
+                          Select
+                        </li>
+                      ) : (
+                        complexes.map((complex, index) => (
+                          <li
+                            key={index}
+                            className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                            onClick={() =>
+                              handleSelect("installment", installment)
+                            }
+                          >
+                            {complex}
+                          </li>
+                        ))
+                      ))
+                    }
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            <FilterSingleNumber
+              label="Price"
+              category="price"
+              placeholderMin="Min"
+              placeholderMax="Max"
+              categoryMin="priceRangeMin"
+              categoryMax="priceRangeMax"
               setSelectedFilters={setSelectedFilters}
               selectedFilters={selectedFilters}
-              />
-              </>
-            }
-            setSelectedFilters={setSelectedFilters}
-            selectedFilters={selectedFilters}
-          /> */}
-          {/* <FilterButtonGroup
-            label="Renovation"
-            options={[
-              "Cosmetic",
-              "Designer",
-              "European style",
-              "Needs renovation",
-            ]}
-            category="roomNumber"
-            selectedFilters={selectedFilters}
-            setSelectedFilters={setSelectedFilters}
-            updateFilterValue={updateFilterValue}
-          /> */}
-          <div className="flex flex-wrap justify-between gap-3 my-4">
-            {["bathrooms", "livingRooms", "bedrooms", "balconies"].map((type) => (
-              <div key={type} className="flex flex-wrap items-center my-2">
-                <label className="block text-[10px] font-semibold capitalize text-[#525C76] leading-[16px] mr-2">
-                  {type}
+            />
+            <FilterSingleNumber
+              label="Total Area (m²)"
+              category="area"
+              placeholderMin="From (m²)"
+              placeholderMax="To (m²)"
+              categoryMin="areaFrom"
+              categoryMax="areaTo"
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
+            />
+            <FilterSingleNumber
+              label="Living Area (m²)"
+              category="livingArea"
+              placeholderMin="From"
+              placeholderMax="To"
+              categoryMin="livingAreaFrom"
+              categoryMax="livingAreaTo"
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
+            />
+            <FilterSingleNumber
+              label="Floor"
+              category="floor"
+              placeholderMin="from"
+              placeholderMax="to"
+              categoryMin="minFloor"
+              categoryMax="maxFloor"
+              children={
+                <>
+                  <FilterButtonToggle
+                    // label="Floor"
+                    placeholder="Not first"
+                    category="notFirstFloor"
+                    setSelectedFilters={setSelectedFilters}
+                    selectedFilters={selectedFilters}
+                  />
+                  <FilterButtonToggle
+                    // label="Floor"
+                    placeholder="Not last"
+                    category="notLastFloor"
+                    setSelectedFilters={setSelectedFilters}
+                    selectedFilters={selectedFilters}
+                  />
+                  <FilterButtonToggle
+                    // label="Floor"
+                    placeholder="Last"
+                    category="lastFloor"
+                    setSelectedFilters={setSelectedFilters}
+                    selectedFilters={selectedFilters}
+                  />
+                </>
+              }
+              setSelectedFilters={setSelectedFilters}
+              selectedFilters={selectedFilters}
+            />
+
+            {/* =========================== Living Rooms ========================== */}
+            <div className="flex gap-4 mb-2">
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Living room
                 </label>
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() =>
-                      updateFilterValue(type, Math.max((selectedFilters[type] || 0) - 1, 0))
-                    }
-                  >
-                    <Subtract />
-                  </button>
-                  <span className="text-[14px] align-middle font-semibold leading-[22.4px]">
-                    {selectedFilters[type] || 0}
-                  </span>
-                  <button
-                    onClick={() =>
-                      updateFilterValue(type, (selectedFilters[type] || 0) + 1)
-                    }
-                  >
-                    <Add />
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "livingRooms1" ? null : "livingRooms1"
+                    )
+                  }
+                >
+                  {selectedFilters.livingRooms || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "livingRooms1" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("livingRooms", "")}
+                    >
+                      Select
+                    </li>
+                    {livingRoomses.map((rooms, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("livingRooms", rooms)}
+                      >
+                        {rooms}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
-            ))}
+
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Furniture
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "furniture" ? null : "furniture"
+                    )
+                  }
+                >
+                  {selectedFilters.furniture || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "furniture" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("furniture", "")}
+                    >
+                      Select
+                    </li>
+                    {furnitures.map((furniture, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("furniture,", furniture)}
+                      >
+                        {furniture}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* ======================   Balconies ========================= */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Balconies
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "balconies" ? null : "balconies"
+                    )
+                  }
+                >
+                  {selectedFilters.balconies || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "balconies" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("balconies", "")}
+                    >
+                      Select
+                    </li>
+                    {balconie.map((balconies, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("balconies", balconies)}
+                      >
+                        {balconies}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* ======================   bedrooms ========================= */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Bedrooms
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "bedrooms" ? null : "bedrooms"
+                    )
+                  }
+                >
+                  {selectedFilters.bedrooms || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "bedrooms" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("bedrooms", "")}
+                    >
+                      Select
+                    </li>
+                    {bedrooms.map((bedrooms, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("balconies", bedrooms)}
+                      >
+                        {bedrooms}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* ======================   bedrooms ========================= */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Bathrooms
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "bathrooms" ? null : "bathrooms"
+                    )
+                  }
+                >
+                  {selectedFilters.bedrooms || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "bathrooms" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("bathrooms", "")}
+                    >
+                      Select
+                    </li>
+                    {bathrooms.map((bathrooms, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("balconies", bathrooms)}
+                      >
+                        {bathrooms}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            {/* =========================== GYM PARKING SWIMING POOL ELEVATOR ========================== */}
+            <div className="flex gap-4 mb-4">
+              {/*  ========== parkingSlot =============== */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Parking
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "parkingSlot" ? null : "parkingSlot"
+                    )
+                  }
+                >
+                  {selectedFilters.parkingSlot || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "parkingSlot" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("parkingSlot", "")}
+                    >
+                      Select
+                    </li>
+                    {parkingSlot.map((parkingSlot, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("parkingSlot", parkingSlot)}
+                      >
+                        {parkingSlot}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/*  ============= swimmingPool ========= */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  <span className="hidden md:inline">Swimming Pool</span>
+                  <span className="inline md:hidden">Pool</span>
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "swimmingPool" ? null : "swimmingPool"
+                    )
+                  }
+                >
+                  {selectedFilters.swimmingPool || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "swimmingPool" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("swimmingPool", "")}
+                    >
+                      Select
+                    </li>
+                    {swimmingPool.map((swimmingPool, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() =>
+                          handleSelect("swimmingPool,", swimmingPool)
+                        }
+                      >
+                        {swimmingPool}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* ======================   GYM ========================= */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  GYM
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(openDropdown === "gym" ? null : "gym")
+                  }
+                >
+                  {selectedFilters.gym || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "gym" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("gym", "")}
+                    >
+                      Select
+                    </li>
+                    {gym.map((gym, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("gym", gym)}
+                      >
+                        {gym}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* ======================   Elevator ========================= */}
+              <div className="w-1/2 relative">
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Elevator
+                </label>
+                <button
+                  type="button"
+                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === "elevator" ? null : "elevator"
+                    )
+                  }
+                >
+                  {selectedFilters.elevator || "Select"}
+                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                </button>
+
+                {openDropdown === "elevator" && (
+                  <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                    <li
+                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      onClick={() => handleSelect("elevator", "")}
+                    >
+                      Select
+                    </li>
+                    {elevator.map((elevator, index) => (
+                      <li
+                        key={index}
+                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        onClick={() => handleSelect("elevator", elevator)}
+                      >
+                        {elevator}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="flex justify-end gap-4">
             <Button
               onClick={handleApply}
               className="bg-[#8247E5] text-white px-4 py-2 rounded"
+              style={{
+                borderRadius: "3px",
+                border: "1px solid rgba(166, 115, 239, 1)",
+                fontSize: "18px",
+                fontWeight: "600",
+                width: "110px",
+              }}
+            >
+              Clear
+            </Button>
+            <Button
+              onClick={handleApply}
+              className="bg-[#8247E5] text-white px-4 py-2 rounded"
+              style={{
+                borderRadius: "3px",
+                border: "1px solid rgba(166, 115, 239, 1)",
+                fontSize: "18px",
+                fontWeight: "600",
+                width: "110px",
+              }}
             >
               Apply
             </Button>
             <Button
               variant="cancel"
               onClick={handleCancel}
-              className="text-[#4F5B66] text-sm hover:text-[#8247E5] px-4 py-2 rounded"
+              style={{
+                borderRadius: "3px",
+                border: "1px solid #8247E5",
+                background: "rgba(255, 255, 255, 1)",
+                color: "#8247E5",
+                fontSize: "18px",
+                fontWeight: "600",
+                width: "110px",
+              }}
             >
               Cancel
             </Button>
