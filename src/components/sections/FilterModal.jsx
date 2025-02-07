@@ -630,7 +630,8 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
               {/*  ============= swimmingPool ========= */}
               <div className="w-1/2 relative">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
-                  Swimming Pool
+                  <span className="hidden md:inline">Swimming Pool</span>
+                  <span className="inline md:hidden">Pool</span>
                 </label>
                 <button
                   type="button"
