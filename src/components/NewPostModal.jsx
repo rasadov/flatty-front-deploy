@@ -488,6 +488,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         formDataToSend.append("documents", file);
       });
 
+      if (coverPhotoIndex !== null) {
+        formDataToSend.append("coverPhotoIndex", coverPhotoIndex);
+        console.log("coverPhotoIndex", coverPhotoIndex);
+      }
+
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }

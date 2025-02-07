@@ -7,12 +7,11 @@ export const SearchbarMobile = () => {
   const navigate = useNavigate();
 
   const handleSearch = () => {
-    navigate("/search");
-    
+    navigate("/search", { state: { filterOpen: true } });
   };
 
   const handleShowOnMap = () => {
-    console.log("Showing location on map...");
+    navigate("/map");
   };
 
   return (
