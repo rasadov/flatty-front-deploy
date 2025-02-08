@@ -9,6 +9,8 @@ import { MapPin } from "../assets/icons";
 import { FaFilePdf } from "react-icons/fa";
 import { Trash } from "../assets/icons";
 import { PDF } from "../assets/icons/PDF";
+import { ImageDelete } from "../assets/icons/ImageDelete";
+
 import { LeftUpload } from "../assets/icons/LeftUpload";
 import { toast } from "react-toastify";
 
@@ -964,53 +966,65 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
 
               {selectedFiles.length > 0 && (
-                // Make it horizontally scrollable instead of wrapping
                 <div className="mt-4 flex overflow-x-auto space-x-4">
                   {selectedFiles.map((file, index) => {
                     const previewUrl = URL.createObjectURL(file);
                     const isCover = index === coverPhotoIndex;
 
                     return (
-                      // Center the media within this container
-                      <div
-                        key={index}
-                        className={`relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
-                        overflow-hidden flex flex-col items-center justify-center ${
-                          isCover ? "border-4 border-purple-600" : ""
-                        }`}
-                      >
-                        {file.type.startsWith("image/") ? (
-                          <img
-                            src={previewUrl}
-                            alt={file.name}
-                            className="max-w-full max-h-full object-cover"
-                          />
-                        ) : (
-                          <video
-                            src={previewUrl}
-                            className="max-w-full max-h-full object-cover"
-                            controls
-                          />
-                        )}
-
-                        {/* Кнопка удаления */}
-                        <button
-                          className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700 
-                            rounded-full flex items-center justify-center text-xs 
-                            hover:bg-red-600 hover:text-white transition-colors"
-                          onClick={() => handleImageRemove(index)}
+                      <div className="flex flex-col">
+                        <div
+                          key={index}
+                          className={`relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
+                          overflow-hidden flex flex-col items-center justify-center group ${
+                            isCover ? "border-2 border-[#8247E5]" : ""
+                          }`}
                         >
-                          X
-                        </button>
+                          {file.type.startsWith("image/") ? (
+                            <img
+                              src={previewUrl}
+                              alt={file.name}
+                              className="max-w-full max-h-full object-cover"
+                            />
+                          ) : (
+                            <video
+                              src={previewUrl}
+                              className="max-w-full max-h-full object-cover"
+                              controls
+                            />
+                          )}
 
-                        {/* Кнопка выбора cover фото */}
-                        <button
-                          className="absolute bottom-2 left-2 px-2 py-1 bg-white text-xs text-purple-600 
-                          border border-purple-600 rounded-md hover:bg-purple-600 hover:text-white transition-colors"
-                          onClick={() => handleSetCoverPhoto(index)}
-                        >
-                          {isCover ? "Cover" : "Set as Cover"}
-                        </button>
+                          {/* Centered delete button with overlay effect */}
+                          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all">
+                            <button
+                              className="w-8 h-8  text-gray-700 rounded-full 
+                              flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 
+                               transition-all transform scale-90 
+                              group-hover:scale-100"
+                              onClick={() => handleImageRemove(index)}
+                            >
+                              <ImageDelete />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Radio button below the image */}
+                        <div className="flex items-center gap-2 mt-2 justify-center">
+                          <input
+                            type="radio"
+                            id={`cover-${index}`}
+                            name="coverPhoto"
+                            checked={isCover}
+                            onChange={() => handleSetCoverPhoto(index)}
+                            className="w-4 h-4 accent-[#8247E5] border-gray-300"
+                          />
+                          <label
+                            htmlFor={`cover-${index}`}
+                            className="text-xs text-gray-700 select-none"
+                          >
+                            Cover photo
+                          </label>
+                        </div>
                       </div>
                     );
                   })}
