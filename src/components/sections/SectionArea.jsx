@@ -14,12 +14,12 @@ export const SectionArea = ({
 
   return (
     <div
-      className={`w-full p-4 mx-auto my-2 bg-white rounded-2xl ${
+      className={`w-full p-6 mx-auto my-2 bg-white rounded-2xl ${
         !isProfileRoute ? "custom-max-width" : ""
       }`}
       style={{ boxShadow: "0px 2px 3px 0px #703ACA14" }}
     >
-      <h1 className="text-[36px] my-2  font-semibold">{sectionName}</h1>
+      <h1 className="text-[24px] my-2 text-center sm:text-left  font-semibold">{sectionName}</h1>
       {children}
       {seeAll && (
         <div className="flex justify-end mt-8">

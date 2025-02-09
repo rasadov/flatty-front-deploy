@@ -582,9 +582,7 @@ export const Searchbar = ({
     <motion.div
       className="p-4 w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4  justify-between"
       style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+   
     >
       {/* Category Dropdown */}
       <div className="relative flex-shrink-0 ">

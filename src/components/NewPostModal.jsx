@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
@@ -349,6 +349,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const dispatch = useDispatch();
   const mapRef = useRef(null);
 
+  useEffect(() => {
+    if (selectedFiles.length > 0 && coverPhotoIndex === null) {
+      setCoverPhotoIndex(0);
+    }
+  }, [selectedFiles]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -572,6 +578,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     }
   };
 
+  
+
   if (!isOpen) return null;
 
   return (
@@ -580,25 +588,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+        className="w-full sm:w-[75%] md:w-[50%] mx-2   h-[80vh] bg-white rounded-md shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-xl font-semibold">New Post</h2>
-          <button
+       
+        {step === 1 && (
+          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
+           <div className="flex items-center justify-between">
+           <h3 className="text-2xl font-semibold">Fill Info</h3>
+            <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
           >
             &times;
           </button>
-        </div>
-        {step === 1 && (
-          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
-            <h3 className="text-base sm:text-lg font-semibold">Fill Info</h3>
+           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -606,7 +614,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -624,7 +632,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="residentialComplex"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
@@ -645,7 +653,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="totalArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[106px] h-[40px] p-2 border rounded-md"
                   value={formData.totalArea}
                   onChange={handleInputChange}
                 />
@@ -657,13 +665,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="livingArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[106px] h-[40px] p-2 border rounded-md"
                   value={formData.livingArea}
                   onChange={handleInputChange}
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
               {[
                 "floor",
                 "apartmentStories",
@@ -687,7 +695,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleNumberChange(field, "subtract")}
-                      className="p-2 border rounded-md hover:bg-gray-100"
+                      className="p-1 border rounded-md hover:bg-gray-100"
                     >
                       <Subtract />
                     </button>
@@ -702,7 +710,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     />
                     <button
                       onClick={() => handleNumberChange(field, "add")}
-                      className="p-2 border rounded-md hover:bg-gray-100"
+                      className="p-1 border rounded-md hover:bg-gray-100"
                     >
                       <Add />
                     </button>
@@ -741,7 +749,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="installment"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -757,7 +765,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -773,7 +781,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -790,7 +798,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </label>
                   <select
                     name="gym"
-                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                    className="w-full  text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                     value={formData.gym}
                     onChange={handleInputChange}
                   >
@@ -807,7 +815,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     </label>
                     <select
                       name="elevator"
-                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                      className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                       value={formData.elevator}
                       onChange={handleInputChange}
                     >
@@ -828,7 +836,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="year"
                   type="number"
-                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[76px] h-[40px] p-2 border rounded-md"
                   value={formData.year}
                   onChange={handleInputChange}
                 />
@@ -841,13 +849,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <input
                     name="price"
                     type="number"
-                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                    className="w-full sm:w-[106px] h-[40px] p-2 border rounded-md"
                     value={formData.price}
                     onChange={handleInputChange}
                   />
                   <select
                     name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    className="h-[40px] p-2 border rounded-md bg-gray-100"
                     value={formData.currency}
                     onChange={handleInputChange}
                   >
@@ -873,7 +881,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="title"
                   type="text"
-                  className="w-full h-[52px] p-2 border rounded-md"
+                  className="w-full h-[40px] p-2 border rounded-md"
                   value={formData.title}
                   onChange={handleInputChange}
                 />
@@ -917,9 +925,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
           </div>
         )}
         {step === 2 && (
-          <div className="flex flex-col justify-between h-full gap-4">
+          <div className="flex flex-col justify-between h-full gap-4 mx-2">
             {/* Content area */}
-            <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
+            <div className="space-y-6 flex-1 overflow-y-auto px-3 py-4">
               {/* Header */}
               <div className="text-center mb-4">
                 <h3 className="text-lg font-semibold">Upload photos</h3>
@@ -1114,6 +1122,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
 
+              
+
               {selectedDocuments.length > 0 && (
                 // List the selected files below
                 <div className="mt-4 space-y-2">
@@ -1210,7 +1220,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="city"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[40px] text-sm p-2 border rounded-md bg-gray-100"
                   value={city}
                   onChange={handleLocationChange}
                 >
@@ -1228,7 +1238,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="area"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[40px] p-2 border rounded-md bg-gray-100"
                   value={area}
                   onChange={handleLocationChange}
                 >
