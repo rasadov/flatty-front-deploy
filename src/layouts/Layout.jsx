@@ -10,7 +10,7 @@ const Layout = () => {
     <div className="flex flex-col min-h-screen ">
       <main className="flex-grow  bg-[#F4F2FF] ">
         <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
-        <div className="px-16.26 mx-auto max-w-[1440px] sm:p-3">
+        <div className="my-10 sm:p-3">
           <Outlet />
         </div>
         <div className="px-6  mx-auto  bg-[#ECE8FF]">

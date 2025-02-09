@@ -67,8 +67,9 @@ const Home = () => {
 
   const MobileHeader = () => (
     <div className="block px-4 pt-8 pb-4 text-center md:hidden">
-      <h1 className="mb-3 text-3xl font-bold text-slate-900">
-        Unlocking Doors to Your Next Home
+      <h1 className="mb-3 px-8 mt-[80px]  text-3xl font-bold text-slate-900">
+      Flatty – Secondary Real Estate at Real Prices
+
       </h1>
       <div className="mb-4">
         <SearchbarMobile
@@ -91,19 +92,19 @@ const Home = () => {
         })`,
         backgroundSize: "cover",
         backgroundPosition: "center 20px",
-        height: "calc(100vw * 0.5)",
-        maxHeight: "650px",
+        
       }}
     >
-      <div className="w-[80%]">
+      <div className="px-4 sm:px-8 md:px-16 mx-auto">
         <h1
-          className="absolute z-10 text-[36px] sm:text-[48px] md:text-[56px] font-bold text-slate-900 top-8 left-20 max-w-[50%]
+          className=" z-10 mb-10 mt-[100px] text-[36px] sm:text-[48px] md:text-[56px] font-bold text-slate-900  max-w-[50%]
       2xl:left-[10%]"
         >
-          Unlocking Doors to Your Next Home
+          Flatty – Secondary Real Estate at Real Prices
+
         </h1>
 
-        <div className="absolute z-20 bottom-[40%] left-[4%] max-w-[78%] px-4 2xl:max-w-[1300px] 2xl:left-[10%]">
+        <div className=" z-20 ">
           <Searchbar
             value={searchQuery}
             onChange={handleSearchQueryChange}
@@ -117,15 +118,7 @@ const Home = () => {
           />
         </div>
 
-        <img
-          src={key_img}
-          alt="Key"
-          className="absolute z-20 top-[72%] left-[50%] transform -translate-x-1/2 opacity-90 2xl:hidden"
-          style={{
-            height: "auto",
-            zIndex: 10,
-          }}
-        />
+        
       </div>
     </div>
   );
@@ -273,7 +266,7 @@ const Home = () => {
           <MobileHeader />
           <DesktopHeader />
           <div className="px-4 sm:px-8 md:px-16 mx-auto">
-            <div className="relative z-10 md:-mt-40">
+            <div className="relative z-10 ">
               <CardList sectionName="Best Offers" seeAll={true}>
                 {featuredLoading ? (
                   <p>Loading...</p>

@@ -1,14 +1,14 @@
+// src/components/Map.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { GoogleMap, useLoadScript } from "@react-google-maps/api";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
-export default function Map({ properties = [], onMarkerClick }) {
+export default function Map({ properties = [], onMarkerClick, onClusterClick }) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM",
   });
 
   const clustererRef = useRef(null);
-
   const [map, setMap] = useState(null);
   const [center, setCenter] = useState({ lat: 35.3, lng: 33.4 });
   const [zoomLevel, setZoomLevel] = useState(10);
@@ -31,7 +31,7 @@ export default function Map({ properties = [], onMarkerClick }) {
 
   const mapContainerStyle = { width: "100%", height: "100%" };
 
-  // Custom map style to hide POI (Points of Interest)
+  // Стили карты (например, чтобы скрыть POI)
   const mapStyles = [
     {
       featureType: "poi",
@@ -51,12 +51,12 @@ export default function Map({ properties = [], onMarkerClick }) {
   const renderMarkersWithClustering = () => {
     if (!window.google || !map) return;
 
-    // If we already have a clusterer, clear out its markers first
+    // Если кластер уже создан – очищаем его маркеры
     if (clustererRef.current) {
       clustererRef.current.clearMarkers();
     }
 
-    // Build markers from your updated properties
+    // Создаём маркеры для каждого объекта
     const markers = properties.map((property) => {
       const position = { lat: property.latitude, lng: property.longitude };
       const marker = new window.google.maps.Marker({
@@ -72,6 +72,9 @@ export default function Map({ properties = [], onMarkerClick }) {
         },
       });
 
+      // Сохраняем данные объекта в маркере – пригодится при клике по кластеру
+      marker.propertyData = property;
+
       marker.addListener("click", () => {
         onMarkerClick?.(property);
       });
@@ -79,13 +82,13 @@ export default function Map({ properties = [], onMarkerClick }) {
       return marker;
     });
 
-    // Create / re-create the clusterer with the new markers
+    // Создаём кластеризатор с настраиваемым рендерером
     clustererRef.current = new MarkerClusterer({
       markers,
       map,
       renderer: {
-        render: ({ count, position }) => {
-          return new window.google.maps.Marker({
+        render: ({ count, markers, position }) => {
+          const clusterMarker = new window.google.maps.Marker({
             position,
             icon: {
               path: window.google.maps.SymbolPath.CIRCLE,
@@ -101,11 +104,22 @@ export default function Map({ properties = [], onMarkerClick }) {
               fontWeight: "bold",
             },
           });
+          clusterMarker.addListener("click", () => {
+            // При клике по кластеру приближаем карту к границам кластера
+            if (map) {
+              const bounds = new window.google.maps.LatLngBounds();
+              markers.forEach((m) => bounds.extend(m.getPosition()));
+              map.fitBounds(bounds);
+            }
+            // Вызываем callback с массивом объектов из кластера
+            const clusterProperties = markers.map((m) => m.propertyData);
+            onClusterClick?.(clusterProperties);
+          });
+          return clusterMarker;
         },
       },
     });
   };
-
 
   return (
     <GoogleMap

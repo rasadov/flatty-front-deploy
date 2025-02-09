@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
@@ -9,10 +9,19 @@ import { MapPin } from "../assets/icons";
 import { FaFilePdf } from "react-icons/fa";
 import { Trash } from "../assets/icons";
 import { PDF } from "../assets/icons/PDF";
+import { ImageDelete } from "../assets/icons/ImageDelete";
+
 import { LeftUpload } from "../assets/icons/LeftUpload";
 import { toast } from "react-toastify";
 
-const categories = ["Penthouse", "Villa", "Cottages", "Loft", "Townhouse",  "Bungalow"];
+const categories = [
+  "Penthouse",
+  "Villa",
+  "Cottages",
+  "Loft",
+  "Townhouse",
+  "Bungalow",
+];
 
 const renovations = [
   "Cosmetic",
@@ -29,11 +38,10 @@ const cities = [
   "Lefke",
   "Lapta",
   "Alsancak",
-
 ];
 
 const areas = {
-  "Lefkoşa": [
+  Lefkoşa: [
     "Akıncılar",
     "Alayköy",
     "Dilekkaya",
@@ -70,18 +78,15 @@ const areas = {
     "Selimiye",
     "Taşkınköy",
     "Yenicami",
-    "Yenişehir"
+    "Yenişehir",
   ],
-  "Gönyeli": [
-    "Gönyeli",
-    "Yenikent"
-  ],
-  "Değirmenlik": [
+  Gönyeli: ["Gönyeli", "Yenikent"],
+  Değirmenlik: [
     "Balıkesir",
     "Beyköy",
     "Cihangir",
     "Çukurova",
-      "Demirhan",
+    "Demirhan",
     "Düzova",
     "Gaziköy",
     "Gökhan",
@@ -94,9 +99,9 @@ const areas = {
     "Camialtı",
     "Mehmetçik",
     "Saray",
-    "Tepebaşı"
+    "Tepebaşı",
   ],
-  "Gazimağusa": [
+  Gazimağusa: [
     "Akova",
     "Alaniçi",
     "Aslanköy",
@@ -128,14 +133,10 @@ const areas = {
     "Zafer",
     "Atlılar",
     "Muratağa",
-    "Sandallar"
+    "Sandallar",
   ],
-  "Tatlısu": [
-    "Aktunç",
-    "Küçükerenköy",
-    "Yalı"
-  ],
-  "Akdoğan": [
+  Tatlısu: ["Aktunç", "Küçükerenköy", "Yalı"],
+  Akdoğan: [
     "Akdoğan",
     "Beyarmudu",
     "Çayönü",
@@ -145,9 +146,9 @@ const areas = {
     "Paşaköy",
     "Turunçlu",
     "Türkmenköy",
-    "Vadili"
+    "Vadili",
   ],
-  "Girne": [
+  Girne: [
     "Ağırdağ",
     "Alsancak",
     "Arapköy",
@@ -183,23 +184,19 @@ const areas = {
     "Karakum",
     "Karaoğlanoğlu",
     "Yukarı Girne",
-    "Zeytinlik"
+    "Zeytinlik",
   ],
-  "Lapta": [
+  Lapta: [
     "Adatepe",
     "Başpınar",
     "Kocatepe",
     "Sakarya",
     "Tınaztepe",
     "Türk",
-    "Yavuz"
+    "Yavuz",
   ],
-  "Alsancak": [
-    "Çağlayan",
-    "Yayla",
-    "Yeşilova"
-  ],
-  "Çamlıbel": [
+  Alsancak: ["Çağlayan", "Yayla", "Yeşilova"],
+  Çamlıbel: [
     "Akçiçek",
     "Akdeniz",
     "Alemdağ",
@@ -214,9 +211,9 @@ const areas = {
     "Özhan",
     "Sadrazamköy",
     "Şirinevler",
-    "Tepebaşı"
+    "Tepebaşı",
   ],
-  "Güzelyurt": [
+  Güzelyurt: [
     "Akçay",
     "Aydınköy",
     "Gayretköy",
@@ -233,9 +230,9 @@ const areas = {
     "İsmetpaşa",
     "Lala Mustafa Paşa",
     "Piyalepaşa",
-    "Yukarı Bostancı"
+    "Yukarı Bostancı",
   ],
-  "İskele": [
+  İskele: [
     "Ağıllar",
     "Altınova",
     "Ardahan",
@@ -268,7 +265,7 @@ const areas = {
     "Sazlıköy",
     "Tuzluca",
     "Yedikonuk",
-    "Zeybekköy"
+    "Zeybekköy",
   ],
   "Yeni Erenköy": [
     "Adaçay",
@@ -282,10 +279,10 @@ const areas = {
     "Kuruova",
     "Sipahi",
     "Taşlıca",
-      "Yeşilköy",
-    "Ziyamet"
+    "Yeşilköy",
+    "Ziyamet",
   ],
-  "Lefke": [
+  Lefke: [
     "Bademliköy",
     "Bağlıköy",
     "Cengizköy",
@@ -301,18 +298,23 @@ const areas = {
     "Denizli",
     "Gemikonağı",
     "Lefke",
-    "Yedidalga"
-  ]
-}
+    "Yedidalga",
+  ],
+};
 
 var city = "";
 var area = "";
 const libraries = ["places"];
 
-
 const NewPostModal = ({ isOpen, onClose, complexes }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
+
+  const [coverPhotoIndex, setCoverPhotoIndex] = useState(null);
+
+  const handleSetCoverPhoto = (index) => {
+    setCoverPhotoIndex(index);
+  };
 
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -346,6 +348,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   });
   const dispatch = useDispatch();
   const mapRef = useRef(null);
+
+  useEffect(() => {
+    if (selectedFiles.length > 0 && coverPhotoIndex === null) {
+      setCoverPhotoIndex(0);
+    }
+  }, [selectedFiles]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -394,7 +402,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   };
 
   const handleFileRemove = (index) => {
-    setSelectedDocuments((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setSelectedDocuments((prevFiles) =>
+      prevFiles.filter((_, i) => i !== index)
+    );
   };
 
   const handleDragOverFile = (event) => {
@@ -454,7 +464,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     },
   ];
   const handleSubmit = async () => {
-    if (selectedFiles.length > 0
+    if (
+      selectedFiles.length > 0
       // && !!formData.address
       // && !!formData.totalArea
       // && !!formData.livingArea
@@ -485,6 +496,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         formDataToSend.append("documents", file);
       });
 
+      if (coverPhotoIndex !== null) {
+        formDataToSend.append("coverPhotoIndex", coverPhotoIndex);
+        console.log("coverPhotoIndex", coverPhotoIndex);
+      }
+
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
@@ -494,9 +510,12 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         onClose();
         // window.location.reload();
       } catch (error) {
-        toast.error("An error occurred. Please try again. Make sure you complete all required fields", {
-          toastId: "upload-error",
-        });
+        toast.error(
+          "An error occurred. Please try again. Make sure you complete all required fields",
+          {
+            toastId: "upload-error",
+          }
+        );
         console.error(error);
       }
     } else {
@@ -519,6 +538,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         : "border-[#E2E4E8] hover:border-[#8247E5] hover:bg-[#F0F0F5]"
     }`;
   };
+
+  // Добавляем состояние для хранения индекса выбранного cover-фото
 
   const clearLocation = () => {
     setFormData((prev) => ({
@@ -551,12 +572,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       console.log("area", area);
     }
     if (city && area) {
-    setFormData((prev) => ({ ...prev, address: `${city}, ${area}` }));
+      setFormData((prev) => ({ ...prev, address: `${city}, ${area}` }));
     } else {
       setFormData((prev) => ({ ...prev, address: `${value}` }));
     }
   };
 
+  
 
   if (!isOpen) return null;
 
@@ -566,25 +588,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[75%] md:w-[50%] h-[500px] sm:h-[600px] bg-white rounded-lg shadow-lg flex flex-col"
+        className="w-full sm:w-[75%] md:w-[50%] mx-2   h-[80vh] bg-white rounded-md shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b">
-          <h2 className="text-xl font-semibold">New Post</h2>
-          <button
+       
+        {step === 1 && (
+          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
+           <div className="flex items-center justify-between">
+           <h3 className="text-2xl font-semibold">Fill Info</h3>
+            <button
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
           >
             &times;
           </button>
-        </div>
-        {step === 1 && (
-          <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
-            <h3 className="text-base sm:text-lg font-semibold">Fill Info</h3>
+           </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -592,7 +614,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="category"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.category}
                   onChange={handleInputChange}
                 >
@@ -610,7 +632,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="residentialComplex"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.residentialComplex}
                   onChange={handleInputChange}
                 >
@@ -631,7 +653,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="totalArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[106px] h-[40px] p-2 border rounded-md"
                   value={formData.totalArea}
                   onChange={handleInputChange}
                 />
@@ -643,13 +665,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="livingArea"
                   type="number"
-                  className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[106px] h-[40px] p-2 border rounded-md"
                   value={formData.livingArea}
                   onChange={handleInputChange}
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6">
               {[
                 "floor",
                 "apartmentStories",
@@ -673,7 +695,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleNumberChange(field, "subtract")}
-                      className="p-2 border rounded-md hover:bg-gray-100"
+                      className="p-1 border rounded-md hover:bg-gray-100"
                     >
                       <Subtract />
                     </button>
@@ -688,7 +710,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     />
                     <button
                       onClick={() => handleNumberChange(field, "add")}
-                      className="p-2 border rounded-md hover:bg-gray-100"
+                      className="p-1 border rounded-md hover:bg-gray-100"
                     >
                       <Add />
                     </button>
@@ -705,7 +727,10 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <button
                     key={index}
                     onClick={() =>
-                      setFormData((prev) => ({ ...prev, renovation: renovation }))
+                      setFormData((prev) => ({
+                        ...prev,
+                        renovation: renovation,
+                      }))
                     }
                     className={`${getButtonStyle(
                       "renovation",
@@ -724,7 +749,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="installment"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.installment}
                   onChange={handleInputChange}
                 >
@@ -740,7 +765,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="parkingSlot"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.parkingSlot}
                   onChange={handleInputChange}
                 >
@@ -756,7 +781,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="swimmingPool"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                   value={formData.swimmingPool}
                   onChange={handleInputChange}
                 >
@@ -773,7 +798,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </label>
                   <select
                     name="gym"
-                    className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                    className="w-full  text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                     value={formData.gym}
                     onChange={handleInputChange}
                   >
@@ -790,7 +815,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     </label>
                     <select
                       name="elevator"
-                      className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                      className="w-full text-sm h-[35px] p-1 border rounded-md bg-gray-100"
                       value={formData.elevator}
                       onChange={handleInputChange}
                     >
@@ -811,7 +836,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <input
                   name="year"
                   type="number"
-                  className="w-full sm:w-[76px] h-[52px] p-2 border rounded-md"
+                  className="w-full sm:w-[76px] h-[40px] p-2 border rounded-md"
                   value={formData.year}
                   onChange={handleInputChange}
                 />
@@ -824,13 +849,13 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <input
                     name="price"
                     type="number"
-                    className="w-full sm:w-[106px] h-[52px] p-2 border rounded-md"
+                    className="w-full sm:w-[106px] h-[40px] p-2 border rounded-md"
                     value={formData.price}
                     onChange={handleInputChange}
                   />
                   <select
                     name="currency"
-                    className="h-[52px] p-2 border rounded-md bg-gray-100"
+                    className="h-[40px] p-2 border rounded-md bg-gray-100"
                     value={formData.currency}
                     onChange={handleInputChange}
                   >
@@ -843,25 +868,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
             </div>
             <div className="flex flex-col items-left gap-2">
-                <div
-                  style={{
-                    textAlign: "left",
-                  }}
-                >
-                  <label className="block mb-1 text-sm font-medium text-gray-700">
-                    Title
-                  </label>
-                </div>
-                <div className="flex gap-1">
-                  <input
-                    name="title"
-                    type="text"
-                    className="w-full h-[52px] p-2 border rounded-md"
-                    value={formData.title}
-                    onChange={handleInputChange}
-                  />
-                </div>
+              <div
+                style={{
+                  textAlign: "left",
+                }}
+              >
+                <label className="block mb-1 text-sm font-medium text-gray-700">
+                  Title
+                </label>
               </div>
+              <div className="flex gap-1">
+                <input
+                  name="title"
+                  type="text"
+                  className="w-full h-[40px] p-2 border rounded-md"
+                  value={formData.title}
+                  onChange={handleInputChange}
+                />
+              </div>
+            </div>
 
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -900,9 +925,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
           </div>
         )}
         {step === 2 && (
-          <div className="flex flex-col justify-between h-full gap-4">
+          <div className="flex flex-col justify-between h-full gap-4 mx-2">
             {/* Content area */}
-            <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
+            <div className="space-y-6 flex-1 overflow-y-auto px-3 py-4">
               {/* Header */}
               <div className="text-center mb-4">
                 <h3 className="text-lg font-semibold">Upload photos</h3>
@@ -915,10 +940,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 onDrop={handleDrop}
               >
                 <p
-                  className="text-sm  mb-4"
-                  style={{
-                    color: "rgba(130, 71, 229, 1)",
-                  }}
+                  className="text-sm mb-4"
+                  style={{ color: "rgba(130, 71, 229, 1)" }}
                 >
                   Drag photos here to start uploading
                 </p>
@@ -951,41 +974,65 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
 
               {selectedFiles.length > 0 && (
-                // Make it horizontally scrollable instead of wrapping
                 <div className="mt-4 flex overflow-x-auto space-x-4">
                   {selectedFiles.map((file, index) => {
                     const previewUrl = URL.createObjectURL(file);
+                    const isCover = index === coverPhotoIndex;
 
                     return (
-                      // Center the media within this container
-                      <div
-                        key={index}
-                        className="relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
-                                overflow-hidden flex items-center justify-center"
-                      >
-                        {file.type.startsWith("image/") ? (
-                          <img
-                            src={previewUrl}
-                            alt={file.name}
-                            className="max-w-full max-h-full object-cover"
-                          />
-                        ) : (
-                          <video
-                            src={previewUrl}
-                            className="max-w-full max-h-full object-cover"
-                            controls
-                          />
-                        )}
-
-                        {/* Delete button */}
-                        <button
-                          className="absolute top-2 right-2 w-6 h-6 bg-white text-gray-700 
-                                  rounded-full flex items-center justify-center text-xs 
-                                  hover:bg-red-600 hover:text-white transition-colors"
-                          onClick={() => handleImageRemove(index)}
+                      <div className="flex flex-col">
+                        <div
+                          key={index}
+                          className={`relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
+                          overflow-hidden flex flex-col items-center justify-center group ${
+                            isCover ? "border-2 border-[#8247E5]" : ""
+                          }`}
                         >
-                          X
-                        </button>
+                          {file.type.startsWith("image/") ? (
+                            <img
+                              src={previewUrl}
+                              alt={file.name}
+                              className="max-w-full max-h-full object-cover"
+                            />
+                          ) : (
+                            <video
+                              src={previewUrl}
+                              className="max-w-full max-h-full object-cover"
+                              controls
+                            />
+                          )}
+
+                          {/* Centered delete button with overlay effect */}
+                          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all">
+                            <button
+                              className="w-8 h-8  text-gray-700 rounded-full 
+                              flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 
+                               transition-all transform scale-90 
+                              group-hover:scale-100"
+                              onClick={() => handleImageRemove(index)}
+                            >
+                              <ImageDelete />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Radio button below the image */}
+                        <div className="flex items-center gap-2 mt-2 justify-center">
+                          <input
+                            type="radio"
+                            id={`cover-${index}`}
+                            name="coverPhoto"
+                            checked={isCover}
+                            onChange={() => handleSetCoverPhoto(index)}
+                            className="w-4 h-4 accent-[#8247E5] border-gray-300"
+                          />
+                          <label
+                            htmlFor={`cover-${index}`}
+                            className="text-xs text-gray-700 select-none"
+                          >
+                            Cover photo
+                          </label>
+                        </div>
                       </div>
                     );
                   })}
@@ -1048,7 +1095,9 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 <button
                   className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
                   onClick={() =>
-                    document.querySelector('input[id="uploadDocuments"]')?.click()
+                    document
+                      .querySelector('input[id="uploadDocuments"]')
+                      ?.click()
                   }
                   style={{
                     display: "flex",
@@ -1072,6 +1121,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   className="hidden"
                 />
               </div>
+
+              
 
               {selectedDocuments.length > 0 && (
                 // List the selected files below
@@ -1169,7 +1220,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="city"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full h-[40px] text-sm p-2 border rounded-md bg-gray-100"
                   value={city}
                   onChange={handleLocationChange}
                 >
@@ -1187,17 +1238,20 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </label>
                 <select
                   name="area"
-                  className="w-full h-[46px] p-2 border rounded-md bg-gray-100"
+                  className="w-full text-sm h-[40px] p-2 border rounded-md bg-gray-100"
                   value={area}
                   onChange={handleLocationChange}
                 >
-                  <option value="">{!city ? "Select a city first" : area || "Select"}</option>
-                  { city ?
-                  areas[city].map((area, index) => (
-                    <option key={index} value={area}>
-                      {area}
-                    </option>
-                  )) : null}
+                  <option value="">
+                    {!city ? "Select a city first" : area || "Select"}
+                  </option>
+                  {city
+                    ? areas[city].map((area, index) => (
+                        <option key={index} value={area}>
+                          {area}
+                        </option>
+                      ))
+                    : null}
                 </select>
               </div>
             </div>

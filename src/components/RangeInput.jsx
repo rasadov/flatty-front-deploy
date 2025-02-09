@@ -1,5 +1,5 @@
 import React from "react";
-import Input from "./İnput";
+import Input from "./Input";
 
 export const RangeInput = ({
   label,

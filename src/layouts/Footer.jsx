@@ -22,13 +22,15 @@ export const Footer = () => {
       className="container py-12 mx-auto bg-secondaryBg"
     >
       {/* Logo Section */}
-      <motion.div
+     <div className="w-full mx-auto flex justify-center">
+     <motion.div
         variants={fadeInVariant}
-        className="mb-8 text-center sm:text-left"
+        className="mb-8 mx-auto sm:w-[100%] text-center sm:text-left"
       >
         <FooterLogo />
       </motion.div>
-      <hr className="my-8 text-black border-b-2" />
+     </div>
+   
 
       {/* Grid Columns */}
       <div className="grid grid-cols-1 text-center gap-y-8 sm:grid-cols-2 lg:grid-cols-4 sm:text-left">
@@ -145,17 +147,17 @@ export const Footer = () => {
         </motion.div>
       </div>
 
-      <hr className="my-8 text-black border-b-2" />
+     
 
       {/* Footer Bottom Section */}
       <motion.div
         variants={fadeInVariant}
-        className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0"
+        className="flex mt-8 flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0"
       >
         <p className="text-sm text-center text-gray-400 sm:text-left">
           Flatty &copy; 2024. All rights reserved.
         </p>
-        <div className="flex flex-col items-end justify-center lg:space-x-12 sm:flex-row sm:space-x-2">
+        <div className="hidden sm:flex flex-col items-end justify-center lg:space-x-12 sm:flex-row sm:space-x-2">
           {["Home", "Agents", "Agencies", "About us", "Contact us"].map(
             (item, idx) => (
               <a

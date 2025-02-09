@@ -8,9 +8,9 @@ export default function MapPropertyDetails({ properties }) {
   return (
     <div style={{ margin: "1rem" }}>
       {/* <h2>Selected Properties ({properties.length})</h2> */}
-      <div className="pt-2">
+      <div className="">
         {properties.map((property) => (
-          <div className="my-2">
+          <div className="mb-2">
             <HouseItem
               key={property?.id}
               id={property?.id}

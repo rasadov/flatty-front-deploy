@@ -297,7 +297,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-[#F9F8FF] min-w-full border-b-2 px-16.26 py-[14.5px] z-50 relative">
+    <header className="bg-[#F9F8FF] min-w-full border-b-2 px-4 sm:px-16.26 py-[14.5px] z-50  fixed top-0">
       <nav className="flex items-center justify-between w-full min-w-full mx-auto">
         <Link to="/" className="flex items-center">
           <LogoDesktop className="w-[120px] md:w-[180px]" />
@@ -305,7 +305,7 @@ const Header = () => {
 
         <button
   onClick={toggleMenu}
-  className="block md:hidden p-2 rounded-full bg-[#F9F8FF] shadow-md focus:outline-none transition-all duration-300 transform hover:scale-110"
+  className="block md:hidden p-2 rounded-full bg-[#F9F8FF] focus:outline-none transition-all duration-300 transform hover:scale-110"
   aria-label="Toggle navigation"
 >
   <motion.div
@@ -315,18 +315,18 @@ const Header = () => {
     // transition={{ duration: 0.3 }}
   >
     <div
-      className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
-        menuOpen ? "rotate-45 translate-y-2" : "-translate-y-2"
+      className={`absolute w-8 h-0.5 bg-black transition-all duration-100 ease-in-out transform ${
+        menuOpen ? "rotate-45 translate-y-2 opacity-0" : "-translate-y-2"
       }`}
     ></div>
     <div
-      className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out ${
+      className={`absolute w-8 h-0.5 bg-black transition-all duration-100 ease-in-out ${
         menuOpen ? "opacity-0" : "opacity-100"
       }`}
     ></div>
     <div
-      className={`absolute w-8 h-0.5 bg-black transition-all duration-300 ease-in-out transform ${
-        menuOpen ? "-rotate-45 -translate-y-2" : "translate-y-2"
+      className={`absolute w-8 h-0.5 bg-black transition-all duration-100 ease-in-out transform ${
+        menuOpen ? "-rotate-45 opacity-0 -translate-y-2" : "translate-y-2"
       }`}
     ></div>
   </motion.div>

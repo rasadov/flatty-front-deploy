@@ -40,32 +40,32 @@ export const Profile = () => {
         credentials: "include",
       })
         .then((res) => {
-          if (res.status === 401) {
-            window.location.href = "/login";
-            navigate("/login");
-            localStorage.removeItem("user");
-          }
+          // if (res.status === 401) {
+          //   window.location.href = "/login";
+          //   navigate("/login");
+          //   localStorage.removeItem("user");
+          // }
           return res.json();
         })
         .then((data) => {
           if (data && data.user) {
-            dispatch(setUser(data.user));
+            // dispatch(setUser(data.user));
           }
         })
         .catch((error) => {
           console.log(error);
-          window.location.href = "/login";
-          navigate("/login");
-          localStorage.removeItem("user");
+          // window.location.href = "/login";
+          // navigate("/login");
+          // localStorage.removeItem("user");
         });
       const userResponse = await fetch(
-        "https://api.flatty.ai/api/v1/user/me/agent",
-        {
-          headers: {
-            Accept: "application/json",
-          },
-          credentials: "include",
-        }
+        // "https://api.flatty.ai/api/v1/user/me/agent",
+        // {
+        //   headers: {
+        //     Accept: "application/json",
+        //   },
+        //   credentials: "include",
+        // }
       );
       const userProfileData = await userResponse.json();
       console.log(userProfileData);
@@ -174,11 +174,11 @@ export const Profile = () => {
   };
 
   return (
-    <div className="w-full py-3 mx-auto mt-8">
+    <div className="w-full mx-auto mt-8 px-4 sm:px-16 ">
       <Breadcrumbs title="Apartment" />
       <div className="flex flex-col gap-6 mt-8 lg:flex-row">
   {/* Agent Info */}
-  <div className="p-6 bg-white rounded-lg w-full lg:w-[578px] min-h-[272px]">
+  <div className="p-6 bg-white rounded-lg w-full">
     <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-6">
       {/* Wrap the image in a relative container */}
       <div className="relative">
@@ -270,7 +270,7 @@ export const Profile = () => {
   </div>
 
   {/* Agent Image */}
-  <div className="hidden lg:block w-full lg:w-[740px] h-[375px] relative">
+  <div className="hidden lg:block w-full z-1 relative">
           {" "}
           {/* Increased width and height */}
           <img
@@ -284,7 +284,7 @@ export const Profile = () => {
 
       {/* Active Posts Section */}
       <CardList sectionName="My posts" seeAll={false}>
-        {loading && <p>Loading...</p>}
+        {/* {loading && <p>Loading...</p>} */}
         {Array.isArray(properties) && properties.length > 0 ? (
           properties.map((item) => (
             <a href={"/appartment/" + item.id} key={item.id}>
@@ -309,7 +309,7 @@ export const Profile = () => {
       </CardList>
 
       <CardList sectionName="Complexes" seeAll={false}>
-        {loading && <p>Loading...</p>}
+        {/* {loading && <p>Loading...</p>} */}
         {Array.isArray(complexes) && complexes.length > 0 ? (
           complexes.map((item) => (
             agent.id === item.agent_id ? 

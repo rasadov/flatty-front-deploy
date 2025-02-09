@@ -1,0 +1,144 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL") // или укажите строку подключения напрямую
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// -------------------------
+// 1) USERS
+// -------------------------
+model User {
+  id              String  @id
+  email           String
+  name            String
+  mobile          String
+  password        String
+  confirmPassword String
+  role            String
+  serialNumber    String
+}
+
+// -------------------------
+// 2) AGENTS
+// -------------------------
+model Agent {
+  id                 Int       @id
+  name               String
+  email              String
+  experience         String
+  specializations    String[]  // массив строк
+  agency             String
+  rating             Float
+  votes              Int
+  profileImage       String
+  agencyProfileLink  String
+}
+
+// -------------------------
+// 3) APARTMENTS
+// -------------------------
+model Apartment {
+  id           Int      @id
+  title        String
+  rooms        Int
+  area         Int
+  currFloor    Int
+  building     Int
+  description  String
+  price        String
+  images       String[]
+  location     String
+  latitude     Float?
+  longitude    Float?
+  renovation   String?
+  ceilingHeight String?
+  bathroom     String?
+  furniture    String[]
+  updated      DateTime?
+}
+
+// -------------------------
+// 4) FEATURED PROPERTIES
+//    (аналогичны apartments, но в JSON — отдельная коллекция)
+// -------------------------
+model FeaturedProperty {
+  id           Int      @id
+  title        String
+  price        String
+  location     String
+  images       String[]
+  rooms        Int
+  area         Int
+  currFloor    Int
+  building     Int
+  description  String
+  renovation   String?
+  ceilingHeight String?
+  bathroom     String?
+  furniture    String[]
+  updated      DateTime?
+}
+
+// -------------------------
+// 5) POPULAR PROPERTIES
+// -------------------------
+model PopularProperty {
+  id           Int      @id
+  title        String
+  price        String
+  location     String
+  images       String[]
+  rooms        Int
+  area         Int
+  currFloor    Int
+  building     Int
+  description  String
+  renovation   String?
+  ceilingHeight String?
+  bathroom     String?
+  furniture    String[]
+  updated      DateTime?
+}
+
+// -------------------------
+// 6) COMPLEX DETAILS
+// -------------------------
+// В JSON у "complexDetails" есть вложенный "propertyDetails" 
+// и "location". Ниже - упрощённая «плоская» схема:
+// -------------------------
+model ComplexDetail {
+  id               Int       @id
+  // поля из "propertyDetails"
+  category         String?
+  buildingArea     String?
+  livingArea       String?
+  objects          Int?
+  installment      String?
+  completionYear   Int?
+  propertyDesc     String?   @map("propertyDescription")
+  propertyUpdated  DateTime?
+  address          String?
+
+  // массив изображений
+  images           String[]
+
+  // координаты
+  latitude         Float?
+  longitude        Float?
+}
+
+// -------------------------
+// 7) POSTS
+// -------------------------
+// В db.json "posts" сейчас пусто. Создадим базу под модель Post.
+// -------------------------
+model Post {
+  id      Int    @id @default(autoincrement())
+  title   String?
+  content String?
+}

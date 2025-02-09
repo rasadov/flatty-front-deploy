@@ -14,7 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import { registerUser } from "../store/slices/authSlice";
 import Button from "../components/Button";
-import Input from "../components/İnput";
+import Input from "../components/Input";
 
 const schema = yup.object({
   // role: yup.string().required("Role is required"),
@@ -68,6 +68,15 @@ const Register = () => {
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onChange",
+    defaultValues: {
+      role: "buyer",
+      email: "",
+      name: "",
+      phone: "",
+      password: "",
+      confirmPassword: "",
+      serialNumber: "",
+    },
   });
 
   const onSubmit = useCallback(
@@ -106,7 +115,7 @@ const Register = () => {
 
   return (
     <motion.div
-      className="max-w-md sm:p-6 p-8 mx-auto mt-2 border shadow-md rounded-[18px] bg-white mt-[10%] sm:mt-[8%]"
+      className="max-w-md sm:p-6 p-8 mx-auto  border shadow-md h-screen sm:h-auto sm:mt-4 sm:rounded-[18px] bg-white"
       initial={{ scale: 0.8 }}
       animate={{ scale: 1 }}
       transition={{ duration: 0.5 }}

@@ -1,8 +1,8 @@
 // src/pages/MapView.jsx
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Map from '../components/Map';
-import MapPropertyDetails from '../components/MapPropertyDetails';
+import Map from "../components/Map";
+import MapPropertyDetails from "../components/MapPropertyDetails";
 import Header from "../layouts/Header";
 import { Footer } from "../layouts/Footer";
 import {
@@ -11,40 +11,65 @@ import {
   SelectedFilters,
 } from "../components/sections/index.js";
 import { FilterButton } from "../assets/icons";
+// Предполагается, что updateFilters импортирован, если он используется
 
 export default function MapView() {
-  // Instead of a single selected property, we use an array
+  // Состояния:
+  // - resProperties – минимальные данные, полученные с сервера (например, от /api/v1/property/map)
+  // - visibleProperties – детальные данные объектов, находящихся в текущей видимой области карты
+  // - selectedProperties – выбранные объекты (при клике по маркеру или кластеру)
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
   const [selectedProperties, setSelectedProperties] = useState([]);
   const { isLoggedIn } = useSelector((state) => state.auth);
-  const [resProperties, setMockProperties] = useState([]);
+  const [resProperties, setResProperties] = useState([]);
+  const [visibleProperties, setVisibleProperties] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-    const [selectedCurrency, setSelectedCurrency] = useState(
-      localStorage.getItem("currency") === null
-        ? "£"
-        : localStorage.getItem("currency")
-    );
-    const currencies_to_dollar = {
-      "€": 1.03,
-      "£": 1.22,
-      $: 1,
-      "₺": 0.028,
-    };
+  const [selectedCurrency, setSelectedCurrency] = useState(
+    localStorage.getItem("currency") === null
+      ? "£"
+      : localStorage.getItem("currency")
+  );
+  const currencies_to_dollar = {
+    "€": 1.03,
+    "£": 1.22,
+    $: 1,
+    "₺": 0.028,
+  };
   const dispatch = useDispatch();
 
-
-  // Fetch mock properties from the server
+  // Получаем минимальные данные с сервера (например, с /api/v1/property/map)
   useEffect(() => {
     fetch("https://api.flatty.ai/api/v1/property/map")
       .then((res) => res.json())
       .then((data) => {
-        console.log("DATA", data);
-        setMockProperties(data);
-      });
+        console.log("Минимальные данные:", data);
+        setResProperties(data);
+      })
+      .catch((err) =>
+        console.error("Ошибка при загрузке данных из /property/map", err)
+      );
   }, []);
 
-  console.log("MOCK", resProperties); 
+  console.log("Минимальные объекты (resProperties):", resProperties);
+
+  // Если resProperties уже загружены, а visibleProperties пусты,
+  // запрашиваем детальную информацию для всех объектов, чтобы изначально показать весь список.
+  useEffect(() => {
+    if (resProperties.length > 0 && visibleProperties.length === 0) {
+      Promise.all(
+        resProperties.map((prop) =>
+          fetch(`https://api.flatty.ai/api/v1/property/record/${prop.property_id}`)
+            .then((res) => res.json())
+        )
+      )
+        .then((allDetails) => {
+          setVisibleProperties(allDetails);
+        })
+        .catch((err) =>
+          console.error("Ошибка при загрузке детальной информации всех объектов", err)
+        );
+    }
+  }, [resProperties, visibleProperties]);
 
   const handleCloseDetails = () => {
     setSelectedProperties([]);
@@ -52,56 +77,119 @@ export default function MapView() {
 
   const handleShowMap = () => {
     setSelectedProperties([]);
-  }
+  };
 
   const handleSearchQueryChange = (query) => {
     setSearchQuery(query);
   };
 
-  const handleMarkerClick = async (propertiesAtLocation) => {
-      try {
-        var results = [];
-        const response = await fetch(
-          `https://api.flatty.ai/api/v1/property/record/${propertiesAtLocation.property_id}`
-        );
-        results.push(await response.json());
-        setSelectedProperties(results);
-      } catch (err) {
-        console.error("Error fetching property details:", err);
-      }
-    };
+  // При клике по маркеру – запрашиваем детальную информацию для выбранного объекта
+  const handleMarkerClick = async (property) => {
+    try {
+      const response = await fetch(
+        `https://api.flatty.ai/api/v1/property/record/${property.property_id}`
+      );
+      const detailedProperty = await response.json();
+      // Обновляем состояние выбранного объекта (одиночно)
+      setSelectedProperties([detailedProperty]);
+    } catch (err) {
+      console.error("Error fetching property details:", err);
+    }
+  };
+
+  // При клике по кластеру – для каждого объекта из массива запрашиваем детальную информацию
+  const handleClusterClick = async (clusterProperties) => {
+    try {
+      const detailedCluster = await Promise.all(
+        clusterProperties.map((property) =>
+          fetch(`https://api.flatty.ai/api/v1/property/record/${property.property_id}`)
+            .then((res) => res.json())
+        )
+      );
+      setSelectedProperties(detailedCluster);
+    } catch (err) {
+      console.error("Ошибка при загрузке детальной информации кластерных объектов:", err);
+    }
+  };
+
+  // Обработчик изменения границ карты.
+  // Он фильтрует объекты из resProperties по видимой области
+  // и для каждого запрашивает детальную информацию.
+  const handleBoundsChanged = (bounds) => {
+    if (!bounds) return;
+    const visibleMinProps = resProperties.filter((property) => {
+      const lat = property.latitude;
+      const lng = property.longitude;
+      if (!lat || !lng) return false;
+      return bounds.contains(new window.google.maps.LatLng(lat, lng));
+    });
+    Promise.all(
+      visibleMinProps.map((prop) =>
+        fetch(`https://api.flatty.ai/api/v1/property/record/${prop.property_id}`)
+          .then((res) => res.json())
+      )
+    )
+      .then((detailedVisibleProps) => {
+        setVisibleProperties(detailedVisibleProps);
+      })
+      .catch((err) =>
+        console.error("Ошибка при загрузке детальной информации видимых объектов", err)
+      );
+  };
+
+  // Итоговый список для левого сайдбара – здесь отображаются только видимые объекты.
+  // Для выделения выбранных объектов они передаются отдельно через selectedProperties.
+  const orderedProperties =
+    selectedProperties.length > 0
+      ? [
+          ...selectedProperties,
+          ...visibleProperties.filter(
+            (prop) =>
+              !selectedProperties.some(
+                (sel) => sel.property_id === prop.property_id
+              )
+          ),
+        ]
+      : visibleProperties;
 
   return (
-    <main className="flex-grow bg-[#F4F2FF]">
+    <main className="flex-grow mt-28 bg-[#F4F2FF]">
       <Header key={isLoggedIn ? "logged-in" : "logged-out"} />
-      <div className="max-w-[78%] px-4 2xl:max-w-[1440px] flex items-center justify-center w-full gap-4 my-12 px-4 md:px-16">
+      
+      {/* Searchbar */}
+      <div className="hidden sm:flex items-center justify-center w-full px-4">
         <Searchbar
           onShowMap={handleShowMap}
           onSearch={() => {}}
           value={searchQuery}
           onChange={handleSearchQueryChange}
           API_URL="https://api.flatty.ai/api/v1/property/map"
-          setData={setMockProperties}
+          setData={setResProperties}
           redirectPath="/map"
         />
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="flex justify-center items-center w-[54px] h-[54px] bg-white border border-[#A673EF] rounded-md"
-        >
-          <FilterButton />
-        </button>
       </div>
-      <div className="flex flex-col lg:flex-row h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
-  {/* Left side: property details */}
+      
+      {/* Основной контент */}
+      <div className="flex flex-col lg:flex-row  h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
+        {/* На мобильных: карта (order-1), затем список (order-2).
+            На десктопе: список слева (order-1), карта справа (order-2) */}
+        <div className="flex-1 p-4 min-h-[400px] max-h-[400px] sm:max-h-full order-1 lg:order-2">
+          <Map
+            properties={resProperties}
+            onMarkerClick={handleMarkerClick}
+            onClusterClick={handleClusterClick}
+            onBoundsChanged={handleBoundsChanged}  // Передаём callback для обновления видимых объектов
+          />
+        </div>
+        <div className="w-full sm:w-[300px] mb-4 border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500 mt-4 order-2 lg:order-1">
+          <MapPropertyDetails
+            properties={orderedProperties}
+            selectedProperties={selectedProperties}
+            onCloseDetails={handleCloseDetails}
+          />
+        </div>
 
-  {selectedProperties.length > 0 ? (
-          <div className="w-full lg:w-[300px] border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500">
-            {/* Pass the array of properties to the details component */}
-            <MapPropertyDetails properties={selectedProperties} />
-          </div>
-        ) : null}
-
-        {/* Filter Modal */}
+        {/* Фильтр в виде модального окна */}
         <FilterModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
@@ -110,13 +198,8 @@ export default function MapView() {
             setIsModalOpen(false);
           }}
         />
-
-  {/* Right side: Google Map */}
-  <div className="flex-1">
-    {/* Map now calls onMarkerClick with an array of properties */}
-    <Map properties={resProperties} onMarkerClick={handleMarkerClick} />
-  </div>
-</div>
+      </div>
+      
       <div className="px-6 mx-auto bg-[#ECE8FF]">
         <Footer />
       </div>

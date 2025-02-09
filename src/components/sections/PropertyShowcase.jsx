@@ -15,7 +15,7 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
   return (
     <div>
       {/* Main Image */}
-      <div className="mb-3 rounded-md shadow-lg w-full h-[200px] md:h-[350px] lg:h-[500px] overflow-hidden">
+      <div className="mb-3 rounded-md shadow-lg w-full h-[300px] md:h-[350px] lg:h-[500px] overflow-hidden">
         <img
           src={currentImage}
           alt="Property"
@@ -34,7 +34,7 @@ const ImageGallery = ({ mainImage, thumbnails, length }) => {
             }`}
             onClick={() => setCurrentImage(thumbnail)}
             style={{
-              margin: "8px",
+              
             }}
           >
             <img
@@ -82,7 +82,7 @@ const PropertyShowcase = ({ length, property }) => {
         <h1 className="mb-2 text-[24px] md:text-[28px] lg:text-[36px] font-semibold text-[#0F1D40] leading-[1.2]">
           {property.title}
         </h1>
-        <div className="mb-4 text-[14px] md:text-[16px] text-[#8C93A3] font-normal flex items-center gap-2">
+        <div className="mb-2 text-[14px] md:text-[16px] text-[#8C93A3] font-normal flex items-center gap-2">
           <PostView size={20} color={"#8C93A3"} />
           <span>{property.views} views</span>
         </div>
