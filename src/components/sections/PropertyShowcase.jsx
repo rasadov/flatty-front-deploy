@@ -76,7 +76,7 @@ const PropertyShowcase = ({ length, property }) => {
   };
 
   return (
-    <div className="w-full mx-auto p-4 md:p-6 lg:p-8">
+    <div className="w-full mx-auto px-4 sm:px-8 ">
       {/* Property Details */}
       <div>
         <h1 className="mb-2 text-[24px] md:text-[28px] lg:text-[36px] font-semibold text-[#0F1D40] leading-[1.2]">

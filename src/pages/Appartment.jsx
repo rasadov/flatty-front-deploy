@@ -303,9 +303,9 @@ const Appartment = memo(() => {
         </div>
 
         {/* Right Section (sticky) */}
-        <div className="lg:w-[33%] hidden md:block">
+        <div className="w-full lg:w-[33%] md:block lg:pr-8 mx-auto">
           <motion.div
-            className="p-6 bg-white border rounded-md shadow-lg sticky top-16 mt-4"
+            className="p-6 bg-white border rounded-md shadow-lg sticky top-24 mt-12"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.4 }}

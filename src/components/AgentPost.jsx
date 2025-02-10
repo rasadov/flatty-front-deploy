@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { formatNumber } from "./numberFormater";
 import { toast } from "react-toastify";
 
-// Функция для удаления, как у вас уже есть
+// Функция для удаления карточки (поста)
 const handleDeletePost = async (id) => {
   if (window.confirm("Are you sure you want to delete this property?")) {
     const response = await fetch(`https://api.flatty.ai/api/v1/property/record/${id}`, {
@@ -25,8 +25,18 @@ const handleDeletePost = async (id) => {
 };
 
 export const AgentPost = React.memo(
-  ({ id, img, price, location, rooms, area, currFloor, building, postData }) => {
-    // postData – объект со всеми данными карточки, который понадобится для редактирования
+  ({
+    id,
+    img,
+    price,
+    location,
+    rooms,
+    area,
+    currFloor,
+    building,
+    postData, // объект со всеми данными карточки, который понадобится для редактирования
+    onEdit,   // опциональный колбэк для открытия модального окна редактирования
+  }) => {
     const currency = localStorage.getItem("currency") || "£";
     const currencies_to_dollar = {
       "€": 1.03,
@@ -36,28 +46,27 @@ export const AgentPost = React.memo(
     };
     const dispatch = useDispatch();
 
-    // Функция, которая открывает модальное окно для редактирования.
-    // Как вариант, можно использовать глобальное состояние (например, Redux или Context)
-    // для управления отображением NewPostModal. Ниже приведён пример через локальный вызов.
+    // Функция для открытия модального окна редактирования.
+    // Если передан колбэк onEdit, он вызывается с postData;
+    // иначе выполняется Redux‑экшен для открытия модального окна.
     const handleEditPost = () => {
-      // Например, можно сохранить данные карточки в Redux и открыть модальное окно.
-      // Или, если вы используете родительский компонент, передайте функцию, которая открывает NewPostModal с нужными данными.
-      // Здесь приведён псевдокод:
-      dispatch({
-        type: "modal/open",
-        payload: {
-          modalType: "editPost",
-          initialData: postData, // postData содержит все поля карточки
-        },
-      });
+      if (onEdit && typeof onEdit === "function") {
+        onEdit(postData);
+      } else {
+        dispatch({
+          type: "modal/open",
+          payload: {
+            modalType: "editPost",
+            initialData: postData,
+          },
+        });
+      }
     };
 
     return (
       <div
         className="block border rounded-[6px] border-[#EEEFF2] p-2 pb-2 relative sm:w-full outline-[#EEEFF2] custom-shadow"
-        style={{
-          boxShadow: "0px 1px 1px 0px #703ACA14",
-        }}
+        style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
       >
         {/* Image Section */}
         <div className="relative w-full h-[173px] rounded-[6px] overflow-hidden">
@@ -66,9 +75,9 @@ export const AgentPost = React.memo(
             alt={`Slide ${id}`}
             className="object-cover w-full h-[173px]"
           />
-          {/* Icons for Edit and Delete */}
+          {/* Иконки редактирования и удаления */}
           <div className="absolute flex gap-2 bottom-2 right-2">
-            {/* Edit Icon */}
+            {/* Иконка редактирования */}
             <div
               className="w-[33px] h-[33px] flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer"
               onClick={(event) => {
@@ -79,7 +88,7 @@ export const AgentPost = React.memo(
             >
               <EditPencil color="black" size="20" />
             </div>
-            {/* Delete Icon */}
+            {/* Иконка удаления */}
             <div
               className="w-[33px] h-[33px] flex justify-center items-center bg-black bg-opacity-50 rounded-full cursor-pointer"
               onClick={(event) => {

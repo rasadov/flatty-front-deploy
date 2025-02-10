@@ -23,7 +23,7 @@ export const Breadcrumbs = () => {
       aria-label="Breadcrumb"
       className="text-[#8C93A3]  font-normal text-xs  leading-[19.2px] h-[19px] w-[169px]"
     >
-      <ul className="flex items-center ">
+      <ul className="flex items-center mt-8 pl-4 sm:pl-8">
         <li className="flex items-center justify-between">
           <Link to="/" aria-label="Go to Home">
             Home
