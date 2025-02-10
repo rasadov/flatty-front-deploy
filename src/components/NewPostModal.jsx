@@ -308,7 +308,7 @@ var city = "";
 var area = "";
 const libraries = ["places"];
 
-const NewPostModal = ({ isOpen, onClose, complexes }) => {
+const NewPostModal = ({ isOpen, onClose, complexes, setProperties}) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
 
@@ -510,7 +510,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         dispatch(addPost(formDataToSend));
         dispatch(fetchPosts());
         onClose();
-        // window.location.reload();
+        setProperties((prev) => [...prev, formData]);
       } catch (error) {
         toast.error(
           "An error occurred. Please try again. Make sure you complete all required fields",

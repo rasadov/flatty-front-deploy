@@ -344,6 +344,7 @@ export const Profile = () => {
         complexes={complexes}
         isEdit={modalData !== null} // Если modalData не null, режим редактирования
         initialData={modalData || {}}
+        setProperties={setAgentProperties}
       />
       <NewComplexModal
         isOpen={isComplexModalOpen}
