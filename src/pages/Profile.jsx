@@ -40,32 +40,32 @@ export const Profile = () => {
         credentials: "include",
       })
         .then((res) => {
-          // if (res.status === 401) {
-          //   window.location.href = "/login";
-          //   navigate("/login");
-          //   localStorage.removeItem("user");
-          // }
+          if (res.status === 401) {
+            window.location.href = "/login";
+            navigate("/login");
+            localStorage.removeItem("user");
+          }
           return res.json();
         })
         .then((data) => {
           if (data && data.user) {
-            // dispatch(setUser(data.user));
+            dispatch(setUser(data.user));
           }
         })
         .catch((error) => {
           console.log(error);
-          // window.location.href = "/login";
-          // navigate("/login");
-          // localStorage.removeItem("user");
+          window.location.href = "/login";
+          navigate("/login");
+          localStorage.removeItem("user");
         });
       const userResponse = await fetch(
-        // "https://api.flatty.ai/api/v1/user/me/agent",
-        // {
-        //   headers: {
-        //     Accept: "application/json",
-        //   },
-        //   credentials: "include",
-        // }
+        "https://api.flatty.ai/api/v1/user/me/agent",
+        {
+          headers: {
+            Accept: "application/json",
+          },
+          credentials: "include",
+        }
       );
       const userProfileData = await userResponse.json();
       console.log(userProfileData);
