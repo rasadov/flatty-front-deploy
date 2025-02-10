@@ -13,6 +13,7 @@ import { ImageDelete } from "../assets/icons/ImageDelete";
 import { LeftUpload } from "../assets/icons/LeftUpload";
 import { toast } from "react-toastify";
 
+// Константы для выбора
 const categories = [
   "Penthouse",
   "Villa",
@@ -306,6 +307,7 @@ var area = "";
 const libraries = ["places"];
 
 const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData = {} }) => {
+  // Состояния для файлов, документов и cover-фото
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
   const [coverPhotoIndex, setCoverPhotoIndex] = useState(null);
@@ -332,7 +334,7 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
   // Шаг формы (многошаговая форма)
   const [step, setStep] = useState(1);
 
-  // Определяем значения по умолчанию для создания поста
+  // Значения по умолчанию для создания поста
   const defaultFormData = {
     category: "Appartment",
     residentialComplex: "",
@@ -363,10 +365,10 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
     price: 0,
   };
 
-  // Если редактирование, инициализируем форму данными редактирования
+  // Если в режиме редактирования, инициализируем форму данными initialData, иначе - дефолтными
   const [formData, setFormData] = useState(isEdit ? initialData : defaultFormData);
 
-  // Если initialData меняется (например, при редактировании) – обновляем форму
+  // Если initialData меняется, обновляем состояние (для режима редактирования)
   useEffect(() => {
     if (isEdit && initialData) {
       setFormData(initialData);
@@ -449,7 +451,7 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY", // Замените на ваш ключ
+    googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM", // Замените на ваш ключ
     libraries: libraries,
   });
 
@@ -490,14 +492,13 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
       }
       try {
         if (isEdit) {
-          // Режим редактирования – обновляем пост
+          // Режим редактирования: обновляем пост
           await dispatch(updatePost(formDataToSend));
-          await dispatch(fetchPosts());
         } else {
-          // Создание нового поста
+          // Режим создания: добавляем новый пост
           await dispatch(addPost(formDataToSend));
-          await dispatch(fetchPosts());
         }
+        await dispatch(fetchPosts());
         onClose();
       } catch (error) {
         toast.error(
@@ -800,6 +801,7 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
                 </div>
               </div>
             </div>
+
             <div className="flex ">
               <div className="flex flex-col w-full sm:w-auto mr-10">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -855,6 +857,7 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
                 />
               </div>
             </div>
+
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Description
@@ -897,12 +900,16 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
               <div className="text-center mb-4">
                 <h3 className="text-lg font-semibold">Upload photos</h3>
               </div>
+
               <div
                 className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
               >
-                <p className="text-sm mb-4" style={{ color: "rgba(130, 71, 229, 1)" }}>
+                <p
+                  className="text-sm mb-4"
+                  style={{ color: "rgba(130, 71, 229, 1)" }}
+                >
                   Drag photos here to start uploading
                 </p>
                 <button
@@ -932,13 +939,12 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
                   className="hidden"
                 />
               </div>
+
               {selectedFiles.length > 0 && (
                 <div className="mt-4 flex overflow-x-auto space-x-4">
-                  {orderedFiles.map((file, index) => {
+                  {selectedFiles.map((file, index) => {
                     const previewUrl = URL.createObjectURL(file);
-                    // В режиме редактирования можно оставить возможность смены cover,
-                    // но здесь для простоты выбран первый файл как cover.
-                    const isCover = index === 0;
+                    const isCover = index === coverPhotoIndex;
                     return (
                       <div key={index} className="flex flex-col">
                         <div
@@ -987,6 +993,7 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
                 </div>
               )}
             </div>
+
             <div className="py-4">
               <div className="flex justify-center items-center">
                 <div className="flex space-x-2">
@@ -1030,7 +1037,9 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
                 <button
                   className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
                   onClick={() =>
-                    document.querySelector('input[id="uploadDocuments"]')?.click()
+                    document
+                      .querySelector('input[id="uploadDocuments"]')
+                      ?.click()
                   }
                   style={{
                     display: "flex",
@@ -1112,13 +1121,13 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
               <div className="flex justify-center mt-4 gap-4">
                 <button
                   className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-                  onClick={() => setStep(1)}
+                  onClick={() => setStep(2)}
                 >
                   Previous
                 </button>
                 <button
                   className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-                  onClick={() => setStep(3)}
+                  onClick={() => setStep(4)}
                 >
                   Next
                 </button>
@@ -1189,7 +1198,7 @@ const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData 
                 <div className="w-full h-[300px] rounded-lg overflow-hidden border">
                   <GoogleMap
                     mapContainerStyle={{ width: "100%", height: "100%" }}
-                    center={{ lat: 35.198284, lng: 33.355869 }} // North Cyprus coordinates
+                    center={{ lat: 35.198284, lng: 33.355869 }}
                     zoom={12}
                     onClick={handleMapClick}
                     ref={mapRef}
