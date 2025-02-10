@@ -181,7 +181,7 @@ export default function MapView() {
             onBoundsChanged={handleBoundsChanged}  // Передаём callback для обновления видимых объектов
           />
         </div>
-        <div className="w-full sm:w-[300px] mb-4 border-r border-gray-300 overflow-y-auto scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500 mt-4 order-2 lg:order-1">
+        <div className="w-full sm:w-[300px] h-full mb-4 border-r border-gray-300  scrollbar-thin scrollbar-thumb-rounded scrollbar-thumb-gray-500 mt-4 order-2 lg:order-1">
           <MapPropertyDetails
             properties={orderedProperties}
             selectedProperties={selectedProperties}

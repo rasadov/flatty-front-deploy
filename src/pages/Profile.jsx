@@ -8,7 +8,7 @@ import agent_back from "../assets/images/Group 15.png";
 import { NewPost } from "../assets/icons/NewPost.jsx";
 import AgentPost from "../components/AgentPost.jsx";
 import AgentComplex from "../components/AgentComplex.jsx";
-import NewPostModal from "../components/NewPostModal.jsx"; // Import the modal component
+import NewPostModal from "../components/NewPostModal.jsx"; // Импортируем модальное окно для поста
 import NewComplexModal from "../components/NewComplexModal.jsx";
 import { fetchPosts } from "../store/slices/agentPostSlice";
 import { NewComplex } from "../assets/icons/NewComplex.jsx";
@@ -18,9 +18,10 @@ import { AddUserImage } from "../assets/icons/AddUserImage";
 export const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isComplexModalOpen, setIsComplexModalOpen] = useState(false);
+  // Добавляем состояние для хранения данных редактируемого поста (если null – режим создания)
+  const [modalData, setModalData] = useState(null);
   const dispatch = useDispatch();
   const { posts, loading, error } = useSelector((state) => state.posts);
-
   const navigate = useNavigate();
 
   let user = {};
@@ -77,9 +78,7 @@ export const Profile = () => {
       });
 
       const agentPropertiesResponse = await fetch(
-        `https://api.flatty.ai/api/v1/property/agent/${
-          userProfileData.id
-        }/page?${agentPropertiesParams.toString()}`,
+        `https://api.flatty.ai/api/v1/property/agent/${userProfileData.id}/page?${agentPropertiesParams.toString()}`,
         {
           headers: {
             Accept: "application/json",
@@ -112,7 +111,16 @@ export const Profile = () => {
     dispatch(fetchPosts());
   }, [dispatch]);
 
+  // Открытие модального окна создания поста
   const handleOpenModal = () => {
+    // Для создания нового поста modalData сбрасываем в null
+    setModalData(null);
+    setIsModalOpen(true);
+  };
+
+  // Открытие модального окна редактирования поста
+  const handleEditPost = (postData) => {
+    setModalData(postData);
     setIsModalOpen(true);
   };
 
@@ -151,7 +159,6 @@ export const Profile = () => {
         "https://api.flatty.ai/api/v1/user/profile/image",
         {
           method: "POST",
-          // Note: Do not set the "Content-Type" header when sending FormData.
           body: formData,
           credentials: "include",
         }
@@ -167,7 +174,6 @@ export const Profile = () => {
       parsedUser.image_url = data.image_url;
       localStorage.setItem("user", JSON.stringify(parsedUser));
       window.location.reload();
-      // Optionally, update your state or perform additional actions here.
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -177,114 +183,108 @@ export const Profile = () => {
     <div className="w-full mx-auto mt-8 px-4 sm:px-16 ">
       <Breadcrumbs title="Apartment" />
       <div className="flex flex-col gap-6 mt-8 lg:flex-row">
-  {/* Agent Info */}
-  <div className="p-6 bg-white rounded-lg w-full">
-    <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-6">
-      {/* Wrap the image in a relative container */}
-      <div className="relative">
-        <img
-          src={
-            user?.image_url
-              ? user.image_url
-              : "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
-          }
-          className="rounded-full w-[120px] h-[120px] object-cover"
-          style={{
-            minWidth: "120px",
-          }}
-          alt="Agent"
-        />
-        {/* Position the upload icon at the bottom-right corner */}
-        <div className="absolute bottom-0 right-0"
-        onClick={handleIconClick}
-        >
-          <AddUserImage />
-        </div>
-        <input
-        type="file"
-        ref={fileInputRef}
-        className="hidden"
-        onChange={handleUserProfileImage}
-        accept="image/*"
-      />
-      </div>
+        {/* Agent Info */}
+        <div className="p-6 bg-white rounded-lg w-full">
+          <div className="flex flex-col items-center lg:flex-row lg:items-start gap-4 mb-6">
+            <div className="relative">
+              <img
+                src={
+                  user?.image_url
+                    ? user.image_url
+                    : "https://flattybucket.s3.us-east-1.amazonaws.com/uploads/user.jpg"
+                }
+                className="rounded-full w-[120px] h-[120px] object-cover"
+                style={{ minWidth: "120px" }}
+                alt="Agent"
+              />
+              <div
+                className="absolute bottom-0 right-0"
+                onClick={handleIconClick}
+              >
+                <AddUserImage />
+              </div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                onChange={handleUserProfileImage}
+                accept="image/*"
+              />
+            </div>
 
-      <div className="w-full">
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-semibold">
-              {agent.user ? agent.user.name : ""}
-            </h2>
+            <div className="w-full">
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-lg font-semibold">
+                    {agent.user ? agent.user.name : ""}
+                  </h2>
+                </div>
+                <div className="flex items-center justify-start gap-4">
+                  <Rating rating="4" />
+                  <p className="text-sm text-[#525C76]">
+                    {agent.reviews ? agent.reviews.length + " Votes" : ""}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="flex items-center justify-start gap-4">
-            <Rating rating="4" />
-            <p className="text-sm text-[#525C76]">
-              {agent.reviews ? agent.reviews.length + " Votes" : ""}
-            </p>
+          {/* Experience, Sales, Active Posts */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#EEEFF2] p-4 rounded-md">
+            {["Experience", "Successful sales", "Active posts"].map((label, index) => (
+              <div key={index} className="text-center">
+                <span className="block text-sm text-gray-500">{label}</span>
+                <p className="font-medium text-lg text-[#0F1D40]">
+                  {index === 0
+                    ? agent.experience
+                      ? agent.experience + " years"
+                      : "Unknown"
+                    : index === 1
+                    ? agent.sales
+                      ? agent.sales
+                      : "Unknown"
+                    : index === 2
+                    ? properties.length
+                      ? properties.length
+                      : "Unknown"
+                    : ""}
+                </p>
+              </div>
+            ))}
+          </div>
+          {/* Buttons */}
+          <div className="flex flex-col lg:flex-row justify-center gap-4 mt-4">
+            <Button
+              className="w-full py-2 text-sm h-[45px] font-semibold text-white rounded-sm leading-[28px] text-[18px]"
+              variant="primary"
+              onClick={handleOpenModal} // Открытие модального окна создания нового поста
+            >
+              <NewPost />
+              New Object
+            </Button>
+            <Button
+              className="w-full py-2 text-sm h-[45px] font-semibold text-[#8247E5] bg-white border border-[#8247E5] rounded-sm leading-[28px] text-[18px]"
+              variant="outline"
+              onClick={handleOpenComplexModal}
+            >
+              <NewComplex />
+              New Complex
+            </Button>
           </div>
         </div>
-      </div>
-    </div>
-    {/* Experience, Sales, Active Posts */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#EEEFF2] p-4 rounded-md">
-      {["Experience", "Successful sales", "Active posts"].map((label, index) => (
-        <div key={index} className="text-center">
-          <span className="block text-sm text-gray-500">{label}</span>
-          <p className="font-medium text-lg text-[#0F1D40]">
-            {index === 0
-              ? agent.experience
-                ? agent.experience + " years"
-                : "Unknown"
-              : index === 1
-              ? agent.sales
-                ? agent.sales
-                : "Unknown"
-              : index === 2
-              ? properties.length
-                ? properties.length
-                : "Unknown"
-              : ""}
-          </p>
-        </div>
-      ))}
-    </div>
-    {/* Buttons */}
-    <div className="flex flex-col lg:flex-row justify-center gap-4 mt-4">
-      <Button
-        className="w-full py-2 text-sm h-[45px] font-semibold text-white rounded-sm leading-[28px] text-[18px]"
-        variant="primary"
-        onClick={handleOpenModal}
-      >
-        <NewPost />
-        New Object
-      </Button>
-      <Button
-        className="w-full py-2 text-sm h-[45px] font-semibold text-[#8247E5] bg-white border border-[#8247E5] rounded-sm leading-[28px] text-[18px]"
-        variant="outline"
-        onClick={handleOpenComplexModal}
-      >
-        <NewComplex />
-        New Complex
-      </Button>
-    </div>
-  </div>
 
-  {/* Agent Image */}
-  <div className="hidden lg:block w-full z-1 relative">
-          {" "}
-          {/* Increased width and height */}
+        {/* Agent Image */}
+        <div className="hidden lg:block w-full z-1 relative">
           <img
             src={agent_back}
-            className="absolute w-full rounded-lg "
+            className="absolute w-full rounded-lg"
             alt="Agent"
             loading="lazy"
           />
         </div>
-</div>
+      </div>
 
       {/* Active Posts Section */}
       <CardList sectionName="My posts" seeAll={false}>
-        {/* {loading && <p>Loading...</p>} */}
         {Array.isArray(properties) && properties.length > 0 ? (
           properties.map((item) => (
             <a href={"/appartment/" + item.id} key={item.id}>
@@ -300,6 +300,13 @@ export const Profile = () => {
                 currFloor={item.info?.floor}
                 building={item.info?.apartment_stories}
                 id={item.id}
+                // Передаем данные поста для редактирования через onEdit
+                onEdit={(postData) => {
+                  // При клике на редактирование открываем модальное окно с данными
+                  setModalData(postData);
+                  setIsModalOpen(true);
+                }}
+                postData={item} // Передаем данные карточки
               />
             </a>
           ))
@@ -309,30 +316,34 @@ export const Profile = () => {
       </CardList>
 
       <CardList sectionName="Complexes" seeAll={false}>
-        {/* {loading && <p>Loading...</p>} */}
         {Array.isArray(complexes) && complexes.length > 0 ? (
-          complexes.map((item) => (
-            agent.id === item.agent_id ? 
-            <a href={"/complex/" + item.id} key={item.id}>
-              <AgentComplex
-                img={item.images[0]?.image_url}
-                title={item.name}
-                roomCount={item.objects}
-                address={item.address}
-                id={item.id}
-              />
-            </a> : ""
-          ))
+          complexes.map((item) =>
+            agent.id === item.agent_id ? (
+              <a href={"/complex/" + item.id} key={item.id}>
+                <AgentComplex
+                  img={item.images[0]?.image_url}
+                  title={item.name}
+                  roomCount={item.objects}
+                  address={item.address}
+                  id={item.id}
+                />
+              </a>
+            ) : (
+              ""
+            )
+          )
         ) : (
           <p>No posts found</p>
         )}
       </CardList>
 
-      {/* Modals */}
+      {/* Модальное окно для создания/редактирования поста */}
       <NewPostModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         complexes={complexes}
+        isEdit={modalData !== null} // Если modalData не null, режим редактирования
+        initialData={modalData || {}}
       />
       <NewComplexModal
         isOpen={isComplexModalOpen}
@@ -341,4 +352,5 @@ export const Profile = () => {
     </div>
   );
 };
+
 export default Profile;
