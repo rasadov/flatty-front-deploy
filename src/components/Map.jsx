@@ -94,13 +94,13 @@ export default function Map({ properties = [], onMarkerClick, onClusterClick }) 
               path: window.google.maps.SymbolPath.CIRCLE,
               fillColor: "#7C3AED",
               fillOpacity: 1,
-              strokeWeight: 1,
-              scale: 24,
+              strokeWeight: 0,
+              scale: 18,
             },
             label: {
               text: String(count),
               color: "#FFFFFF",
-              fontSize: "22px",
+              fontSize: "15px",
               fontWeight: "bold",
             },
           });

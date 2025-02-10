@@ -14,7 +14,7 @@ export const SectionArea = ({
 
   return (
     <div
-      className={`w-full p-6 mx-auto my-2 bg-white rounded-2xl ${
+      className={`w-full px-6 py-4 my-8 mx-auto bg-white rounded-2xl ${
         !isProfileRoute ? "custom-max-width" : ""
       }`}
       style={{ boxShadow: "0px 2px 3px 0px #703ACA14" }}
