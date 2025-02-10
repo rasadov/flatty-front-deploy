@@ -20,9 +20,7 @@ export const SearchbarMobile = () => {
       style={{
         boxShadow: "0px 1px 1px 0px #703ACA14",
       }}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
+   
     >
       <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto  sm:mt-0">
               {/* Show on Map */}
@@ -37,9 +35,7 @@ export const SearchbarMobile = () => {
               <motion.button
                 onClick={handleSearch}
                 className="bg-[#8247E5] hover:bg-[#A673EF] text-white px-6 py-3 w-full sm:w-auto h-[50px] sm:h-auto rounded-md font-semibold shadow-md sm:shadow-none"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
+             
               >
                 Search
               </motion.button>

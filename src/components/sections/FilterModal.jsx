@@ -146,9 +146,9 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
       transition={{ duration: 0.3 }}
       onClick={onClose}
     >
-      <div className="fixed z-50 flex items-center justify-center inset-0 p-4 md:p-0">
+      <div className="z-50 flex items-center justify-center inset-0 sm:mt-10 p-4 md:p-0">
         <motion.div
-          className="bg-white w-full md:rounded-lg md:max-w-[938px] min-h-screen md:min-h-0 md:h-[786px] overflow-auto p-4 md:p-6 relative"
+          className="bg-white w-full md:rounded-lg md:max-w-[938px]  overflow-auto p-4 md:p-6 relative"
           animate={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 50, rotate: 10 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -161,7 +161,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
           >
             {/* Close icon */}
           </button>
-          <h3 className="text-[28px] font-semibold text-left mb-2">Filter</h3>
+          <h3 className="text-md font-semibold text-left mb-2">Filter</h3>
 
           {/* Filter Components */}
           {/* <FilterNumberRange
@@ -186,7 +186,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
               <div className="w-3/5 relative">
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-full text-sm h-[35px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "category" ? null : "category"
@@ -198,9 +198,9 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </button>
 
                 {openDropdown === "category" && (
-                  <ul className="absolute w-[200px] bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
+                  <ul className="text-sm absolute w-[200px] bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="text-sm p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("category", "Appartment")}
                     >
                       Appartment
@@ -230,7 +230,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
               <div className="w-3/5 relative">
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-full text-sm h-[35px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "residentialComplex"
@@ -248,7 +248,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {
                       (complexes = "Could not validate credentials" ? (
                         <li
-                          className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                          className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                           onClick={() => handleSelect("residentialComplex", "")}
                         >
                           Select
@@ -284,7 +284,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
               <div className="w-3/5 relative">
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-full text-sm h-[35px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "installment" ? null : "installment"
@@ -292,7 +292,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                   }
                 >
                   {selectedFilters.installment || "Select"}
-                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                  <ArrowDown className="text-sm w-5 h-5 text-gray-500" />
                 </button>
 
                 {openDropdown === "installment" && (
@@ -300,7 +300,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {
                       (complexes = "Could not validate credentials" ? (
                         <li
-                          className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                          className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                           onClick={() => handleSelect("installment", "")}
                         >
                           Select
@@ -324,81 +324,83 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
               </div>
             </div>
 
-            <FilterSingleNumber
-              label="Price"
-              category="price"
-              placeholderMin="Min"
-              placeholderMax="Max"
-              categoryMin="priceRangeMin"
-              categoryMax="priceRangeMax"
-              setSelectedFilters={setSelectedFilters}
-              selectedFilters={selectedFilters}
-            />
-            <FilterSingleNumber
-              label="Total Area (m²)"
-              category="area"
-              placeholderMin="From (m²)"
-              placeholderMax="To (m²)"
-              categoryMin="areaFrom"
-              categoryMax="areaTo"
-              setSelectedFilters={setSelectedFilters}
-              selectedFilters={selectedFilters}
-            />
-            <FilterSingleNumber
-              label="Living Area (m²)"
-              category="livingArea"
-              placeholderMin="From"
-              placeholderMax="To"
-              categoryMin="livingAreaFrom"
-              categoryMax="livingAreaTo"
-              setSelectedFilters={setSelectedFilters}
-              selectedFilters={selectedFilters}
-            />
-            <FilterSingleNumber
-              label="Floor"
-              category="floor"
-              placeholderMin="from"
-              placeholderMax="to"
-              categoryMin="minFloor"
-              categoryMax="maxFloor"
-              children={
-                <>
-                  <FilterButtonToggle
-                    // label="Floor"
-                    placeholder="Not first"
-                    category="notFirstFloor"
-                    setSelectedFilters={setSelectedFilters}
-                    selectedFilters={selectedFilters}
-                  />
-                  <FilterButtonToggle
-                    // label="Floor"
-                    placeholder="Not last"
-                    category="notLastFloor"
-                    setSelectedFilters={setSelectedFilters}
-                    selectedFilters={selectedFilters}
-                  />
-                  <FilterButtonToggle
-                    // label="Floor"
-                    placeholder="Last"
-                    category="lastFloor"
-                    setSelectedFilters={setSelectedFilters}
-                    selectedFilters={selectedFilters}
-                  />
-                </>
-              }
-              setSelectedFilters={setSelectedFilters}
-              selectedFilters={selectedFilters}
-            />
-
+            <div className="sm:flex gap-4 justify-between">
+              <FilterSingleNumber
+                label="Price"
+                category="price"
+                placeholderMin="Min"
+                placeholderMax="Max"
+                categoryMin="priceRangeMin"
+                categoryMax="priceRangeMax"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+              <FilterSingleNumber
+                label="Total Area (m²)"
+                category="area"
+                placeholderMin="From (m²)"
+                placeholderMax="To (m²)"
+                categoryMin="areaFrom"
+                categoryMax="areaTo"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+            </div>
+            <div className="sm:flex gap-4 justify-between">
+              <FilterSingleNumber
+                label="Living Area (m²)"
+                category="livingArea"
+                placeholderMin="From"
+                placeholderMax="To"
+                categoryMin="livingAreaFrom"
+                categoryMax="livingAreaTo"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+              <FilterSingleNumber
+                label="Floor"
+                category="floor"
+                placeholderMin="from"
+                placeholderMax="to"
+                categoryMin="minFloor"
+                categoryMax="maxFloor"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+            </div>
+            <div className="flex gap-4 justify-between sm:justify-start">
+              <FilterButtonToggle
+                // label="Floor"
+                placeholder="Not first"
+                category="notFirstFloor"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+              <FilterButtonToggle
+                // label="Floor"
+                placeholder="Not last"
+                category="notLastFloor"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+              <FilterButtonToggle
+                // label="Floor"
+                placeholder="Last"
+                category="lastFloor"
+                setSelectedFilters={setSelectedFilters}
+                selectedFilters={selectedFilters}
+              />
+            </div>
             {/* =========================== Living Rooms ========================== */}
-            <div className="flex gap-4 mb-2">
+            <div className="flex sm:flex-col gap-4">
+            <div className="flex flex-wrap sm:flex-nowrap gap-4 mb-2">
               <div className="w-1/2 relative">
-                <label className="block mb-1 text-sm font-medium text-gray-700">
+                <label className="block mb-1 text-[13px] font-medium text-gray-700">
                   Living room
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "livingRooms1" ? null : "livingRooms1"
@@ -406,13 +408,13 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                   }
                 >
                   {selectedFilters.livingRooms || "Select"}
-                  <ArrowDown className="w-5 h-5 text-gray-500" />
+                  <ArrowDown className="w-5   h-5 text-gray-500" />
                 </button>
 
                 {openDropdown === "livingRooms1" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("livingRooms", "")}
                     >
                       Select
@@ -420,7 +422,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {livingRoomses.map((rooms, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("livingRooms", rooms)}
                       >
                         {rooms}
@@ -436,7 +438,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "furniture" ? null : "furniture"
@@ -450,7 +452,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "furniture" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2  text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("furniture", "")}
                     >
                       Select
@@ -458,7 +460,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {furnitures.map((furniture, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("furniture,", furniture)}
                       >
                         {furniture}
@@ -475,7 +477,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "balconies" ? null : "balconies"
@@ -489,7 +491,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "balconies" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("balconies", "")}
                     >
                       Select
@@ -497,7 +499,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {balconie.map((balconies, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("balconies", balconies)}
                       >
                         {balconies}
@@ -514,7 +516,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "bedrooms" ? null : "bedrooms"
@@ -528,7 +530,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "bedrooms" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("bedrooms", "")}
                     >
                       Select
@@ -536,7 +538,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {bedrooms.map((bedrooms, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("balconies", bedrooms)}
                       >
                         {bedrooms}
@@ -553,7 +555,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "bathrooms" ? null : "bathrooms"
@@ -567,7 +569,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "bathrooms" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("bathrooms", "")}
                     >
                       Select
@@ -575,7 +577,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {bathrooms.map((bathrooms, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("balconies", bathrooms)}
                       >
                         {bathrooms}
@@ -587,7 +589,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
             </div>
 
             {/* =========================== GYM PARKING SWIMING POOL ELEVATOR ========================== */}
-            <div className="flex gap-4 mb-4">
+            <div className="flex flex-wrap sm:flex-nowrap  gap-4 mb-4">
               {/*  ========== parkingSlot =============== */}
               <div className="w-1/2 relative">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -595,7 +597,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "parkingSlot" ? null : "parkingSlot"
@@ -609,7 +611,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "parkingSlot" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("parkingSlot", "")}
                     >
                       Select
@@ -617,7 +619,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {parkingSlot.map((parkingSlot, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("parkingSlot", parkingSlot)}
                       >
                         {parkingSlot}
@@ -635,7 +637,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "swimmingPool" ? null : "swimmingPool"
@@ -649,7 +651,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "swimmingPool" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("swimmingPool", "")}
                     >
                       Select
@@ -657,7 +659,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {swimmingPool.map((swimmingPool, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() =>
                           handleSelect("swimmingPool,", swimmingPool)
                         }
@@ -676,7 +678,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(openDropdown === "gym" ? null : "gym")
                   }
@@ -688,7 +690,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "gym" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("gym", "")}
                     >
                       Select
@@ -696,7 +698,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {gym.map((gym, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("gym", gym)}
                       >
                         {gym}
@@ -713,7 +715,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 </label>
                 <button
                   type="button"
-                  className="w-full h-[46px] p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
+                  className="w-[130px] sm:w-full h-[35px] text-sm p-2 border rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[rgba(130,71,229,1)] flex items-center justify-between"
                   onClick={() =>
                     setOpenDropdown(
                       openDropdown === "elevator" ? null : "elevator"
@@ -727,7 +729,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 {openDropdown === "elevator" && (
                   <ul className="absolute w-full bg-white border rounded-md shadow-md mt-1 z-10 max-h-48 overflow-y-auto animate-fade-in">
                     <li
-                      className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                      className="p-2 text-sm cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                       onClick={() => handleSelect("elevator", "")}
                     >
                       Select
@@ -735,7 +737,7 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                     {elevator.map((elevator, index) => (
                       <li
                         key={index}
-                        className="p-2 cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
+                        className="p-2 text-sm    cursor-pointer hover:bg-[rgba(220,212,255,1)] transition"
                         onClick={() => handleSelect("elevator", elevator)}
                       >
                         {elevator}
@@ -744,18 +746,23 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                   </ul>
                 )}
               </div>
+
+              <div className="h-[53px] w-full opacity-0 sm:hidden">
+                
+              </div>
+            </div>
             </div>
           </div>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-center mt-4 gap-4">
             <Button
               onClick={handleApply}
-              className="bg-[#8247E5] text-white px-4 py-2 rounded"
+              className="bg-[#8247E5] text-white px-2 py-1 rounded"
               style={{
                 borderRadius: "3px",
                 border: "1px solid rgba(166, 115, 239, 1)",
-                fontSize: "18px",
-                fontWeight: "600",
+                fontSize: "14px",
+                fontWeight: "400",
                 width: "110px",
               }}
             >
@@ -767,8 +774,8 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
               style={{
                 borderRadius: "3px",
                 border: "1px solid rgba(166, 115, 239, 1)",
-                fontSize: "18px",
-                fontWeight: "600",
+                fontSize: "14px",
+                fontWeight: "400",
                 width: "110px",
               }}
             >
@@ -782,8 +789,8 @@ export const FilterModal = ({ isOpen, onClose, onApply, complexes }) => {
                 border: "1px solid #8247E5",
                 background: "rgba(255, 255, 255, 1)",
                 color: "#8247E5",
-                fontSize: "18px",
-                fontWeight: "600",
+                fontSize: "14px",
+                fontWeight: "400",
                 width: "110px",
               }}
             >

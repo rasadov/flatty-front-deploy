@@ -85,7 +85,7 @@ const Home = () => {
 
   const DesktopHeader = () => (
     <div
-      className="hidden md:block relative w-full overflow-hidden bg-no-repeat custom-width-for-header"
+      className="hidden md:block relative w-full  bg-no-repeat custom-width-for-header"
       style={{
         backgroundImage: `url(${
           window.innerWidth > 1600 ? header_bg2 : header_bg
@@ -266,7 +266,7 @@ const Home = () => {
           <MobileHeader />
           <DesktopHeader />
           <div className="px-4 sm:px-8 md:px-16 mx-auto">
-            <div className="relative z-10 ">
+            <div>
               <CardList sectionName="Best Offers" seeAll={true}>
                 {featuredLoading ? (
                   <p>Loading...</p>

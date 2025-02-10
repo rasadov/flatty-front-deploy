@@ -138,7 +138,7 @@ const FilterNumberRange = ({
   };
 
   return (
-    <div className="flex items-center justify-between mb-3">
+    <div className="flex items-center justify-between mb-3 gap-4">
       <label className="block text-[12px] font-medium text-[#0F1D40]">
         {label}
       </label>
@@ -198,7 +198,7 @@ const FilterSingleNumber = ({
   const minVal = selectedFilters[categoryMin] || "";
   const maxVal = selectedFilters[categoryMax] || "";
   return (
-    <div className="flex items-center justify-between mb-3">
+    <div className="flex items-center justify-between mb-3 gap-4">
       <label className="block text-xs font-medium">{label}</label>
       <div className="flex gap-2">
         <input
@@ -214,7 +214,7 @@ const FilterSingleNumber = ({
             });
             // setFilter(category, value);
           }}
-          className="p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[35px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         <input
           type="number"
@@ -229,7 +229,7 @@ const FilterSingleNumber = ({
             });
             // setFilter(category, value);
           }}
-          className="p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[40px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="p-2 border border-[#E2E4E8] rounded-sm w-[106px] h-[35px] text-[#525C76] font-semibold text-[12px] leading-[19.2px] text-left focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
         {children}
       </div>
@@ -246,7 +246,7 @@ const FilterButtonToggle = ({
   selectedFilters = {},
   placeholder,
 }) => (
-  <div className="flex items-center justify-between mb-3">
+  <div className="flex items-center justify-between mb-3 gap-4">
     {/* <label className="block text-xs font-medium">{label}</label> */}
     <div className="flex flex-wrap gap-2">
       <button
@@ -264,7 +264,7 @@ const FilterButtonToggle = ({
               : "border-[#E2E4E8] hover:border-[#8247E5] hover:bg-[#F5F6F7]"
           }` +
           getButtonStyle(selectedFilters, category, selectedFilters[category]) +
-          "bg-gray-100 px-4 py-2 text-xs font-semibold border text-[#525C76] h-[40px] rounded-sm transition-all duration-300 ease-in-out transform"
+          "bg-gray-100 px-4 py-2 text-xs font-semibold border text-[#525C76] h-[35px] rounded-sm transition-all duration-300 ease-in-out transform"
         }
       >
         {placeholder}

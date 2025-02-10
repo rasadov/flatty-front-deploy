@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown, ShowMap } from "../../assets/icons";
 import { useNavigate } from "react-router-dom";
+import ReactDOM from "react-dom";
+
+const DropdownPortal = ({ children }) => {
+  return ReactDOM.createPortal(
+    children,
+    document.getElementById("dropdown-root") // Добавьте элемент <div id="dropdown-root"></div> в index.html
+  );
+};
 
 const cities = [
   "Lefkoşa",
@@ -482,12 +490,12 @@ export const Searchbar = ({
     switch (type) {
       case "city":
         return (
-          <div className="p-4">
+          <div className="p-4 absolute z-99 bg-white border rounded-md shadow-lg">
             {cities.map((cityItem, index) => (
               <p
                 key={index}
                 onClick={() => handleSelectOption("city", cityItem)}
-                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
+                className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
               >
                 {cityItem}
               </p>
@@ -496,14 +504,14 @@ export const Searchbar = ({
         );
       case "area":
         return (
-          <div className="p-4">
+          <div className="p-4 absolute z-99 bg-white border rounded-md shadow-lg">
             {dropdownStates.city ? (
               areas[dropdownStates.city] ? (
                 areas[dropdownStates.city].map((areaName, index) => (
                   <p
                     key={index}
                     onClick={() => handleSelectOption("area", areaName)}
-                    className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
+                    className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
                   >
                     {areaName}
                   </p>
@@ -520,12 +528,12 @@ export const Searchbar = ({
         );
       case "category":
         return (
-          <div className="p-4">
+          <div className="absolute  bg-white border rounded-md shadow-lg z-10 p-4">
             {["Appartment", "Villa", "Penthouse", "Cottages", "Loft", "Townhouse",  "Bungalow"].map((cat) => (
               <p
                 key={cat}
                 onClick={() => handleSelectOption("category", cat)}
-                className="py-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
+                className="p-2 transition-colors hover:bg-gray-200 text-[#525C76] text-sm cursor-pointer"
               >
                 {cat}
               </p>
@@ -554,7 +562,7 @@ export const Searchbar = ({
         );
       case "price":
         return (
-          <div className="p-4">
+          <div className="absolute mt-2 w-[260px] bg-white border rounded-md shadow-lg z-10 p-4">
             <div className="flex space-x-2">
               <input
                 type="number"
@@ -580,12 +588,12 @@ export const Searchbar = ({
 
   return (
     <motion.div
-      className="p-4 w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4  justify-between"
+      className="z-999 p-4 w-full mx-auto bg-white rounded-lg shadow-lg flex flex-wrap items-center gap-4  justify-between"
       style={{ boxShadow: "0px 1px 1px 0px #703ACA14" }}
    
     >
       {/* Category Dropdown */}
-      <div className="relative flex-shrink-0 ">
+      <div className="relative flex-shrink-0 z-999">
         <button
           onClick={() => handleDropdownToggle("category")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"
@@ -602,7 +610,7 @@ export const Searchbar = ({
         </button>
         {dropdownOpen === "category" && (
           <motion.div
-            className="absolute z-10 mt-2 bg-white rounded-md shadow-lg"
+            className="absolute mt-2 bg-white rounded-md shadow-lg z-999"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
@@ -614,6 +622,7 @@ export const Searchbar = ({
       </div>
 
       {/* Room Number Dropdown */}
+      
       <div className="relative flex-shrink-0 ">
         <button
           onClick={() => handleDropdownToggle("roomNumber")}
@@ -674,7 +683,7 @@ export const Searchbar = ({
       </div>
 
       {/* City Dropdown */}
-      <div className="relative flex-shrink-0 w-full sm:w-[170px]">
+      <div className="relative bg-white flex-shrink-0 w-full sm:w-[170px]">
         <button
           onClick={() => handleDropdownToggle("city")}
           className="flex items-center justify-between w-full px-4 py-2 text-left bg-white"

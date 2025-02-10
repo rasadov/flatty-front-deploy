@@ -39,7 +39,7 @@ const PriceSection = React.memo(({ price, currency }) => (
 const RoomAreaFloorSection = React.memo(
   ({ room, area, currFloor, building }) => (
     <div className="flex flex-row justify-between gap-2 mb-2">
-      <div className="text-sm text-[#525C76] font-medium">{room} Rooms</div>
+      <div className="text-sm text-[#525C76] font-medium">{room} Bedrooms</div>
       <div className="text-sm text-[#525C76] font-medium">{area} sq.m</div>
       <div className="text-sm text-[#525C76] font-medium">
         {currFloor} / {building} Floor
@@ -98,11 +98,22 @@ export const HouseItem = React.memo(
       "₺": 0.028,
     };
 
+    // Если среди изображений есть обложка (isCover === true),
+    // формируем новый массив, где она идёт первой.
+    const orderedImages = useMemo(() => {
+      if (!images || !Array.isArray(images)) return [];
+      const coverPhoto = images.find((img) => img.isCover);
+      if (coverPhoto) {
+        return [coverPhoto, ...images.filter((img) => img !== coverPhoto)];
+      }
+      return images;
+    }, [images]);
+
     const handleLikeClick = useCallback(
       (e) => {
         e.preventDefault();
         if (!isAuthenticated) {
-          // Redirect to login if not authenticated
+          // Если не авторизован — перенаправляем на страницу логина
           navigate("/login", {
             state: {
               from: window.location.pathname,
@@ -119,7 +130,7 @@ export const HouseItem = React.memo(
             },
           });
         } else {
-          // Toggle like status
+          // Меняем статус "лайк" для свойства
           fetch("https://api.flatty.ai/api/v1/property/like/" + id, {
             method: "POST",
             body: JSON.stringify({ property_id: id }),
@@ -184,11 +195,10 @@ export const HouseItem = React.memo(
         <div
           className="relative w-full rounded-[6px] overflow-hidden"
           style={{
-            height: "250px",
-            maxHeight: "300px",
+           
           }}
         >
-          {images && Array.isArray(images) && images.length > 0 ? (
+          {orderedImages && orderedImages.length > 0 ? (
             <Swiper
               loop={true}
               onSwiper={(swiper) => {
@@ -215,32 +225,24 @@ export const HouseItem = React.memo(
               }}
               className="swiper-container"
             >
-              {images ? images.map((img, index) => {
-                return (
-                  <SwiperSlide key={index}>
-                    <Link to={complex ? `/complex/${id}` : `/appartment/${id}`}>
-                      <img
-                        src={img.image_url}
-                        alt={`Slide ${index + 1}`}
-                        className="object-cover w-full h-[250px]"
-                      />
-                    </Link>
-                  </SwiperSlide>
-                );
-              }) : <img
-              src={images[0].image_url}
-              alt={`Slide ${id}`}
-              className="object-cover w-full h-[173px]"
-            /> }
+              {orderedImages.map((img, index) => (
+                <SwiperSlide key={index}>
+                  <Link to={complex ? `/complex/${id}` : `/appartment/${id}`}>
+                    <img
+                      src={img.image_url}
+                      alt={`Slide ${index + 1}`}
+                      className="object-cover w-full h-[250px]"
+                    />
+                  </Link>
+                </SwiperSlide>
+              ))}
             </Swiper>
           ) : (
             <div>No images available</div>
           )}
 
           {/* Previous Button */}
-          {complex ? (
-            ""
-          ) : (
+          {complex ? null : (
             <div
               ref={prevRef}
               className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-prev top-1/2 left-2"
@@ -251,10 +253,7 @@ export const HouseItem = React.memo(
           )}
 
           {/* Next Button */}
-
-          {complex ? (
-            ""
-          ) : (
+          {complex ? null : (
             <div
               ref={nextRef}
               className="absolute z-10 transform -translate-y-1/2 bg-black bg-opacity-50 rounded-full cursor-pointer custom-swiper-button swiper-btn-next top-1/2 right-2"

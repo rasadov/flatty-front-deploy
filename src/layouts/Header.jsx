@@ -167,7 +167,7 @@ const Header = () => {
               </div>
             )}
           </div>
-          <div className="w-[220px] h-[34px] flex justify-center gap-2 items-center ">
+          <div className="w-[220px] h-[34px] flex justify-end gap-2 items-center ">
             <div
               onClick={() => handleNavigation("/wishlist")}
               className=" cursor text-[#A673EF]  w-[34px] h-[34px] flex justify-center items-center"

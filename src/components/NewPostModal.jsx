@@ -1,8 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { addPost, fetchPosts } from "../store/slices/agentPostSlice";
+import { addPost, fetchPosts, updatePost } from "../store/slices/agentPostSlice";
 import { Add, Subtract, Active, Inactive } from "../assets/icons";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { MapPin } from "../assets/icons";
@@ -10,7 +10,6 @@ import { FaFilePdf } from "react-icons/fa";
 import { Trash } from "../assets/icons";
 import { PDF } from "../assets/icons/PDF";
 import { ImageDelete } from "../assets/icons/ImageDelete";
-
 import { LeftUpload } from "../assets/icons/LeftUpload";
 import { toast } from "react-toastify";
 
@@ -200,7 +199,7 @@ const areas = {
     "Akçiçek",
     "Akdeniz",
     "Alemdağ",
-    "Çamlıbel",
+    "Çamlıköy",
     "Geçitköy",
     "Hisarköy",
     "Karpaşa",
@@ -306,18 +305,35 @@ var city = "";
 var area = "";
 const libraries = ["places"];
 
-const NewPostModal = ({ isOpen, onClose, complexes }) => {
+const NewPostModal = ({ isOpen, onClose, complexes, isEdit = false, initialData = {} }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [selectedDocuments, setSelectedDocuments] = useState([]);
-
   const [coverPhotoIndex, setCoverPhotoIndex] = useState(null);
+
+  // Если файлы загружены, а cover-фото не выбрано – делаем первым файлом cover
+  useEffect(() => {
+    if (selectedFiles.length > 0 && coverPhotoIndex === null) {
+      setCoverPhotoIndex(0);
+    }
+  }, [selectedFiles]);
+
+  // Переупорядочиваем файлы так, чтобы выбранное cover-фото было первым
+  const orderedFiles = useMemo(() => {
+    if (coverPhotoIndex !== null && selectedFiles.length > 0) {
+      return [selectedFiles[coverPhotoIndex], ...selectedFiles.filter((_, i) => i !== coverPhotoIndex)];
+    }
+    return selectedFiles;
+  }, [selectedFiles, coverPhotoIndex]);
 
   const handleSetCoverPhoto = (index) => {
     setCoverPhotoIndex(index);
   };
 
+  // Шаг формы (многошаговая форма)
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
+
+  // Определяем значения по умолчанию для создания поста
+  const defaultFormData = {
     category: "Appartment",
     residentialComplex: "",
     totalArea: 0,
@@ -345,15 +361,20 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     documents: "",
     title: "",
     price: 0,
-  });
+  };
+
+  // Если редактирование, инициализируем форму данными редактирования
+  const [formData, setFormData] = useState(isEdit ? initialData : defaultFormData);
+
+  // Если initialData меняется (например, при редактировании) – обновляем форму
+  useEffect(() => {
+    if (isEdit && initialData) {
+      setFormData(initialData);
+    }
+  }, [isEdit, initialData]);
+
   const dispatch = useDispatch();
   const mapRef = useRef(null);
-
-  useEffect(() => {
-    if (selectedFiles.length > 0 && coverPhotoIndex === null) {
-      setCoverPhotoIndex(0);
-    }
-  }, [selectedFiles]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -367,6 +388,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         operation === "add" ? prev[name] + 1 : Math.max(0, prev[name] - 1),
     }));
   };
+
   const handleDropDocuments = (event) => {
     event.preventDefault();
     const files = Array.from(event.dataTransfer.files);
@@ -395,12 +417,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
   };
 
-  //?   Files ===========
-  const handleFileUpload = (event) => {
-    const files = Array.from(event.target.files);
-    setSelectedDocuments((prevFiles) => [...prevFiles, ...files]);
-  };
-
   const handleFileRemove = (index) => {
     setSelectedDocuments((prevFiles) =>
       prevFiles.filter((_, i) => i !== index)
@@ -423,7 +439,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     else if (size < 1073741824) return `${(size / 1048576).toFixed(2)} MB`;
     else return `${(size / 1073741824).toFixed(2)} GB`;
   };
-  //?   Files ===========
 
   const handleImageRemove = (index) => {
     setSelectedFiles((prevFiles) => {
@@ -434,94 +449,65 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
   };
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: "AIzaSyCmyl8QRHQp6LHWfTDJrCX84NM1TJAC1fM", // Replace with your key
+    googleMapsApiKey: "YOUR_GOOGLE_MAPS_API_KEY", // Замените на ваш ключ
     libraries: libraries,
   });
 
   const handleMapClick = async (e) => {
     const lat = e.latLng.lat();
     const lng = e.latLng.lng();
-
     setFormData((prev) => ({
       ...prev,
       latitude: lat,
       longitude: lng,
     }));
   };
+
   const mapStyles = [
-    {
-      featureType: "poi",
-      elementType: "labels",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "poi.business",
-      stylers: [{ visibility: "off" }],
-    },
-    {
-      featureType: "transit",
-      stylers: [{ visibility: "off" }],
-    },
+    { featureType: "poi", elementType: "labels", stylers: [{ visibility: "off" }] },
+    { featureType: "poi.business", stylers: [{ visibility: "off" }] },
+    { featureType: "transit", stylers: [{ visibility: "off" }] },
   ];
+
   const handleSubmit = async () => {
-    if (
-      selectedFiles.length > 0
-      // && !!formData.address
-      // && !!formData.totalArea
-      // && !!formData.livingArea
-      // && !!formData.description
-      // && !!formData.currency
-      // && !!formData.price
-      // && !!formData.year
-      // && !!formData.renovation
-      // && !!formData.latitude
-      // && !!formData.longitude
-      // && !!formData.title
-      // && !!formData.category
-      // && formData.swimmingPool !== null
-      // && formData.parkingSlot !== null
-      // && formData.installment !== null
-      // && formData.elevator !== null
-      // && formData.gym !== null
-    ) {
+    if (selectedFiles.length > 0) {
       const formDataToSend = new FormData();
       Object.keys(formData).forEach((key) => {
         formDataToSend.append(key, formData[key]);
       });
-      selectedFiles.forEach((file) => {
+      orderedFiles.forEach((file) => {
         formDataToSend.append("files", file);
       });
-
       selectedDocuments.forEach((file) => {
         formDataToSend.append("documents", file);
       });
-
       if (coverPhotoIndex !== null) {
         formDataToSend.append("coverPhotoIndex", coverPhotoIndex);
         console.log("coverPhotoIndex", coverPhotoIndex);
       }
-
       for (var pair of formDataToSend.entries()) {
         console.log(pair[0] + ", " + pair[1]);
       }
       try {
-        dispatch(addPost(formDataToSend));
-        dispatch(fetchPosts());
+        if (isEdit) {
+          // Режим редактирования – обновляем пост
+          await dispatch(updatePost(formDataToSend));
+          await dispatch(fetchPosts());
+        } else {
+          // Создание нового поста
+          await dispatch(addPost(formDataToSend));
+          await dispatch(fetchPosts());
+        }
         onClose();
-        // window.location.reload();
       } catch (error) {
         toast.error(
           "An error occurred. Please try again. Make sure you complete all required fields",
-          {
-            toastId: "upload-error",
-          }
+          { toastId: "upload-error" }
         );
         console.error(error);
       }
     } else {
-      toast.error("Please fill all required fields", {
-        toastId: "unfilled-error",
-      });
+      toast.error("Please fill all required fields", { toastId: "unfilled-error" });
       console.log("Please fill all required fields");
       console.log(selectedFiles.length);
       console.log(formData);
@@ -539,8 +525,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     }`;
   };
 
-  // Добавляем состояние для хранения индекса выбранного cover-фото
-
   const clearLocation = () => {
     setFormData((prev) => ({
       ...prev,
@@ -556,7 +540,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
 <svg width="36" height="46" viewBox="0 0 48 61" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M7.04448 7.06866C11.5083 2.58932 17.5604 0.069705 23.8731 0.0625C30.1858 0.069705 36.238 2.58932 40.7018 7.06866C45.1656 11.548 47.6766 17.6213 47.6838 23.9562C47.6837 34.1838 42.269 43.1668 36.7319 49.6787C31.1983 56.1864 25.5495 60.218 25.0856 60.5466C24.7263 60.7864 24.3045 60.9143 23.8731 60.9143C23.4417 60.9143 23.0199 60.7864 22.6607 60.5466C22.1968 60.218 16.5479 56.1864 11.0143 49.6787C5.47726 43.1668 0.0625121 34.1838 0.0625 23.9562C0.0696711 17.6213 2.58064 11.548 7.04448 7.06866ZM28.7309 16.661C27.293 15.6969 25.6025 15.1823 23.8731 15.1823C21.5541 15.1823 19.3301 16.1067 17.6904 17.7522C16.0506 19.3976 15.1295 21.6292 15.1295 23.9561C15.1295 25.6914 15.6423 27.3877 16.603 28.8305C17.5637 30.2733 18.9293 31.3979 20.527 32.062C22.1247 32.7261 23.8828 32.8999 25.579 32.5613C27.2751 32.2228 28.8331 31.3871 30.0559 30.1601C31.2787 28.933 32.1114 27.3697 32.4488 25.6678C32.7861 23.9659 32.613 22.2018 31.9512 20.5986C31.2895 18.9954 30.1688 17.6251 28.7309 16.661Z" fill="#6433C4" stroke="#220D6D" stroke-width="0.125"/>
 </svg>
-
   `);
   const svgIconUrl = `data:image/svg+xml,${svgString}`;
 
@@ -578,8 +561,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
     }
   };
 
-  
-
   if (!isOpen) return null;
 
   return (
@@ -588,25 +569,24 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
       onClick={onClose}
     >
       <motion.div
-        className="w-full sm:w-[75%] md:w-[50%] mx-2   h-[80vh] bg-white rounded-md shadow-lg flex flex-col"
+        className="w-full sm:w-[75%] md:w-[50%] mx-2 h-[80vh] bg-white rounded-md shadow-lg flex flex-col"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-       
         {step === 1 && (
           <div className="space-y-4 flex-1 overflow-y-auto px-4 sm:px-6 py-3 sm:py-4">
-           <div className="flex items-center justify-between">
-           <h3 className="text-2xl font-semibold">Fill Info</h3>
-            <button
-            onClick={onClose}
-            className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
-          >
-            &times;
-          </button>
-           </div>
+            <div className="flex items-center justify-between">
+              <h3 className="text-2xl font-semibold">Fill Info</h3>
+              <button
+                onClick={onClose}
+                className="text-gray-500 hover:text-gray-700 font-semibold text-2xl"
+              >
+                &times;
+              </button>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -684,11 +664,11 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               ].map((field, index) => (
                 <div key={index} className="flex flex-col items-start">
                   <label className="block mb-1 text-sm font-medium text-gray-700 capitalize">
-                    {field == "livingRoom"
+                    {field === "livingRoom"
                       ? "Living rooms"
-                      : field == "buildingFloors"
+                      : field === "buildingFloors"
                       ? "Building floors"
-                      : field == "apartmentStories"
+                      : field === "apartmentStories"
                       ? "Appartment stories"
                       : field}
                   </label>
@@ -732,10 +712,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                         renovation: renovation,
                       }))
                     }
-                    className={`${getButtonStyle(
-                      "renovation",
-                      renovation
-                    )} bg-gray-100 px-4 py-2 rounded-md`}
+                    className={`${getButtonStyle("renovation", renovation)} bg-gray-100 px-4 py-2 rounded-md`}
                   >
                     {renovation}
                   </button>
@@ -758,7 +735,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <option value="false">No</option>
                 </select>
               </div>
-
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Parking
@@ -774,7 +750,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <option value="false">No</option>
                 </select>
               </div>
-
               <div>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Swimming pool
@@ -790,7 +765,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   <option value="false">No</option>
                 </select>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -807,7 +781,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                     <option value="false">No</option>
                   </select>
                 </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -827,7 +800,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </div>
               </div>
             </div>
-
             <div className="flex ">
               <div className="flex flex-col w-full sm:w-auto mr-10">
                 <label className="block mb-1 text-sm font-medium text-gray-700">
@@ -868,11 +840,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
               </div>
             </div>
             <div className="flex flex-col items-left gap-2">
-              <div
-                style={{
-                  textAlign: "left",
-                }}
-              >
+              <div style={{ textAlign: "left" }}>
                 <label className="block mb-1 text-sm font-medium text-gray-700">
                   Title
                 </label>
@@ -887,7 +855,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 />
               </div>
             </div>
-
             <div className="mt-4">
               <label className="block mb-1 text-sm font-medium text-gray-700">
                 Description
@@ -926,23 +893,16 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         )}
         {step === 2 && (
           <div className="flex flex-col justify-between h-full gap-4 mx-2">
-            {/* Content area */}
             <div className="space-y-6 flex-1 overflow-y-auto px-3 py-4">
-              {/* Header */}
               <div className="text-center mb-4">
                 <h3 className="text-lg font-semibold">Upload photos</h3>
               </div>
-
-              {/* Drag and Drop Area or Click to Browse */}
               <div
                 className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
               >
-                <p
-                  className="text-sm mb-4"
-                  style={{ color: "rgba(130, 71, 229, 1)" }}
-                >
+                <p className="text-sm mb-4" style={{ color: "rgba(130, 71, 229, 1)" }}>
                   Drag photos here to start uploading
                 </p>
                 <button
@@ -972,19 +932,17 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   className="hidden"
                 />
               </div>
-
               {selectedFiles.length > 0 && (
                 <div className="mt-4 flex overflow-x-auto space-x-4">
-                  {selectedFiles.map((file, index) => {
+                  {orderedFiles.map((file, index) => {
                     const previewUrl = URL.createObjectURL(file);
-                    const isCover = index === coverPhotoIndex;
-
+                    // В режиме редактирования можно оставить возможность смены cover,
+                    // но здесь для простоты выбран первый файл как cover.
+                    const isCover = index === 0;
                     return (
-                      <div className="flex flex-col">
+                      <div key={index} className="flex flex-col">
                         <div
-                          key={index}
-                          className={`relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 
-                          overflow-hidden flex flex-col items-center justify-center group ${
+                          className={`relative min-w-[160px] h-[120px] border rounded-md bg-gray-50 overflow-hidden flex flex-col items-center justify-center group ${
                             isCover ? "border-2 border-[#8247E5]" : ""
                           }`}
                         >
@@ -1001,22 +959,15 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                               controls
                             />
                           )}
-
-                          {/* Centered delete button with overlay effect */}
                           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all">
                             <button
-                              className="w-8 h-8  text-gray-700 rounded-full 
-                              flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 
-                               transition-all transform scale-90 
-                              group-hover:scale-100"
+                              className="w-8 h-8 text-gray-700 rounded-full flex items-center justify-center text-sm opacity-0 group-hover:opacity-100 transition-all transform scale-90 group-hover:scale-100"
                               onClick={() => handleImageRemove(index)}
                             >
                               <ImageDelete />
                             </button>
                           </div>
                         </div>
-
-                        {/* Radio button below the image */}
                         <div className="flex items-center gap-2 mt-2 justify-center">
                           <input
                             type="radio"
@@ -1026,10 +977,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                             onChange={() => handleSetCoverPhoto(index)}
                             className="w-4 h-4 accent-[#8247E5] border-gray-300"
                           />
-                          <label
-                            htmlFor={`cover-${index}`}
-                            className="text-xs text-gray-700 select-none"
-                          >
+                          <label htmlFor={`cover-${index}`} className="text-xs text-gray-700 select-none">
                             Cover photo
                           </label>
                         </div>
@@ -1039,19 +987,15 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </div>
               )}
             </div>
-
-            {/* Footer / Pagination Controls */}
             <div className="py-4">
               <div className="flex justify-center items-center">
                 <div className="flex space-x-2">
-                  {/* For the "dots" at the bottom */}
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
-                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 </div>
               </div>
-
               <div className="flex justify-center mt-4 gap-4">
                 <button
                   className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
@@ -1071,33 +1015,22 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         )}
         {step === 3 && (
           <div className="flex flex-col justify-between h-full gap-4">
-            {/* Content area */}
             <div className="space-y-6 flex-1 overflow-y-auto px-6 py-4">
-              {/* Header */}
               <div className="text-center mb-4">
                 <h3 className="text-lg font-semibold">Upload Documents</h3>
               </div>
-
-              {/* Drag and Drop Area or Click to Browse */}
               <div
                 className="flex flex-col justify-center gap-3 border-2 border-dashed h-[46%] border-gray-300 rounded-lg p-6 text-center"
                 onDragOver={handleDragOverFile}
                 onDrop={handleDropDocuments}
               >
-                <p
-                  className="text-sm  mb-4"
-                  style={{
-                    color: "rgba(130, 71, 229, 1)",
-                  }}
-                >
+                <p className="text-sm mb-4" style={{ color: "rgba(130, 71, 229, 1)" }}>
                   Drag files here to start uploading
                 </p>
                 <button
                   className="px-4 py-2 bg-white text-purple-600 rounded-md w-[200px] mx-auto"
                   onClick={() =>
-                    document
-                      .querySelector('input[id="uploadDocuments"]')
-                      ?.click()
+                    document.querySelector('input[id="uploadDocuments"]')?.click()
                   }
                   style={{
                     display: "flex",
@@ -1121,11 +1054,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   className="hidden"
                 />
               </div>
-
-              
-
               {selectedDocuments.length > 0 && (
-                // List the selected files below
                 <div className="mt-4 space-y-2">
                   {selectedDocuments.map((file, index) => (
                     <div
@@ -1171,29 +1100,25 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </div>
               )}
             </div>
-
-            {/* Footer / Pagination Controls */}
             <div className="py-4">
               <div className="flex justify-center items-center">
                 <div className="flex space-x-2">
-                  {/* For the "dots" at the bottom */}
+                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                   <span className="h-2 w-2 bg-purple-600 rounded-full"></span>
-                  <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
                 </div>
               </div>
-
               <div className="flex justify-center mt-4 gap-4">
                 <button
                   className="px-4 w-[100px] py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-100"
-                  onClick={() => setStep(2)}
+                  onClick={() => setStep(1)}
                 >
                   Previous
                 </button>
                 <button
                   className="px-4 w-[100px] py-2 text-white bg-purple-600 rounded-md hover:bg-purple-700"
-                  onClick={() => setStep(4)}
+                  onClick={() => setStep(3)}
                 >
                   Next
                 </button>
@@ -1203,15 +1128,8 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
         )}
         {step === 4 && (
           <div className="flex-1 overflow-y-auto px-6 py-4">
-            {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Choose location</h3>
-              {/* <button
-              onClick={clearLocation} // Optional clear button
-              className="text-purple-600 hover:text-purple-800"
-            >
-              ×
-            </button> */}
             </div>
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
@@ -1242,9 +1160,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   value={area}
                   onChange={handleLocationChange}
                 >
-                  <option value="">
-                    {!city ? "Select a city first" : area || "Select"}
-                  </option>
+                  <option value="">{!city ? "Select a city first" : area || "Select"}</option>
                   {city
                     ? areas[city].map((area, index) => (
                         <option key={index} value={area}>
@@ -1255,10 +1171,7 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </select>
               </div>
             </div>
-
-            {/* Map and Address */}
             <div className="space-y-4">
-              {/* Address */}
               <div className="flex items-center justify-between bg-gray-100 px-4 py-2 rounded-md">
                 <p className="text-sm text-gray-700">
                   {formData.address || "Select a location on the map"}
@@ -1272,8 +1185,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                   </button>
                 )}
               </div>
-
-              {/* Map */}
               {isLoaded && (
                 <div className="w-full h-[300px] rounded-lg overflow-hidden border">
                   <GoogleMap
@@ -1303,8 +1214,6 @@ const NewPostModal = ({ isOpen, onClose, complexes }) => {
                 </div>
               )}
             </div>
-
-            {/* Pagination and Buttons */}
             <div className="flex justify-center items-center mt-4">
               <div className="flex space-x-2">
                 <span className="h-2 w-2 bg-gray-300 rounded-full"></span>
